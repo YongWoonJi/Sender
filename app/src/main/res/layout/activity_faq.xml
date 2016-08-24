@@ -9,12 +9,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sender.team.sender.FAQActivity">
 
-    <TextView
+    <ExpandableListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="FAQ 화면"
-        android:id="@+id/textView21"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/expandableListView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:groupIndicator="@null"
+        />
 </RelativeLayout>
