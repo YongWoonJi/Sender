@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/imageView3"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/word"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#757575"
+        android:layout_marginBottom="15dp"
+        android:text="서울대 연구공원 웨딩홀 -> 강남역 1번출구\n16:00 도착 / 서류봉투 / 5200원"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/details"
+        android:textAlignment="center"
+        android:textColor="#757575"
+        android:textSize="15sp"
+        android:layout_marginBottom="5dp"
+        android:text="정현맨님으로부터 배송요청이 왔습니다\n수락하시겠습니까?" />
+
+</LinearLayout>
