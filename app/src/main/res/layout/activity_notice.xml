@@ -9,12 +9,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sender.team.sender.NoticeActivity">
 
-    <TextView
+    <ExpandableListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="센더 공지사항이얌 ㅎㅎ"
-        android:id="@+id/textView13"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/expandableListView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:groupIndicator="@null"
+
+
+
+        />
 </RelativeLayout>
