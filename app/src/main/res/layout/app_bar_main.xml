@@ -10,53 +10,97 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="이벤트 이미지"
-        android:id="@+id/textView15"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="이벤트 이미지"
+            android:id="@+id/textView15"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"/>
 
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#CF3232"
-        app:tabTextColor="#ffffff"
-        app:tabSelectedTextColor="#ffffff"
-        app:tabIndicatorColor="@null"
-        app:tabMode="fixed"
-        android:layout_below="@+id/textView15"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    </android.support.design.widget.TabLayout>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#CF3232"
+            app:tabTextColor="#ffffff"
+            app:tabSelectedTextColor="#ffffff"
+            app:tabIndicatorColor="@null"
+            app:tabMode="fixed"
+            android:layout_below="@+id/textView15"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+        </android.support.design.widget.TabLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="센더 채팅"
-        android:id="@+id/btn_chat"
-        android:layout_below="@+id/tab"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="센더 채팅"
+            android:id="@+id/btn_chat"
+            android:layout_below="@+id/tab"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="딜리버러채팅"
-        android:id="@+id/btn_chat2"
-        android:layout_below="@+id/btn_chat"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="딜리버러채팅"
+            android:id="@+id/btn_chat2"
+            android:layout_below="@+id/btn_chat"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/fab_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#96000000"
+        android:visibility="gone">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="궁금한점"
+            android:textColor="#ffffff"
+            android:id="@+id/text_faq"
+            android:layout_above="@+id/text_question"
+            android:layout_alignLeft="@+id/text_question"
+            android:layout_alignStart="@+id/text_question"
+            android:layout_marginBottom="46dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="문의하기"
+            android:textColor="#ffffff"
+            android:id="@+id/text_question"
+            android:layout_above="@+id/textView30"
+            android:layout_alignRight="@+id/textView30"
+            android:layout_alignEnd="@+id/textView30"
+            android:layout_marginBottom="46dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="칭찬/신고하기"
+            android:textColor="#ffffff"
+            android:id="@+id/textView30"
+            android:layout_marginRight="80dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="107dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
 
 
     <android.support.design.widget.FloatingActionButton
@@ -109,50 +153,4 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_input_add" />
 
-    <RelativeLayout
-        android:id="@+id/fab_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#96000000"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="궁금한점"
-            android:textColor="#ffffff"
-            android:id="@+id/text_faq"
-            android:layout_above="@+id/text_question"
-            android:layout_alignLeft="@+id/text_question"
-            android:layout_alignStart="@+id/text_question"
-            android:layout_marginBottom="46dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="문의하기"
-            android:textColor="#ffffff"
-            android:id="@+id/text_question"
-            android:layout_above="@+id/textView30"
-            android:layout_alignRight="@+id/textView30"
-            android:layout_alignEnd="@+id/textView30"
-            android:layout_marginBottom="46dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="칭찬/신고하기"
-            android:textColor="#ffffff"
-            android:id="@+id/textView30"
-            android:layout_marginRight="80dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="107dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
