@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -27,9 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent intent = new Intent(this, NotificationService.class);
-        startService(intent);
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab1 = (FloatingActionButton)findViewById(R.id.fab1);
@@ -125,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void animateFAB(){
 
         if(isFabOpen){
-
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
@@ -134,10 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab2.setClickable(false);
             fab3.setClickable(false);
             isFabOpen = false;
-            Log.d("Raj", "close");
-
         } else {
-
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
@@ -146,15 +138,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab2.setClickable(true);
             fab3.setClickable(true);
             isFabOpen = true;
-            Log.d("Raj","open");
-
         }
     }
 
     @Override
     public void onClick(View view) {
-        int id = view.getId();
-        switch (id){
+        switch (view.getId()){
             case R.id.fab:
                 animateFAB();
                 break;

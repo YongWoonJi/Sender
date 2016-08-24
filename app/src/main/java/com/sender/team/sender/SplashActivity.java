@@ -15,6 +15,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        Intent intent = new Intent(this, NotificationService.class);
+        startService(intent);
+
         handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(runnable, 2000);
     }
