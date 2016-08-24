@@ -2,13 +2,17 @@ package com.sender.team.sender;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -21,6 +25,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private RelativeLayout fab_background;
     DrawerLayout drawer;
+    Toolbar toolbar;
+    ActionBarDrawerToggle mDrawerToggle;
+    CoordinatorLayout coordinatorLayout;
+    RelativeLayout naviFragment;
+
+    private float lastTranslate = 0.0f;
 
     private static final String TAB1 = "tab1";
     private static final String TAB2 = "tab2";
@@ -30,12 +40,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.content);
+        naviFragment = (RelativeLayout) findViewById(R.id.navi_fragment);
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                supportInvalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                supportInvalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                float xPositionOpenDrawer = naviFragment.getWidth();
+                float xPositionWindowContent = (slideOffset * xPositionOpenDrawer);
+                coordinatorLayout.setTranslationX(xPositionWindowContent);
+            }
+        };
+        drawer.addDrawerListener(mDrawerToggle);
+
         fab_background = (RelativeLayout) findViewById(R.id.fab_background);
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab1 = (FloatingActionButton)findViewById(R.id.fab1);
@@ -127,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
+
 
     public void animateFAB(){
 

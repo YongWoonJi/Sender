@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.sender.team.sender.MainActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="#ffffff"
+            app:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp">
+
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -59,6 +76,7 @@
         android:id="@+id/fab_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="6dp"
         android:background="#96000000"
         android:visibility="gone">
 
@@ -72,7 +90,7 @@
             android:layout_above="@+id/text_question"
             android:layout_alignLeft="@+id/text_question"
             android:layout_alignStart="@+id/text_question"
-            android:layout_marginBottom="46dp" />
+            android:layout_marginBottom="45dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,7 +102,7 @@
             android:layout_above="@+id/textView30"
             android:layout_alignRight="@+id/textView30"
             android:layout_alignEnd="@+id/textView30"
-            android:layout_marginBottom="46dp" />
+            android:layout_marginBottom="45dp" />
 
         <TextView
             android:layout_width="wrap_content"
