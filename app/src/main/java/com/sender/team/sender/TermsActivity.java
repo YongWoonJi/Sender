@@ -14,7 +14,7 @@ public class TermsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms);
         termsView = (TextView)findViewById(R.id.text_terms);
-        String text = getResources().getString(R.string.service_terms_content);
+        String text = getResources().getString(R.string.service_terms_personal_content);
         termsView.setText(Html.fromHtml(text));
     }
 }
