@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab,fab1,fab2,fab3;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private RelativeLayout fab_background;
 
     private static final String TAB1 = "tab1";
     private static final String TAB2 = "tab2";
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fab_background = (RelativeLayout) findViewById(R.id.fab_background);
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab1 = (FloatingActionButton)findViewById(R.id.fab1);
         fab2 = (FloatingActionButton)findViewById(R.id.fab2);
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void animateFAB(){
 
         if(isFabOpen){
+            fab_background.setVisibility(View.GONE);
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
@@ -130,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab3.setClickable(false);
             isFabOpen = false;
         } else {
+            fab_background.setVisibility(View.VISIBLE);
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
@@ -165,6 +170,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 animateFAB();
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isFabOpen) {
+            animateFAB();
+        } else {
+            super.onBackPressed();
         }
     }
 }
