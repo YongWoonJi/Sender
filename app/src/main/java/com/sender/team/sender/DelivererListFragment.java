@@ -11,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.sender.team.sender.Data.DelivererData;
+import com.sender.team.sender.Data.ReviewData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -33,10 +39,18 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_deliverer_list, container, false);
-        ButterKnife.bind(view);
+        ButterKnife.bind(this, view);
         mAdapter = new DelivererAdapter();
         mAdapter.setOnDialogListener(this);
         rv_view.setAdapter(mAdapter);
+
+        List<DelivererData> list = new ArrayList<>();
+        DelivererData data;
+        for (int i = 0; i < 10; i++) {
+            data = new DelivererData("오름맨" + i, "010-****-****", null, 9.4f, null, null);
+            list.add(data);
+        }
+        mAdapter.setDelivererData(list);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rv_view.setLayoutManager(manager);
 
@@ -56,7 +70,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // 다시 전의 다이얼로그를 띄워줌
+                DialogShow();
             }
         });
         dialog = builder.create();
@@ -67,10 +81,21 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     public void DialogShow() {
         View view = getLayoutInflater(null).inflate(R.layout.view_dialog_review, null, false);
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_view_dialog);
-
+        ReviewAdapter adapter = new ReviewAdapter();
+        listView.setAdapter(adapter);
+        listView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        List<ReviewData> list = new ArrayList<>();
+        ReviewData data;
+        for (int i = 0; i < 10; i++) {
+            data = new ReviewData();
+            data.name = "정현맨" + i;
+            data.message = "좋아요 ㅎㅎ";
+            data.rating = 8.9f;
+            list.add(data);
+        }
+        adapter.setReviewData(list);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("DELIVERER ID");
-        builder.setMessage("딜리버러 리뷰목록..");
         builder.setView(view);
         builder.setPositiveButton("요청하기", new DialogInterface.OnClickListener() {
             @Override

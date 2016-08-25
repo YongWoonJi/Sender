@@ -5,12 +5,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sender.team.sender.Data.DelivererData;
 import com.sender.team.sender.Widget.DelivererViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Tacademy on 2016-08-25.
  */
 public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DelivererViewHolder.OnSendListener {
+
+    List<DelivererData> data = new ArrayList<>();
+
+    public void setDelivererData(List<DelivererData> data){
+        if (this.data != data){
+            this.data = data;
+        }
+        notifyDataSetChanged();
+    }
 
     OnDialogListener listener;
     public interface OnDialogListener {
@@ -37,7 +50,7 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return 8;
+        return data.size();
     }
 
     @Override
