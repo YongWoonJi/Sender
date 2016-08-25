@@ -457,6 +457,8 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
 </string>
     <string name="faq_content9">A.	배송 중 도난, 분실 또는 욕설과 폭행 등의 행위로 이용자에게 직간접적으로 피해를 입히는 불량 SENDER/DELIVERER에 대해서는 칭찬/신고 게시판을 통하여 접수 받고 있습니다.\n 항상 신뢰와 웃음을 주는 서비스가 되기 위하여 불철주야 노력하겠습니다!</string>
     <string name="faq_content10">A.	칭찬하고 싶은 이용자에 대해서는 칭찬/신고 게시판에서 알려주시면 됩니다. 칭찬 받은 이용자에 대해서는 추후 여러 미담을 검토하여 포상하는 이벤트를 계획하고 있습니다. 여러분의 많은 칭찬들을 기다리고 있습니다!</string>
-
+    <string name="delivery_start">배송시작</string>
+    <string name="delivery_end">배송완료</string>
+    <string name="call">수신자 연결</string>
 
 </resources>

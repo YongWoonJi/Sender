@@ -1,6 +1,8 @@
 package com.sender.team.sender;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,12 +28,31 @@ public class DelivererHeaderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_deliverer_header, container, false);
-        Button btn = (Button)view.findViewById(R.id.btn_end);
-        btn.setOnClickListener(new View.OnClickListener() {
+        final Button btnStart = (Button)view.findViewById(R.id.btn_delivery_start);
+        final Button btnEnd = (Button)view.findViewById(R.id.btn_delivery_end);
+        btnEnd.setEnabled(false);
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnStart.setEnabled(false);
+                btnEnd.setEnabled(true);
+            }
+        });
+
+        btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(),"배송완료 처리 되었습니다.",Toast.LENGTH_SHORT).show();
                 getActivity().finish();
+            }
+        });
+
+        Button btn = (Button)view.findViewById(R.id.btn_call);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-0000-0000"));
+                startActivity(intent);
             }
         });
         return view;
