@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="로그인하셈"
+        android:text="SENDER"
         android:id="@+id/textView2"
         android:layout_gravity="center"
         android:layout_alignParentTop="true"

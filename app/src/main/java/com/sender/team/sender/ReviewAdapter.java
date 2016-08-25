@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sender.team.sender.Data.ReviewData;
+import com.sender.team.sender.data.ReviewData;
 
 import java.util.ArrayList;
 import java.util.List;

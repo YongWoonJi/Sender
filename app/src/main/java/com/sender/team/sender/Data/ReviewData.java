@@ -1,4 +1,4 @@
-package com.sender.team.sender.Data;
+package com.sender.team.sender.data;
 
 import android.graphics.drawable.Drawable;
 

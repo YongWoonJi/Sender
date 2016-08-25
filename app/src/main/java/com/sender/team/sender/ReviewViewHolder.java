@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.sender.team.sender.Data.ReviewData;
+import com.sender.team.sender.data.ReviewData;
 
 /**
  * Created by Tacademy on 2016-08-25.

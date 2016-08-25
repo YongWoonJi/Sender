@@ -2,20 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context="com.sender.team.sender.TermsFragment">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="이용약관"
-        android:textSize="40sp"
-        android:id="@+id/textView3"
-        android:layout_gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="163dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -23,7 +14,93 @@
         android:layout_height="wrap_content"
         android:text="다음"
         android:id="@+id/btn_next"
-        android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imageView7"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/service_terms"
+        android:gravity="center"
+        android:background="#bfbfbf"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/imageView7"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/scrollView"
+        android:background="#e6e6e6"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_terms_content"
+            android:id="@+id/text_terms" />
+    </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/service_terms_personal"
+        android:gravity="center"
+        android:background="#bfbfbf"
+        android:id="@+id/textView32"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/scrollView"
+        android:layout_centerHorizontal="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/scrollView2"
+        android:background="#e6e6e6"
+        android:layout_below="@+id/textView32"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_terms_personal_content"
+            android:id="@+id/text_terms2" />
+    </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/service_terms_gps"
+        android:gravity="center"
+        android:background="#bfbfbf"
+        android:id="@+id/textView34"
+        android:layout_below="@+id/scrollView2"
+        android:layout_alignLeft="@+id/scrollView2"
+        android:layout_alignStart="@+id/scrollView2"
+        android:layout_marginTop="25dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/scrollView3"
+        android:background="#e6e6e6"
+        android:layout_below="@+id/textView34"
+        android:layout_alignLeft="@+id/scrollView2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_terms_gps_content"
+            android:id="@+id/text_terms3" />
+    </ScrollView>
 </RelativeLayout>

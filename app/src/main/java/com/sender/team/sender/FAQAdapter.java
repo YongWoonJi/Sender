@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import com.sender.team.sender.Data.FAQChildData;
-import com.sender.team.sender.Data.FAQGroupData;
+import com.sender.team.sender.data.FAQChildData;
+import com.sender.team.sender.data.FAQGroupData;
 
 import java.util.ArrayList;
 import java.util.List;

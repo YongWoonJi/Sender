@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
-import com.sender.team.sender.Data.ReviewData;
+import com.sender.team.sender.data.ReviewData;
 
 import java.util.ArrayList;
 import java.util.List;

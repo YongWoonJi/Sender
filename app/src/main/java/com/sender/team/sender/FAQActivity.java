@@ -51,7 +51,7 @@ public class FAQActivity extends AppCompatActivity {
 
     private void initData() {
         for (int i = 0; i < 10; i++) {
-            mAdapter.put("Q" + i , "A "+i +" 의 내용");
+            mAdapter.put("질문 " + i + "번 제목" , "답변 내용 " + i);
         }
     }
 

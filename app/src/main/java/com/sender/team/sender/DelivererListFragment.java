@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.sender.team.sender.Data.DelivererData;
-import com.sender.team.sender.Data.ReviewData;
+import com.sender.team.sender.data.DelivererData;
+import com.sender.team.sender.data.ReviewData;
 
 import java.util.ArrayList;
 import java.util.List;

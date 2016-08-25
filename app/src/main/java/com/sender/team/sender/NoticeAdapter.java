@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import com.sender.team.sender.Data.NoticeChildData;
-import com.sender.team.sender.Data.NoticeGroupData;
+import com.sender.team.sender.data.NoticeChildData;
+import com.sender.team.sender.data.NoticeGroupData;
 
 import java.util.ArrayList;
 import java.util.List;

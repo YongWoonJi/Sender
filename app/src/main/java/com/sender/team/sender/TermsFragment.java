@@ -14,7 +14,6 @@ import android.widget.Button;
  */
 public class TermsFragment extends Fragment {
 
-
     public TermsFragment() {
         // Required empty public constructor
     }

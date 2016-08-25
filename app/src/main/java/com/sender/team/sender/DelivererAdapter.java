@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sender.team.sender.Data.DelivererData;
-import com.sender.team.sender.Widget.DelivererViewHolder;
+import com.sender.team.sender.data.DelivererData;
+import com.sender.team.sender.widget.DelivererViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
