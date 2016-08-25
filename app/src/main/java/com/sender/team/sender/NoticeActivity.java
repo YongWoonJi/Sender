@@ -2,6 +2,7 @@ package com.sender.team.sender;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
 public class NoticeActivity extends AppCompatActivity {
@@ -16,6 +17,7 @@ public class NoticeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView = (ExpandableListView) findViewById(R.id.expandableListView);
         mAdapter = new NoticeAdapter();
         listView.setAdapter(mAdapter);
@@ -52,6 +54,16 @@ public class NoticeActivity extends AppCompatActivity {
         for (int i = 0; i < 10; i++) {
             mAdapter.put("공지" + i, "내용 " + i + " 의 내용");
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home :
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
