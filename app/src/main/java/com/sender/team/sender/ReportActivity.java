@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ public class ReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Button btn = (Button)findViewById(R.id.btn_report);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,5 +44,14 @@ public class ReportActivity extends AppCompatActivity {
         });
         dialog = builder.create();
         dialog.show();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home :
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

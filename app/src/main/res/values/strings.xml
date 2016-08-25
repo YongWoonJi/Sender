@@ -412,4 +412,8 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
 
         ]]>
     </string>
+    <string name="request">요청</string>
+    <string name="delivery">배송</string>
+    <string name="review">리뷰</string>
+    <string name="review_detail">상세리뷰</string>
 </resources>

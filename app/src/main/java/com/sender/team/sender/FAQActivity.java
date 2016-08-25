@@ -3,6 +3,7 @@ package com.sender.team.sender;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
 public class FAQActivity extends AppCompatActivity {
@@ -15,7 +16,7 @@ public class FAQActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView = (ExpandableListView)findViewById(R.id.expandableListView);
         mAdapter = new NoticeAdapter();
         listView.setAdapter(mAdapter);
@@ -74,6 +75,16 @@ public class FAQActivity extends AppCompatActivity {
         } else {
             listView.setIndicatorBoundsRelative(width-GetPixelFromDips(35), width-GetPixelFromDips(5));
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home :
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

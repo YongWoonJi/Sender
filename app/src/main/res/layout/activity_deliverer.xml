@@ -161,7 +161,7 @@
         android:layout_height="wrap_content"
         android:text="분"
         android:gravity="center"
-        android:id="@+id/textView29"
+        android:id="@+id/textview"
         android:layout_toRightOf="@+id/edit_end_min"
         android:layout_toEndOf="@+id/edit_end_min"
         android:layout_alignBottom="@+id/edit_end_min"
