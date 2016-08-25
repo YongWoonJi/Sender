@@ -1,6 +1,7 @@
 package com.sender.team.sender;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,19 @@ public class InfoInputFragment extends Fragment {
         // Required empty public constructor
     }
 
+    OnMessageCallback callback;
+
+    public interface OnMessageCallback {
+        void onClickButton();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnMessageCallback) {
+            callback = (OnMessageCallback) context;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,7 +43,13 @@ public class InfoInputFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new DelivererListFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new DelivererListFragment())
+                        .addToBackStack(null)
+                        .commit();
+                if (callback != null) {
+                    callback.onClickButton();
+                }
             }
         });
         return view;
