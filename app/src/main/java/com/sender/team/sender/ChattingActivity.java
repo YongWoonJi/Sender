@@ -3,6 +3,7 @@ package com.sender.team.sender;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -12,7 +13,7 @@ public class ChattingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         imageView = (ImageView)findViewById(R.id.img_chat_profile);
         Intent intent = getIntent();
         int i = intent.getIntExtra("key", 0);
@@ -38,5 +39,15 @@ public class ChattingActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home :
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

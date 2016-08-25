@@ -15,8 +15,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -24,10 +29,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab,fab1,fab2,fab3;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private RelativeLayout fab_background;
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
     ActionBarDrawerToggle mDrawerToggle;
+    @BindView(R.id.content)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.navi_fragment)
     RelativeLayout naviFragment;
 
     private float lastTranslate = 0.0f;
@@ -35,8 +44,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAB1 = "tab1";
     private static final String TAB2 = "tab2";
     private static final String TAB3 = "tab3";
-
+    @BindView(R.id.tab)
     TabLayout tabs;
+    @BindView(R.id.listview)
+    ListView listView;
+
+    ArrayAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +57,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.content);
-        naviFragment = (RelativeLayout) findViewById(R.id.navi_fragment);
         mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -72,8 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         drawer.addDrawerListener(mDrawerToggle);
-
-        fab_background = (RelativeLayout) findViewById(R.id.fab_background);
+        fab_background = (RelativeLayout)findViewById(R.id.fab_background);
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab1 = (FloatingActionButton)findViewById(R.id.fab1);
         fab2 = (FloatingActionButton)findViewById(R.id.fab2);
@@ -87,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab2.setOnClickListener(this);
         fab3.setOnClickListener(this);
 
-        tabs = (TabLayout) findViewById(R.id.tab);
         tabs.addTab(tabs.newTab().setText("요청하기").setTag(TAB1));
         tabs.addTab(tabs.newTab().setText("배송하기").setTag(TAB2));
         tabs.addTab(tabs.newTab().setText("마이페이지").setTag(TAB3));
@@ -143,26 +150,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        Button btn = (Button)findViewById(R.id.btn_chat);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
-                intent.putExtra("key", 1);
-                startActivity(intent);
-            }
-        });
 
-        btn = (Button)findViewById(R.id.btn_chat2);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
-                intent.putExtra("key", 2);
-                startActivity(intent);
-            }
-        });
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        listView.setAdapter(mAdapter);
+        initData();
 
+    }
+
+    private void initData() {
+        mAdapter.add("센더");
+        mAdapter.add("딜리버러");
+        mAdapter.add("딜리버러");
+        mAdapter.add("센더");
+        mAdapter.add("센더");
+        mAdapter.add("딜리버러");
+        mAdapter.add("센더");
+        mAdapter.add("딜리버러");
+        mAdapter.add("센더");
+        mAdapter.add("센더");
+        mAdapter.add("딜리버러");
+        mAdapter.add("딜리버러");
     }
 
 
@@ -242,4 +249,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @OnItemClick(R.id.listview)
+    public void onItemClick(int position, long id){
+
+        if (mAdapter.getItem(position).equals("센더")){
+            Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
+            intent.putExtra("key", 1);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
+            intent.putExtra("key", 2);
+            startActivity(intent);
+        }
+    }
+
+
 }
