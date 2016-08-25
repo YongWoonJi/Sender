@@ -12,14 +12,22 @@
         android:layout_height="wrap_content"
         android:text="배송시작"
         android:id="@+id/btn_start"
-        android:layout_gravity="left|top" />
+        android:layout_gravity="left|top"
+        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_alignTop="@+id/btn_end"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배송완료"
         android:id="@+id/btn_end"
-        android:layout_alignBottom="@+id/btn_start"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="60dp"
+        android:layout_marginEnd="60dp" />
 
 </RelativeLayout>

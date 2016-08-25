@@ -28,11 +28,22 @@ public class SendHeaderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_send_header, container, false);
-        Button btn = (Button)view.findViewById(R.id.btn_end);
-        btn.setOnClickListener(new View.OnClickListener() {
+
+        final Button btnEnd = (Button)view.findViewById(R.id.btn_end);
+        btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickSend();
+            }
+        });
+        btnEnd.setEnabled(false);
+
+        final Button btnStart = (Button)view.findViewById(R.id.btn_start);
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnEnd.setEnabled(true);
+                btnStart.setEnabled(false);
             }
         });
 
@@ -41,7 +52,8 @@ public class SendHeaderFragment extends Fragment {
     AlertDialog dialog;
     private void clickSend() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("별점 및 리뷰");
+        builder.setTitle("별점 및 리뷰");
+        builder.setView(R.layout.view_dialog_evalution);
         builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
