@@ -28,7 +28,8 @@
         <activity android:name=".NoticeActivity" />
         <activity android:name=".TermsActivity" />
         <activity android:name=".ChattingActivity" />
-        <activity android:name=".ChattingProfileActivity" />
+        <activity android:name=".ChattingProfileActivity"
+            android:theme="@style/AppTheme.NoTitleBar"/>
         <activity android:name=".FAQActivity" />
         <activity android:name=".QuestionActivity" />
         <activity android:name=".ReportActivity" />

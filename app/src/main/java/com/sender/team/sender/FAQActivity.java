@@ -12,15 +12,15 @@ public class FAQActivity extends AppCompatActivity {
     NoticeAdapter mAdapter;
 
     int expandposition = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        listView = (ExpandableListView)findViewById(R.id.expandableListView);
+        listView = (ExpandableListView) findViewById(R.id.expandableListView);
         mAdapter = new NoticeAdapter();
         listView.setAdapter(mAdapter);
-
 
 
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -50,9 +50,36 @@ public class FAQActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        for (int i = 0; i < 10; i++) {
-            mAdapter.put("질문 " + i + "번 제목" , "답변 내용 " + i);
-        }
+        String group = getResources().getString(R.string.faq_title1);
+        String child = getResources().getString(R.string.faq_content1);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title2);
+        child = getResources().getString(R.string.faq_content2);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title3);
+        child = getResources().getString(R.string.faq_content3);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title4);
+        child = getResources().getString(R.string.faq_content4);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title5);
+        child = getResources().getString(R.string.faq_content5);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title6);
+        child = getResources().getString(R.string.faq_content6);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title7);
+        child = getResources().getString(R.string.faq_content7);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title8);
+        child = getResources().getString(R.string.faq_content8);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title9);
+        child = getResources().getString(R.string.faq_content9);
+        mAdapter.put(group, child);
+        group = getResources().getString(R.string.faq_title10);
+        child = getResources().getString(R.string.faq_content10);
+        mAdapter.put(group, child);
     }
 
     public int GetPixelFromDips(float pixels) {
@@ -63,24 +90,23 @@ public class FAQActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels;
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            listView.setIndicatorBounds(width-GetPixelFromDips(35), width-GetPixelFromDips(5));
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            listView.setIndicatorBounds(width - GetPixelFromDips(35), width - GetPixelFromDips(5));
         } else {
-            listView.setIndicatorBoundsRelative(width-GetPixelFromDips(35), width-GetPixelFromDips(5));
+            listView.setIndicatorBoundsRelative(width - GetPixelFromDips(35), width - GetPixelFromDips(5));
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home :
+            case android.R.id.home:
                 finish();
                 break;
         }

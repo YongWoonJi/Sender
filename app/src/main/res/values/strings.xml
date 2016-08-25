@@ -416,4 +416,47 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
     <string name="delivery">배송</string>
     <string name="review">리뷰</string>
     <string name="review_detail">상세리뷰</string>
+    <string name="question_ask">문의하기</string>
+    <string name="question_title">문의합니다</string>
+    <string name="question_title_bottom">고객님의 작은 의견에도 귀 기울이는 SENDER가 되겠습니다. 문의하신 사항은 담당자가 신속하게 답변해드리도록 노력하겠습니다.</string>
+    <string name="title">제목</string>
+    <string name="question_content">문의내용</string>
+    <string name="receive_answer">답변수신</string>
+    <string name="email">이메일</string>
+    <string name="sms">SMS</string>
+    <string name="input_info">입력정보</string>
+    <string name="image_registration">이미지등록</string>
+    <string name="image_registration_content">*이미지는 용량 2MB이하 jpg, png, gif 파일만 등록 가능합니다.</string>
+    <string name="deliverer_id">배송원ID</string>
+    <string name="content">내용</string>
+    <string name="report_title">칭찬 / 신고합니다</string>
+    <string name="send">보내기</string>
+    <string name="report_title_bottom">칭찬 또는 신고하고 싶은 DELIVERER를 알려주세요! 오늘도 SENDER는 고객님의 의견에 귀 기울이고 있습니다.</string>
+
+    <string name="faq_title1">Q1. 배송료 기준은 없나요?</string>
+    <string name="faq_title2">Q2. 물건 배송 중에 DELIVERER의 도난 또는 분실의 경우는 어떤 보상을 받을 수 있나요?</string>
+    <string name="faq_title3">Q3. 물건을 보내고 싶은데 어떻게 하면 되나요?</string>
+    <string name="faq_title4">Q4. 배송서비스를 제공하고 싶습니다. 어떻게 하면 되나요?</string>
+    <string name="faq_title5">Q5. 배송료는 어떻게 지급하고 받을 수 있나요?</string>
+    <string name="faq_title6">Q6. DELIVERER는 물건 배송을 하는 중 수신자와 연락을 어떻게 하나요?</string>
+    <string name="faq_title7">Q7. 평점과 리뷰 기능은 어떻게 활용하면 되나요?</string>
+    <string name="faq_title8">Q8. 배송을 보내고 싶은 물건의 종류에는 제한이 없나요?</string>
+    <string name="faq_title9">Q9. 불량이용자에 대해서 어떻게 신고를 하나요?</string>
+    <string name="faq_title10">Q10. 칭찬하고 싶은 SENDER/DELIVERER가 있어요. 널리 알리고 싶습니다!</string>
+    <string name="faq_content1">A.	목적지를 검색했을 때 나오는 예상 거리와 소요시간 및 물건의 크기와 무게를 고려해 SENDER가 합리적인 가격을 제시합니다.\n
+터무니 없는 가격을 제시했을 때는 DELIVERER가 매칭되지 않을 수도 있으니 주의하시기 바랍니다.
+</string>
+    <string name="faq_content2">A.	우선 저희 회사가 가입한 배상보험을 통해 물건가액의 일부 또는 전부를 배상 받으실 수 있습니다(단, 배상액은 최대 3만원). 이후 사안에 따라 해당 DELIVERER에 대한 이용 제재와 민형사상 책임을 요구할 수 있습니다.</string>
+    <string name="faq_content3">A.	홈화면에서 ‘요청하기’를 클릭하면 ‘배송요청 정보입력’ 페이지로 넘어갑니다. 해당 페이지에서 도착 요청시간, 물건이름, 수신자연락처, 물건사진 업로드, 가격제시 칸 모두 입력하게 되면 근처의 DELIVERER를 검색하게 됩니다. 마음에 드는 DELIVERER를 찾고 요청하여 매칭이 성사되면 앱 내 채팅으로 상세한 이야기를 서로 나누고 물건을 전달하고 받으시면 됩니다.</string>
+    <string name="faq_content4">A.	홈화면에서 ‘배송하기’를 클릭하면 ‘DELIVERER 정보입력’ 페이지에서 출발지지역 검색, 목적지 지역검색, 출발시각, 도착시각을 모두 입력하시고 대기하면 SENDER로부터 배송요청 알림이 올 것입니다. 이를 통해 매칭 수락을 하시게 되면 앱 내 채팅으로 연결되어 상세한 이야기를 나누고 물건을 전달받고 배송을 시작하면 됩니다. 배송료는 물건을 SENDER로부터 전달받을 때 함께 받으시면 됩니다.</string>
+    <string name="faq_content5">A.	배송료는 매칭된 상대방끼리 물건을 최초에 전달하고 받을 때 SENDER가 제시하였던 가격을 DELIVERER에게 직접 지급함으로써 배송료의 결제가 이루어지게 됩니다. 배송료를 지급받은 DELIVERER은 SENDER를 위해 최대한 성실하게 배송을 하게 됩니다.</string>
+    <string name="faq_content6">A.	SENDER가 ‘배송요청 정보입력’ 페이지에서 정보를 입력할 때 수신자의 전화번호 정보도 입력하게 됩니다. 매칭이 된 후 채팅방이 생성되면 채팅방의 상단에 수신자와 연락하기 기능이 있습니다. 그 기능을 이용하여 수신자와 전화 또는 문자 등의 연락을 취하시면 됩니다.</string>
+    <string name="faq_content7">A.	평점과 리뷰는 물건을 보낸 SENDER가 작성하는 것으로 SENDER가 배송서비스를 제공해준 DELIVERER의 배송서비스 전반에 대한 간략한 평가를 하는 것입니다. DELIVERER의 배송서비스가 신속, 정확했다면 높은 평점과 호의적인 리뷰를 부여하시면 됩니다! 평점과 리뷰를 통해 다른 앱 이용자들도 참고할 수 있도록 하면 더욱 더 신뢰할 수 있고 활발한 서비스로 발전할 수 있습니다.</string>
+    <string name="faq_content8">A.	서비스 이용자들간의 상호합의로 배송이 이뤄지는 만큼 보내고자 하는 물건의 종류에는 제한이 없습니다. 하지만 지나치게 크고 무거운 물건은 DELIVERER가 매칭이 되지 않을 수도 있으니, 배송요청 대상 물건을 가급적 휴대 가능한 물건으로 권장하고 있습니다.\n\n
+또한 고가의 물건은 분실, 도난의 우려가 있으므로 SENDER의 입장에서는 이 점에 유의하시어 배송요청을 하시길 바랍니다. 저희가 권장하는 물건의 가액은 5만원 이하의 물건을 권장하고 있습니다.
+</string>
+    <string name="faq_content9">A.	배송 중 도난, 분실 또는 욕설과 폭행 등의 행위로 이용자에게 직간접적으로 피해를 입히는 불량 SENDER/DELIVERER에 대해서는 칭찬/신고 게시판을 통하여 접수 받고 있습니다.\n 항상 신뢰와 웃음을 주는 서비스가 되기 위하여 불철주야 노력하겠습니다!</string>
+    <string name="faq_content10">A.	칭찬하고 싶은 이용자에 대해서는 칭찬/신고 게시판에서 알려주시면 됩니다. 칭찬 받은 이용자에 대해서는 추후 여러 미담을 검토하여 포상하는 이벤트를 계획하고 있습니다. 여러분의 많은 칭찬들을 기다리고 있습니다!</string>
+
+
 </resources>

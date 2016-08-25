@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class ChattingActivity extends AppCompatActivity {
+
     ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,6 @@ public class ChattingActivity extends AppCompatActivity {
         });
 
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
