@@ -47,7 +47,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/service_terms_content"
             android:id="@+id/text_terms" />
     </ScrollView>
 
@@ -73,7 +72,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/service_terms_personal_content"
             android:id="@+id/text_terms2" />
     </ScrollView>
 
@@ -100,7 +98,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/service_terms_gps_content"
             android:id="@+id/text_terms3" />
     </ScrollView>
 </RelativeLayout>

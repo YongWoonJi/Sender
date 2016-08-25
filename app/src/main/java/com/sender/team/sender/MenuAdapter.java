@@ -12,6 +12,7 @@ import com.sender.team.sender.data.MenuGroup;
 import com.sender.team.sender.data.NaviItem;
 import com.sender.team.sender.widget.ChildViewHolder;
 import com.sender.team.sender.widget.GroupViewHolder;
+import com.sender.team.sender.widget.HeaderViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,16 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     private List<NaviItem> data;
 
+    OnNaviMenuSelectedListener listener;
+    public interface OnNaviMenuSelectedListener {
+        void Logout();
+        void unregister();
+    }
+
+    public void setOnFinishListener(OnNaviMenuSelectedListener listener) {
+        this.listener = listener;
+    }
+
     public void setData(List<NaviItem> data) {
         if (this.data != data) {
             this.data = data;
@@ -49,6 +60,11 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         context = parent.getContext();
 
         switch (viewType) {
+            case HEADER : {
+                View view = LayoutInflater.from(context).inflate(R.layout.view_header, parent, false);
+                HeaderViewHolder hvh = new HeaderViewHolder(view);
+                return hvh;
+            }
             case GROUP : {
                 View view = LayoutInflater.from(context).inflate(R.layout.view_group, parent, false);
                 GroupViewHolder gvh = new GroupViewHolder(view);
@@ -98,19 +114,22 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             }
                         } else {
                             switch (position) {
-                                case 0 : {
+                                case 1 : {
                                     Intent intent = new Intent(context, MyPageActivity.class);
                                     context.startActivity(intent);
                                     break;
                                 }
-                                case 1 : {
+                                case 2 : {
                                     Intent intent = new Intent(context, NoticeActivity.class);
                                     context.startActivity(intent);
                                     break;
                                 }
-                                case 4 : {
-                                    Intent intent = new Intent(context, LoginActivity.class);
-                                    context.startActivity(intent);
+                                case 5 : {
+                                    listener.Logout();
+                                    break;
+                                }
+                                case 6 : {
+                                    listener.unregister();
                                     break;
                                 }
                             }

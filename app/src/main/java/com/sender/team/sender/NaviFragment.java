@@ -47,53 +47,22 @@ public class NaviFragment extends Fragment {
         rv_navi.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         List<NaviItem> data = new ArrayList<>();
+        data.add(new MenuGroup(MenuAdapter.HEADER, null, 0, false));
         data.add(new MenuGroup(MenuAdapter.GROUP, "마이페이지", 0, false));
         data.add(new MenuGroup(MenuAdapter.GROUP, "공지사항", 0, false));
         data.add(new MenuGroup(MenuAdapter.GROUP, "알림설정", 0, false));
         data.add(new MenuGroup(MenuAdapter.GROUP, "약관동의", 0, true));
         data.add(new MenuGroup(MenuAdapter.GROUP, "로그아웃", 0, false));
+        data.add(new MenuGroup(MenuAdapter.GROUP, "회원탈퇴", 0, false));
 
-        ((MenuGroup) data.get(3)).children = new ArrayList<>();
-        ((MenuGroup) data.get(3)).children.add(new MenuChild(MenuAdapter.SERVICE_TERMS, "서비스 이용약관"));
-        ((MenuGroup) data.get(3)).children.add(new MenuChild(MenuAdapter.INFO_TERMS, "개인정보 취급방침"));
-        ((MenuGroup) data.get(3)).children.add(new MenuChild(MenuAdapter.GPS_TERMS, "위치정보 이용약관"));
+        ((MenuGroup) data.get(4)).children = new ArrayList<>();
+        ((MenuGroup) data.get(4)).children.add(new MenuChild(MenuAdapter.SERVICE_TERMS, "서비스 이용약관"));
+        ((MenuGroup) data.get(4)).children.add(new MenuChild(MenuAdapter.INFO_TERMS, "개인정보 취급방침"));
+        ((MenuGroup) data.get(4)).children.add(new MenuChild(MenuAdapter.GPS_TERMS, "위치정보 이용약관"));
 
         mAdapter.setData(data);
+        mAdapter.setOnFinishListener((MainActivity)getActivity());
         return view;
-
-//        Button btn = (Button)view.findViewById(R.id.btn_navi_mypage);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(),MyPageActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//        btn = (Button)view.findViewById(R.id.btn_navi_notice);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(),NoticeActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        btn = (Button)view.findViewById(R.id.btn_navi_terms);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(),TermsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        final Button btn2 = (Button)view.findViewById(R.id.btn_navi_logout);
-//        btn2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                btn2.setVisibility(View.GONE);
-//            }
-//        });
     }
 
 }

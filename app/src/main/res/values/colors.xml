@@ -7,4 +7,5 @@
     <color name="colorFAB2">#E040FB</color>
     <color name="colorFAB3">#4cc12b</color>
     <color name="black">#000</color>
+    <drawable name="dialog_background">@android:color/transparent</drawable>
 </resources>

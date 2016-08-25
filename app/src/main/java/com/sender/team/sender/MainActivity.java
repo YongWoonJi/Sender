@@ -1,5 +1,6 @@
 package com.sender.team.sender;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -8,22 +9,23 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, MenuAdapter.OnNaviMenuSelectedListener {
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab,fab1,fab2,fab3;
@@ -53,11 +55,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+//        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -264,4 +267,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public void Logout() {
+        Toast.makeText(this, "로그아웃 되었습니다", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void unregister() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("정말 SENDER를\n떠나시는 건가요?\n\n탈퇴하시면 SENDER에서의 기록이 모두 삭제됩니다");
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(MainActivity.this, "정상적으로 탈퇴되었습니다", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
+    }
 }

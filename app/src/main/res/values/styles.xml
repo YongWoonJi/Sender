@@ -13,4 +13,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+    </style>
+
 </resources>

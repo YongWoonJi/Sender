@@ -52,7 +52,7 @@ public class NoticeActivity extends AppCompatActivity {
 
     private void initData() {
         for (int i = 0; i < 10; i++) {
-            mAdapter.put("공지 " + i, "내용 " + i + " 의 내용");
+            mAdapter.put("공지 " + i, "공지 " + i + " 의 내용");
         }
     }
 
