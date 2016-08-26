@@ -14,7 +14,7 @@ import okhttp3.ResponseBody;
  */
 public abstract class NetworkRequest<T> implements Callback {
     T result;
-    int code;
+    int error;
     String errorMessage;
     Throwable exception;
     NetworkManager.OnResultListener<T> listener;
@@ -40,13 +40,14 @@ public abstract class NetworkRequest<T> implements Callback {
             T result = parse(response.body());
             return result;
         } else {
-            throw new IOException("code : " + response.code() + ",message : " + response.message());
+            throw new IOException("error : " + response.code() + ",message : " + response.message());
+
         }
     }
 
     @Override
     public void onFailure(Call call, IOException e) {
-        sendError(-1, e.getMessage(), e);
+        sendError( e.getMessage(), e);
     }
 
     @Override
@@ -55,10 +56,13 @@ public abstract class NetworkRequest<T> implements Callback {
             try {
                 sendSuccess(parse(response.body()));
             } catch (IOException e) {
-                sendError(-1, e.getMessage(), e);
+                sendError(e.getMessage(), e);
+            } finally {
+                response.body().close();
             }
         } else {
-            sendError(response.code(), response.message(), null);
+            sendError(response.message(), null);
+            response.close();
         }
     }
 
@@ -84,18 +88,25 @@ public abstract class NetworkRequest<T> implements Callback {
         }
     }
 
-    protected void sendError(int code, String errorMessage, Throwable exception) {
-        this.code = code;
+    protected void sendError(String errorMessage, Throwable exception) {
+
         this.errorMessage = errorMessage;
         this.exception = exception;
         NetworkManager.getInstance().sendFail(this);
     }
 
-    void sendFail() {
+    private void sendError(T result) {
+        this.result = result;
+        NetworkManager.getInstance().sendSuccess(this);
+    }
+
+     void  sendFail() {
         if (listener != null) {
-            listener.onFail(this, code, errorMessage, exception);
+            listener.onFail(this, errorMessage, exception);
         }
     }
+
+
 
 
 }

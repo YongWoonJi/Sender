@@ -3,7 +3,7 @@
     package="com.sender.team.sender">
 
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"

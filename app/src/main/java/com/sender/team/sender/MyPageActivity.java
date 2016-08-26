@@ -1,12 +1,19 @@
 package com.sender.team.sender;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.ReviewData;
+import com.sender.team.sender.data.UserData;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.request.MyPageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +27,22 @@ public class MyPageActivity extends AppCompatActivity {
     RecyclerView listView;
     ReviewAdapter mAdapter;
 
+    @BindView(R.id.text_delivery_count)
+    TextView deliveryCount;
+    @BindView(R.id.text_my_email)
+    TextView email;
+    @BindView(R.id.text_request_count)
+    TextView requestCount;
+    @BindView(R.id.text_my_phone)
+    TextView phone;
+    @BindView(R.id.text_my_name)
+    TextView name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ButterKnife.bind(this);
         mAdapter = new ReviewAdapter();
         listView.setAdapter(mAdapter);
@@ -33,6 +51,26 @@ public class MyPageActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        MyPageRequest request = new MyPageRequest(this);
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                name.setText(result.getResult().getName());
+                email.setText(result.getResult().getEmail());
+                phone.setText(result.getResult().getPhone());
+                requestCount.setText(""+result.getResult().getDeliver_req());
+
+                deliveryCount.setText(""+result.getResult().getDeliver_com());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
+                Toast.makeText(MyPageActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
         List<ReviewData> dataList = new ArrayList<>();
         ReviewData data;
         for (int i =0; i < 7; i++){

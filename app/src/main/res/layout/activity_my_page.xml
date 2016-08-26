@@ -16,7 +16,7 @@
         android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/text_my_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -25,22 +25,22 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView23"
+        android:id="@+id/text_my_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView12"
-        android:layout_alignStart="@+id/textView12"
-        android:layout_below="@+id/textView12"
+        android:layout_alignLeft="@+id/text_my_name"
+        android:layout_alignStart="@+id/text_my_name"
+        android:layout_below="@+id/text_my_name"
         android:text="aaa@aaaa.com"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/text_my_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView23"
-        android:layout_alignStart="@+id/textView23"
-        android:layout_below="@+id/textView23"
+        android:layout_alignLeft="@+id/text_my_email"
+        android:layout_alignStart="@+id/text_my_email"
+        android:layout_below="@+id/text_my_email"
         android:text="010-0000-0000"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -48,9 +48,9 @@
         android:id="@+id/imageView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView24"
-        android:layout_alignStart="@+id/textView24"
-        android:layout_below="@+id/textView24"
+        android:layout_alignLeft="@+id/text_my_phone"
+        android:layout_alignStart="@+id/text_my_phone"
+        android:layout_below="@+id/text_my_phone"
         android:src="@android:drawable/star_big_on" />
 
     <TextView

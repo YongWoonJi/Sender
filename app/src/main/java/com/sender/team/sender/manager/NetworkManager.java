@@ -10,11 +10,25 @@ import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.sender.team.sender.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManagerFactory;
 
 import okhttp3.Cache;
 import okhttp3.Call;
@@ -25,6 +39,8 @@ import okhttp3.OkHttpClient;
  * Created by Administrator on 2016-08-09.
  */
 public class NetworkManager {
+
+
     private static NetworkManager instance;
     public static NetworkManager getInstance() {
         if (instance == null) {
@@ -55,7 +71,7 @@ public class NetworkManager {
         builder.connectTimeout(30, TimeUnit.SECONDS);
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(10, TimeUnit.SECONDS);
-
+        disableCertificateValidation(context, builder);
         client = builder.build();
     }
 
@@ -85,7 +101,7 @@ public class NetworkManager {
     public interface OnResultListener<T> {
         public void onSuccess(NetworkRequest<T> request, T result);
 
-        public void onFail(NetworkRequest<T> request, int errorCode, String errorMessage, Throwable e);
+        public void onFail(NetworkRequest<T> request, String errorMessage, Throwable e);
     }
 
     void sendSuccess(NetworkRequest<?> request) {
@@ -125,5 +141,48 @@ public class NetworkManager {
                 call.cancel();
             }
         }
+    }
+
+    public static void disableCertificateValidation(Context context, OkHttpClient.Builder builder){
+        try {
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            InputStream caInput = context.getResources().openRawResource(R.raw.site);
+            Certificate ca;
+            try {
+                ca = cf.generateCertificate(caInput);
+            }finally {
+                caInput.close();
+            }
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+            keyStore.load(null,null);
+            keyStore.setCertificateEntry("ca",ca);
+            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+            tmf.init(keyStore);
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, tmf.getTrustManagers(), null);
+            HostnameVerifier hv = new HostnameVerifier() {
+                @Override
+                public boolean verify(String s, SSLSession sslSession) {
+                    return true;
+                }
+            };
+            sc.init(null, tmf.getTrustManagers(),null);
+            builder.sslSocketFactory(sc.getSocketFactory());
+            builder.hostnameVerifier(hv);
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
