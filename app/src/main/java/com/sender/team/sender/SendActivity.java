@@ -34,6 +34,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     public void onBackPressed() {
         if (isInfoOpen) {
             getSupportFragmentManager().popBackStack();
+            isInfoOpen = false;
         } else {
             super.onBackPressed();
         }

@@ -19,13 +19,14 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:layout_width="170dp"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/question_title_bottom"
         android:id="@+id/textView38"
         android:layout_below="@+id/textView22"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp" />
 
     <Button
         android:layout_width="match_parent"

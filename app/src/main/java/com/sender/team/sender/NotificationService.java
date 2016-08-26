@@ -30,7 +30,7 @@ public class NotificationService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        handler.postDelayed(runnable, 8000);
+        handler.postDelayed(runnable, 5000);
         return START_NOT_STICKY;
     }
 }
