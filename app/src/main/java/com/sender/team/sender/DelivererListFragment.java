@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.sender.team.sender.data.DelivererData;
+import com.sender.team.sender.data.DelivererDataTemp;
 import com.sender.team.sender.data.ReviewDataTemp;
 
 import java.util.ArrayList;
@@ -45,10 +45,10 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         mAdapter.setOnDialogListener(this);
         rv_view.setAdapter(mAdapter);
 
-        List<DelivererData> list = new ArrayList<>();
-        DelivererData data;
+        List<DelivererDataTemp> list = new ArrayList<>();
+        DelivererDataTemp data;
         for (int i = 0; i < 10; i++) {
-            data = new DelivererData("오름맨" + i, "010-0***-****", null, 9.4f, null, null);
+            data = new DelivererDataTemp("오름맨" + i, "010-0***-****", null, 9.4f, null, null);
             list.add(data);
         }
         mAdapter.setDelivererData(list);
