@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "752697081697",
+    "project_id": "sender-141801"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752697081697:android:719d8a1d0765aa71",
+        "android_client_info": {
+          "package_name": "com.sender.team.sender"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5kn7Mor7X-k-xqP9dvhCCKqug-L3KeV8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
