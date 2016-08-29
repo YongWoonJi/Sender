@@ -28,9 +28,6 @@ public abstract class AbstractRequest<T> extends NetworkRequest<T>{
         T result = gson.fromJson(text, getType());
         return result;
     }
-    protected Type getType(int code) {
-        return getType();
-    }
 
     protected abstract Type getType();
 }

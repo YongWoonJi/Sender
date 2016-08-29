@@ -56,11 +56,13 @@ public class MyPageActivity extends AppCompatActivity {
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                Toast.makeText(MyPageActivity.this, "성공", Toast.LENGTH_SHORT).show();
                 name.setText(result.getResult().getName());
                 email.setText(result.getResult().getEmail());
                 phone.setText(result.getResult().getPhone());
                 requestCount.setText("" + result.getResult().getDeliver_req());
                 deliveryCount.setText("" + result.getResult().getDeliver_com());
+
             }
 
             @Override

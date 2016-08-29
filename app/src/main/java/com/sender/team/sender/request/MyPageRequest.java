@@ -5,7 +5,6 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.UserData;
-import com.sender.team.sender.manager.NetworkRequest;
 
 import java.lang.reflect.Type;
 
@@ -35,7 +34,7 @@ public class MyPageRequest extends AbstractRequest<NetworkResult<UserData>> {
 
     @Override
     protected Type getType() {
-        return new TypeToken<NetworkRequest<NetworkResult<UserData>>>(){}.getType();
+        return new TypeToken<NetworkResult<UserData>>(){}.getType();
     }
 
 
