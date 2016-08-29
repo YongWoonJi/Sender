@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sender.team.sender.data.NetworkResult;
-import com.sender.team.sender.data.ReviewData;
+import com.sender.team.sender.data.ReviewDataTemp;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
@@ -56,7 +56,6 @@ public class MyPageActivity extends AppCompatActivity {
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                Toast.makeText(MyPageActivity.this, "성공", Toast.LENGTH_SHORT).show();
                 name.setText(result.getResult().getName());
                 email.setText(result.getResult().getEmail());
                 phone.setText(result.getResult().getPhone());
@@ -72,10 +71,10 @@ public class MyPageActivity extends AppCompatActivity {
         });
 
 
-        List<ReviewData> dataList = new ArrayList<>();
-        ReviewData data;
+        List<ReviewDataTemp> dataList = new ArrayList<>();
+        ReviewDataTemp data;
         for (int i = 0; i < 7; i++) {
-            data = new ReviewData();
+            data = new ReviewDataTemp();
             data.name = "정현맨" + i;
             data.rating = i;
             data.message = "우왕굳";
