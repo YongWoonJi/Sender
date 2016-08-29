@@ -37,6 +37,7 @@ public class MyPageActivity extends AppCompatActivity {
     TextView phone;
     @BindView(R.id.text_my_name)
     TextView name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,36 +47,34 @@ public class MyPageActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mAdapter = new ReviewAdapter();
         listView.setAdapter(mAdapter);
-        listView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         initData();
     }
 
     private void initData() {
         MyPageRequest request = new MyPageRequest(this);
         NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
-
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 name.setText(result.getResult().getName());
                 email.setText(result.getResult().getEmail());
                 phone.setText(result.getResult().getPhone());
-                requestCount.setText(""+result.getResult().getDeliver_req());
-
-                deliveryCount.setText(""+result.getResult().getDeliver_com());
+                requestCount.setText("" + result.getResult().getDeliver_req());
+                deliveryCount.setText("" + result.getResult().getDeliver_com());
             }
 
             @Override
             public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
                 Toast.makeText(MyPageActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
-
         });
+
 
         List<ReviewData> dataList = new ArrayList<>();
         ReviewData data;
-        for (int i =0; i < 7; i++){
+        for (int i = 0; i < 7; i++) {
             data = new ReviewData();
-            data.name = "정현맨"+i;
+            data.name = "정현맨" + i;
             data.rating = i;
             data.message = "우왕굳";
             dataList.add(data);
@@ -86,7 +85,7 @@ public class MyPageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home :
+            case android.R.id.home:
                 finish();
                 break;
         }

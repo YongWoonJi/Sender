@@ -7,6 +7,6 @@ public class NetworkResult<T> {
     private T result;
 
     public T getResult() {
-        return result;
+        return this.result;
     }
 }
