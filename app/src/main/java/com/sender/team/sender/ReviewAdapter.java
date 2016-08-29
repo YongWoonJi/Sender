@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sender.team.sender.data.ReviewData;
+import com.sender.team.sender.data.ReviewDataTemp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder>{
 
-    List<ReviewData> data = new ArrayList<>();
+    List<ReviewDataTemp> data = new ArrayList<>();
 
-    public void setReviewData(List<ReviewData> data){
+    public void setReviewData(List<ReviewDataTemp> data){
         if (this.data !=data){
             this.data = data;
         }

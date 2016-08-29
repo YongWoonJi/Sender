@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.sender.team.sender.data.ReviewData;
+import com.sender.team.sender.data.ReviewDataTemp;
 
 /**
  * Created by Tacademy on 2016-08-25.
@@ -22,8 +22,8 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
         message = (TextView)itemView.findViewById(R.id.text_review_message);
     }
 
-    ReviewData data;
-    public void setData(ReviewData data){
+    ReviewDataTemp data;
+    public void setData(ReviewDataTemp data){
         this.data = data;
         name.setText(data.name);
         rating.setText(""+(int) data.rating);

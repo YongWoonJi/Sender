@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.sender.team.sender.data.DelivererData;
-import com.sender.team.sender.data.ReviewData;
+import com.sender.team.sender.data.ReviewDataTemp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         List<DelivererData> list = new ArrayList<>();
         DelivererData data;
         for (int i = 0; i < 10; i++) {
-            data = new DelivererData("오름맨" + i, "010-****-****", null, 9.4f, null, null);
+            data = new DelivererData("오름맨" + i, "010-0***-****", null, 9.4f, null, null);
             list.add(data);
         }
         mAdapter.setDelivererData(list);
@@ -95,10 +95,10 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         ReviewAdapter adapter = new ReviewAdapter();
         listView.setAdapter(adapter);
         listView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        List<ReviewData> list = new ArrayList<>();
-        ReviewData data;
+        List<ReviewDataTemp> list = new ArrayList<>();
+        ReviewDataTemp data;
         for (int i = 0; i < 10; i++) {
-            data = new ReviewData();
+            data = new ReviewDataTemp();
             data.name = "정현맨" + i;
             data.message = "좋아요 ㅎㅎ";
             data.rating = 8.9f;
