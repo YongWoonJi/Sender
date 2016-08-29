@@ -4,10 +4,17 @@ package com.sender.team.sender;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.request.AddPhoneRequest;
 
 
 /**
@@ -31,11 +38,29 @@ public class AuthFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                AddPhoneRequest request = new AddPhoneRequest(getContext(), "010-1234-5678");
+                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        if (!TextUtils.isEmpty(result.getResult())) {
+                            Log.i("LoginActivity", result.getResult());
+                        } else {
+                            Log.i("LoginActivity", result.getError());
+                        }
 
-                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+
+                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                        Log.i("LoginActivity", "리퀘스트 실패");
+                    }
+                });
+
             }
         });
 
