@@ -9,6 +9,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.request.ContractsRequest;
 
 public class AcceptActivity extends Activity {
 
@@ -39,6 +45,21 @@ public class AcceptActivity extends Activity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //13.계약 체결하기
+                ContractsRequest request = new ContractsRequest(AcceptActivity.this, "1","1");
+                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        Toast.makeText(AcceptActivity.this, "계약성공: "+result , Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                        Toast.makeText(AcceptActivity.this, "계약 실패", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 Intent intent2 = new Intent(getApplicationContext(), ChattingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

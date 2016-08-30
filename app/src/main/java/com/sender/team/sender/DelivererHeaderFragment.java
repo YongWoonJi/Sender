@@ -11,11 +11,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.request.ContractsUpdateRequest;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DelivererHeaderFragment extends Fragment {
+
+    public static final int BEFORE_DELIVERY = 1;
+    public static final int START_DELIVERY = 2;
+    public static final int END_DELIVERY = 3;
 
     public DelivererHeaderFragment() {
         // Required empty public constructor
@@ -32,6 +41,19 @@ public class DelivererHeaderFragment extends Fragment {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //15. 배송 상태 변경하기
+                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", ""+START_DELIVERY);
+                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        Toast.makeText(getContext(), "배송 시작", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                        Toast.makeText(getContext(), "배송 시작 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 btnStart.setEnabled(false);
                 btnEnd.setEnabled(true);
             }
@@ -40,6 +62,19 @@ public class DelivererHeaderFragment extends Fragment {
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //15. 배송 상태 변경하기
+                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", ""+END_DELIVERY);
+                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        Toast.makeText(getContext(), "배송 완료", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                        Toast.makeText(getContext(), "배송 완료 실패:"+  errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 Toast.makeText(getContext(),"배송완료 처리 되었습니다.",Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
