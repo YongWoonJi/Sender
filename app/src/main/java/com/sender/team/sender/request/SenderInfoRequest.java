@@ -18,7 +18,7 @@ public class SenderInfoRequest extends AbstractRequest<NetworkResult<ContractsDa
 
     Request request;
     public SenderInfoRequest(Context context, String sender_id){
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
                 .addQueryParameter("sender", sender_id)
                 .build();

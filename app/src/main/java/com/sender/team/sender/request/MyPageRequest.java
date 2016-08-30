@@ -17,7 +17,7 @@ import okhttp3.Request;
 public class MyPageRequest extends AbstractRequest<NetworkResult<UserData>> {
     Request request;
     public MyPageRequest(Context context){
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("members")
                 .addPathSegment("me")
                 .build();

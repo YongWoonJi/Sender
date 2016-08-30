@@ -22,7 +22,7 @@ public class SenderRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
     public SenderRequest (Context context, String user_id, String addr_lat, String addr_lon, String rec_phone,
                           String price, String info, File file, String memo){
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
                 .build();
         MultipartBody.Builder builder = new MultipartBody.Builder()

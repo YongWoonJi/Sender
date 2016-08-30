@@ -14,9 +14,16 @@ import okhttp3.ResponseBody;
  */
 public abstract class AbstractRequest<T> extends NetworkRequest<T>{
 
-    protected HttpUrl.Builder getBaseUrlBuilder() {
+    protected HttpUrl.Builder getSecureUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("https");
+        builder.host("ec2-52-78-70-38.ap-northeast-2.compute.amazonaws.com");
+        return builder;
+    }
+
+    protected HttpUrl.Builder getBaseUrlBuilder() {
+        HttpUrl.Builder builder = new HttpUrl.Builder();
+        builder.scheme("http");
         builder.host("ec2-52-78-70-38.ap-northeast-2.compute.amazonaws.com");
         return builder;
     }

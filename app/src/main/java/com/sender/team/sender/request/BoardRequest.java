@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
 public class BoardRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
     public BoardRequest(Context context, String nickname, String esType, String boardType, String title, String content, String pic){
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("boards")
                 .build();
 

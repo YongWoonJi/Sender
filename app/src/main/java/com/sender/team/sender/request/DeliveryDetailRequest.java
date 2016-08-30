@@ -18,7 +18,7 @@ import okhttp3.Request;
 public class DeliveryDetailRequest extends AbstractRequest<NetworkResult<List<DelivererData>>> {
     Request request;
     public DeliveryDetailRequest(Context context, String deliverer_id) {
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
                 .addPathSegment("delivering")
                 .addPathSegment(deliverer_id)

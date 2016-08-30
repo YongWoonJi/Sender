@@ -17,7 +17,7 @@ import okhttp3.Request;
 public class OtherUserRequest extends AbstractRequest<NetworkResult<UserData>> {
     Request request;
     public OtherUserRequest(Context context, String user_id){
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("members")
                 .addPathSegment(user_id)
                 .build();

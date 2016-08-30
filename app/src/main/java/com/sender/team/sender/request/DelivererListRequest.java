@@ -17,7 +17,7 @@ import okhttp3.Request;
 public class DelivererListRequest extends AbstractRequest<NetworkResult<DelivererListData>> {
     Request request;
     public DelivererListRequest(Context context, String currentPage, String itemsPerPage) {
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
                 .addPathSegment("delivering")
                 .addQueryParameter("currentPage", currentPage)

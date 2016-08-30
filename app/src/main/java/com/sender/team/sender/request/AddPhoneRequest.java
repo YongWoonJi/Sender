@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
 public class AddPhoneRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
     public AddPhoneRequest (Context context, String phone){
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("members")
                 .build();
         RequestBody body = new FormBody.Builder()

@@ -16,9 +16,9 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-26.
  */
-public class ChattinfRequest extends AbstractRequest<NetworkResult<ChattingData>> {
+public class ChattingRequest extends AbstractRequest<NetworkResult<ChattingData>> {
     Request request;
-    public ChattinfRequest(Context context, String receiver_id, String message, String pic){
+    public ChattingRequest(Context context, String receiver_id, String message, String pic){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("chattings")
                 .build();
@@ -36,12 +36,6 @@ public class ChattinfRequest extends AbstractRequest<NetworkResult<ChattingData>
                 .build();
     }
 
-    protected HttpUrl.Builder getBaseUrlBuilder() {
-        HttpUrl.Builder builder = new HttpUrl.Builder();
-        builder.scheme("http");
-        builder.host("ec2-52-78-70-38.ap-northeast-2.compute.amazonaws.com");
-        return builder;
-    }
 
     @Override
     public Request getRequest() {

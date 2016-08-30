@@ -17,7 +17,7 @@ import okhttp3.Request;
 public class ContractsInfoRequest extends AbstractRequest<NetworkResult<ContractsInfoData>> {
     Request request;
     public ContractsInfoRequest(Context context, String constract_id){
-        HttpUrl url = getBaseUrlBuilder()
+        HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
                 .addPathSegment(constract_id)
                 .build();

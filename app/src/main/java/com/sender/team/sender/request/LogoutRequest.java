@@ -27,12 +27,7 @@ public class LogoutRequest extends AbstractRequest<NetworkResult<String>> {
                     .build();
     }
 
-    protected HttpUrl.Builder getBaseUrlBuilder() {
-        HttpUrl.Builder builder = new HttpUrl.Builder();
-        builder.scheme("http");
-        builder.host("ec2-52-78-70-38.ap-northeast-2.compute.amazonaws.com");
-        return builder;
-    }
+
 
     @Override
     public Request getRequest() {
