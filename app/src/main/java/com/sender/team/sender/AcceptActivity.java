@@ -107,7 +107,6 @@ public class AcceptActivity extends Activity {
             }
         });
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
         builder.setTitle("배송요청");
         builder.setIcon(R.mipmap.ic_launcher);
