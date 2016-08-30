@@ -34,6 +34,7 @@ public class ContractsUpdateRequest extends AbstractRequest<NetworkResult<String
                 .build();
     }
 
+    @Override
     protected HttpUrl.Builder getBaseUrlBuilder() {
         HttpUrl.Builder builder = new HttpUrl.Builder();
         builder.scheme("http");

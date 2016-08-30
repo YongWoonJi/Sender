@@ -40,6 +40,14 @@ public class ProfilePictureUploadRequest extends AbstractRequest<NetworkResult<S
     }
 
     @Override
+    protected HttpUrl.Builder getBaseUrlBuilder() {
+        HttpUrl.Builder builder = new HttpUrl.Builder();
+        builder.scheme("http");
+        builder.host("ec2-52-78-70-38.ap-northeast-2.compute.amazonaws.com");
+        return builder;
+    }
+
+    @Override
     protected Type getType() {
         return new TypeToken<NetworkResult<String>>(){}.getType();
     }

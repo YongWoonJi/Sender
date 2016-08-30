@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="icon_right_margin">10dp</dimen>
+    <dimen name="mypage_image_size">100dp</dimen>
+    <dimen name="mypage_image_radius">50dp</dimen>
 </resources>
