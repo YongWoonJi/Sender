@@ -13,6 +13,7 @@ public class UserData implements Serializable {
     private String email;
     private String introduction;
     private String error;
+    private float star;
 
     public int getDeliver_req() {
         return this.deliver_req;
@@ -84,5 +85,13 @@ public class UserData implements Serializable {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public float getStar() {
+        return star;
+    }
+
+    public void setStar(float star) {
+        this.star = star;
     }
 }

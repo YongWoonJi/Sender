@@ -17,11 +17,9 @@ import android.widget.Toast;
  */
 public class DelivererHeaderFragment extends Fragment {
 
-
     public DelivererHeaderFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
