@@ -9,12 +9,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.sender.team.sender.data.ContractsData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.request.ContractsRequest;
+import com.sender.team.sender.request.SenderInfoRequest;
+
+import java.text.ParseException;
+import java.util.Calendar;
 
 public class AcceptActivity extends Activity {
 
@@ -33,8 +41,35 @@ public class AcceptActivity extends Activity {
 
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.accept_layout, null);
+        final ImageView imageProduct = (ImageView) dialogView.findViewById(R.id.image_product);
+        final TextView textWord = (TextView) dialogView.findViewById(R.id.text_word);
+        final TextView textDetail = (TextView) dialogView.findViewById(R.id.text_details);
 
 
+        SenderInfoRequest request = new SenderInfoRequest(this, "1");
+        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<ContractsData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<ContractsData>> request, NetworkResult<ContractsData> result) {
+                ContractsData data = result.getResult();
+                Glide.with(AcceptActivity.this)
+                        .load(data.getPic()[0].getFileUrl())
+                        .into(imageProduct);
+                try {
+                    Calendar ca = Calendar.getInstance();
+                    ca.setTime(Utils.convertStringToTime(data.getArr_time()));
+
+                textWord.setText(ca.get(Calendar.HOUR_OF_DAY) + ":" + ca.get(Calendar.MINUTE) + " 도착 / " + data.getInfo() + " / " + data.getPrice() + "원");
+                textDetail.setText(data.getNickname() + "님으로부터 배송요청이 왔습니다\n수락하시겠습니까?");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+           @Override
+            public void onFail(NetworkRequest<NetworkResult<ContractsData>> request, String errorMessage, Throwable e) {
+
+            }
+        });
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
@@ -56,9 +91,9 @@ public class AcceptActivity extends Activity {
                     @Override
                     public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
                         Toast.makeText(AcceptActivity.this, "계약 실패", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
-
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 Intent intent2 = new Intent(getApplicationContext(), ChattingActivity.class);

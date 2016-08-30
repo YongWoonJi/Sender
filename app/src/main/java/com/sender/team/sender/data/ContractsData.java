@@ -1,6 +1,9 @@
 package com.sender.team.sender.data;
 
 public class ContractsData {
+    private String here_lat;
+    private String here_lon;
+    private String nickname;
     private String addr_lon;
     private int price;
     private String addr_lat;
@@ -51,7 +54,32 @@ public class ContractsData {
         this.arr_time = arr_time;
     }
 
+    public String getHere_lat() {
+        return here_lat;
+    }
+
+    public void setHere_lat(String here_lat) {
+        this.here_lat = here_lat;
+    }
+
+    public String getHere_lon() {
+        return here_lon;
+    }
+
+    public void setHere_lon(String here_lon) {
+        this.here_lon = here_lon;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public ContractsDataPic[] getPic() {
+
         return this.pic;
     }
 
