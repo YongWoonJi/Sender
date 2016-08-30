@@ -71,7 +71,7 @@ public class NetworkManager {
         builder.connectTimeout(30, TimeUnit.SECONDS);
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(10, TimeUnit.SECONDS);
-        disableCertificateValidation(context, builder);
+//        disableCertificateValidation(context, builder);
         client = builder.build();
     }
 

@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -34,11 +39,24 @@ public class InfoInputFragment extends Fragment {
         }
     }
 
+    @BindView(R.id.edit_object_name)
+    EditText objectName;
+
+    @BindView(R.id.edit_object_price)
+    EditText objectPrice;
+
+    @BindView(R.id.edit_receiver_phone)
+    EditText receivePhone;
+
+    @BindView(R.id.object_image)
+    ImageView objectImage;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_info_input, container, false);
+        ButterKnife.bind(this, view);
         Button btn = (Button) view.findViewById(R.id.btn_deliverer);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +71,10 @@ public class InfoInputFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void setLocation(){
+
     }
 
 }

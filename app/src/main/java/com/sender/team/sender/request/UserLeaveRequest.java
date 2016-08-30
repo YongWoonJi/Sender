@@ -33,7 +33,6 @@ public class UserLeaveRequest extends AbstractRequest<NetworkResult<String>> {
                 .build();
     }
 
-
     @Override
     public Request getRequest() {
         return request;

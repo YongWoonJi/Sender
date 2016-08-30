@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.sender.team.sender.data.DelivererDataTemp;
 import com.sender.team.sender.data.ReviewDataTemp;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,5 +119,9 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         });
         dialog = builder.create();
         dialog.show();
+    }
+
+    public void setSenderData(String name, String phone, String price, File pic, double hereLat, double hereLng, double addrLat, double addrLng){
+
     }
 }
