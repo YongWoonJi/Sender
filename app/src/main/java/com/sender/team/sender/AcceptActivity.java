@@ -28,6 +28,9 @@ public class AcceptActivity extends Activity {
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.accept_layout, null);
 
+
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
         builder.setTitle("배송요청");
         builder.setIcon(R.mipmap.ic_launcher);
