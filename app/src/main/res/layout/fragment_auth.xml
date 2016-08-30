@@ -9,7 +9,7 @@
     <EditText
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/edit_phone"
         android:layout_marginTop="136dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -22,29 +22,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="인증번호 받기"
-        android:id="@+id/button"
-        android:layout_alignBottom="@+id/editText"
-        android:layout_toRightOf="@+id/editText"
-        android:layout_toEndOf="@+id/editText" />
+        android:id="@+id/btn_getNum"
+        android:layout_alignBottom="@+id/edit_phone"
+        android:layout_toRightOf="@+id/edit_phone"
+        android:layout_toEndOf="@+id/edit_phone" />
 
     <EditText
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:layout_alignBottom="@+id/button2"
-        android:layout_toLeftOf="@+id/button2"
-        android:layout_toStartOf="@+id/button2" />
+        android:id="@+id/edit_authNum"
+        android:layout_alignBottom="@+id/btn_ok"
+        android:layout_toLeftOf="@+id/btn_ok"
+        android:layout_toStartOf="@+id/btn_ok" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="확인"
-        android:id="@+id/button2"
-        android:layout_below="@+id/editText"
-        android:layout_toRightOf="@+id/editText"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
+        android:id="@+id/btn_ok"
+        android:layout_below="@+id/edit_phone"
+        android:layout_toRightOf="@+id/edit_phone"
+        android:layout_alignRight="@+id/btn_getNum"
+        android:layout_alignEnd="@+id/btn_getNum" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="3 : 00"
-        android:id="@+id/textView5"
+        android:id="@+id/text_time"
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true" />
 
