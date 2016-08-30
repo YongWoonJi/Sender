@@ -14,17 +14,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.sender.team.sender.data.AddressInfo;
 import com.sender.team.sender.data.ContractsData;
 import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.ReverseGeocodingData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.request.ContractsRequest;
+import com.sender.team.sender.request.ReverseGeocodingRequest;
 import com.sender.team.sender.request.SenderInfoRequest;
 
 import java.text.ParseException;
 import java.util.Calendar;
 
 public class AcceptActivity extends Activity {
+
+    String start;
+    String end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,34 @@ public class AcceptActivity extends Activity {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractsData>> request, NetworkResult<ContractsData> result) {
                 ContractsData data = result.getResult();
+                ReverseGeocodingRequest geo_request = new ReverseGeocodingRequest(AcceptActivity.this, data.getHere_lat(), data.getHere_lon());
+                NetworkManager.getInstance().getNetworkData(geo_request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
+                        AddressInfo info = result.getAddressInfo();
+                        start = info.getBuildingName();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<ReverseGeocodingData> request, String errorMessage, Throwable e) {
+
+                    }
+                });
+
+                ReverseGeocodingRequest geo_request2 = new ReverseGeocodingRequest(AcceptActivity.this, data.getAddr_lat(), data.getAddr_lon());
+                NetworkManager.getInstance().getNetworkData(geo_request2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
+                        AddressInfo info = result.getAddressInfo();
+                        end = info.getBuildingName();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<ReverseGeocodingData> request, String errorMessage, Throwable e) {
+
+                    }
+                });
+
                 Glide.with(AcceptActivity.this)
                         .load(data.getPic()[0].getFileUrl())
                         .into(imageProduct);
@@ -58,8 +92,10 @@ public class AcceptActivity extends Activity {
                     Calendar ca = Calendar.getInstance();
                     ca.setTime(Utils.convertStringToTime(data.getArr_time()));
 
-                textWord.setText(ca.get(Calendar.HOUR_OF_DAY) + ":" + ca.get(Calendar.MINUTE) + " 도착 / " + data.getInfo() + " / " + data.getPrice() + "원");
-                textDetail.setText(data.getNickname() + "님으로부터 배송요청이 왔습니다\n수락하시겠습니까?");
+                    textWord.setText(start + " -> " + end + "\n" +
+                            ca.get(Calendar.HOUR_OF_DAY) + ":" + ca.get(Calendar.MINUTE) + " 도착 / " +
+                            data.getInfo() + " / " + data.getPrice() + "원");
+                    textDetail.setText(data.getNickname() + "님으로부터 배송요청이 왔습니다\n수락하시겠습니까?");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
