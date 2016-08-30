@@ -58,6 +58,8 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         return view;
     }
 
+
+
     private void clickSend() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("요청하시겠습니까?");
