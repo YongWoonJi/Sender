@@ -1,13 +1,19 @@
 package com.sender.team.sender.data;
 
-import java.util.ArrayList;
-
 public class ReviewListData implements java.io.Serializable {
     private static final long serialVersionUID = -3517856242515951816L;
+    private ReviewList data;
     private int totalPage;
     private int itemsPerPage;
-    private ArrayList<ReviewData> review;
     private int currentPage;
+
+    public ReviewList getData() {
+        return this.data;
+    }
+
+    public void setData(ReviewList data) {
+        this.data = data;
+    }
 
     public int getTotalPage() {
         return this.totalPage;
@@ -23,14 +29,6 @@ public class ReviewListData implements java.io.Serializable {
 
     public void setItemsPerPage(int itemsPerPage) {
         this.itemsPerPage = itemsPerPage;
-    }
-
-    public ArrayList<ReviewData> getReview() {
-        return this.review;
-    }
-
-    public void setReview(ArrayList<ReviewData> review) {
-        this.review = review;
     }
 
     public int getCurrentPage() {

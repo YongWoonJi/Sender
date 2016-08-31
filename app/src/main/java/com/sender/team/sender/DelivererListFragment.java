@@ -13,7 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.sender.team.sender.data.DelivererDataTemp;
-import com.sender.team.sender.data.ReviewDataTemp;
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.ReviewListData;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.request.ReviewListRequest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -95,19 +99,35 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     public void DialogShow() {
         View view = getLayoutInflater(null).inflate(R.layout.view_dialog_review, null, false);
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_view_dialog);
-        ReviewAdapter adapter = new ReviewAdapter();
-        listView.setAdapter(adapter);
+        final ReviewAdapter mAdapter = new ReviewAdapter();
+        listView.setAdapter(mAdapter);
         listView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        List<ReviewDataTemp> list = new ArrayList<>();
-        ReviewDataTemp data;
-        for (int i = 0; i < 10; i++) {
-            data = new ReviewDataTemp();
-            data.name = "정현맨" + i;
-            data.message = "좋아요 ㅎㅎ";
-            data.rating = 8.9f;
-            list.add(data);
-        }
-        adapter.setReviewData(list);
+//        List<ReviewDataTemp> list = new ArrayList<>();
+//        ReviewDataTemp data;
+//        for (int i = 0; i < 10; i++) {
+//            data = new ReviewDataTemp();
+//            data.name = "정현맨" + i;
+//            data.message = "좋아요 ㅎㅎ";
+//            data.rating = 8.9f;
+//            list.add(data);
+//        }
+//        adapter.setReviewData(list);
+
+        //다이얼로그 리뷰 리스트 보기
+        ReviewListRequest reviewRequest = new ReviewListRequest(getContext(),"1","1","1");
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, reviewRequest, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
+                mAdapter.clear();
+                mAdapter.setReviewData(result.getResult().getData().getReview());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, String errorMessage, Throwable e) {
+            }
+        });
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("DELIVERER ID");
         builder.setView(view);

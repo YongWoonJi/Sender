@@ -54,12 +54,10 @@ public class SendHeaderFragment extends Fragment {
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                        Toast.makeText(getContext(), "배송 완료", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
-                        Toast.makeText(getContext(), "배송 완료 실패:"+  errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
                 clickSend();
@@ -76,12 +74,10 @@ public class SendHeaderFragment extends Fragment {
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                        Toast.makeText(getContext(), "배송 시작", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
-                        Toast.makeText(getContext(), "배송 시작 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
 

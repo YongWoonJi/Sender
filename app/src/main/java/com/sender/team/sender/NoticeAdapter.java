@@ -1,6 +1,5 @@
 package com.sender.team.sender;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import java.util.List;
  * Created by Tacademy on 2016-08-24.
  */
 public class NoticeAdapter extends BaseExpandableListAdapter {
-
     List<NoticeGroupData> items = new ArrayList<>();
 
     public void put(String groupName, String contents) {
@@ -34,7 +32,7 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
             items.add(group);
         }
 
-        if (!TextUtils.isEmpty(contents)) {
+        if (contents != null) {
             NoticeChildData child = new NoticeChildData();
             child.contents = contents;
             group.children.add(child);

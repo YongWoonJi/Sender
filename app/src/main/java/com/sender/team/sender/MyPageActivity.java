@@ -20,16 +20,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.sender.team.sender.data.NetworkResult;
-import com.sender.team.sender.data.ReviewDataTemp;
+import com.sender.team.sender.data.ReviewListData;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.request.MyPageRequest;
 import com.sender.team.sender.request.ProfilePictureUploadRequest;
+import com.sender.team.sender.request.ReviewListRequest;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -202,20 +201,22 @@ public class MyPageActivity extends AppCompatActivity {
 
             @Override
             public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
-                Toast.makeText(MyPageActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
 
-        List<ReviewDataTemp> dataList = new ArrayList<>();
-        ReviewDataTemp data;
-        for (int i = 0; i < 7; i++) {
-            data = new ReviewDataTemp();
-            data.name = "정현맨" + i;
-            data.rating = i;
-            data.message = "우왕굳";
-            dataList.add(data);
-        }
-        mAdapter.setReviewData(dataList);
+        //리뷰 리스트 보기
+        ReviewListRequest reviewRequest = new ReviewListRequest(MyPageActivity.this,"1","1","1");
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, reviewRequest, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
+                        mAdapter.clear();
+                        mAdapter.setReviewData(result.getResult().getData().getReview());
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, String errorMessage, Throwable e) {
+                    }
+                });
     }
 
     @Override
