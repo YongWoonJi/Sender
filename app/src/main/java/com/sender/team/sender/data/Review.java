@@ -3,7 +3,7 @@ package com.sender.team.sender.data;
 public class Review {
     private String date;
     private int star;
-    private String nickname;
+    private String name;
     private String pic;
     private String content;
 
@@ -31,12 +31,12 @@ public class Review {
         this.content = content;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getName() {
+        return name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPic() {

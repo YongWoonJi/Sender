@@ -61,7 +61,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_object_name"
+        android:id="@+id/edit_title"
         android:layout_below="@+id/text_rating"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -74,14 +74,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/question_content"
         android:id="@+id/textView34"
-        android:layout_below="@+id/edit_object_name"
+        android:layout_below="@+id/edit_title"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_receiver_phone"
+        android:id="@+id/edit_contents"
         android:layout_below="@+id/textView34"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -94,7 +94,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/receive_answer"
         android:id="@+id/textView35"
-        android:layout_below="@+id/edit_receiver_phone"
+        android:layout_below="@+id/edit_contents"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -111,7 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/email"
-            android:id="@+id/radioButton"
+            android:id="@+id/radio_email"
             android:layout_below="@+id/textView35"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -121,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sms"
-            android:id="@+id/radioButton2"
+            android:id="@+id/radio_sms"
             android:layout_gravity="center_horizontal"
             android:checked="false" />
     </RadioGroup>
@@ -139,7 +139,7 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:id="@+id/imageView7"
+        android:id="@+id/image_picture"
         android:layout_below="@+id/textView36"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -152,8 +152,9 @@
         android:text="@string/image_registration_content"
         android:id="@+id/textView37"
         android:layout_below="@+id/textView36"
-        android:layout_toRightOf="@+id/imageView7"
-        android:layout_toEndOf="@+id/imageView7"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@+id/image_picture"
+        android:layout_toEndOf="@+id/image_picture"
         android:textColor="@android:color/holo_red_light" />
 
 </RelativeLayout>

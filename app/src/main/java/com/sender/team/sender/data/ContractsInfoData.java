@@ -1,7 +1,6 @@
 package com.sender.team.sender.data;
 
-public class ContractsInfoData implements java.io.Serializable {
-    private static final long serialVersionUID = 7718013726926587442L;
+public class ContractsInfoData {
     private int deliverer_id;
     private String res_time;
     private int contract_id;

@@ -100,7 +100,7 @@ public class SendHeaderFragment extends Fragment {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 Glide.with(getContext()).load(result.getResult().getPic()).into(imageProfile);
-                textName.setText(result.getResult().getNickname());
+                textName.setText(result.getResult().getName());
                 textRating.setText(""+result.getResult().getStar());
             }
 

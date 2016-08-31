@@ -77,7 +77,7 @@ public class AcceptActivity extends Activity {
                                     textWord.setText(start + " -> " + end + "\n" +
                                             ca.get(Calendar.HOUR_OF_DAY) + ":" + ca.get(Calendar.MINUTE) + " 도착 / " +
                                             data.getInfo() + " / " + data.getPrice() + "원");
-                                    textDetail.setText(data.getNickname() + "님으로부터 배송요청이 왔습니다\n수락하시겠습니까?");
+                                    textDetail.setText(data.getName() + "님으로부터 배송요청이 왔습니다\n수락하시겠습니까?");
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }

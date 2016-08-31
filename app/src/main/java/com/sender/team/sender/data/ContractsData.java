@@ -3,7 +3,7 @@ package com.sender.team.sender.data;
 public class ContractsData {
     private String here_lat;
     private String here_lon;
-    private String nickname;
+    private String name;
     private String addr_lon;
     private int price;
     private String addr_lat;
@@ -70,12 +70,12 @@ public class ContractsData {
         this.here_lon = here_lon;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getName() {
+        return name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ContractsDataPic[] getPic() {

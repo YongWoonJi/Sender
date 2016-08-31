@@ -39,13 +39,13 @@ public class InfoInputFragment extends Fragment {
         }
     }
 
-    @BindView(R.id.edit_object_name)
+    @BindView(R.id.edit_title)
     EditText objectName;
 
     @BindView(R.id.edit_object_price)
     EditText objectPrice;
 
-    @BindView(R.id.edit_receiver_phone)
+    @BindView(R.id.edit_contents)
     EditText receivePhone;
 
     @BindView(R.id.object_image)

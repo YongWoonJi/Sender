@@ -5,7 +5,7 @@ public class UserData {
     private int deliver_com;
     private int user_id;
     private String phone;
-    private String nickname;
+    private String name;
     private String pic;
     private int activation;
     private String email;
@@ -85,15 +85,16 @@ public class UserData {
         this.star = star;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getName() {
+        return name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getError() {
+
         return error;
     }
 }

@@ -49,7 +49,7 @@ public class ChattingProfileActivity extends AppCompatActivity {
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                name.setText(result.getResult().getNickname());
+                name.setText(result.getResult().getName());
                 phone.setText(result.getResult().getPhone());
                 String userImage = result.getResult().getPic();
                 Log.i("ChattingProfile", userImage);

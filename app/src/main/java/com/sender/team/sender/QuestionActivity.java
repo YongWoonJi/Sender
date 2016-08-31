@@ -5,24 +5,36 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 public class QuestionActivity extends AppCompatActivity {
+
+    @BindView(R.id.edit_title)
+    EditText editTitle;
+
+    @BindView(R.id.edit_contents)
+    EditText editContents;
+
+    @BindView(R.id.radioGroup)
+    RadioGroup radioGroup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Button btn = (Button)findViewById(R.id.btn_question);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickSend();
-            }
-        });
+    }
+
+
+    @OnClick(R.id.btn_question)
+    public void onClickQuestion() {
+        clickSend();
     }
 
     AlertDialog dialog;
@@ -32,6 +44,7 @@ public class QuestionActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                request();
                 Toast.makeText(QuestionActivity.this, "문의내용이 등록되었습니다", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -54,5 +67,21 @@ public class QuestionActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void request() {
+        String title = editTitle.getText().toString();
+        String contents = editContents.getText().toString();
+        int boardType;
+        switch (radioGroup.getCheckedRadioButtonId()) {
+            case R.id.radio_email :
+                boardType = 0;
+                break;
+            case R.id.radio_sms :
+                boardType = 1;
+                break;
+        }
+        // 낼 오전에 이어서...
+        
     }
 }

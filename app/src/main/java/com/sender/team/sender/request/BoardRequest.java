@@ -5,10 +5,12 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.sender.team.sender.data.NetworkResult;
 
+import java.io.File;
 import java.lang.reflect.Type;
 
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
@@ -16,20 +18,24 @@ import okhttp3.RequestBody;
  * Created by Tacademy on 2016-08-26.
  */
 public class BoardRequest extends AbstractRequest<NetworkResult<String>> {
+    MediaType jpeg = MediaType.parse("image/jpeg");
     Request request;
-    public BoardRequest(Context context, String nickname, String esType, String boardType, String title, String content, String pic){
+    public BoardRequest(Context context, String nickname, String esType, String boardType, String title, String content, File file) {
         HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("boards")
                 .build();
 
-        RequestBody body = new FormBody.Builder()
-                .add("nickname", nickname)
-                .add("esType", esType)
-                .add("boardType", boardType)
-                .add("title", title)
-                .add("content", content)
-                .add("pic", pic)
-                .build();
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("nickname", nickname)
+                .addFormDataPart("esType", esType)
+                .addFormDataPart("boardType", boardType)
+                .addFormDataPart("title", title)
+                .addFormDataPart("content", content);
+        if (file != null) {
+            builder.addFormDataPart("pic", file.getName(), RequestBody.create(jpeg, file));
+        }
+        RequestBody body = builder.build();
 
         request = new Request.Builder()
                 .url(url)

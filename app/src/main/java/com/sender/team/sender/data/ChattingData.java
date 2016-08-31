@@ -1,7 +1,6 @@
 package com.sender.team.sender.data;
 
-public class ChattingData implements java.io.Serializable {
-    private static final long serialVersionUID = 8165511288496768587L;
+public class ChattingData {
     private int receiver_id;
     private String name;
     private String pic;

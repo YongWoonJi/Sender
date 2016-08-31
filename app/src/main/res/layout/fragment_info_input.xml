@@ -74,7 +74,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_object_name"
+        android:id="@+id/edit_title"
         android:hint="@string/object_name"
         android:layout_alignTop="@+id/object_image"
         android:layout_toRightOf="@+id/object_image"
@@ -83,20 +83,20 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_receiver_phone"
+        android:id="@+id/edit_contents"
         android:hint="@string/receiver_phone"
-        android:layout_below="@+id/edit_object_name"
-        android:layout_alignLeft="@+id/edit_object_name"
-        android:layout_alignStart="@+id/edit_object_name" />
+        android:layout_below="@+id/edit_title"
+        android:layout_alignLeft="@+id/edit_title"
+        android:layout_alignStart="@+id/edit_title" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_object_price"
         android:hint="@string/price_suggestion"
-        android:layout_below="@+id/edit_receiver_phone"
-        android:layout_alignRight="@+id/edit_receiver_phone"
-        android:layout_alignEnd="@+id/edit_receiver_phone" />
+        android:layout_below="@+id/edit_contents"
+        android:layout_alignRight="@+id/edit_contents"
+        android:layout_alignEnd="@+id/edit_contents" />
 
 
 </RelativeLayout>

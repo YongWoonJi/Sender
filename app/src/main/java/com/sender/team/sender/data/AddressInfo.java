@@ -1,8 +1,6 @@
 package com.sender.team.sender.data;
 
-import java.io.Serializable;
-
-public class AddressInfo implements Serializable {
+public class AddressInfo {
     private String bunji;
     private String addressType;
     private String roadCode;
