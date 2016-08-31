@@ -1,33 +1,65 @@
 package com.sender.team.sender;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
+import java.io.File;
+
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class QuestionActivity extends AppCompatActivity {
 
-    @BindView(R.id.edit_object_name)
+    private static final String FIELD_SAVE_FILE = "savedfile";
+    private static final String FIELD_UPLOAD_FILE = "uploadfile";
+
+    @BindView(R.id.edit_title)
     EditText editTitle;
 
-    @BindView(R.id.edit_receiver_phone)
+    @BindView(R.id.edit_contents)
     EditText editContents;
 
     @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
+
+    @BindView(R.id.image_picture)
+    ImageView imagePicture;
+
+    File savedFile = null;
+    File uploadFile = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
+        ButterKnife.bind(this);
+        if (savedInstanceState != null) {
+            String path = savedInstanceState.getString(FIELD_SAVE_FILE);
+            if (!TextUtils.isEmpty(path)) {
+                savedFile = new File(path);
+            }
+            path = savedInstanceState.getString(FIELD_UPLOAD_FILE);
+            if (!TextUtils.isEmpty(path)) {
+                uploadFile = new File(path);
+                Glide.with(this)
+                        .load(uploadFile)
+                        .into(imagePicture);
+            }
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -59,6 +91,10 @@ public class QuestionActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private Uri getSaveFile() {
+        return null;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -72,16 +108,18 @@ public class QuestionActivity extends AppCompatActivity {
     private void request() {
         String title = editTitle.getText().toString();
         String contents = editContents.getText().toString();
-        int boardType;
+        String esType;
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.radio_email :
-                boardType = 0;
+                esType = "0";
                 break;
             case R.id.radio_sms :
-                boardType = 1;
+                esType = "1";
                 break;
         }
-        // 낼 오전에 이어서...
+        String boardType = "2";
+
+
         
     }
 }
