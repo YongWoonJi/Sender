@@ -118,6 +118,11 @@ public class AuthFragment extends Fragment {
                     @Override
                     public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
                         Log.i("LoginActivity", "리퀘스트 실패");
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+
+                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     }
                 });
 
