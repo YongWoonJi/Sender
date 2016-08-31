@@ -172,7 +172,7 @@ public class MyPageActivity extends AppCompatActivity {
         /// 이미지 뷰에 그릴때 업로드
         if (uploadFile != null){
             ProfilePictureUploadRequest request = new ProfilePictureUploadRequest(this, uploadFile);
-            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                     Toast.makeText(MyPageActivity.this, "Upload success", Toast.LENGTH_SHORT).show();
@@ -188,7 +188,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     private void initData() {
         MyPageRequest request = new MyPageRequest(this);
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 Glide.with(MyPageActivity.this).load(result.getResult().getPic()).into(profileImage);

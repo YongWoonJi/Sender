@@ -99,7 +99,7 @@ public class AuthFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AddPhoneRequest request = new AddPhoneRequest(getContext(), "010-1234-5678");
-                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         if (!TextUtils.isEmpty(result.getResult())) {

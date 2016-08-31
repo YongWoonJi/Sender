@@ -1,21 +1,23 @@
 package com.sender.team.sender.data;
 
-public class AddressInfo {
+import java.io.Serializable;
+
+public class AddressInfo implements Serializable {
     private String bunji;
     private String addressType;
-    private long roadCode;
+    private String roadCode;
     private String roadName;
     private String city_do;
     private String gu_gun;
     private String buildingName;
     private String legalDong;
-    private int mappingDistance;
+    private String mappingDistance;
     private String adminDong;
     private String adminDongCode;
     private String ri;
     private String fullAddress;
     private String eup_myun;
-    private int legalDongCode;
+    private String legalDongCode;
     private String buildingIndex;
 
     public String getBunji() {
@@ -34,11 +36,11 @@ public class AddressInfo {
         this.addressType = addressType;
     }
 
-    public long getRoadCode() {
+    public String getRoadCode() {
         return this.roadCode;
     }
 
-    public void setRoadCode(long roadCode) {
+    public void setRoadCode(String roadCode) {
         this.roadCode = roadCode;
     }
 
@@ -82,11 +84,11 @@ public class AddressInfo {
         this.legalDong = legalDong;
     }
 
-    public int getMappingDistance() {
+    public String getMappingDistance() {
         return this.mappingDistance;
     }
 
-    public void setMappingDistance(int mappingDistance) {
+    public void setMappingDistance(String mappingDistance) {
         this.mappingDistance = mappingDistance;
     }
 
@@ -130,11 +132,11 @@ public class AddressInfo {
         this.eup_myun = eup_myun;
     }
 
-    public int getLegalDongCode() {
+    public String getLegalDongCode() {
         return this.legalDongCode;
     }
 
-    public void setLegalDongCode(int legalDongCode) {
+    public void setLegalDongCode(String legalDongCode) {
         this.legalDongCode = legalDongCode;
     }
 

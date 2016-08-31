@@ -18,18 +18,19 @@ public class ReverseGeocodingRequest extends AbstractRequest<ReverseGeocodingDat
 
     public ReverseGeocodingRequest(Context context, String lat, String lon) {
         HttpUrl url = new HttpUrl.Builder()
-                .scheme("http")
+                .scheme("https")
                 .host("apis.skplanetx.com")
                 .addPathSegments("/tmap/geo/reversegeocoding")
                 .addQueryParameter("version", "1")
                 .addQueryParameter("lat", lat)
                 .addQueryParameter("lon", lon)
+                .addQueryParameter("coordType", "WGS84GEO")
                 .build();
 
         request = new Request.Builder()
                 .url(url)
                 .header("Accept","application/json")
-                .header("appKey","")
+                .header("appKey","be81c52f-a25c-328d-bc36-227a92c20195")
                 .tag(context)
                 .build();
 

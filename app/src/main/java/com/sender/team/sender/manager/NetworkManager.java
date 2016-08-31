@@ -39,7 +39,8 @@ import okhttp3.OkHttpClient;
  * Created by Administrator on 2016-08-09.
  */
 public class NetworkManager {
-
+    public static final int CLIENT_STANDARD = 0;
+    public static final int CLIENT_SECURE = 1;
 
     private static NetworkManager instance;
     public static NetworkManager getInstance() {
@@ -50,9 +51,15 @@ public class NetworkManager {
     }
 
     OkHttpClient client;
+    OkHttpClient client_standard;
+    OkHttpClient client_secure;
 
     private NetworkManager() {
+        createClient();
+        createClientSecure();
+    }
 
+    private void createClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         Context context = MyApplication.getContext();
         ClearableCookieJar cookieJar =
@@ -71,13 +78,37 @@ public class NetworkManager {
         builder.connectTimeout(30, TimeUnit.SECONDS);
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(10, TimeUnit.SECONDS);
-//        disableCertificateValidation(context, builder);
-        client = builder.build();
+        client_standard = builder.build();
+    }
+
+
+    private void createClientSecure() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        Context context = MyApplication.getContext();
+        ClearableCookieJar cookieJar =
+                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
+        builder.cookieJar(cookieJar);
+        builder.followRedirects(true);
+        builder.addInterceptor(new RedirectInterceptor());
+
+        File cacheDir = new File(context.getCacheDir(), "network");
+        if (!cacheDir.exists()) {
+            cacheDir.mkdirs();
+        }
+        Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
+        builder.cache(cache);
+
+        builder.connectTimeout(30, TimeUnit.SECONDS);
+        builder.readTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(10, TimeUnit.SECONDS);
+        disableCertificateValidation(context, builder);
+        client_secure = builder.build();
     }
 
     public OkHttpClient getClient() {
         return client;
     }
+
 
     private static final int MESSAGE_SUCCESS = 1;
     private static final int MESSAGE_FAIL = 2;
@@ -114,12 +145,26 @@ public class NetworkManager {
         mHandler.sendMessage(msg);
     }
 
-    public <T> void getNetworkData(NetworkRequest<T> request, OnResultListener<T> listener) {
+    public <T> void getNetworkData(int type, NetworkRequest<T> request, OnResultListener<T> listener) {
+        if (type == CLIENT_STANDARD) {
+            client = client_standard;
+        } else if (type == CLIENT_SECURE) {
+            client = client_secure;
+        } else {
+            throw new IllegalArgumentException("invalid data type");
+        }
         request.setOnResultListener(listener);
         request.process(client);
     }
 
-    public <T> T getNetworkDataSync(NetworkRequest<T> request) throws IOException {
+    public <T> T getNetworkDataSync(int type, NetworkRequest<T> request) throws IOException {
+        if (type == CLIENT_STANDARD) {
+            client = client_standard;
+        } else if (type == CLIENT_SECURE) {
+            client = client_secure;
+        } else {
+            throw new IllegalArgumentException("invalid data type");
+        }
         return request.processSync(client);
     }
 

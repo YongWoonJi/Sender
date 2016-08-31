@@ -22,7 +22,6 @@ import com.sender.team.sender.request.ContractsUpdateRequest;
  */
 public class DelivererHeaderFragment extends Fragment {
 
-    public static final int BEFORE_DELIVERY = 1;
     public static final int START_DELIVERY = 2;
     public static final int END_DELIVERY = 3;
 
@@ -42,8 +41,8 @@ public class DelivererHeaderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //15. 배송 상태 변경하기
-                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", ""+START_DELIVERY);
-                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + START_DELIVERY);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         Toast.makeText(getContext(), "배송 시작", Toast.LENGTH_SHORT).show();
@@ -63,8 +62,8 @@ public class DelivererHeaderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //15. 배송 상태 변경하기
-                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", ""+END_DELIVERY);
-                NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + END_DELIVERY);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         Toast.makeText(getContext(), "배송 완료", Toast.LENGTH_SHORT).show();

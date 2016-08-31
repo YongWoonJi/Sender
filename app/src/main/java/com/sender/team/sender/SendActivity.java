@@ -128,7 +128,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         String keyword = searchView.getText().toString();
         if (!TextUtils.isEmpty(keyword)) {
             POISearchRequest request = new POISearchRequest(SendActivity.this, keyword);
-            NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<POIResult>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<POIResult>() {
                 @Override
                 public void onSuccess(NetworkRequest<POIResult> request, POIResult result) {
                     listView.setVisibility(View.VISIBLE);

@@ -46,7 +46,7 @@ public class ChattingProfileActivity extends AppCompatActivity {
 
     private void initData() {
         OtherUserRequest request = new OtherUserRequest(this, "3");
-        NetworkManager.getInstance().getNetworkData(request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 name.setText(result.getResult().getName());

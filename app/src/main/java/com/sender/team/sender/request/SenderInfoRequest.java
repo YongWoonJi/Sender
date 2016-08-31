@@ -17,10 +17,10 @@ import okhttp3.Request;
 public class SenderInfoRequest extends AbstractRequest<NetworkResult<ContractsData>> {
 
     Request request;
-    public SenderInfoRequest(Context context, String sender_id){
+    public SenderInfoRequest(Context context, String delivering_id){
         HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
-                .addQueryParameter("sender", sender_id)
+                .addQueryParameter("delivering_id", delivering_id)
                 .build();
 
         request = new Request.Builder()
