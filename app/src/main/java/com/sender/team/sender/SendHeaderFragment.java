@@ -30,7 +30,6 @@ import com.sender.team.sender.request.OtherUserRequest;
  */
 public class SendHeaderFragment extends Fragment {
 
-    public static final int BEFORE_DELIVERY = 1;
     public static final int START_DELIVERY = 2;
     public static final int END_DELIVERY = 3;
 
@@ -101,7 +100,7 @@ public class SendHeaderFragment extends Fragment {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 Glide.with(getContext()).load(result.getResult().getPic()).into(imageProfile);
-                textName.setText(result.getResult().getName());
+                textName.setText(result.getResult().getNickname());
                 textRating.setText(""+result.getResult().getStar());
             }
 

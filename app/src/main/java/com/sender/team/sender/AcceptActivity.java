@@ -107,6 +107,7 @@ public class AcceptActivity extends Activity {
 
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         Intent intent2 = new Intent(getApplicationContext(), ChattingActivity.class);
+                                        intent2.putExtra("key", ChattingActivity.DELIVERER_HEADER);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

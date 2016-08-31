@@ -1,10 +1,10 @@
 package com.sender.team.sender.data;
 
-public class Review implements java.io.Serializable {
-    private static final long serialVersionUID = -2496164075740403391L;
+public class Review {
     private String date;
     private int star;
-    private String reviewer_id;
+    private String nickname;
+    private String pic;
     private String content;
 
     public String getDate() {
@@ -23,19 +23,27 @@ public class Review implements java.io.Serializable {
         this.star = star;
     }
 
-    public String getReviewer_id() {
-        return this.reviewer_id;
-    }
-
-    public void setReviewer_id(String reviewer_id) {
-        this.reviewer_id = reviewer_id;
-    }
-
     public String getContent() {
         return this.content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
     }
 }

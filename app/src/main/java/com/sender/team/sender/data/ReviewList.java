@@ -2,8 +2,7 @@ package com.sender.team.sender.data;
 
 import java.util.ArrayList;
 
-public class ReviewList implements java.io.Serializable {
-    private static final long serialVersionUID = 3886364987236318917L;
+public class ReviewList {
     private ArrayList<Review> review;
 
     public ArrayList<Review> getReview() {

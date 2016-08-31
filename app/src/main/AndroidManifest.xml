@@ -50,7 +50,8 @@
         <activity android:name=".SendActivity"
             android:exported="true"/>
         <activity android:name=".DelivererActivity" />
-        <activity android:name=".MyPageActivity" />
+        <activity android:name=".MyPageActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".NoticeActivity" />
         <activity android:name=".TermsActivity" />
         <activity android:name=".ChattingActivity" />

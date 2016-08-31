@@ -1,13 +1,11 @@
 package com.sender.team.sender.data;
 
-import java.io.Serializable;
-
-public class UserData implements Serializable {
+public class UserData {
     private int deliver_req;
     private int deliver_com;
     private int user_id;
     private String phone;
-    private String name;
+    private String nickname;
     private String pic;
     private int activation;
     private String email;
@@ -45,14 +43,6 @@ public class UserData implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPic() {
@@ -93,5 +83,17 @@ public class UserData implements Serializable {
 
     public void setStar(float star) {
         this.star = star;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getError() {
+        return error;
     }
 }

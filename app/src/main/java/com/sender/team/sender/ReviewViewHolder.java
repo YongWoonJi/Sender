@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sender.team.sender.data.Review;
 
 /**
@@ -17,7 +18,7 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
     public ReviewViewHolder(View itemView) {
         super(itemView);
-//       userImg = (ImageView) itemView.findViewById(R.id.)
+       userImg = (ImageView) itemView.findViewById(R.id.review_img);
         name = (TextView)itemView.findViewById(R.id.text_review_name);
         rating = (TextView)itemView.findViewById(R.id.text_review_rating);
         message = (TextView)itemView.findViewById(R.id.text_review_message);
@@ -26,7 +27,8 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
     Review data;
     public void setData(Review data) {
         this.data = data;
-        name.setText(data.getReviewer_id());
+        Glide.with(MyApplication.getContext()).load(data.getPic()).into(userImg);
+        name.setText(data.getNickname());
         rating.setText("" + data.getStar());
         message.setText(data.getContent());
     }

@@ -1,7 +1,6 @@
 package com.sender.team.sender.data;
 
-public class ReviewListData implements java.io.Serializable {
-    private static final long serialVersionUID = -3517856242515951816L;
+public class ReviewListData {
     private ReviewList data;
     private int totalPage;
     private int itemsPerPage;

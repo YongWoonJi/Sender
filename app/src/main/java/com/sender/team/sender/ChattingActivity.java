@@ -9,6 +9,10 @@ import android.widget.ImageView;
 
 public class ChattingActivity extends AppCompatActivity {
 
+    public static final int SEND_HEADER = 1;
+    public static final int DELIVERER_HEADER = 2;
+
+
     ImageView imageView;
 
     @Override
@@ -21,11 +25,11 @@ public class ChattingActivity extends AppCompatActivity {
         int i = intent.getIntExtra("key", 0);
 
         switch (i){
-            case 1:{
+            case SEND_HEADER :{
                 getSupportFragmentManager().beginTransaction().add(R.id.container,new SendHeaderFragment()).commit();
                 break;
             }
-            case 2:
+            case DELIVERER_HEADER :
             {
                 getSupportFragmentManager().beginTransaction().add(R.id.container,new DelivererHeaderFragment()).commit();
                 break;

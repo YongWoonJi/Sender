@@ -37,6 +37,7 @@
         android:layout_alignStart="@+id/text_my_name"
         android:layout_below="@+id/text_my_name"
         android:text="aaa@aaaa.com"
+        android:textSize="14sp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
