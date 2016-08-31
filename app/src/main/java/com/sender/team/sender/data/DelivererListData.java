@@ -1,18 +1,19 @@
 package com.sender.team.sender.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DelivererListData {
-    private ArrayList<DelivererData> data;
+    private List<DelivererData> data = new ArrayList<>();
     private int totalPage;
     private int itemsPerPage;
     private int currentPage;
 
-    public ArrayList<DelivererData> getData() {
+    public List<DelivererData> getData() {
         return this.data;
     }
 
-    public void setData(ArrayList<DelivererData> data) {
+    public void setData(List<DelivererData> data) {
         this.data = data;
     }
 

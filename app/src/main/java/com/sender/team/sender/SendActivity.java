@@ -1,6 +1,5 @@
 package com.sender.team.sender;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -19,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -33,13 +33,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
+import com.sender.team.sender.data.DelivererData;
 import com.sender.team.sender.data.POI;
 import com.sender.team.sender.data.POIResult;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.request.POISearchRequest;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,19 +48,29 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SendActivity extends AppCompatActivity implements InfoInputFragment.OnMessageCallback
-        , OnMapReadyCallback,GoogleMap.OnCameraMoveListener {
+        , OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnInfoWindowClickListener,
+        GoogleMap.OnMarkerDragListener {
 
     boolean isInfoOpen = false;
     GoogleMap mMap;
     LocationManager mLM;
-    String mProvider = LocationManager.GPS_PROVIDER;
+    String mProvider = LocationManager.NETWORK_PROVIDER;
 
     @BindView(R.id.edit_search_poi)
     EditText searchView;
 
+    @BindView(R.id.text_deliverer_search_content)
+    TextView headerView;
+
     ArrayAdapter<POI> mAdapter;
     Map<POI, Marker> markerResolver = new HashMap<>();
     Map<Marker, POI> poiResolver = new HashMap<>();
+
+    Map<DelivererData, Marker> deliverMarkerResolver = new HashMap<>();
+    Map<Marker, DelivererData> deliverDelivererDataResolver = new HashMap<>();
 
     @BindView(R.id.listView)
     ListView listView;
@@ -98,17 +108,20 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                         listView.setVisibility(View.GONE);
                         Marker m = markerResolver.get(poi);
                         m.showInfoWindow();
-
                     }
                 });
+                mMap.clear();
+                addMarker(poi);
             }
         });
+
+
     }
 
 
     private void animateMap(double lat, double lng, final Runnable callback) {
         if (mMap != null) {
-            CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(lat,lng));
+            CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(lat, lng));
             mMap.animateCamera(update, new GoogleMap.CancelableCallback() {
                 @Override
                 public void onFinish() {
@@ -128,7 +141,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         String keyword = searchView.getText().toString();
         if (!TextUtils.isEmpty(keyword)) {
             POISearchRequest request = new POISearchRequest(SendActivity.this, keyword);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<POIResult>() {
+            NetworkManager.getInstance().getNetworkData(0, request, new NetworkManager.OnResultListener<POIResult>() {
                 @Override
                 public void onSuccess(NetworkRequest<POIResult> request, POIResult result) {
                     listView.setVisibility(View.VISIBLE);
@@ -147,7 +160,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                 @Override
                 public void onFail(NetworkRequest<POIResult> request, String errorMessage, Throwable e) {
                     Toast.makeText(SendActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                    Log.i("Send",errorMessage);
+                    Log.i("Send", errorMessage);
                 }
             });
         }
@@ -183,13 +196,21 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
         mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.setOnCameraMoveListener(this);
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
+        mMap.setOnMarkerDragListener(this);
 
-//        mMap.setOnCameraMoveListener(this);
+
     }
 
     private void clear() {
@@ -206,6 +227,24 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     double addrLat;
     double addrLng;
 
+    private void addMarker(double lat, double lng, String title) {
+        if (marker != null) {
+            marker.remove();
+            marker = null;
+        }
+
+        MarkerOptions options = new MarkerOptions();
+        options.position(new LatLng(lat, lng));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+        options.anchor(0.5f, 1);
+        options.title(title);
+        options.snippet("snippet - " + title);
+        options.draggable(true);
+
+        marker = mMap.addMarker(options);
+    }
+
+
     private void addMarker(POI poi) {
         MarkerOptions options = new MarkerOptions();
         options.position(new LatLng(poi.getLatitude(), poi.getLongitude()));
@@ -218,10 +257,23 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         markerResolver.put(poi, marker);
         poiResolver.put(marker, poi);
 
-
-
         addrLat = poi.getLatitude();
         addrLng = poi.getLongitude();
+    }
+
+    protected void addMarker(DelivererData data) {
+        MarkerOptions options = new MarkerOptions();
+        double lat = Double.parseDouble(data.getHere_lat());
+        double lon = Double.parseDouble(data.getHere_lon());
+        options.position(new LatLng(lat,lon));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+        options.anchor(0.5f, 1);
+        options.title(data.getNickName());
+
+        Marker marker = mMap.addMarker(options);
+        deliverMarkerResolver.put(data, marker);
+        deliverDelivererDataResolver.put(marker, data);
+
     }
 
     private void moveMap(double lat, double lng) {
@@ -240,10 +292,11 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 //        map.animateCamera(update);
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         Location location = mLM.getLastKnownLocation(mProvider);
@@ -256,7 +309,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     @Override
     protected void onStop() {
         super.onStop();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mLM.removeUpdates(mListener);
@@ -294,10 +347,45 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         VisibleRegion region = projection.getVisibleRegion();
     }
 
-    public void receiveData(String name, String phone, String price, File pic){
-        Fragment f = new DelivererListFragment();
-        if (f != null){
-            ((DelivererListFragment)f).setSenderData(name, phone, price, pic, hereLat,hereLng,addrLat,addrLng);
+    public void receiveData() {
+        Fragment f = new InfoInputFragment();
+        if (f != null) {
+            ((InfoInputFragment) f).setSenderData(hereLat, hereLng, addrLat, addrLng);
         }
     }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        addMarker(latLng.latitude, latLng.longitude, "my marker");
+    }
+
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Toast.makeText(this, marker.getTitle(), Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        LatLng latLng = marker.getPosition();
+        Log.i("GoogleMapActivity", "lat : " + latLng.latitude + ", lng : " + latLng.longitude);
+    }
+
+
 }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sender.team.sender.data.DelivererDataTemp;
+import com.sender.team.sender.data.DelivererData;
 import com.sender.team.sender.widget.DelivererViewHolder;
 
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.List;
  */
 public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DelivererViewHolder.OnSendListener {
 
-    List<DelivererDataTemp> data = new ArrayList<>();
+    List<DelivererData> data = new ArrayList<>();
 
-    public void setDelivererData(List<DelivererDataTemp> data){
+    public void setDelivererData(List<DelivererData> data){
         if (this.data != data){
             this.data = data;
         }
@@ -45,6 +45,7 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         DelivererViewHolder dvh = (DelivererViewHolder) holder;
+        dvh.setDelivererData(data.get(position));
         dvh.setListener(this);
     }
 

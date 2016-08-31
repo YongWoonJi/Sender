@@ -14,10 +14,10 @@ import butterknife.OnClick;
 
 public class QuestionActivity extends AppCompatActivity {
 
-    @BindView(R.id.edit_title)
+    @BindView(R.id.edit_object_name)
     EditText editTitle;
 
-    @BindView(R.id.edit_contents)
+    @BindView(R.id.edit_receiver_phone)
     EditText editContents;
 
     @BindView(R.id.radioGroup)
