@@ -100,7 +100,7 @@ public class SendHeaderFragment extends Fragment {
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                Glide.with(getContext()).load(result.getResult().getPic()).into(imageProfile);
+                Glide.with(getContext()).load(result.getResult().getFileUrl()).into(imageProfile);
                 textName.setText(result.getResult().getName());
                 textRating.setText(""+result.getResult().getStar());
             }
@@ -123,7 +123,7 @@ public class SendHeaderFragment extends Fragment {
                     Toast.makeText(getActivity(), "리뷰를 입력해 주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     // ReviewRequest 추가해야함
-                    ReviewRequest request= new ReviewRequest(getContext(),"1","1", comment,""+(int)star);
+                    ReviewRequest request= new ReviewRequest(getContext(),"1", "1", comment, ""+(int)star);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {

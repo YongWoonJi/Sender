@@ -268,7 +268,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         options.position(new LatLng(lat,lon));
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
         options.anchor(0.5f, 1);
-        options.title(data.getNickName());
+        options.title(data.getName());
 
         Marker marker = mMap.addMarker(options);
         deliverMarkerResolver.put(data, marker);

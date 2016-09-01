@@ -3,7 +3,7 @@ package com.sender.team.sender.data;
 public class ChattingData {
     private int receiver_id;
     private String name;
-    private String pic;
+    private String fileUrl;
     private String message;
 
     public int getReceiver_id() {
@@ -22,12 +22,12 @@ public class ChattingData {
         this.name = name;
     }
 
-    public String getPic() {
-        return this.pic;
+    public String getFileUrl() {
+        return this.fileUrl;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 
     public String getMessage() {

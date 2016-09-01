@@ -57,8 +57,8 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
     DelivererData data;
     public void setDelivererData(final DelivererData data){
         this.data = data;
-        Glide.with(MyApplication.getContext()).load(data.getPic()).into(delivererImage);
-        name.setText(data.getNickName());
+        Glide.with(MyApplication.getContext()).load(data.getFileUrl()).into(delivererImage);
+        name.setText(data.getName());
         rating.setText(""+data.getStar());
 
         ReverseGeocodingRequest request = new ReverseGeocodingRequest(MyApplication.getContext(),data.getHere_lat(),data.getHere_lon());

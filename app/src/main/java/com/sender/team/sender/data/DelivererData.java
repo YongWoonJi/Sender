@@ -5,14 +5,15 @@ public class DelivererData {
     private String next_lon;
     private int user_id;
     private int deilver_id;
-//    private String dep_time;
+    private String dep_time;
     private String here_lon;
     private String next_lat;
-//    private String arr_time;
+    private String arr_time;
     private String name;
     private String phone;
     private float star;
-    private String pic;
+    private String originalFilename;
+    private String fileUrl;
 
     public String getPhone() {
         return phone;
@@ -30,24 +31,24 @@ public class DelivererData {
         this.star = star;
     }
 
-    public String getPic() {
-        return pic;
+    public String getFileUrl() {
+        return fileUrl;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 
     public String getHere_lat() {
         return this.here_lat;
     }
 
-    public String getNickName() {
+    public String getName() {
         return name;
     }
 
-    public void setNickName(String nickName) {
-        this.name = nickName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setHere_lat(String here_lat) {
@@ -77,14 +78,14 @@ public class DelivererData {
     public void setDeilver_id(int deilver_id) {
         this.deilver_id = deilver_id;
     }
-//
-//    public String getDep_time() {
-//        return this.dep_time;
-//    }
-//
-//    public void setDep_time(String dep_time) {
-//        this.dep_time = dep_time;
-//    }
+
+    public String getDep_time() {
+        return this.dep_time;
+    }
+
+    public void setDep_time(String dep_time) {
+        this.dep_time = dep_time;
+    }
 
     public String getHere_lon() {
         return this.here_lon;
@@ -102,11 +103,19 @@ public class DelivererData {
         this.next_lat = next_lat;
     }
 
-//    public String getArr_time() {
-//        return this.arr_time;
-//    }
-//
-//    public void setArr_time(String arr_time) {
-//        this.arr_time = arr_time;
-//    }
+    public String getArr_time() {
+        return this.arr_time;
+    }
+
+    public void setArr_time(String arr_time) {
+        this.arr_time = arr_time;
+    }
+
+    public String getOriginalFilename() {
+        return originalFilename;
+    }
+
+    public void setOriginalFilename(String originalFilename) {
+        this.originalFilename = originalFilename;
+    }
 }

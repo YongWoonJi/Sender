@@ -11,6 +11,7 @@ public class ContractsData {
     private String arr_time;
     private ContractsDataPic[] pic;
     private String sender_id;
+    private String contract_id;
     private String info;
     private String rec_phone;
 
@@ -109,5 +110,13 @@ public class ContractsData {
 
     public void setRec_phone(String rec_phone) {
         this.rec_phone = rec_phone;
+    }
+
+    public String getContract_id() {
+        return contract_id;
+    }
+
+    public void setContract_id(String contract_id) {
+        this.contract_id = contract_id;
     }
 }

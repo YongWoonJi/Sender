@@ -61,7 +61,6 @@ public class ChattingProfileActivity extends AppCompatActivity {
             return;
         }
         startActivity(intent);
-        finish();
     }
 
     private void initData() {
@@ -71,7 +70,7 @@ public class ChattingProfileActivity extends AppCompatActivity {
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 name.setText(result.getResult().getName());
                 phone.setText(result.getResult().getPhone());
-                String userImage = result.getResult().getPic();
+                String userImage = result.getResult().getFileUrl();
                 Log.i("ChattingProfile", userImage);
                 Glide.with(ChattingProfileActivity.this)
                         .load(userImage)

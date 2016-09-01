@@ -106,14 +106,14 @@ public class QuestionActivity extends AppCompatActivity {
 
 
     private void getGalleryImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(intent, RC_GET_IMAGE);
     }
 
 
     private Uri getSaveFile() {
-        File dir = getDir("capture", MODE_PRIVATE);
+        File dir = getExternalFilesDir("capture");
         if (!dir.exists()) {
             dir.mkdirs();
         }

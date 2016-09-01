@@ -6,11 +6,10 @@ public class UserData {
     private int user_id;
     private String phone;
     private String name;
-    private String pic;
+    private String fileUrl;
     private int activation;
     private String email;
     private String introduction;
-    private String error;
     private float star;
 
     public int getDeliver_req() {
@@ -45,12 +44,12 @@ public class UserData {
         this.phone = phone;
     }
 
-    public String getPic() {
-        return this.pic;
+    public String getFileUrl() {
+        return this.fileUrl;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 
     public int getActivation() {
@@ -91,10 +90,5 @@ public class UserData {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getError() {
-
-        return error;
     }
 }

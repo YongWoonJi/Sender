@@ -4,8 +4,26 @@ public class NoticeData {
     private String write_date;
     private int type;
     private String title;
-    private int notice_id;
+    private String notice_id;
     private String content;
+    private String originalFilename;
+    private String fileUrl;
+
+    public String getOriginalFilename() {
+        return originalFilename;
+    }
+
+    public void setOriginalFilename(String originalFilename) {
+        this.originalFilename = originalFilename;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
 
     public String getWrite_date() {
         return this.write_date;
@@ -31,11 +49,11 @@ public class NoticeData {
         this.title = title;
     }
 
-    public int getNotice_id() {
+    public String getNotice_id() {
         return this.notice_id;
     }
 
-    public void setNotice_id(int notice_id) {
+    public void setNotice_id(String notice_id) {
         this.notice_id = notice_id;
     }
 

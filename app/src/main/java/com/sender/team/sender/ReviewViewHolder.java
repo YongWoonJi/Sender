@@ -27,7 +27,7 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
     Review data;
     public void setData(Review data) {
         this.data = data;
-        Glide.with(MyApplication.getContext()).load(data.getPic()).into(userImg);
+        Glide.with(MyApplication.getContext()).load(data.getFileUrl()).into(userImg);
         name.setText(data.getName());
         rating.setText("" + data.getStar());
         message.setText(data.getContent());

@@ -190,7 +190,7 @@ public class MyPageActivity extends AppCompatActivity {
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                Glide.with(MyPageActivity.this).load(result.getResult().getPic()).into(profileImage);
+                Glide.with(MyPageActivity.this).load(result.getResult().getFileUrl()).into(profileImage);
                 name.setText(result.getResult().getName());
                 email.setText(result.getResult().getEmail());
                 phone.setText(result.getResult().getPhone());

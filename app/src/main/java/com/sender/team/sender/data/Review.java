@@ -4,7 +4,7 @@ public class Review {
     private String date;
     private int star;
     private String name;
-    private String pic;
+    private String fileUrl;
     private String content;
 
     public String getDate() {
@@ -39,11 +39,11 @@ public class Review {
         this.name = name;
     }
 
-    public String getPic() {
-        return pic;
+    public String getFileUrl() {
+        return fileUrl;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setFileUrl(String pic) {
+        this.fileUrl = pic;
     }
 }
