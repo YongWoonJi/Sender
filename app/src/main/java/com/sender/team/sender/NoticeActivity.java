@@ -6,10 +6,13 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
 import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.NoticeData;
 import com.sender.team.sender.data.NoticeListData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.request.NoticeRequest;
+
+import java.util.ArrayList;
 
 public class NoticeActivity extends AppCompatActivity {
 
@@ -57,15 +60,14 @@ public class NoticeActivity extends AppCompatActivity {
     }
 
     private void initData() {
-//        for (int i = 0; i < 10; i++) {
-//            mAdapter.put("공지 " + i, "공지 " + i + " 의 내용");
-//        }
         NoticeRequest request = new NoticeRequest(this, "1", "1", "0");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<NoticeListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<NoticeListData>> request, NetworkResult<NoticeListData> result) {
-//                mAdapter.put(result.getResult().getData());
-
+                ArrayList<NoticeData> data = result.getResult().getData();
+                for (NoticeData d : data) {
+                    mAdapter.put(d.getTitle(), d.getContent());
+                }
             }
 
             @Override

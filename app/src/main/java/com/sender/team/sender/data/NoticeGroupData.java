@@ -7,6 +7,6 @@ import java.util.List;
  * Created by Tacademy on 2016-08-24.
  */
 public class NoticeGroupData {
-    public String groupName;
+    public String title;
     public List<NoticeChildData> children = new ArrayList<>();
 }

@@ -18,28 +18,30 @@ import java.util.List;
 public class NoticeAdapter extends BaseExpandableListAdapter {
     List<NoticeGroupData> items = new ArrayList<>();
 
-    public void put(String groupName, String contents) {
+
+    public void put(String title, String content) {
         NoticeGroupData group = null;
-        for(NoticeGroupData g : items) {
-            if (g.groupName.equals(groupName)) {
+        for (NoticeGroupData g : items) {
+            if (g.title.equals(title)) {
                 group = g;
                 break;
             }
         }
         if (group == null) {
             group = new NoticeGroupData();
-            group.groupName = groupName;
+            group.title = title;
             items.add(group);
         }
 
-        if (contents != null) {
+        if (content != null) {
             NoticeChildData child = new NoticeChildData();
-            child.contents = contents;
+            child.content = content;
             group.children.add(child);
         }
 
         notifyDataSetChanged();
     }
+
 
     @Override
     public int getGroupCount() {
@@ -79,12 +81,12 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         TextView view;
-        if(convertView == null){
-            view = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent,false);
-        } else{
-            view = (TextView)convertView;
+        if (convertView == null) {
+            view = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        } else {
+            view = (TextView) convertView;
         }
-        view.setText(items.get(groupPosition).groupName);
+        view.setText(items.get(groupPosition).title);
         return view;
     }
 
@@ -92,12 +94,12 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         TextView view;
         if (convertView == null) {
-            view = (TextView)LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+            view = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
         } else {
-            view = (TextView)convertView;
+            view = (TextView) convertView;
         }
 
-        view.setText(items.get(groupPosition).children.get(childPosition).contents);
+        view.setText(items.get(groupPosition).children.get(childPosition).content);
         return view;
     }
 

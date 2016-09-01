@@ -23,6 +23,7 @@ import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.request.ContractsUpdateRequest;
 import com.sender.team.sender.request.OtherUserRequest;
+import com.sender.team.sender.request.ReviewRequest;
 
 
 /**
@@ -95,7 +96,7 @@ public class SendHeaderFragment extends Fragment {
         final ImageView imageProfile = (ImageView) view.findViewById(R.id.image_profile);
         final RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         final EditText editComment = (EditText) view.findViewById(R.id.edit_comment);
-        OtherUserRequest request = new OtherUserRequest(getContext(), "1");
+        final OtherUserRequest request = new OtherUserRequest(getContext(), "1");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
@@ -122,6 +123,18 @@ public class SendHeaderFragment extends Fragment {
                     Toast.makeText(getActivity(), "리뷰를 입력해 주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     // ReviewRequest 추가해야함
+                    ReviewRequest request= new ReviewRequest(getContext(),"1","1", comment,""+(int)star);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                            Toast.makeText(getContext(), result.getResult().toString(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                            Toast.makeText(getContext(), "리뷰 등록 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
                 Toast.makeText(getContext(), "배송이 완료되었습니다", Toast.LENGTH_SHORT).show();
                 getActivity().finish();

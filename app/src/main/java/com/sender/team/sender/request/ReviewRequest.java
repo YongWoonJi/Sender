@@ -19,7 +19,7 @@ public class ReviewRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
     public ReviewRequest(Context context, String user_id, String constract_id, String content ,String star){
         HttpUrl url = getBaseUrlBuilder()
-                .addPathSegment("contracts")
+                .addPathSegment("reviews")
                 .build();
 
         RequestBody body = new FormBody.Builder()
