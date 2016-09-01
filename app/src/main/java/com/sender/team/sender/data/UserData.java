@@ -3,7 +3,7 @@ package com.sender.team.sender.data;
 public class UserData {
     private int deliver_req;
     private int deliver_com;
-    private int user_id;
+    private String user_id;
     private String phone;
     private String name;
     private String fileUrl;
@@ -28,11 +28,11 @@ public class UserData {
         this.deliver_com = deliver_com;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return this.user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 

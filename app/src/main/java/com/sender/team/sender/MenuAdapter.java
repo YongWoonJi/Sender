@@ -84,6 +84,11 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final NaviItem item = data.get(position);
         switch (item.type) {
+            case HEADER : {
+                HeaderViewHolder hvh = (HeaderViewHolder) holder;
+                hvh.setData(PropertyManager.getInstance().getUserData());
+                break;
+            }
             case GROUP : {
                 final MenuGroup groupItem = (MenuGroup) item;
                 final GroupViewHolder groupViewHolder = (GroupViewHolder) holder;

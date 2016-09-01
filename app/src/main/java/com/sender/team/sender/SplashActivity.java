@@ -11,6 +11,12 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.UserData;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.request.MyPageRequest;
+
 public class SplashActivity extends AppCompatActivity {
 
     Handler handler;
@@ -19,6 +25,19 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        MyPageRequest request = new MyPageRequest(this);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                PropertyManager.getInstance().setUserData(result.getResult());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 
     Runnable runnable = new Runnable() {

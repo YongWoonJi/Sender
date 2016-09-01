@@ -3,6 +3,7 @@ package com.sender.team.sender.request;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
+import com.sender.team.sender.data.DeliveringIdData;
 import com.sender.team.sender.data.NetworkResult;
 
 import java.lang.reflect.Type;
@@ -15,13 +16,13 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-29.
  */
-public class DelivererRegisterRequest extends AbstractRequest<NetworkResult<String>> {
+public class DelivererRegisterRequest extends AbstractRequest<NetworkResult<DeliveringIdData>> {
     Request request;
     public DelivererRegisterRequest(Context context, String user_id, String here_lat, String here_lon,
                                     String next_lat, String next_lon, String dep_time, String arr_time) {
         HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
-                .addPathSegment("delivering")
+                .addPathSegment("deliverings")
                 .build();
 
         RequestBody body = new FormBody.Builder()
@@ -44,7 +45,7 @@ public class DelivererRegisterRequest extends AbstractRequest<NetworkResult<Stri
 
     @Override
     protected Type getType() {
-        return new TypeToken<NetworkResult<String>>(){}.getType();
+        return new TypeToken<NetworkResult<DeliveringIdData>>(){}.getType();
     }
 
     @Override

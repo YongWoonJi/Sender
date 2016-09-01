@@ -59,14 +59,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <TextView
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="지도 부분"
-        android:gravity="center"
-        android:background="#dedede"
-        android:id="@+id/text_my_email"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map_fragment"
         android:layout_below="@+id/edit_end"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -77,7 +74,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="출발 시각"
         android:id="@+id/text_my_phone"
-        android:layout_below="@+id/text_my_email"
+        android:layout_below="@+id/map_fragment"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -166,5 +163,25 @@
         android:layout_toEndOf="@+id/edit_end_min"
         android:layout_alignBottom="@+id/edit_end_min"
         android:layout_alignTop="@+id/edit_end_min" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_startSearch"
+        android:background="#fff"
+        android:visibility="gone"
+        android:layout_below="@+id/edit_start"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_endSearch"
+        android:background="#fff"
+        android:visibility="gone"
+        android:layout_alignTop="@+id/map_fragment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

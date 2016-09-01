@@ -41,21 +41,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/title"
+        android:text="배송원 ID"
         android:id="@+id/text_rating"
-        android:layout_below="@+id/textView32"
+        android:layout_below="@+id/radioGroup"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_title"
-        android:layout_below="@+id/text_rating"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/btn_question"
-        android:layout_alignEnd="@+id/btn_question" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,7 +53,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/content"
         android:id="@+id/textView34"
-        android:layout_below="@+id/edit_title"
+        android:layout_below="@+id/spinner"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -71,11 +61,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/edit_contents"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/textView34"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/spinner"
+        android:layout_alignEnd="@+id/spinner" />
 
 
     <TextView
@@ -84,18 +74,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/image_registration"
         android:id="@+id/textView36"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/edit_contents"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentLeft="true" />
 
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/imageView7"
-        android:layout_below="@+id/textView36"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@android:drawable/ic_menu_camera" />
+        android:src="@android:drawable/ic_menu_camera"
+        android:layout_below="@+id/textView36"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -103,10 +93,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/image_registration_content"
         android:id="@+id/textView37"
-        android:layout_below="@+id/textView36"
-        android:layout_toRightOf="@+id/imageView7"
-        android:layout_toEndOf="@+id/imageView7"
-        android:textColor="@android:color/holo_red_light" />
+        android:textColor="@android:color/holo_red_light"
+        android:layout_alignBottom="@+id/imageView7"
+        android:layout_alignLeft="@+id/textView38"
+        android:layout_alignStart="@+id/textView38"
+        android:layout_marginBottom="21dp" />
 
     <Button
         android:layout_width="match_parent"
@@ -114,6 +105,38 @@
         android:text="@string/send"
         android:id="@+id/btn_report"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView32"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/radioGroup"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="칭찬하기"
+            android:id="@+id/radio_praise"
+            android:checked="true" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신고하기"
+            android:id="@+id/radio_report"
+            android:checked="false" />
+    </RadioGroup>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/text_rating"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

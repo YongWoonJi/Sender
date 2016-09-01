@@ -24,7 +24,6 @@ import com.sender.team.sender.data.ReviewListData;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
-import com.sender.team.sender.request.MyPageRequest;
 import com.sender.team.sender.request.ProfilePictureUploadRequest;
 import com.sender.team.sender.request.ReviewListRequest;
 
@@ -77,31 +76,32 @@ public class MyPageActivity extends AppCompatActivity {
         listView.setAdapter(mAdapter);
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        if (savedInstanceState == null) {
-            getUserData();
-            getReviewListData();
-        } else {
-            initData(savedInstanceState);
-            getReviewListData();
-        }
+
+        initData(savedInstanceState);
+        getReviewListData();
+
 
 
     }
 
     private void initData(Bundle savedInstanceState) {
-        String path = savedInstanceState.getString(FIELD_SAVE_FILE);
-        if (!TextUtils.isEmpty(path)) {
-            savedFile = new File(path);
-        }
-        path = savedInstanceState.getString(FIELD_UPLOAD_FILE);
-        if (!TextUtils.isEmpty(path)) {
-            uploadFile = new File(path);
-            Glide.with(this)
-                    .load(uploadFile)
-                    .into(profileImage);
+        UserData user = PropertyManager.getInstance().getUserData();
+        if (savedInstanceState == null) {
+            Glide.with(MyPageActivity.this).load(user.getFileUrl()).into(profileImage);
+        } else {
+            String path = savedInstanceState.getString(FIELD_SAVE_FILE);
+            if (!TextUtils.isEmpty(path)) {
+                savedFile = new File(path);
+            }
+            path = savedInstanceState.getString(FIELD_UPLOAD_FILE);
+            if (!TextUtils.isEmpty(path)) {
+                uploadFile = new File(path);
+                Glide.with(this)
+                        .load(uploadFile)
+                        .into(profileImage);
+            }
         }
 
-        UserData user = PropertyManager.getInstance().getUserData();
         name.setText(user.getName());
         email.setText(user.getEmail());
         phone.setText(user.getPhone());
@@ -202,26 +202,6 @@ public class MyPageActivity extends AppCompatActivity {
         }
     }
 
-    private void getUserData() {
-        MyPageRequest request = new MyPageRequest(this);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                PropertyManager.getInstance().setUserData(result.getResult());
-
-                Glide.with(MyPageActivity.this).load(result.getResult().getFileUrl()).into(profileImage);
-                name.setText(result.getResult().getName());
-                email.setText(result.getResult().getEmail());
-                phone.setText(result.getResult().getPhone());
-                requestCount.setText("" + result.getResult().getDeliver_req());
-                deliveryCount.setText("" + result.getResult().getDeliver_com());
-            }
-
-            @Override
-            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
-            }
-        });
-    }
 
     private void getReviewListData() {
         //리뷰 리스트 보기

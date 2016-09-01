@@ -17,4 +17,10 @@ public class Utils {
     public static Date convertStringToTime(String text) throws ParseException {
         return sdf.parse(text);
     }
+
+    public static String getCurrentDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentTime = new Date();
+        return formatter.format(currentTime);
+    }
 }

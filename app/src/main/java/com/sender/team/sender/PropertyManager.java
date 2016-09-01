@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.sender.team.sender.data.DeliveringIdData;
 import com.sender.team.sender.data.UserData;
 
 /**
@@ -26,18 +27,28 @@ public class PropertyManager {
     SharedPreferences mPrefs;
     SharedPreferences.Editor mEditor;
 
+    private UserData userData;
+    private DeliveringIdData deliveringId;
+
     private PropertyManager() {
         Context context = MyApplication.getContext();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPrefs.edit();
     }
 
-    UserData userData;
     public void setUserData(UserData data) {
         userData = data;
     }
 
     public UserData getUserData() {
         return userData;
+    }
+
+    public DeliveringIdData getDeliveringId() {
+        return deliveringId;
+    }
+
+    public void setDeliveringId(DeliveringIdData deliveringId) {
+        this.deliveringId = deliveringId;
     }
 }

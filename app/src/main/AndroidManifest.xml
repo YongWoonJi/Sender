@@ -37,6 +37,7 @@
             android:theme="@style/AppTheme.NoTitleBar" />
         <activity
             android:name=".SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,25 +47,35 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar" />
         <activity android:name=".SendActivity"
+            android:screenOrientation="portrait"
             android:exported="true"/>
-        <activity android:name=".DelivererActivity" />
+        <activity android:name=".DelivererActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".MyPageActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".NoticeActivity" />
-        <activity android:name=".TermsActivity" />
-        <activity android:name=".ChattingActivity" />
+        <activity android:name=".NoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".TermsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChattingActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ChattingProfileActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar" />
-        <activity android:name=".FAQActivity" />
+        <activity android:name=".FAQActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".QuestionActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ReportActivity" />
+        <activity android:name=".ReportActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AcceptActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <service

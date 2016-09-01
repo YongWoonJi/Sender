@@ -20,7 +20,7 @@ public class DeliveryDetailRequest extends AbstractRequest<NetworkResult<List<De
     public DeliveryDetailRequest(Context context, String deliverer_id) {
         HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
-                .addPathSegment("delivering")
+                .addPathSegment("deliverings")
                 .addPathSegment(deliverer_id)
                 .build();
         request = new Request.Builder()
