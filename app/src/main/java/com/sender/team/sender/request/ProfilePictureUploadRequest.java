@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
  * Created by Tacademy on 2016-08-29.
  */
 public class ProfilePictureUploadRequest extends AbstractRequest<NetworkResult<String>> {
-    MediaType jpeg = MediaType.parse("image/jpeg");
+    MediaType mediaType = MediaType.parse("image/*");
     Request request;
 
     public ProfilePictureUploadRequest(Context context, File file) {
@@ -29,7 +29,7 @@ public class ProfilePictureUploadRequest extends AbstractRequest<NetworkResult<S
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
         if (file != null) {
-            builder.addFormDataPart("pic", file.getName(), RequestBody.create(jpeg, file));
+            builder.addFormDataPart("pic", file.getName(), RequestBody.create(mediaType, file));
         }
         RequestBody body = builder.build();
         request = new Request.Builder()
