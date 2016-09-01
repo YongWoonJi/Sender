@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
  * Created by Tacademy on 2016-08-29.
  */
 public class SenderRequest extends AbstractRequest<NetworkResult<String>> {
-    MediaType jpeg = MediaType.parse("image/jpeg");
+    MediaType mediaType = MediaType.parse("image/*");
     Request request;
     public SenderRequest (Context context, String user_id, String addr_lat, String addr_lon, String rec_phone,
                           String price, String info, File file, String memo){
@@ -34,7 +34,7 @@ public class SenderRequest extends AbstractRequest<NetworkResult<String>> {
                 .addFormDataPart("price", price)
                 .addFormDataPart("info", info);
         if (file != null) {
-            builder.addFormDataPart("pic", file.getName(), RequestBody.create(jpeg, file));
+            builder.addFormDataPart("pic", file.getName(), RequestBody.create(mediaType, file));
         }
         builder.addFormDataPart("memo", memo);
         RequestBody body = builder.build();

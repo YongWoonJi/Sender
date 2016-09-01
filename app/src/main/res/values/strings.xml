@@ -3,8 +3,7 @@
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="service_terms">서비스 이용약관</string>
     <string name="service_terms_gps">위치정보 서비스 이용약관</string>
     <string name="service_terms_personal">개인정보 취급방침</string>
