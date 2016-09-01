@@ -10,7 +10,7 @@ public class ContractsData {
     private String memo;
     private String arr_time;
     private ContractsDataPic[] pic;
-    private String sender_id;
+    private String sending_id;
     private String contract_id;
     private String info;
     private String rec_phone;
@@ -89,11 +89,11 @@ public class ContractsData {
     }
 
     public String getSender_id() {
-        return this.sender_id;
+        return this.sending_id;
     }
 
-    public void setSender_id(String sender_id) {
-        this.sender_id = sender_id;
+    public void setSender_id(String sending_id) {
+        this.sending_id = sending_id;
     }
 
     public String getInfo() {

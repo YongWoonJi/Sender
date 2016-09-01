@@ -64,6 +64,7 @@ public class MyPageActivity extends AppCompatActivity {
     File savedFile = null;
     File uploadFile = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,24 +73,40 @@ public class MyPageActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        if (savedInstanceState != null) {
-            String path = savedInstanceState.getString(FIELD_SAVE_FILE);
-            if (!TextUtils.isEmpty(path)) {
-                savedFile = new File(path);
-            }
-            path = savedInstanceState.getString(FIELD_UPLOAD_FILE);
-            if (!TextUtils.isEmpty(path)) {
-                uploadFile = new File(path);
-                Glide.with(this)
-                        .load(uploadFile)
-                        .into(profileImage);
-            }
-        }
-
         mAdapter = new ReviewAdapter();
         listView.setAdapter(mAdapter);
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        initData();
+
+        if (savedInstanceState == null) {
+            getUserData();
+            getReviewListData();
+        } else {
+            initData(savedInstanceState);
+            getReviewListData();
+        }
+
+
+    }
+
+    private void initData(Bundle savedInstanceState) {
+        String path = savedInstanceState.getString(FIELD_SAVE_FILE);
+        if (!TextUtils.isEmpty(path)) {
+            savedFile = new File(path);
+        }
+        path = savedInstanceState.getString(FIELD_UPLOAD_FILE);
+        if (!TextUtils.isEmpty(path)) {
+            uploadFile = new File(path);
+            Glide.with(this)
+                    .load(uploadFile)
+                    .into(profileImage);
+        }
+
+        UserData user = PropertyManager.getInstance().getUserData();
+        name.setText(user.getName());
+        email.setText(user.getEmail());
+        phone.setText(user.getPhone());
+        requestCount.setText("" + user.getDeliver_req());
+        deliveryCount.setText("" + user.getDeliver_com());
     }
 
     @OnClick(R.id.my_image)
@@ -185,38 +202,41 @@ public class MyPageActivity extends AppCompatActivity {
         }
     }
 
-    private void initData() {
+    private void getUserData() {
         MyPageRequest request = new MyPageRequest(this);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                PropertyManager.getInstance().setUserData(result.getResult());
+
                 Glide.with(MyPageActivity.this).load(result.getResult().getFileUrl()).into(profileImage);
                 name.setText(result.getResult().getName());
                 email.setText(result.getResult().getEmail());
                 phone.setText(result.getResult().getPhone());
                 requestCount.setText("" + result.getResult().getDeliver_req());
                 deliveryCount.setText("" + result.getResult().getDeliver_com());
-
             }
 
             @Override
             public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
             }
         });
+    }
 
+    private void getReviewListData() {
         //리뷰 리스트 보기
         ReviewListRequest reviewRequest = new ReviewListRequest(MyPageActivity.this,"1","1","1");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, reviewRequest, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
-                        mAdapter.clear();
-                        mAdapter.setReviewData(result.getResult().getData().getReview());
-                    }
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
+                mAdapter.clear();
+                mAdapter.setReviewData(result.getResult().getData().getReview());
+            }
 
-                    @Override
-                    public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, String errorMessage, Throwable e) {
-                    }
-                });
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, String errorMessage, Throwable e) {
+            }
+        });
     }
 
     @Override

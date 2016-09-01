@@ -23,9 +23,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewViewHolder>{
     }
 
     public void setReviewData(List<Review> data){
-//        if (this.data !=data){
+        if (this.data != data){
             this.data.addAll(data);
-//        }
+        }
         notifyDataSetChanged();
     }
 

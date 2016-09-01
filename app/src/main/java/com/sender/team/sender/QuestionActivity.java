@@ -78,6 +78,7 @@ public class QuestionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
     @OnClick(R.id.image_picture)
     public void onClickImage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
