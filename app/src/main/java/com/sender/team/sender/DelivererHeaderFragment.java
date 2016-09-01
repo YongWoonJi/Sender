@@ -83,11 +83,10 @@ public class DelivererHeaderFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-0000-0000"));
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:010-0000-0000"));
                 startActivity(intent);
             }
         });
         return view;
     }
-
 }

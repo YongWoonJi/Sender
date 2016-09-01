@@ -64,5 +64,4 @@ public class NaviFragment extends Fragment {
         mAdapter.setOnFinishListener((MainActivity)getActivity());
         return view;
     }
-
 }
