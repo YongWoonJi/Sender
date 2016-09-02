@@ -34,7 +34,7 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
 
     OnSendListener listener;
     public interface OnSendListener {
-        void OnClickSend();
+        void OnClickSend(int position);
     }
 
     public void setListener(OnSendListener listener) {
@@ -49,7 +49,7 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.OnClickSend();
+                listener.OnClickSend(getAdapterPosition());
             }
         });
     }
@@ -72,7 +72,7 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
                     @Override
                     public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
                         end = result.getAddressInfo().getLegalDong();
-
+                        location.setText(start + " > "+ end);
                     }
 
                     @Override
@@ -87,7 +87,7 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
 
             }
         });
-        location.setText(start + " > "+ end);
+
 
     }
 

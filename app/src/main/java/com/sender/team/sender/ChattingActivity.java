@@ -1,26 +1,57 @@
 package com.sender.team.sender;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class ChattingActivity extends AppCompatActivity {
+import com.sender.team.sender.data.ChatContract;
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.UserData;
+import com.sender.team.sender.manager.DBManager;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
+import com.sender.team.sender.request.ChattingRequest;
+
+import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class ChattingActivity extends AppCompatActivity{
 
     public static final int SEND_HEADER = 1;
     public static final int DELIVERER_HEADER = 2;
 
+    @BindView(R.id.rv_list2)
+    RecyclerView listview;
 
-    ImageView imageView;
+    @BindView(R.id.btn_message_send)
+    Button messageSend;
+
+    @BindView(R.id.edit_message_send)
+    EditText editMessage;
+
+    ChattingAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        imageView = (ImageView)findViewById(R.id.img_chat_profile);
+        ButterKnife.bind(this);
         Intent intent = getIntent();
         int i = intent.getIntExtra("key", 0);
 
@@ -37,15 +68,62 @@ public class ChattingActivity extends AppCompatActivity {
                 default:
                     break;
         }
-        imageView.setOnClickListener(new View.OnClickListener() {
+
+        mAdapter = new ChattingAdapter();
+        listview.setAdapter(mAdapter);
+        listview.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+
+        editMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(ChattingActivity.this, ChattingProfileActivity.class);
-                startActivity(intent1);
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    onClickSendMessage();
+                }
+                return false;
             }
         });
 
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent1 = new Intent(ChattingActivity.this, ChattingProfileActivity.class);
+//                startActivity(intent1);
+//            }
+//        });
+
     }
+
+
+    UserData user = PropertyManager.getInstance().getUserData();
+
+    @OnClick(R.id.btn_message_send)
+    public void onClickSendMessage(){
+        final String message = editMessage.getText().toString();
+        if (!TextUtils.isEmpty(message)){
+            String userUrl = PropertyManager.getInstance().getUserData().getFileUrl();
+            ChattingRequest request = new ChattingRequest(this, "1",message, userUrl);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                    if (!TextUtils.isEmpty(result.getResult())){
+                        DBManager.getInstance().addMessage(user, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
+                        updateMessage();
+
+                    }
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                    Toast.makeText(ChattingActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+            editMessage.setText("");
+            listview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+        }else{
+            Toast.makeText(ChattingActivity.this, "내용을 입력하세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -55,4 +133,23 @@ public class ChattingActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateMessage();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdapter.changeCursor(null);
+    }
+
+    private void updateMessage() {
+        Cursor c = DBManager.getInstance().getChatMessage(user);
+        mAdapter.changeCursor(c);
+    }
+
+
 }

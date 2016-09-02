@@ -17,14 +17,15 @@ import okhttp3.RequestBody;
  */
 public class ContractsRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
-    public ContractsRequest(Context context, String constract_id ,String state){
+    public ContractsRequest(Context context, String constract_id ,String delivering_id){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("contracts")
+                .addPathSegment("deliverings")
                 .build();
 
         RequestBody body = new FormBody.Builder()
-                .add("constract_id", constract_id)
-                .add("state", state )
+                .add("contract_id", constract_id)
+                .add("delivering_id", delivering_id)
                 .build();
 
         request = new Request.Builder()

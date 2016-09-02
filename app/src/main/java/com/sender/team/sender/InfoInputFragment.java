@@ -1,15 +1,36 @@
 package com.sender.team.sender;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.sender.team.sender.data.ContractIdData;
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
+import com.sender.team.sender.request.SenderRequest;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,14 +61,14 @@ public class InfoInputFragment extends Fragment {
         }
     }
 
-    @BindView(R.id.edit_title)
+    @BindView(R.id.edit_object_name)
     EditText objectName;
 
     @BindView(R.id.edit_object_price)
     EditText objectPrice;
 
-    @BindView(R.id.edit_contents)
-    EditText receivePhone;
+    @BindView(R.id.edit_receiver_phone)
+    EditText receiverPhone;
 
     @BindView(R.id.object_image)
     ImageView objectImage;
@@ -60,32 +81,62 @@ public class InfoInputFragment extends Fragment {
     private static final String FIELD_SAVE_FILE = "savedfile";
     private static final String FIELD_UPLOAD_FILE = "uploadfile";
 
+    File savedFile = null;
+    File uploadFile = null;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            String path = savedInstanceState.getString(FIELD_SAVE_FILE);
+            if (!TextUtils.isEmpty(path)) {
+                savedFile = new File(path);
+            }
+            path = savedInstanceState.getString(FIELD_UPLOAD_FILE);
+            if (!TextUtils.isEmpty(path)) {
+                uploadFile = new File(path);
+                Glide.with(this)
+                        .load(uploadFile)
+                        .into(objectImage);
+            }
+        }
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_info_input, container, false);
         ButterKnife.bind(this, view);
+
         Button btn = (Button) view.findViewById(R.id.btn_deliverer);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((SendActivity)getActivity()).searchView.setVisibility(View.GONE);
-                ((SendActivity)getActivity()).searchBtn.setVisibility(View.GONE);
-                ((SendActivity)getActivity()).headerView.setVisibility(View.VISIBLE);
+
 
                 String obName = objectName.getText().toString();
                 String obPrice = objectPrice.getText().toString();
-                String phone = receivePhone.getText().toString();
-//                if (!TextUtils.isEmpty(obName)&&!TextUtils.isEmpty(phone)&&!TextUtils.isEmpty(obPrice)){
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new DelivererListFragment())
-                        .addToBackStack(null)
-                        .commit();
+                String phone = receiverPhone.getText().toString();
 
-//                }else{
-//                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
-//                }
+
+                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice)) {
+
+                    ((SendActivity) getActivity()).searchView.setVisibility(View.GONE);
+                    ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
+                    ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
+
+                    ((SendActivity) getActivity()).receiveData(phone, obPrice, uploadFile);
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, new DelivererListFragment())
+                            .addToBackStack(null)
+                            .commit();
+
+                } else {
+                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
 
                 if (callback != null) {
                     callback.onClickButton();
@@ -97,22 +148,106 @@ public class InfoInputFragment extends Fragment {
     }
 
     @OnClick(R.id.object_image)
-    public void onUploadImage(View view){
-
+    public void onUploadImage(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.profile_image);
+        builder.setItems(R.array.select_image, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i) {
+                    case INDEX_CAMERA:
+                        getCaptureImage();
+                        break;
+                    case INDEX_GALLERY:
+                        getGalleryImage();
+                        break;
+                }
+            }
+        });
+        builder.create().show();
     }
 
-    double hereLat;
-    double hereLng;
-    double addrLat;
-    double addrLng;
+    private void getGalleryImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, RC_GET_IMAGE);
+    }
 
-    public void setSenderData(double hereLat, double hereLng, double addrLat, double addrLng){
-        this.hereLat  = hereLat;
-        this.hereLng = hereLng;
-        this.addrLat = addrLat;
-        this.addrLng  = addrLng;
+    private void getCaptureImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+        startActivityForResult(intent, RC_CATPURE_IMAGE);
+    }
+
+    private Uri getSaveFile() {
+        File dir = getActivity().getExternalFilesDir("capture");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        savedFile = new File(dir, "my_image_" + System.currentTimeMillis() + ".jpeg");
+        return Uri.fromFile(savedFile);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedFile != null) {
+            savedInstanceState.putString(FIELD_SAVE_FILE, savedFile.getAbsolutePath());
+        }
+        if (uploadFile != null) {
+            savedInstanceState.putString(FIELD_UPLOAD_FILE, uploadFile.getAbsolutePath());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_GET_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getData();
+                Cursor c = getActivity().getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+                if (c.moveToNext()) {
+                    String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
+                    uploadFile = new File(path);
+                    Glide.with(this)
+                            .load(uploadFile)
+                            .into(objectImage);
+                }
+            }
+        } else if (requestCode == RC_CATPURE_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                uploadFile = savedFile;
+                Glide.with(this)
+                        .load(uploadFile)
+                        .into(objectImage);
+            }
+        }
+    }
 
 
+    public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng, String phone, String obPrice, File uploadFile) {
+
+        String hLat = String.valueOf(hereLat);
+        String hLng = String.valueOf(hereLng);
+        String aLat = String.valueOf(addrLat);
+        String aLng = String.valueOf(addrLng);
+
+        SenderRequest request = new SenderRequest(context, "1", hLat, hLng, aLat, aLng, "15:00", phone, obPrice, "신속하고 안전하게", uploadFile, "으아아");
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
+
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
+                PropertyManager.getInstance().setContractIdData(result.getResult());
+                Toast.makeText(context, "success  " + result.getResult().getContractId(), Toast.LENGTH_SHORT).show();
+                Log.i("InfoInputFragment", "contractid = " + result.getResult().getContractId());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, String errorMessage, Throwable e) {
+                Toast.makeText(context, "fail =" + errorMessage, Toast.LENGTH_SHORT).show();
+                Log.i("InfoInputFragment", "fail = " + errorMessage);
+            }
+        });
     }
 
 }

@@ -40,6 +40,7 @@ import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.request.POISearchRequest;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -347,10 +348,10 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         VisibleRegion region = projection.getVisibleRegion();
     }
 
-    public void receiveData() {
+    public void receiveData(String phone, String price, File uploadFile) {
         Fragment f = new InfoInputFragment();
         if (f != null) {
-            ((InfoInputFragment) f).setSenderData(hereLat, hereLng, addrLat, addrLng);
+            ((InfoInputFragment) f).setSenderData(getApplicationContext(),hereLat, hereLng, addrLat, addrLng, phone, price,uploadFile);
         }
     }
 
@@ -386,6 +387,5 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         LatLng latLng = marker.getPosition();
         Log.i("GoogleMapActivity", "lat : " + latLng.latitude + ", lng : " + latLng.longitude);
     }
-
 
 }

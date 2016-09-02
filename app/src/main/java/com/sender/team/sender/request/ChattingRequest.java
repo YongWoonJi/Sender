@@ -16,10 +16,11 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-26.
  */
-public class ChattingRequest extends AbstractRequest<NetworkResult<ChattingData>> {
+public class ChattingRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
     public ChattingRequest(Context context, String receiver_id, String message, String pic){
         HttpUrl url = getBaseUrlBuilder()
+                .addPathSegment("notification")
                 .addPathSegment("chattings")
                 .build();
 
@@ -44,6 +45,6 @@ public class ChattingRequest extends AbstractRequest<NetworkResult<ChattingData>
 
     @Override
     protected Type getType() {
-        return new TypeToken<NetworkResult<ChattingData>>(){}.getType();
+        return new TypeToken<NetworkResult<String>>(){}.getType();
     }
 }

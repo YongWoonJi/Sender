@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="전송"
-            android:id="@+id/button3"
+            android:id="@+id/btn_message_send"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -27,52 +27,23 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText6"
+            android:id="@+id/edit_message_send"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/button3"
-            android:layout_toStartOf="@+id/button3" />
+            android:layout_toLeftOf="@+id/btn_message_send"
+            android:layout_toStartOf="@+id/btn_message_send" />
 
-
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/img_chat_profile"
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rv_list2"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_above="@+id/edit_message_send" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="정현맨"
-            android:id="@+id/textView6"
-            android:layout_toRightOf="@+id/img_chat_profile"
-            android:layout_toEndOf="@+id/img_chat_profile" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="우왕 굳"
-            android:id="@+id/textView16"
-            android:layout_below="@+id/textView6"
-            android:layout_alignLeft="@+id/textView6"
-            android:layout_alignStart="@+id/textView6" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="오전11:17"
-            android:id="@+id/textView17"
-            android:layout_alignBottom="@+id/img_chat_profile"
-            android:layout_toRightOf="@+id/editText6"
-            android:layout_toEndOf="@+id/editText6" />
     </RelativeLayout>
 
 </RelativeLayout>

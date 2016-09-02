@@ -15,9 +15,13 @@ import android.widget.Toast;
 
 import com.sender.team.sender.data.DelivererListData;
 import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.ReviewListData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
+import com.sender.team.sender.request.ContractsRequest;
 import com.sender.team.sender.request.DelivererListRequest;
+import com.sender.team.sender.request.ReviewListRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +40,8 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
 
     AlertDialog dialog;
 
+    int deliverId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,10 +53,12 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         rv_view.setAdapter(mAdapter);
         DelivererListRequest request = new DelivererListRequest(getContext(), "1","1");
         NetworkManager.getInstance().getNetworkData(1,request, new NetworkManager.OnResultListener<NetworkResult<DelivererListData>>() {
+
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<DelivererListData>> request, NetworkResult<DelivererListData> result) {
                 for (int i = 0; i< result.getResult().getData().size(); i++){
                     ((SendActivity)getActivity()).addMarker(result.getResult().getData().get(i));
+                    Log.i("DelivererListFragment", String.valueOf(result.getResult().getData().get(i).getUser_id())+" , " +String.valueOf(result.getResult().getData().get(i).getDeilver_id()));
                 }
                 mAdapter.setDelivererData(result.getResult().getData());
             }
@@ -62,14 +70,6 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             }
         });
 
-
-
-
-//        for (int i = 0; i < 10; i++) {
-//            data = new DelivererDataTemp("오름맨" + i, "010-0***-****", null, 9.4f, null, null);
-//            list.add(data);
-//        }
-
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rv_view.setLayoutManager(manager);
 
@@ -77,13 +77,28 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     }
 
 
-
     private void clickSend() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("요청하시겠습니까?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                int contractId = PropertyManager.getInstance().getContractIdData().getContractId();
+                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), String.valueOf(deliverId));
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        Toast.makeText(getActivity(), "success : " + result.getResult().toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                        Toast.makeText(getActivity(), "fail : " + errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 Toast.makeText(getContext(), "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
@@ -91,16 +106,17 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                DialogShow();
+                DialogShow(deliverId);
             }
         });
+
         dialog = builder.create();
         dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     dialog.dismiss();
-                    DialogShow();
+                    DialogShow(deliverId);
                 }
                 return false;
             }
@@ -109,13 +125,28 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     }
 
     @Override
-    public void DialogShow() {
+    public void DialogShow(int position) {
+
         View view = getLayoutInflater(null).inflate(R.layout.view_dialog_review, null, false);
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_view_dialog);
-        ReviewAdapter adapter = new ReviewAdapter();
+        final ReviewAdapter adapter = new ReviewAdapter();
         listView.setAdapter(adapter);
         listView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        deliverId = mAdapter.getDeliverId(position);
+        String delId = String.valueOf(mAdapter.getDeliverId(position));
 
+        ReviewListRequest request = new ReviewListRequest(getContext(), "1","1",delId);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
+                adapter.setReviewData(result.getResult().getData().getReview());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, String errorMessage, Throwable e) {
+                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 //        List<ReviewDataTemp> list = new ArrayList<>();
 //        ReviewDataTemp data;
@@ -141,7 +172,6 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         dialog.show();
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
@@ -151,15 +181,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         ((SendActivity)getActivity()).mMap.clear();
     }
 
-//    public void setSenderData(String name, String phone, String price, double hereLat, double hereLng, double addrLat, double addrLng){
-//        String n = name;
-//        String n2 = phone;
-//        String n3 = price;
-//        double n4 = hereLat;
-//        double n5 = hereLng;
-//        double n6 = addrLat;
-//        double n7 = addrLng;
-//    }
+
 
 
 }

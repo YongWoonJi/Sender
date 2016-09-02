@@ -4,7 +4,7 @@ public class DelivererData {
     private String here_lat;
     private String next_lon;
     private int user_id;
-    private int deilver_id;
+    private int delivering_id;
     private String dep_time;
     private String here_lon;
     private String next_lat;
@@ -72,11 +72,11 @@ public class DelivererData {
     }
 
     public int getDeilver_id() {
-        return this.deilver_id;
+        return this.delivering_id ;
     }
 
     public void setDeilver_id(int deilver_id) {
-        this.deilver_id = deilver_id;
+        this.delivering_id  = deilver_id;
     }
 
     public String getDep_time() {

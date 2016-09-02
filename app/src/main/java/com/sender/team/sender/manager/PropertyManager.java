@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.sender.team.sender.MyApplication;
+import com.sender.team.sender.data.ContractIdData;
 import com.sender.team.sender.data.DeliveringIdData;
 import com.sender.team.sender.data.UserData;
 
@@ -30,6 +31,8 @@ public class PropertyManager {
 
     private UserData userData;
     private DeliveringIdData deliveringId;
+    private ContractIdData contractIdData;
+
 
     private PropertyManager() {
         Context context = MyApplication.getContext();
@@ -51,5 +54,13 @@ public class PropertyManager {
 
     public void setDeliveringId(DeliveringIdData deliveringId) {
         this.deliveringId = deliveringId;
+    }
+
+    public ContractIdData getContractIdData() {
+        return contractIdData;
+    }
+
+    public void setContractIdData(ContractIdData contractIdData) {
+        this.contractIdData = contractIdData;
     }
 }
