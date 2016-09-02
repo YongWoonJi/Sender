@@ -11,8 +11,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -116,8 +118,21 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
             }
         });
 
-
+    searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+            switch (actionId){
+                case EditorInfo.IME_ACTION_SEARCH:
+                    onClickSearch();
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+    });
     }
+
 
 
     private void animateMap(double lat, double lng, final Runnable callback) {
@@ -138,7 +153,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     }
 
     @OnClick(R.id.btn_search)
-    public void onClickSearch(View view) {
+    public void onClickSearch() {
         String keyword = searchView.getText().toString();
         if (!TextUtils.isEmpty(keyword)) {
             POISearchRequest request = new POISearchRequest(SendActivity.this, keyword);

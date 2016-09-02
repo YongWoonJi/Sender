@@ -12,12 +12,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -124,6 +127,34 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                         listEndSearch.setVisibility(View.GONE);
                     }
                 });
+            }
+        });
+
+        editStart.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                switch(actionId){
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        onClickSearchStart();
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
+            }
+        });
+
+        editEnd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                switch (actionId){
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        onClickSearchEnd();
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
             }
         });
     }

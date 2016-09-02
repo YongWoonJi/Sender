@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sender.team.sender.SendActivity">
+    tools:context="com.sender.team.sender.SendActivity"
+    android:nestedScrollingEnabled="false">
     <RelativeLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -16,7 +17,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/edit_search_poi"
             android:layout_toLeftOf="@+id/btn_search"
-            android:layout_toStartOf="@+id/btn_search" />
+            android:layout_toStartOf="@+id/btn_search"
+            android:imeOptions="actionSearch"
+            android:singleLine="true" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
