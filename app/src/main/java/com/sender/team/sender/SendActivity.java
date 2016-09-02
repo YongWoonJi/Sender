@@ -348,10 +348,10 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         VisibleRegion region = projection.getVisibleRegion();
     }
 
-    public void receiveData(String phone, String price, File uploadFile) {
+    public void receiveData(String obName, String phone, String price, String time, File uploadFile) {
         Fragment f = new InfoInputFragment();
         if (f != null) {
-            ((InfoInputFragment) f).setSenderData(getApplicationContext(),hereLat, hereLng, addrLat, addrLng, phone, price,uploadFile);
+            ((InfoInputFragment) f).setSenderData(getApplicationContext(),hereLat, hereLng, addrLat, addrLng, obName, phone, price, time,uploadFile);
         }
     }
 

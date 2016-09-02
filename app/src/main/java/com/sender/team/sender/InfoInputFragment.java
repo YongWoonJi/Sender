@@ -70,6 +70,12 @@ public class InfoInputFragment extends Fragment {
     @BindView(R.id.edit_receiver_phone)
     EditText receiverPhone;
 
+    @BindView(R.id.edit_infoinput_hour)
+    EditText requestHour;
+
+    @BindView(R.id.edit_infoinput_min)
+    EditText requestMin;
+
     @BindView(R.id.object_image)
     ImageView objectImage;
 
@@ -114,20 +120,19 @@ public class InfoInputFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                String time = Utils.getCurrentDate() + " " + requestHour + ":" + requestMin + ":00";
                 String obName = objectName.getText().toString();
                 String obPrice = objectPrice.getText().toString();
                 String phone = receiverPhone.getText().toString();
 
 
-                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice)) {
+                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
 
                     ((SendActivity) getActivity()).searchView.setVisibility(View.GONE);
                     ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
                     ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
 
-                    ((SendActivity) getActivity()).receiveData(phone, obPrice, uploadFile);
+                    ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time,uploadFile);
 
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, new DelivererListFragment())
@@ -225,14 +230,14 @@ public class InfoInputFragment extends Fragment {
     }
 
 
-    public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng, String phone, String obPrice, File uploadFile) {
+    public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng, String obName, String phone, String obPrice, String time, File uploadFile) {
 
         String hLat = String.valueOf(hereLat);
         String hLng = String.valueOf(hereLng);
         String aLat = String.valueOf(addrLat);
         String aLng = String.valueOf(addrLng);
 
-        SenderRequest request = new SenderRequest(context, "1", hLat, hLng, aLat, aLng, "15:00", phone, obPrice, "신속하고 안전하게", uploadFile, "으아아");
+        SenderRequest request = new SenderRequest(context, "1", hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, "으아아");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
 
             @Override

@@ -71,8 +71,8 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case VIEW_TYPE_SEND : {
                 ChattingSenderViewHolder svh = (ChattingSenderViewHolder)holder;
                 String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
-                String time = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
-                svh.setChatSenderData(message,time);
+                long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
+                svh.setChatSenderData(message, time);
                 break;
             }
             case VIEW_TYPE_RECEIVE :{

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.sender.team.sender.R;
+import com.sender.team.sender.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +26,8 @@ public class ChattingSenderViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this,itemView);
     }
 
-    public void setChatSenderData(String content, String time){
+    public void setChatSenderData(String content, long time){
         sendContent.setText(content);
-        sendTime.setText(time);
+        sendTime.setText(Utils.getCurrentTime(time));
     }
 }

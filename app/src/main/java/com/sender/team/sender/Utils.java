@@ -23,4 +23,10 @@ public class Utils {
         Date currentTime = new Date();
         return formatter.format(currentTime);
     }
+
+    public static String getCurrentTime(long time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("a hh:mm");
+        Date date = new Date(time);
+        return formatter.format(date);
+    }
 }

@@ -40,7 +40,7 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser.COLUMN_SERVER_ID + " INTEGER," +
                 ChatContract.ChatUser.COLUMN_NAME + " TEXT," +
 //                ChatContract.ChatUser.COLUMN_EMAIL + " TEXT NOT NULL," +
-                ChatContract.ChatUser.COLUMN_TYPE + " INTEGER," +
+                ChatContract.ChatUser.COLUMN_TYPE + " INTEGER " +
                 ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID + " INTEGER);";
         sqLiteDatabase.execSQL(sql);
 

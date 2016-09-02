@@ -101,6 +101,7 @@ public class ChattingActivity extends AppCompatActivity{
         final String message = editMessage.getText().toString();
         if (!TextUtils.isEmpty(message)){
             String userUrl = PropertyManager.getInstance().getUserData().getFileUrl();
+
             ChattingRequest request = new ChattingRequest(this, "1",message, userUrl);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                 @Override
@@ -118,7 +119,9 @@ public class ChattingActivity extends AppCompatActivity{
                 }
             });
             editMessage.setText("");
-            listview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+            if (mAdapter.getItemCount() > 0){
+                listview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+            }
         }else{
             Toast.makeText(ChattingActivity.this, "내용을 입력하세요.", Toast.LENGTH_SHORT).show();
         }
