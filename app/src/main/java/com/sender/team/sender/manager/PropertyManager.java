@@ -1,9 +1,10 @@
-package com.sender.team.sender;
+package com.sender.team.sender.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.data.DeliveringIdData;
 import com.sender.team.sender.data.UserData;
 

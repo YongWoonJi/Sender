@@ -15,6 +15,7 @@ import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.MyPageRequest;
 
 public class SplashActivity extends AppCompatActivity {

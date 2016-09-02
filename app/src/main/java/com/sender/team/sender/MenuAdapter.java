@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.sender.team.sender.data.MenuChild;
 import com.sender.team.sender.data.MenuGroup;
 import com.sender.team.sender.data.NaviItem;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.widget.ChildViewHolder;
 import com.sender.team.sender.widget.GroupViewHolder;
 import com.sender.team.sender.widget.HeaderViewHolder;

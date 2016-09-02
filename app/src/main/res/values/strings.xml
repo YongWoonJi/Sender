@@ -3,6 +3,8 @@
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>
 
+    <string name="praise">칭찬하기</string>
+    <string name="report">신고하기</string>
 
     <string name="service_terms">서비스 이용약관</string>
     <string name="service_terms_gps">위치정보 서비스 이용약관</string>

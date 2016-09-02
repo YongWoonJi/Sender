@@ -107,7 +107,7 @@ public class QuestionActivity extends AppCompatActivity {
 
 
     private void getGalleryImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(intent, RC_GET_IMAGE);
     }
@@ -165,7 +165,7 @@ public class QuestionActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                onUploadRequest();
+                sendUploadRequest();
             }
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -188,7 +188,7 @@ public class QuestionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void onUploadRequest() {
+    private void sendUploadRequest() {
         String title = editTitle.getText().toString();
         String contents = editContents.getText().toString();
         String esType;

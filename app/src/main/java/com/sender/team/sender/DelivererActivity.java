@@ -35,6 +35,7 @@ import com.sender.team.sender.data.POI;
 import com.sender.team.sender.data.POIResult;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.DelivererRegisterRequest;
 import com.sender.team.sender.request.POISearchRequest;
 

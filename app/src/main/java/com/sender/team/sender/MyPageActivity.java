@@ -24,6 +24,7 @@ import com.sender.team.sender.data.ReviewListData;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ProfilePictureUploadRequest;
 import com.sender.team.sender.request.ReviewListRequest;
 

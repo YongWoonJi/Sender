@@ -81,7 +81,7 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:id="@+id/imageView7"
+        android:id="@+id/image_photo"
         android:layout_alignParentStart="true"
         android:src="@android:drawable/ic_menu_camera"
         android:layout_below="@+id/textView36"
@@ -94,10 +94,10 @@
         android:text="@string/image_registration_content"
         android:id="@+id/textView37"
         android:textColor="@android:color/holo_red_light"
-        android:layout_alignBottom="@+id/imageView7"
-        android:layout_alignLeft="@+id/textView38"
-        android:layout_alignStart="@+id/textView38"
-        android:layout_marginBottom="21dp" />
+        android:layout_marginBottom="12dp"
+        android:layout_alignBottom="@+id/image_photo"
+        android:layout_toRightOf="@+id/image_photo"
+        android:layout_toEndOf="@+id/image_photo" />
 
     <Button
         android:layout_width="match_parent"
