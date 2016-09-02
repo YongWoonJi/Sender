@@ -61,25 +61,29 @@ public class SplashActivity extends AppCompatActivity {
         handler.removeCallbacks(runnable);
     }
 
+    AlertDialog dialog;
     private void enableGPSSetting() {
         ContentResolver res = getContentResolver();
         boolean gpsEnabled = Settings.Secure.isLocationProviderEnabled(res, LocationManager.GPS_PROVIDER);
         if (!gpsEnabled) {
-            new AlertDialog.Builder(this)
-                    .setMessage("GPS가 필요한 서비스입니다.\nGPS를 켜시겠습니까?")
-                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(intent);
-                        }
-                    })
-                    .setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    }).create().show();
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("GPS가 필요한 서비스입니다.\nGPS를 켜시겠습니까?");
+            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                    dialog.dismiss();
+                }
+            });
+            builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            dialog = builder.create();
+            dialog.show();
         } else {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
