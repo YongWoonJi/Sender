@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
 import com.sender.team.sender.data.NetworkResult;
-import com.sender.team.sender.manager.NetworkRequest;
 
 import java.lang.reflect.Type;
 
@@ -16,12 +15,13 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-09-03.
  */
-public class FacebookRequest extends AbstractRequest<NetworkRequest<String>> {
+public class FacebookRequest extends AbstractRequest<NetworkResult<Integer>> {
 
     Request request;
 
     public FacebookRequest(Context context, String access_token, String registration_token) {
         HttpUrl url = getSecureUrlBuilder()
+                .port(8080)
                 .addPathSegment("auth")
                 .addPathSegment("facebook")
                 .addPathSegment("token")
@@ -40,7 +40,7 @@ public class FacebookRequest extends AbstractRequest<NetworkRequest<String>> {
 
     @Override
     protected Type getType() {
-        return new TypeToken<NetworkResult<String>>(){}.getType();
+        return new TypeToken<NetworkResult<Integer>>(){}.getType();
     }
 
     @Override

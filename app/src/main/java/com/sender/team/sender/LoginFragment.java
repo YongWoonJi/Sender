@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -17,6 +19,12 @@ import com.facebook.login.DefaultAudience;
 import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.request.FacebookRequest;
+
+import java.util.Arrays;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,6 +53,7 @@ public class LoginFragment extends Fragment {
 
         callbackManager = CallbackManager.Factory.create();
         mLoginManager = LoginManager.getInstance();
+        Button btn = (Button) view.findViewById(R.id.btn_facebook);
 
         return view;
     }
@@ -100,7 +109,30 @@ public class LoginFragment extends Fragment {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 AccessToken token = AccessToken.getCurrentAccessToken();
+                FacebookRequest request = new FacebookRequest(getContext(), token.getToken(), "fPmhn6uzg1g:APA91bFIp2lQYqtiKc-KT8ARAI6PDJsFyp7ZGGhxP7WHS4sba6SLD0tVJOEpdMIcHPps5b6DNcKFpMSbW53u7YSVVj3LbYCCB5QW77bJEng1CTN0XD9uVZW3_rmf8Nl1hDUVd5UjtlLt");
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
+                        if (result != null) {
+                            Toast.makeText(getContext(), "로그인되었습니다", Toast.LENGTH_SHORT).show();
+                            if (result.getResult() == 0) {
+                                getActivity().getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.container, new TermsFragment()).commit();
+                            } else if (result.getResult() == 1) {
+                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                startActivity(intent);
+                            }
+                        } else {
+                            // 로그인 실패
+                            Toast.makeText(getContext(), "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<Integer>> request, String errorMessage, Throwable e) {
+
+                    }
+                });
             }
 
             @Override
@@ -113,6 +145,7 @@ public class LoginFragment extends Fragment {
 
             }
         });
+        mLoginManager.logInWithReadPermissions(this, Arrays.asList("email"));
     }
 
     private void logoutFacebook() {
