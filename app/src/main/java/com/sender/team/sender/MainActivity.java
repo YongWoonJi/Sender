@@ -11,6 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -18,49 +20,55 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.LogoutRequest;
+import com.sender.team.sender.request.OtherUserRequest;
 import com.sender.team.sender.request.UserLeaveRequest;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MenuAdapter.OnNaviMenuSelectedListener {
+
+    private static final String TAB1 = "tab1";
+    private static final String TAB2 = "tab2";
+    private static final String TAB3 = "tab3";
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab,fab1,fab2,fab3;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private RelativeLayout fab_background;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    ActionBarDrawerToggle mDrawerToggle;
+
     @BindView(R.id.content)
     CoordinatorLayout coordinatorLayout;
+
     @BindView(R.id.navi_fragment)
     RelativeLayout naviFragment;
 
-    private float lastTranslate = 0.0f;
-
-    private static final String TAB1 = "tab1";
-    private static final String TAB2 = "tab2";
-    private static final String TAB3 = "tab3";
     @BindView(R.id.tab)
     TabLayout tabs;
-    @BindView(R.id.listview)
-    ListView listView;
 
-    ArrayAdapter<String> mAdapter;
+    @BindView(R.id.rv_list)
+    RecyclerView listView;
+
+    ActionBarDrawerToggle mDrawerToggle;
+    ChattingListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -167,26 +174,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        listView.setAdapter(mAdapter);
         initData();
-
     }
 
+    ChattingListData data;
+    ArrayList<ChattingListData> list;
     private void initData() {
-        mAdapter.add("센더");
-        mAdapter.add("딜리버러");
-        mAdapter.add("딜리버러");
-        mAdapter.add("센더");
-        mAdapter.add("센더");
-        mAdapter.add("딜리버러");
-        mAdapter.add("센더");
-        mAdapter.add("딜리버러");
-        mAdapter.add("센더");
-        mAdapter.add("센더");
-        mAdapter.add("딜리버러");
-        mAdapter.add("딜리버러");
+        OtherUserRequest request = new OtherUserRequest(this, "3");
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                if (result.getResult() != null) {
+                    data = new ChattingListData();
+                    list = new ArrayList<>();
+                    list.add(data);
+                    data.setImageUrl(result.getResult().getFileUrl());
+                    data.setName(result.getResult().getName());
+                    data.setType(ChattingListData.TYPE_DELIVERER);
+                    mAdapter = new ChattingListAdapter();
+                    mAdapter.setData(list);
+                    listView.setAdapter(mAdapter);
+                    listView.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
+                }
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 
 
@@ -265,20 +281,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @OnItemClick(R.id.listview)
-    public void onItemClick(int position, long id){
-
-        if (mAdapter.getItem(position).equals("센더")){
-            Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
-            intent.putExtra("key", 1);
-            startActivity(intent);
-        }else{
-            Intent intent = new Intent(MainActivity.this, ChattingActivity.class);
-            intent.putExtra("key", 2);
-            startActivity(intent);
-        }
     }
 
 

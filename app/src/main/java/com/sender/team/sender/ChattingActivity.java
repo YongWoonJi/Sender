@@ -35,6 +35,7 @@ import butterknife.OnClick;
 
 public class ChattingActivity extends AppCompatActivity{
 
+    public static final String HEADER_TYPE = "headertype";
     public static final int SEND_HEADER = 1;
     public static final int DELIVERER_HEADER = 2;
 
