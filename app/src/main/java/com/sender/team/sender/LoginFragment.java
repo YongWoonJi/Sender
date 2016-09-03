@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -47,14 +46,6 @@ public class LoginFragment extends Fragment {
         callbackManager = CallbackManager.Factory.create();
         mLoginManager = LoginManager.getInstance();
 
-        Button btn = (Button) view.findViewById(R.id.btn_naver);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new TermsFragment()).commit();
-            }
-        });
         return view;
     }
 
@@ -84,7 +75,8 @@ public class LoginFragment extends Fragment {
 
     @OnClick(R.id.btn_naver)
     public void onClickNaverLogin() {
-
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new TermsFragment()).commit();
     }
 
     @OnClick(R.id.btn_facebook)
