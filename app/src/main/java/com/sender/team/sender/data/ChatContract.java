@@ -13,6 +13,8 @@ public class ChatContract {
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_LAST_MESSAGE_ID = "lastid";
+        public static final String COLUMN_IMAGE = "imageurl";
+
     }
 
     public interface ChatMessage extends BaseColumns {

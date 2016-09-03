@@ -15,9 +15,9 @@ import okhttp3.RequestBody;
 /**
  * Created by Tacademy on 2016-08-26.
  */
-public class ChattingRequest extends AbstractRequest<NetworkResult<String>> {
+public class ChattingSendRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
-    public ChattingRequest(Context context, String receiver_id, String message, String pic){
+    public ChattingSendRequest(Context context, String receiver_id, String message, String pic){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("notification")
                 .addPathSegment("chattings")

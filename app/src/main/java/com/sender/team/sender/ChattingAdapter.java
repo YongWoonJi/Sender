@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sender.team.sender.data.ChatContract;
-import com.sender.team.sender.data.ChattingData;
+import com.sender.team.sender.data.ChattingReceiveData;
 import com.sender.team.sender.widget.ChattingReceiverViewHolder;
 import com.sender.team.sender.widget.ChattingSenderViewHolder;
 
@@ -17,7 +17,7 @@ import com.sender.team.sender.widget.ChattingSenderViewHolder;
 public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     Cursor cursor;
-    ChattingData data;
+    ChattingReceiveData data;
 
     public void changeCursor(Cursor c) {
         if (cursor != null) {
@@ -27,7 +27,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public void setRecieveData(){
+    public void setRecieveData(ChattingReceiveData data){
         this.data = data;
     }
 
@@ -75,9 +75,16 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 svh.setChatSenderData(message, time);
                 break;
             }
+
             case VIEW_TYPE_RECEIVE :{
-                ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder)holder;
-                rvh.setChatReceiverData(data);
+                ChattingReceiverViewHolder svh = (ChattingReceiverViewHolder)holder;
+                String url = cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_IMAGE));
+                String name = cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_NAME));
+                String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
+                String time = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
+                svh.setChatReceiverData(url,name,message,time);
+//                ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder)holder;
+//                rvh.setChatReceiverData(data);
                 break;
             }
         }
