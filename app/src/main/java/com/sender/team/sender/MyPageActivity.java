@@ -52,6 +52,10 @@ public class MyPageActivity extends AppCompatActivity {
     TextView name;
     @BindView(R.id.my_image)
     ImageView profileImage;
+    @BindView(R.id.text_my_rating)
+    TextView rating;
+    @BindView(R.id.text_review_count)
+    TextView reviewCount;
 
     private static final int RC_GET_IMAGE = 1;
     private static final int RC_CATPURE_IMAGE = 2;
@@ -70,13 +74,11 @@ public class MyPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         ButterKnife.bind(this);
 
         mAdapter = new ReviewAdapter();
         listView.setAdapter(mAdapter);
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
 
         initData(savedInstanceState);
         getReviewListData();
@@ -106,6 +108,7 @@ public class MyPageActivity extends AppCompatActivity {
         name.setText(user.getName());
         email.setText(user.getEmail());
         phone.setText(user.getPhone());
+        rating.setText("" + user.getStar());
         requestCount.setText("" + user.getDeliver_req());
         deliveryCount.setText("" + user.getDeliver_com());
     }
@@ -206,12 +209,15 @@ public class MyPageActivity extends AppCompatActivity {
 
     private void getReviewListData() {
         //리뷰 리스트 보기
-        ReviewListRequest reviewRequest = new ReviewListRequest(MyPageActivity.this,"1","1","1");
+        UserData userId = PropertyManager.getInstance().getUserData();
+        ReviewListRequest reviewRequest = new ReviewListRequest(MyPageActivity.this,"1","1", userId.getUser_id());
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, reviewRequest, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
                 mAdapter.clear();
                 mAdapter.setReviewData(result.getResult().getData().getReview());
+                reviewCount.setText("" + result.getResult().getData().getReview().size());
+
             }
 
             @Override
@@ -228,5 +234,5 @@ public class MyPageActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
+}
 }

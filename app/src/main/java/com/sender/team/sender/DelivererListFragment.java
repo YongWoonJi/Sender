@@ -81,7 +81,6 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("요청하시겠습니까?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int contractId = PropertyManager.getInstance().getContractIdData().getContractId();

@@ -88,7 +88,10 @@
         android:id="@+id/edit_start_hour"
         android:layout_below="@+id/text_my_phone"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:singleLine="true"
+        android:inputType="number"
+        android:nextFocusDown="@+id/edit_start_min"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -107,7 +110,10 @@
         android:id="@+id/edit_start_min"
         android:layout_alignTop="@+id/textView25"
         android:layout_toRightOf="@+id/textView27"
-        android:layout_toEndOf="@+id/textView27" />
+        android:layout_toEndOf="@+id/textView27"
+        android:singleLine="true"
+        android:inputType="number"
+        android:nextFocusDown="@+id/edit_end_hour" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -136,7 +142,10 @@
         android:id="@+id/edit_end_hour"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView27"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:singleLine="true"
+        android:inputType="number"
+        android:nextFocusDown="@+id/edit_end_min"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -155,7 +164,9 @@
         android:id="@+id/edit_end_min"
         android:layout_below="@+id/textView27"
         android:layout_toRightOf="@+id/textView27"
-        android:layout_toEndOf="@+id/textView27" />
+        android:layout_toEndOf="@+id/textView27"
+        android:singleLine="true"
+        android:inputType="number"/>
 
     <TextView
         android:layout_width="wrap_content"

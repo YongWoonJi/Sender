@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -247,6 +248,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     mStartAdapter.clear();
                     mStartAdapter.addAll(result.getSearchPoiInfo().getPois().getPoi());
                     listStartSearch.setVisibility(View.VISIBLE);
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(editStart.getWindowToken(), 0);
                 }
 
                 @Override
@@ -268,6 +271,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     mEndAdapter.clear();
                     mEndAdapter.addAll(result.getSearchPoiInfo().getPois().getPoi());
                     listEndSearch.setVisibility(View.VISIBLE);
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(editEnd.getWindowToken(), 0);
                 }
 
                 @Override

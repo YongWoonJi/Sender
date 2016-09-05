@@ -60,7 +60,7 @@
         android:src="@android:drawable/star_big_on" />
 
     <TextView
-        android:id="@+id/textView25"
+        android:id="@+id/text_my_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/my_image"
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="3"
+                android:text="1"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
         </RelativeLayout>
     </LinearLayout>

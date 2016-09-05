@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -111,28 +112,30 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                         listView.setVisibility(View.GONE);
                         Marker m = markerResolver.get(poi);
                         m.showInfoWindow();
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                     }
                 });
                 mMap.clear();
                 addMarker(poi);
+
             }
         });
 
-    searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-            switch (actionId){
-                case EditorInfo.IME_ACTION_SEARCH:
-                    onClickSearch();
-                    break;
-                default:
-                    return false;
+        searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                switch (actionId) {
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        onClickSearch();
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
             }
-            return true;
-        }
-    });
+        });
     }
-
 
 
     private void animateMap(double lat, double lng, final Runnable callback) {
@@ -281,7 +284,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         MarkerOptions options = new MarkerOptions();
         double lat = Double.parseDouble(data.getHere_lat());
         double lon = Double.parseDouble(data.getHere_lon());
-        options.position(new LatLng(lat,lon));
+        options.position(new LatLng(lat, lon));
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
         options.anchor(0.5f, 1);
         options.title(data.getName());
@@ -366,7 +369,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     public void receiveData(String obName, String phone, String price, String time, File uploadFile) {
         Fragment f = new InfoInputFragment();
         if (f != null) {
-            ((InfoInputFragment) f).setSenderData(getApplicationContext(),hereLat, hereLng, addrLat, addrLng, obName, phone, price, time,uploadFile);
+            ((InfoInputFragment) f).setSenderData(getApplicationContext(), hereLat, hereLng, addrLat, addrLng, obName, phone, price, time, uploadFile);
         }
     }
 
