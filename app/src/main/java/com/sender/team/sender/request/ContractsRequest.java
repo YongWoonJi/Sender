@@ -44,8 +44,6 @@ public class ContractsRequest extends AbstractRequest<NetworkResult<ContractIdDa
                 .build();
     }
 
-
-
     @Override
     public Request getRequest() {
         return request;

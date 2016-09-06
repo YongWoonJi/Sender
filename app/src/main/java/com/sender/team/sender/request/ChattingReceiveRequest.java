@@ -18,9 +18,10 @@ import okhttp3.Request;
 public class ChattingReceiveRequest extends AbstractRequest<NetworkResult<ArrayList<ChattingReceiveData>>> {
 
     Request request;
-    public ChattingReceiveRequest(Context context){
+    public ChattingReceiveRequest(Context context, String date){
         HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("chattings")
+                .addQueryParameter("lastDate", date)
                 .build();
 
         request = new Request.Builder()

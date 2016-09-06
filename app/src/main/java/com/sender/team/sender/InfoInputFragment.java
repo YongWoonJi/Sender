@@ -106,7 +106,6 @@ public class InfoInputFragment extends Fragment {
                         .into(objectImage);
             }
         }
-
     }
 
     @Override
@@ -126,17 +125,21 @@ public class InfoInputFragment extends Fragment {
                 String phone = receiverPhone.getText().toString();
 
 
-//                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
-//                    ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time,uploadFile);
-//
+                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
+
+                    if (!((SendActivity) getActivity()).isRequestCheck) {
+                        ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile);
+                        ((SendActivity) getActivity()).isRequestCheck = true;
+                    }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
+
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, new DelivererListFragment())
                             .addToBackStack(null)
                             .commit();
-//
-//                } else {
-//                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
-//                }
+
+                } else {
+                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
 
                 if (callback != null) {
                     callback.onClickButton();
@@ -194,8 +197,12 @@ public class InfoInputFragment extends Fragment {
         if (savedFile != null) {
             savedInstanceState.putString(FIELD_SAVE_FILE, savedFile.getAbsolutePath());
         }
-        if (uploadFile != null) {
-            savedInstanceState.putString(FIELD_UPLOAD_FILE, uploadFile.getAbsolutePath());
+        try {
+            if (uploadFile != null) {
+                savedInstanceState.putString(FIELD_UPLOAD_FILE, uploadFile.getAbsolutePath());
+            }
+        }catch (Exception e){
+
         }
     }
 
@@ -231,6 +238,7 @@ public class InfoInputFragment extends Fragment {
         String hLng = String.valueOf(hereLng);
         String aLat = String.valueOf(addrLat);
         String aLng = String.valueOf(addrLng);
+        //SendAcitivty의 현위치와 선택한 위치의 위도 경도값을 받아온다.
 
         SenderRequest request = new SenderRequest(context, "1", hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, "으아아");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
@@ -238,8 +246,8 @@ public class InfoInputFragment extends Fragment {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
                 PropertyManager.getInstance().setContractIdData(result.getResult());
-                Toast.makeText(context, "success  " + result.getResult().getContractId(), Toast.LENGTH_SHORT).show();
-                Log.i("InfoInputFragment", "contractid = " + result.getResult().getContractId());
+                Toast.makeText(context, "success wow " + result.getResult().getContract_id()+"  " + result.getResult().getSendingId(), Toast.LENGTH_SHORT).show();
+                Log.i("InfoInputFragment", "contractid = " + result.getResult().getContract_id());
             }
 
             @Override
@@ -251,16 +259,17 @@ public class InfoInputFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        ((SendActivity)getActivity()).backMarker();
+    public void onStart() {
+        super.onStart();
+        ((SendActivity) getActivity()).backMarker();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         ((SendActivity) getActivity()).searchView.setVisibility(View.GONE);
         ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
         ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
     }
+
 }

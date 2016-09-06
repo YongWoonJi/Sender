@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.data.ChatContract;
-import com.sender.team.sender.data.ChattingReceiveData;
 import com.sender.team.sender.data.UserData;
 
 import java.util.Date;
@@ -63,18 +62,20 @@ public class DBManager extends SQLiteOpenHelper {
 
     ContentValues values = new ContentValues();
 
-    public long addUser(ChattingReceiveData data) {
-        if (getUserId(Long.valueOf(data.getSender().getId())) == -1) {
-            SQLiteDatabase db = getWritableDatabase();
-            values.clear();
-            values.put(ChatContract.ChatUser.COLUMN_SERVER_ID, data.getSender().getId());
-            values.put(ChatContract.ChatUser.COLUMN_NAME, data.getSender().getName());
-            values.put(ChatContract.ChatUser.COLUMN_IMAGE, data.getSender().getFileUrl());
-//            values.put(ChatContract.ChatUser.COLUMN_EMAIL, user.getEmail());
-            return db.insert(ChatContract.ChatUser.TABLE, null, values);
-        }
-        throw new IllegalArgumentException("aleady user added");
-    }
+//    public long addUser(ChattingReceiveData data) {
+//        if (getUserId(Long.valueOf(data.getSender().getId())) == -1) {
+//            SQLiteDatabase db = getWritableDatabase();
+//            values.clear();
+//            values.put(ChatContract.ChatUser.COLUMN_SERVER_ID, data.getSender().getId());
+//            values.put(ChatContract.ChatUser.COLUMN_NAME, data.getSender().getName());
+//            values.put(ChatContract.ChatUser.COLUMN_IMAGE, data.getSender().getFileUrl());
+////            values.put(ChatContract.ChatUser.COLUMN_EMAIL, user.getEmail());
+//            return db.insert(ChatContract.ChatUser.TABLE, null, values);
+//        }
+//        throw new IllegalArgumentException("aleady user added");
+//    }
+
+
 
     public long addUser(UserData user) {
         if (getUserId(Long.parseLong(user.getUser_id())) == -1) {
@@ -126,38 +127,39 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
 
-    public long addMessage(ChattingReceiveData data, int type, String message, Date date){
-        Long uid = resolveUserId.get(data.getSender().getId());
-        if (uid == null) {
-            long id = getUserId(data.getSender().getId());
-            if (id == -1) {
-                id = addUser(data);
-            }
-            resolveUserId.put(data.getSender().getId(), id);
-            uid = id;
-        }
-        SQLiteDatabase db = getWritableDatabase();
-        values.clear();
-        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, uid);
-        values.put(ChatContract.ChatMessage.COLUMN_TYPE, type);
-        values.put(ChatContract.ChatMessage.COLUMN_MESSAGE, data.getMessage());
-        long current = date.getTime();
-        values.put(ChatContract.ChatMessage.COLUMN_CREATED, current);
-        try {
-            db.beginTransaction();
-            long mid = db.insert(ChatContract.ChatMessage.TABLE, null, values);
-
-            values.clear();
-            values.put(ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID, mid);
-            String selection = ChatContract.ChatUser._ID + " = ?";
-            String[] args = {"" + uid};
-            db.update(ChatContract.ChatUser.TABLE, values, selection, args);
-            db.setTransactionSuccessful();
-            return mid;
-        } finally {
-            db.endTransaction();
-        }
-    }
+//    public long addMessage(ChattingReceiveData data, int type, String message, Date date){
+//        Long uid = resolveUserId.get(Long.valueOf(data.getSender().getId()));
+//        if (uid == null) {
+//            long id = getUserId(Long.valueOf(data.getSender().getId()));
+//            if (id == -1) {
+//                id = addUser(data);
+//            }
+//            resolveUserId.put(Long.valueOf(data.getSender().getId()), id);
+//            uid = id;
+//        }
+//        SQLiteDatabase db = getWritableDatabase();
+//        values.clear();
+//        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, uid);
+//        values.put(ChatContract.ChatMessage.COLUMN_TYPE, type);
+//        values.put(ChatContract.ChatMessage.COLUMN_MESSAGE, data.getMessage());
+//        long current = date.getTime();
+//        values.put(ChatContract.ChatMessage.COLUMN_CREATED, current);
+//        try {
+//            db.beginTransaction();
+//            long mid = db.insert(ChatContract.ChatMessage.TABLE, null, values);
+//
+//            values.clear();
+//            values.put(ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID, mid);
+//            String selection = ChatContract.ChatUser._ID + " = ?";
+//            String[] args = {"" + uid};
+//            db.update(ChatContract.ChatUser.TABLE, values, selection, args);
+//
+//            db.setTransactionSuccessful();
+//            return mid;
+//        } finally {
+//            db.endTransaction();
+//        }
+//    }
 
     public long getUserId(long serverId) {
         String selection = ChatContract.ChatUser.COLUMN_SERVER_ID + " = ?";
@@ -176,30 +178,30 @@ public class DBManager extends SQLiteOpenHelper {
         return -1;
     }
 
-    public Cursor getChatMessage(ChattingReceiveData data) {
-        long userid = -1;
-        Long uid = resolveUserId.get(Long.valueOf(data.getSender().getId()));
-        if (uid == null) {
-            long id = getUserId(Long.valueOf(data.getSender().getId()));
-            if (id != -1) {
-                resolveUserId.put(Long.valueOf(data.getSender().getId()), id);
-                userid = id;
-            }
-        } else {
-            userid = uid;
-        }
-
-        String[] columns = {ChatContract.ChatMessage._ID,
-                ChatContract.ChatMessage.COLUMN_TYPE,
-                ChatContract.ChatMessage.COLUMN_MESSAGE,
-                ChatContract.ChatMessage.COLUMN_CREATED
-                };
-        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ?";
-        String[] args = {"" + userid};
-        String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
-        SQLiteDatabase db = getReadableDatabase();
-        return db.query(ChatContract.ChatMessage.TABLE, columns, selection, args, null, null, sort);
-    }
+//    public Cursor getChatMessage(ChattingReceiveData data) {
+//        long userid = -1;
+//        Long uid = resolveUserId.get(Long.valueOf(data.getSender().getId()));
+//        if (uid == null) {
+//            long id = getUserId(Long.valueOf(data.getSender().getId()));
+//            if (id != -1) {
+//                resolveUserId.put(Long.valueOf(data.getSender().getId()), id);
+//                userid = id;
+//            }
+//        } else {
+//            userid = uid;
+//        }
+//
+//        String[] columns = {ChatContract.ChatMessage._ID,
+//                ChatContract.ChatMessage.COLUMN_TYPE,
+//                ChatContract.ChatMessage.COLUMN_MESSAGE,
+//                ChatContract.ChatMessage.COLUMN_CREATED
+//                };
+//        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ?";
+//        String[] args = {"" + userid};
+//        String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
+//        SQLiteDatabase db = getReadableDatabase();
+//        return db.query(ChatContract.ChatMessage.TABLE, columns, selection, args, null, null, sort);
+//    }
 
     public Cursor getChatMessage(UserData user) {
         long userid = -1;

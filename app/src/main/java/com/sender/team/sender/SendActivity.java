@@ -325,6 +325,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
             mListener.onLocationChanged(location);
         }
         mLM.requestSingleUpdate(mProvider, mListener, null);
+        isRequestCheck = false;
     }
 
     @Override
@@ -334,6 +335,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
             return;
         }
         mLM.removeUpdates(mListener);
+        isRequestCheck = false;
     }
 
     LocationListener mListener = new LocationListener() {
@@ -367,6 +369,8 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         Projection projection = mMap.getProjection();
         VisibleRegion region = projection.getVisibleRegion();
     }
+
+    boolean isRequestCheck = false;
 
     public void receiveData(String obName, String phone, String price, String time, File uploadFile) {
         Fragment f = new InfoInputFragment();

@@ -2,7 +2,7 @@ package com.sender.team.sender.data;
 
 public class ChattingReceiveData {
     private String date;
-    private ChattingReceiveSender sender;
+    private UserData sender;
     private String message;
 
     public String getDate() {
@@ -13,11 +13,11 @@ public class ChattingReceiveData {
         this.date = date;
     }
 
-    public ChattingReceiveSender getSender() {
+    public UserData getSender() {
         return this.sender;
     }
 
-    public void setSender(ChattingReceiveSender sender) {
+    public void setSender(UserData sender) {
         this.sender = sender;
     }
 

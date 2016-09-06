@@ -33,6 +33,12 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
     public ChattingReceiverViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onClickReceiverImage(view, getAdapterPosition());
+            }
+        });
     }
 
     public void setChatReceiverData(String url, String name, String message, long time){
@@ -40,5 +46,14 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
         receiverName.setText(name);
         receiverContent.setText(message);
         receiverTime.setText(Utils.getCurrentTime(time));
+    }
+
+    ChatReceiverImage mListener;
+    public void setOnClickChatReceiverImage(ChatReceiverImage mListener){
+        this.mListener = mListener;
+    }
+
+    public interface ChatReceiverImage {
+        public void onClickReceiverImage(View view, int position);
     }
 }

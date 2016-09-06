@@ -7,17 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sender.team.sender.data.ChatContract;
-import com.sender.team.sender.data.ChattingReceiveData;
 import com.sender.team.sender.widget.ChattingReceiverViewHolder;
 import com.sender.team.sender.widget.ChattingSenderViewHolder;
+
+import java.io.File;
 
 /**
  * Created by Tacademy on 2016-08-25.
  */
-public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ChattingReceiverViewHolder.ChatReceiverImage{
 
     Cursor cursor;
-    ChattingReceiveData data;
+    File senderChatImage;
+    String name, image;
 
     public void changeCursor(Cursor c) {
         if (cursor != null) {
@@ -27,8 +29,10 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public void setRecieveData(ChattingReceiveData data){
-        this.data = data;
+    public void setRecieveData(File chatImage, String name, String image){
+        this.senderChatImage = chatImage;
+        this.name = name;
+        this.image = image;
     }
 
     private static final int VIEW_TYPE_SEND = 1;
@@ -58,6 +62,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case VIEW_TYPE_RECEIVE : {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_chatting_receive, parent, false);
                 ChattingReceiverViewHolder holder = new ChattingReceiverViewHolder(view);
+                holder.setOnClickChatReceiverImage(this);
                 return holder;
             }
         }
@@ -72,7 +77,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ChattingSenderViewHolder svh = (ChattingSenderViewHolder)holder;
                 String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
                 long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
-                svh.setChatSenderData(message, time);
+                svh.setChatSenderData(senderChatImage, message, time);
                 break;
             }
 
@@ -80,9 +85,8 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder)holder;
                 String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
                 long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
-                rvh.setChatReceiverData(data.getSender().getFileUrl(),data.getSender().getName(),message,time);
-//                ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder)holder;
-//                rvh.setChatReceiverData(data);
+                rvh.setChatReceiverData(image,name,message,time);
+//                rvh.setChatReceiverData(data.getSender().getFileUrl(),data.getSender().getName(),message,time);
                 break;
             }
         }
@@ -92,5 +96,20 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemCount() {
         if (cursor == null) return 0;
         return cursor.getCount();
+    }
+
+    // 채팅 이미지를 누르면 ChattingProfileActivity로 이동하기 위한 옵저버 패턴
+    @Override
+    public void onClickReceiverImage(View view, int position) {
+        mListener.onClickChatImage(view, position);
+    }
+
+    public interface ChattingImage{
+        public void onClickChatImage(View view, int position);
+    }
+
+    ChattingImage mListener;
+    public void setOnClickChatImageListener(ChattingImage mListener){
+        this.mListener = mListener;
     }
 }

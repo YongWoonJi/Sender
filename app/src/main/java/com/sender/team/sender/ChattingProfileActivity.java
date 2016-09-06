@@ -42,6 +42,7 @@ public class ChattingProfileActivity extends AppCompatActivity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
             }
         });
         initData();
@@ -83,4 +84,6 @@ public class ChattingProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

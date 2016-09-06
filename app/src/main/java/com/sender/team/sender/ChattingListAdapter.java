@@ -38,21 +38,21 @@ public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ChattingListViewHolder clh = (ChattingListViewHolder) holder;
         clh.setData(data.get(position));
         clh.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(clh.getContext(), ChattingActivity.class);
                 if (clh.getData().getType() == 0) {
-                    Intent intent = new Intent(clh.getContext(), ChattingActivity.class);
                     intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.SEND_HEADER);
-                    clh.getContext().startActivity(intent);
                 } else if (clh.getData().getType() == 1){
-                    Intent intent = new Intent(clh.getContext(), ChattingActivity.class);
                     intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.DELIVERER_HEADER);
-                    clh.getContext().startActivity(intent);
                 }
+                intent.putExtra(ChattingActivity.RECEIVER_NAME, data.get(position).getName());
+                intent.putExtra(ChattingActivity.RECEIVER_IMAGE, data.get(position).getImageUrl());
+                clh.getContext().startActivity(intent);
             }
         });
     }
