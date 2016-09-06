@@ -103,9 +103,9 @@ public class AuthFragment extends Fragment {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         if (!TextUtils.isEmpty(result.getResult())) {
-                            Log.i("LoginActivity", result.getResult());
+                            Log.i("SignUpActivity", result.getResult());
                         } else {
-                            Log.i("LoginActivity", result.getError());
+                            Log.i("SignUpActivity", result.getError());
                         }
 
                         Intent intent = new Intent(getContext(), MainActivity.class);
@@ -117,7 +117,7 @@ public class AuthFragment extends Fragment {
 
                     @Override
                     public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
-                        Log.i("LoginActivity", "리퀘스트 실패");
+                        Log.i("SignUpActivity", "리퀘스트 실패");
                         Intent intent = new Intent(getContext(), MainActivity.class);
                         startActivity(intent);
                         getActivity().finish();

@@ -1,6 +1,8 @@
 package com.sender.team.sender.data;
 
-public class UserData {
+import java.io.Serializable;
+
+public class UserData implements Serializable {
     private int deliver_req;
     private int deliver_com;
     private String user_id;

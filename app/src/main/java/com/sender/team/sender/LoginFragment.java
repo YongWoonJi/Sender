@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -26,9 +25,6 @@ import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.request.FacebookRequest;
 
 import java.util.Arrays;
-
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 /**
@@ -48,14 +44,14 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        ButterKnife.bind(this, view);
-
-        callbackManager = CallbackManager.Factory.create();
-        mLoginManager = LoginManager.getInstance();
-        Button btn = (Button) view.findViewById(R.id.btn_facebook);
-
-        return view;
+//        View view = inflater.inflate(R.layout.fragment_login, container, false);
+//        ButterKnife.bind(this, view);
+//
+//        callbackManager = CallbackManager.Factory.create();
+//        mLoginManager = LoginManager.getInstance();
+//        Button btn = (Button) view.findViewById(R.id.btn_facebook);
+//
+        return null;
     }
 
     AccessTokenTracker mTracker;
@@ -82,13 +78,13 @@ public class LoginFragment extends Fragment {
     }
 
 
-    @OnClick(R.id.btn_naver)
+//    @OnClick(R.id.btn_naver)
     public void onClickNaverLogin() {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, new TermsFragment()).commit();
     }
-
-    @OnClick(R.id.btn_facebook)
+//
+//    @OnClick(R.id.btn_facebook)
     public void onClickFacebookLogin() {
         if (isLogin()) {
             logoutFacebook();

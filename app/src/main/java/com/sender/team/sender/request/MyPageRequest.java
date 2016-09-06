@@ -18,6 +18,7 @@ public class MyPageRequest extends AbstractRequest<NetworkResult<UserData>> {
     Request request;
     public MyPageRequest(Context context){
         HttpUrl url = getSecureUrlBuilder()
+                .port(4433)
                 .addPathSegment("members")
                 .addPathSegment("me")
                 .build();
