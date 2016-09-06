@@ -1,12 +1,30 @@
 package com.sender.team.sender.data;
 
 public class ContractsInfoData {
+    private int delivering_user_id;
     private int deliverer_id;
     private String res_time;
     private int contract_id;
     private int state;
-    private int sender_id;
+    private int sending_id;
+    private int sending_user_id;
     private String req_time;
+
+    public int getDelivering_user_id() {
+        return delivering_user_id;
+    }
+
+    public void setDelivering_user_id(int delivering_user_id) {
+        this.delivering_user_id = delivering_user_id;
+    }
+
+    public int getSending_user_id() {
+        return sending_user_id;
+    }
+
+    public void setSending_user_id(int sending_user_id) {
+        this.sending_user_id = sending_user_id;
+    }
 
     public int getDeliverer_id() {
         return this.deliverer_id;
@@ -40,12 +58,12 @@ public class ContractsInfoData {
         this.state = state;
     }
 
-    public int getSender_id() {
-        return this.sender_id;
+    public int getSending_id() {
+        return this.sending_id;
     }
 
-    public void setSender_id(int sender_id) {
-        this.sender_id = sender_id;
+    public void setSending_id(int sending_id) {
+        this.sending_id = sending_id;
     }
 
     public String getReq_time() {

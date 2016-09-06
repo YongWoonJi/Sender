@@ -25,6 +25,7 @@ import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.sender.team.sender.R;
+import com.sender.team.sender.manager.PropertyManager;
 
 import java.io.IOException;
 
@@ -46,7 +47,7 @@ public class RegistrationIntentService extends IntentService {
             InstanceID instanceID = InstanceID.getInstance(this);
             String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-//            PropertyManager.getInstance().setRegistrationToken(token);
+            PropertyManager.getInstance().setRegistrationId(token);
             // Subscribe to topic channels
             subscribeTopics(token);
         } catch (Exception e) {

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.sender.team.sender.data.ContractIdData;
 import com.sender.team.sender.data.ContractsData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.ReverseGeocodingData;
@@ -28,6 +29,9 @@ import java.util.Calendar;
 
 public class AcceptActivity extends Activity {
 
+    public static final String STATE_CONTRACT_BEFORE = "1";
+    public static final String STATE_CONTRACT_SUCCESS = "2";
+    public static final String STATE_CONTRACT_FAIL = "9";
     String start;
     String end;
 
@@ -91,19 +95,20 @@ public class AcceptActivity extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         //13.계약 체결하기
-                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, "1", "1");
-                                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, "1", null, STATE_CONTRACT_SUCCESS);
+                                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
-                                            public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                                                Toast.makeText(AcceptActivity.this, "계약성공: "+result , Toast.LENGTH_SHORT).show();
+                                            public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
+                                                Toast.makeText(AcceptActivity.this, "계약성공: " + result, Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override
-                                            public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                                            public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, String errorMessage, Throwable e) {
                                                 Toast.makeText(AcceptActivity.this, "계약 실패", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }
                                         });
+
 
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         Intent intent2 = new Intent(getApplicationContext(), ChattingActivity.class);
@@ -151,7 +156,7 @@ public class AcceptActivity extends Activity {
                 });
             }
 
-           @Override
+            @Override
             public void onFail(NetworkRequest<NetworkResult<ContractsData>> request, String errorMessage, Throwable e) {
 
             }

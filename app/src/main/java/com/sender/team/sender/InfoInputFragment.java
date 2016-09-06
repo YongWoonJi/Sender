@@ -126,22 +126,17 @@ public class InfoInputFragment extends Fragment {
                 String phone = receiverPhone.getText().toString();
 
 
-                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
-
-                    ((SendActivity) getActivity()).searchView.setVisibility(View.GONE);
-                    ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
-                    ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
-
-                    ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time,uploadFile);
-
+//                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
+//                    ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time,uploadFile);
+//
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, new DelivererListFragment())
                             .addToBackStack(null)
                             .commit();
-
-                } else {
-                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }
+//
+//                } else {
+//                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+//                }
 
                 if (callback != null) {
                     callback.onClickButton();
@@ -255,4 +250,17 @@ public class InfoInputFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((SendActivity)getActivity()).backMarker();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((SendActivity) getActivity()).searchView.setVisibility(View.GONE);
+        ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
+        ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
+    }
 }

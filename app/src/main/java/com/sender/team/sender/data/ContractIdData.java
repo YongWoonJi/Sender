@@ -6,6 +6,15 @@ package com.sender.team.sender.data;
 public class ContractIdData {
     private int sending_id;
     private int contract_id;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public int getSendingId() {
         return sending_id;

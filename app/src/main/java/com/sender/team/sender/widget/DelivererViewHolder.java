@@ -34,7 +34,8 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
 
     OnSendListener listener;
     public interface OnSendListener {
-        void OnClickSend(int position);
+        void onClickSend(int position);
+        void onClickDeliverer(int position, View view);
     }
 
     public void setListener(OnSendListener listener) {
@@ -45,11 +46,18 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         ButterKnife.bind(this,itemView);
 
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClickDeliverer(getAdapterPosition(), view);
+            }
+        });
+
         Button btn = (Button) itemView.findViewById(R.id.btn_send);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.OnClickSend(getAdapterPosition());
+                listener.onClickSend(getAdapterPosition());
             }
         });
     }

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.R;
+import com.sender.team.sender.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,11 +35,10 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this,itemView);
     }
 
-    public void setChatReceiverData(String url, String name, String message, String time){
-
+    public void setChatReceiverData(String url, String name, String message, long time){
         Glide.with(MyApplication.getContext()).load(url).into(receiverImage);
         receiverName.setText(name);
         receiverContent.setText(message);
-        receiverTime.setText(time);
+        receiverTime.setText(Utils.getCurrentTime(time));
     }
 }

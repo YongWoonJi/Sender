@@ -23,7 +23,6 @@ public class ChattingReceiveRequest extends AbstractRequest<NetworkResult<ArrayL
                 .addPathSegment("chattings")
                 .build();
 
-
         request = new Request.Builder()
                 .url(url)
                 .tag(context)

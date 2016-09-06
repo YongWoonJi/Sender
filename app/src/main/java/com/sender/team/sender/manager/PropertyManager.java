@@ -33,6 +33,7 @@ public class PropertyManager {
     private DeliveringIdData deliveringId;
     private ContractIdData contractIdData;
 
+    private static final String KEY_REGISTRATION_ID = "regid";
 
     private PropertyManager() {
         Context context = MyApplication.getContext();
@@ -62,5 +63,12 @@ public class PropertyManager {
 
     public void setContractIdData(ContractIdData contractIdData) {
         this.contractIdData = contractIdData;
+    }
+    public String getRegistrationId() {
+        return mPrefs.getString(KEY_REGISTRATION_ID, "");
+    }
+    public void setRegistrationId(String regid) {
+        mEditor.putString(KEY_REGISTRATION_ID, regid);
+        mEditor.commit();
     }
 }

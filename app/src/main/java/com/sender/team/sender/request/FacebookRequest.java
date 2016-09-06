@@ -21,7 +21,7 @@ public class FacebookRequest extends AbstractRequest<NetworkResult<Integer>> {
 
     public FacebookRequest(Context context, String access_token, String registration_token) {
         HttpUrl url = getSecureUrlBuilder()
-                .port(8080)
+//                .port(8080)
                 .addPathSegment("auth")
                 .addPathSegment("facebook")
                 .addPathSegment("token")

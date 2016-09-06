@@ -15,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -73,6 +72,8 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     Map<POI, Marker> markerResolver = new HashMap<>();
     Map<Marker, POI> poiResolver = new HashMap<>();
 
+    POI selectPoi;
+
     Map<DelivererData, Marker> deliverMarkerResolver = new HashMap<>();
     Map<Marker, DelivererData> deliverDelivererDataResolver = new HashMap<>();
 
@@ -110,22 +111,21 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                     @Override
                     public void run() {
                         listView.setVisibility(View.GONE);
+                        selectPoi = poi;
                         Marker m = markerResolver.get(poi);
                         m.showInfoWindow();
-                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+
                     }
                 });
                 mMap.clear();
                 addMarker(poi);
-
             }
         });
 
         searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                switch (actionId) {
+                switch (actionId){
                     case EditorInfo.IME_ACTION_SEARCH:
                         onClickSearch();
                         break;
@@ -136,6 +136,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
             }
         });
     }
+
 
 
     private void animateMap(double lat, double lng, final Runnable callback) {
@@ -281,10 +282,11 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     }
 
     protected void addMarker(DelivererData data) {
+
         MarkerOptions options = new MarkerOptions();
         double lat = Double.parseDouble(data.getHere_lat());
         double lon = Double.parseDouble(data.getHere_lon());
-        options.position(new LatLng(lat, lon));
+        options.position(new LatLng(lat,lon));
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
         options.anchor(0.5f, 1);
         options.title(data.getName());
@@ -369,7 +371,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     public void receiveData(String obName, String phone, String price, String time, File uploadFile) {
         Fragment f = new InfoInputFragment();
         if (f != null) {
-            ((InfoInputFragment) f).setSenderData(getApplicationContext(), hereLat, hereLng, addrLat, addrLng, obName, phone, price, time, uploadFile);
+            ((InfoInputFragment) f).setSenderData(getApplicationContext(),hereLat, hereLng, addrLat, addrLng, obName, phone, price, time,uploadFile);
         }
     }
 
@@ -404,6 +406,18 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     public void onMarkerDragEnd(Marker marker) {
         LatLng latLng = marker.getPosition();
         Log.i("GoogleMapActivity", "lat : " + latLng.latitude + ", lng : " + latLng.longitude);
+    }
+    //back key를 눌렀을 때 선택했었던 장소 마커 다시 찍음
+    public void backMarker(){
+        if(selectPoi != null){
+            mMap.clear();
+            addMarker(selectPoi);
+        }
+    }
+
+    public void showMarkerInfo(DelivererData data){
+        marker = deliverMarkerResolver.get(data);
+        marker.showInfoWindow();
     }
 
 }

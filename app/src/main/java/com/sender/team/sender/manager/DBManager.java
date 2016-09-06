@@ -20,6 +20,7 @@ import java.util.Map;
 public class DBManager extends SQLiteOpenHelper {
 
     private static DBManager instance;
+
     public static DBManager getInstance() {
         if (instance == null) {
             instance = new DBManager();
@@ -81,6 +82,7 @@ public class DBManager extends SQLiteOpenHelper {
             values.clear();
             values.put(ChatContract.ChatUser.COLUMN_SERVER_ID, user.getUser_id());
             values.put(ChatContract.ChatUser.COLUMN_NAME, user.getName());
+            values.put(ChatContract.ChatUser.COLUMN_IMAGE, user.getFileUrl());
 //            values.put(ChatContract.ChatUser.COLUMN_EMAIL, user.getEmail());
             return db.insert(ChatContract.ChatUser.TABLE, null, values);
         }
@@ -88,19 +90,20 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     Map<Long, Long> resolveUserId = new HashMap<>();
-    public long addMessage(UserData user, int type, String message,Date date){
-        Long uid = resolveUserId.get(Long.valueOf(user.getUser_id()));
+
+    public long addMessage(UserData user, int type, String message, Date date) {
+        Long uid = resolveUserId.get(Long.parseLong(user.getUser_id()));
         if (uid == null) {
             long id = getUserId(Long.parseLong(user.getUser_id()));
             if (id == -1) {
                 id = addUser(user);
             }
-            resolveUserId.put(Long.valueOf(user.getUser_id()), id);
+            resolveUserId.put(Long.parseLong(user.getUser_id()), id);
             uid = id;
         }
         SQLiteDatabase db = getWritableDatabase();
         values.clear();
-        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, (long)uid);
+        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, (long) uid);
         values.put(ChatContract.ChatMessage.COLUMN_TYPE, type);
         values.put(ChatContract.ChatMessage.COLUMN_MESSAGE, message);
         long current = date.getTime();
@@ -119,17 +122,18 @@ public class DBManager extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+
     }
 
 
-    public long addMessage(ChattingReceiveData data, int type, Date date){
-        Long uid = resolveUserId.get(Long.valueOf(data.getSender().getId()));
+    public long addMessage(ChattingReceiveData data, int type, String message, Date date){
+        Long uid = resolveUserId.get(data.getSender().getId());
         if (uid == null) {
-            long id = getUserId(Long.valueOf(data.getSender().getId()));
+            long id = getUserId(data.getSender().getId());
             if (id == -1) {
                 id = addUser(data);
             }
-            resolveUserId.put(Long.valueOf(data.getSender().getId()), id);
+            resolveUserId.put(data.getSender().getId(), id);
             uid = id;
         }
         SQLiteDatabase db = getWritableDatabase();
@@ -157,7 +161,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public long getUserId(long serverId) {
         String selection = ChatContract.ChatUser.COLUMN_SERVER_ID + " = ?";
-        String[] args = {""+serverId};
+        String[] args = {"" + serverId};
         String[] columns = {ChatContract.ChatUser._ID};
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query(ChatContract.ChatUser.TABLE, columns, selection, args, null, null, null);
@@ -188,7 +192,8 @@ public class DBManager extends SQLiteOpenHelper {
         String[] columns = {ChatContract.ChatMessage._ID,
                 ChatContract.ChatMessage.COLUMN_TYPE,
                 ChatContract.ChatMessage.COLUMN_MESSAGE,
-                ChatContract.ChatMessage.COLUMN_CREATED};
+                ChatContract.ChatMessage.COLUMN_CREATED
+                };
         String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ?";
         String[] args = {"" + userid};
         String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
@@ -202,7 +207,7 @@ public class DBManager extends SQLiteOpenHelper {
         if (uid == null) {
             long id = getUserId(Long.parseLong(user.getUser_id()));
             if (id != -1) {
-                resolveUserId.put(Long.valueOf(user.getUser_id()), id);
+                resolveUserId.put(Long.parseLong(user.getUser_id()), id);
                 userid = id;
             }
         } else {
@@ -219,5 +224,13 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         return db.query(ChatContract.ChatMessage.TABLE, columns, selection, args, null, null, sort);
     }
+
+//    public Cursor getChatReceiveData(){
+//        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ?";
+//        String[] args = {""+serverId};
+//        String[] columns = {ChatContract.ChatUser._ID};
+//        SQLiteDatabase db = getReadableDatabase();
+//        Cursor c = db.query(ChatContract.ChatUser.TABLE, columns, selection, args, null, null, null);
+//    }
 
 }

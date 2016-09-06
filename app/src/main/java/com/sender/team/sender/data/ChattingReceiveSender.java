@@ -1,12 +1,23 @@
 package com.sender.team.sender.data;
 
+/**
+ * Created by Tacademy on 2016-09-06.
+ */
 public class ChattingReceiveSender {
+    private long id;
     private String name;
     private String fileUrl;
-    private int id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
@@ -14,18 +25,10 @@ public class ChattingReceiveSender {
     }
 
     public String getFileUrl() {
-        return this.fileUrl;
+        return fileUrl;
     }
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

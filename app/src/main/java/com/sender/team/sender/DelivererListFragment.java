@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.sender.team.sender.data.ContractIdData;
+import com.sender.team.sender.data.DelivererData;
 import com.sender.team.sender.data.DelivererListData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.ReviewListData;
@@ -51,14 +53,14 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         mAdapter = new DelivererAdapter();
         mAdapter.setOnDialogListener(this);
         rv_view.setAdapter(mAdapter);
-        DelivererListRequest request = new DelivererListRequest(getContext(), "1","1");
-        NetworkManager.getInstance().getNetworkData(1,request, new NetworkManager.OnResultListener<NetworkResult<DelivererListData>>() {
+        DelivererListRequest request = new DelivererListRequest(getContext(), "1", "1");
+        NetworkManager.getInstance().getNetworkData(1, request, new NetworkManager.OnResultListener<NetworkResult<DelivererListData>>() {
 
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<DelivererListData>> request, NetworkResult<DelivererListData> result) {
-                for (int i = 0; i< result.getResult().getData().size(); i++){
-                    ((SendActivity)getActivity()).addMarker(result.getResult().getData().get(i));
-                    Log.i("DelivererListFragment", String.valueOf(result.getResult().getData().get(i).getUser_id())+" , " +String.valueOf(result.getResult().getData().get(i).getDeilver_id()));
+                for (int i = 0; i < result.getResult().getData().size(); i++) {
+                    ((SendActivity) getActivity()).addMarker(result.getResult().getData().get(i));
+                    Log.i("DelivererListFragment", String.valueOf(result.getResult().getData().get(i).getNext_lat()) + " , " + String.valueOf(result.getResult().getData().get(i).getNext_lon()));
                 }
                 mAdapter.setDelivererData(result.getResult().getData());
             }
@@ -66,7 +68,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             @Override
             public void onFail(NetworkRequest<NetworkResult<DelivererListData>> request, String errorMessage, Throwable e) {
                 Toast.makeText(getActivity(), "delivererlist fail" + errorMessage, Toast.LENGTH_SHORT).show();
-                Log.i("DelivererListFragment",errorMessage);
+                Log.i("DelivererListFragment", errorMessage);
             }
         });
 
@@ -81,25 +83,26 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("요청하시겠습니까?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int contractId = PropertyManager.getInstance().getContractIdData().getContractId();
-                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), String.valueOf(deliverId));
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
-
+                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), String.valueOf(deliverId), null);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                     @Override
-                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                    public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
                         Toast.makeText(getActivity(), "success : " + result.getResult().toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, String errorMessage, Throwable e) {
                         Toast.makeText(getActivity(), "fail : " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 Toast.makeText(getContext(), "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
+
             }
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -125,7 +128,6 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
 
     @Override
     public void DialogShow(int position) {
-
         View view = getLayoutInflater(null).inflate(R.layout.view_dialog_review, null, false);
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_view_dialog);
         final ReviewAdapter adapter = new ReviewAdapter();
@@ -134,7 +136,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         deliverId = mAdapter.getDeliverId(position);
         String delId = String.valueOf(mAdapter.getDeliverId(position));
 
-        ReviewListRequest request = new ReviewListRequest(getContext(), "1","1",delId);
+        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "1", delId);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
@@ -172,15 +174,16 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        ((SendActivity)getActivity()).searchView.setVisibility(View.VISIBLE);
-        ((SendActivity)getActivity()).searchBtn.setVisibility(View.VISIBLE);
-        ((SendActivity)getActivity()).headerView.setVisibility(View.GONE);
-        ((SendActivity)getActivity()).mMap.clear();
+    public void delivererShow(int position, View view, DelivererData data) {
+        ((SendActivity) getActivity()).showMarkerInfo(data);
     }
 
-
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((SendActivity) getActivity()).searchView.setVisibility(View.VISIBLE);
+        ((SendActivity) getActivity()).searchBtn.setVisibility(View.VISIBLE);
+        ((SendActivity) getActivity()).headerView.setVisibility(View.GONE);
+    }
 
 }

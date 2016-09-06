@@ -4,6 +4,7 @@ package com.sender.team.sender;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,6 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,6 +110,7 @@ public class LoginFragment extends Fragment {
             public void onSuccess(LoginResult loginResult) {
                 AccessToken token = AccessToken.getCurrentAccessToken();
                 FacebookRequest request = new FacebookRequest(getContext(), token.getToken(), "fPmhn6uzg1g:APA91bFIp2lQYqtiKc-KT8ARAI6PDJsFyp7ZGGhxP7WHS4sba6SLD0tVJOEpdMIcHPps5b6DNcKFpMSbW53u7YSVVj3LbYCCB5QW77bJEng1CTN0XD9uVZW3_rmf8Nl1hDUVd5UjtlLt");
+                Log.i("LoginFragment",token.getToken());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
@@ -130,7 +131,8 @@ public class LoginFragment extends Fragment {
 
                     @Override
                     public void onFail(NetworkRequest<NetworkResult<Integer>> request, String errorMessage, Throwable e) {
-
+                        Toast.makeText(getContext(), "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                        Log.i("LoginFragment Fail",errorMessage);
                     }
                 });
             }

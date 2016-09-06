@@ -16,6 +16,7 @@ import okhttp3.RequestBody;
  * Created by Tacademy on 2016-08-26.
  */
 public class ContractsUpdateRequest extends AbstractRequest<NetworkResult<String>> {
+    //16 배송 상태 변경하기
     Request request;
     public ContractsUpdateRequest(Context context, String constract_id, String state){
         HttpUrl url = getBaseUrlBuilder()

@@ -38,6 +38,7 @@ public class ChattingActivity extends AppCompatActivity{
     public static final String HEADER_TYPE = "headertype";
     public static final int SEND_HEADER = 1;
     public static final int DELIVERER_HEADER = 2;
+    public static final String EXTRA_USER = "user";
 
     @BindView(R.id.rv_list2)
     RecyclerView listview;
@@ -118,16 +119,20 @@ public class ChattingActivity extends AppCompatActivity{
                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, receiveRequest, new NetworkManager.OnResultListener<NetworkResult<ArrayList<ChattingReceiveData>>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetworkResult<ArrayList<ChattingReceiveData>>> request, NetworkResult<ArrayList<ChattingReceiveData>> result) {
-                                DBManager.getInstance().addMessage(result.getResult().get(0), ChatContract.ChatMessage.TYPE_RECEIVE, new Date());
+                                DBManager.getInstance().addMessage(result.getResult().get(0) , ChatContract.ChatMessage.TYPE_RECEIVE,
+                                        result.getResult().get(0).getMessage(), new Date());
+
                                 updateMessage(result.getResult().get(0));
+                                mAdapter.setRecieveData(result.getResult().get(0));
+
+//                                user = result.getResult().get(0).getSender();
                             }
 
                             @Override
                             public void onFail(NetworkRequest<NetworkResult<ArrayList<ChattingReceiveData>>> request, String errorMessage, Throwable e) {
-
+                                Toast.makeText(ChattingActivity.this, "fail r", Toast.LENGTH_SHORT).show();
                             }
                         });
-
                     }
                 }
 
@@ -136,6 +141,8 @@ public class ChattingActivity extends AppCompatActivity{
                     Toast.makeText(ChattingActivity.this, "fail", Toast.LENGTH_SHORT).show();
                 }
             });
+
+
             editMessage.setText("");
             if (mAdapter.getItemCount() > 0){
                 listview.smoothScrollToPosition(mAdapter.getItemCount() - 1);

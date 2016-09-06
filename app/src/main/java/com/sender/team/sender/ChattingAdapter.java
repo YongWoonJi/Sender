@@ -77,12 +77,10 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             case VIEW_TYPE_RECEIVE :{
-                ChattingReceiverViewHolder svh = (ChattingReceiverViewHolder)holder;
-                String url = cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_IMAGE));
-                String name = cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_NAME));
+                ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder)holder;
                 String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
-                String time = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
-                svh.setChatReceiverData(url,name,message,time);
+                long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
+                rvh.setChatReceiverData(data.getSender().getFileUrl(),data.getSender().getName(),message,time);
 //                ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder)holder;
 //                rvh.setChatReceiverData(data);
                 break;

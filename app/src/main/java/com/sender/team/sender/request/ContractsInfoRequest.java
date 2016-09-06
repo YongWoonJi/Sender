@@ -16,6 +16,7 @@ import okhttp3.Request;
  */
 public class ContractsInfoRequest extends AbstractRequest<NetworkResult<ContractsInfoData>> {
     Request request;
+    // 15 계약 내역보기
     public ContractsInfoRequest(Context context, String constract_id){
         HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
