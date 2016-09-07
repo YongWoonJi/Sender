@@ -19,7 +19,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     Cursor cursor;
     File senderChatImage;
-    String name, image;
+    String name, profileImage;
 
     public void changeCursor(Cursor c) {
         if (cursor != null) {
@@ -29,10 +29,10 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public void setRecieveData(File chatImage, String name, String image){
+    public void setRecieveData(File chatImage, String name, String profileImage){
         this.senderChatImage = chatImage;
         this.name = name;
-        this.image = image;
+        this.profileImage = profileImage;
     }
 
     private static final int VIEW_TYPE_SEND = 1;
@@ -75,9 +75,10 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_SEND : {
                 ChattingSenderViewHolder svh = (ChattingSenderViewHolder)holder;
+                String image = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_IMAGE));
                 String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
                 long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
-                svh.setChatSenderData(senderChatImage, message, time);
+                svh.setChatSenderData(image, message, time);
                 break;
             }
 
@@ -85,7 +86,8 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder)holder;
                 String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
                 long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
-                rvh.setChatReceiverData(image,name,message,time);
+                String image = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_IMAGE));
+                rvh.setChatReceiverData(profileImage,name,message,time,image);
 //                rvh.setChatReceiverData(data.getSender().getFileUrl(),data.getSender().getName(),message,time);
                 break;
             }

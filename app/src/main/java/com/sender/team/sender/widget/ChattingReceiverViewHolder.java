@@ -30,6 +30,9 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_chatting_receive_time)
     TextView receiverTime;
 
+    @BindView(R.id.image_chatting_receiver_img)
+    ImageView receiverImageContentImage;
+
     public ChattingReceiverViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
@@ -41,13 +44,18 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setChatReceiverData(String url, String name, String message, long time){
-        Glide.with(MyApplication.getContext()).load(url).into(receiverImage);
+    public void setChatReceiverData(String profile, String name, String message, long time, String image){
+        Glide.with(MyApplication.getContext()).load(profile).into(receiverImage);
         receiverName.setText(name);
         receiverContent.setText(message);
         receiverTime.setText(Utils.getCurrentTime(time));
+        if (image != null){
+            Glide.with(MyApplication.getContext()).load(image).into(receiverImageContentImage);
+        }
     }
 
+
+    // 상대방 프로필을 보는 액티비티로 이동하기 위한 인터페이스
     ChatReceiverImage mListener;
     public void setOnClickChatReceiverImage(ChatReceiverImage mListener){
         this.mListener = mListener;

@@ -10,8 +10,6 @@ import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.R;
 import com.sender.team.sender.Utils;
 
-import java.io.File;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,7 +32,7 @@ public class ChattingSenderViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this,itemView);
     }
 
-    public void setChatSenderData(File image, String content, long time){
+    public void setChatSenderData(String image, String content, long time){
         Glide.with(MyApplication.getContext()).load(image).into(senderImage);
         sendContent.setText(content);
         sendTime.setText(Utils.getCurrentTime(time));

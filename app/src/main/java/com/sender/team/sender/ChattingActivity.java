@@ -166,14 +166,15 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                     if (!TextUtils.isEmpty(result.getResult())){
-                        DBManager.getInstance().addMessage(user, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
+                        DBManager.getInstance().addMessage(user, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
                         updateMessage();
+
 
                         ChattingReceiveRequest receiveRequest = new ChattingReceiveRequest(ChattingActivity.this, Utils.getCurrentDate());
                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, receiveRequest, new NetworkManager.OnResultListener<NetworkResult<ArrayList<ChattingReceiveData>>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetworkResult<ArrayList<ChattingReceiveData>>> request, NetworkResult<ArrayList<ChattingReceiveData>> result) {
-                                DBManager.getInstance().addMessage(result.getResult().get(0).getSender() , ChatContract.ChatMessage.TYPE_RECEIVE,
+                                DBManager.getInstance().addMessage(result.getResult().get(0).getSender() , result.getResult().get(0).getSender().getFileUrl(), ChatContract.ChatMessage.TYPE_RECEIVE,
                                         result.getResult().get(0).getMessage(), new Date());
                                 user = result.getResult().get(0).getSender();
                                 updateMessage();
@@ -283,7 +284,9 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             outState.putString(FIELD_UPLOAD_FILE, uploadFile.getAbsolutePath());
         }
     }
-    Uri uri;
+
+    String path;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -292,7 +295,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 Uri uri = data.getData();
                 Cursor c = getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
                 if (c.moveToNext()) {
-                    String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
+                    path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
                     uploadFile = new File(path);
 //                    Glide.with(this)
 //                            .load(uploadFile)

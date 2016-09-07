@@ -9,16 +9,18 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/text_chatting_sender_time"
-        android:layout_alignBottom="@+id/relative"
-        android:layout_toLeftOf="@+id/relative"
-        android:layout_toStartOf="@+id/relative" />
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_toLeftOf="@+id/linearLayout"
+        android:layout_toStartOf="@+id/linearLayout" />
 
-    <RelativeLayout
-        android:id="@+id/relative"
-        android:layout_width="200dp"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:gravity="right"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,20 +28,14 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
             android:id="@+id/text_chatting_sender_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"/>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/image_chatting_sender_img"
-            android:layout_below="@+id/text_chatting_sender_content"
-            android:layout_alignRight="@+id/text_chatting_sender_content"
-            android:layout_alignEnd="@+id/text_chatting_sender_content"
             android:scaleType="center"/>
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
