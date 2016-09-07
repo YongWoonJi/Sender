@@ -18,7 +18,7 @@
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:text="New Text"
-        android:textSize="15sp"
+        android:textSize="11sp"
         android:id="@+id/text_title"
         android:layout_alignBottom="@+id/image_group_icon"
         android:layout_toRightOf="@+id/image_group_icon"

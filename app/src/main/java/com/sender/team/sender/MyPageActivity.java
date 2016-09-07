@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,10 +53,12 @@ public class MyPageActivity extends AppCompatActivity {
     TextView name;
     @BindView(R.id.my_image)
     ImageView profileImage;
-    @BindView(R.id.text_my_rating)
+    @BindView(R.id.text_rating_count)
     TextView rating;
     @BindView(R.id.text_review_count)
     TextView reviewCount;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private static final int RC_GET_IMAGE = 1;
     private static final int RC_CATPURE_IMAGE = 2;
@@ -73,8 +76,12 @@ public class MyPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
         mAdapter = new ReviewAdapter();
         listView.setAdapter(mAdapter);
@@ -82,8 +89,6 @@ public class MyPageActivity extends AppCompatActivity {
 
         initData(savedInstanceState);
         getReviewListData();
-
-
 
     }
 

@@ -3,6 +3,7 @@ package com.sender.team.sender;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -17,12 +18,21 @@ public class TermsActivity extends AppCompatActivity {
     TextView termsTitle;
     @BindView(R.id.text_terms)
     TextView termsView;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
         Intent intent = getIntent();
         int type = intent.getIntExtra("type", -1);

@@ -39,7 +39,7 @@
             android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#CF3232"
+            android:background="#FF4E56"
             app:tabTextColor="#ffffff"
             app:tabSelectedTextColor="#ffffff"
             app:tabIndicatorColor="@null"
@@ -108,42 +108,42 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="230dp"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/fab_margin"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB3"
+        app:backgroundTint="@color/whitebg"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        android:src="@android:drawable/ic_dialog_dialer" />
+        android:src="@drawable/btn_floasting_faq" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="160dp"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/fab_margin"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB2"
+        app:backgroundTint="@color/whitebg"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:src="@drawable/btn_floasting_qa" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="90dp"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/fab_margin"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:backgroundTint="@color/colorFAB1"
+        app:backgroundTint="@color/whitebg"
         app:pressedTranslationZ="12dp"
-        android:src="@android:drawable/ic_dialog_info" />
+        android:src="@drawable/btn_floasting_report" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -151,9 +151,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         app:elevation="6dp"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/fontcolor"
         app:pressedTranslationZ="12dp"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add" />
+        android:src="@drawable/btn_float" />
 
 </android.support.design.widget.CoordinatorLayout>

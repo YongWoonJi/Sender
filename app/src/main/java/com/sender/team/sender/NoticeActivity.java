@@ -2,6 +2,7 @@ package com.sender.team.sender;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
@@ -14,7 +15,13 @@ import com.sender.team.sender.request.NoticeRequest;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NoticeActivity extends AppCompatActivity {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     ExpandableListView listView;
     NoticeAdapter mAdapter;
@@ -26,6 +33,13 @@ public class NoticeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView = (ExpandableListView) findViewById(R.id.expandableListView);
         mAdapter = new NoticeAdapter();

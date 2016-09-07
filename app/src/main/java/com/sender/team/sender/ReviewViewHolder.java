@@ -14,7 +14,7 @@ import com.sender.team.sender.data.Review;
 public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
     ImageView userImg;
-    TextView name, rating, message;
+    TextView name, rating, message, date;
 
     public ReviewViewHolder(View itemView) {
         super(itemView);
@@ -22,6 +22,7 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
         name = (TextView)itemView.findViewById(R.id.text_review_name);
         rating = (TextView)itemView.findViewById(R.id.text_review_rating);
         message = (TextView)itemView.findViewById(R.id.text_review_message);
+        date = (TextView)itemView.findViewById(R.id.text_review_date);
     }
 
     Review data;
@@ -31,5 +32,6 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
         name.setText(data.getName());
         rating.setText("" + data.getStar());
         message.setText(data.getContent());
+        date.setText(data.getDate());
     }
 }

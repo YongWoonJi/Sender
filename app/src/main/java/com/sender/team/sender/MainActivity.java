@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab2.setOnClickListener(this);
         fab3.setOnClickListener(this);
 
-        tabs.addTab(tabs.newTab().setText("요청하기").setTag(TAB1));
-        tabs.addTab(tabs.newTab().setText("배송하기").setTag(TAB2));
-        tabs.addTab(tabs.newTab().setText("마이페이지").setTag(TAB3));
+        tabs.addTab(tabs.newTab().setText("요청하기").setTag(TAB1).setIcon(R.drawable.btn_tab01_icon));
+        tabs.addTab(tabs.newTab().setText("배송하기").setTag(TAB2).setIcon(R.drawable.btn_tab02_icon));
+        tabs.addTab(tabs.newTab().setText("마이페이지").setTag(TAB3).setIcon(R.drawable.btn_tab03_icon));
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

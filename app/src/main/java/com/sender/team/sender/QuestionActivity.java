@@ -9,11 +9,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -52,6 +56,15 @@ public class QuestionActivity extends AppCompatActivity {
     @BindView(R.id.image_picture)
     ImageView imagePicture;
 
+    @BindView(R.id.text_title_count)
+    TextView titleCount;
+
+    @BindView(R.id.text_contents_count)
+    TextView contentsCount;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     File savedFile = null;
     File uploadFile = null;
 
@@ -61,6 +74,59 @@ public class QuestionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+
+
+        editTitle.addTextChangedListener(new TextWatcher() {
+            String strCur;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int before, int count) {
+                strCur = s.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if( s.length() > 100 ) {
+                    editTitle.setText(strCur);
+                    editTitle.setSelection(start);
+                } else{
+                    titleCount.setText("(" + s.length() + "/100)");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editContents.addTextChangedListener(new TextWatcher() {
+            String strCur;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int before, int count) {
+                strCur = s.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if( s.length() > 100 ) {
+                    editContents.setText(strCur);
+                    editContents.setSelection(start);
+                } else{
+                    contentsCount.setText("(" + s.length() + "/700)");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         if (savedInstanceState != null) {
             String path = savedInstanceState.getString(FIELD_SAVE_FILE);
             if (!TextUtils.isEmpty(path)) {
@@ -74,7 +140,6 @@ public class QuestionActivity extends AppCompatActivity {
                         .into(imagePicture);
             }
         }
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -219,4 +284,6 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

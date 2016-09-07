@@ -4,11 +4,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.sender.team.sender.MyPageActivity">
+    tools:context="com.sender.team.sender.MyPageActivity"
+    android:background="@color/whitebg"
+    >
+
+    <FrameLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="@color/whitebg"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/title_mypage"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/fontcolor" />
+
+    </FrameLayout>
+
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/my_image"
@@ -18,56 +40,47 @@
         android:scaleType="centerCrop"
         app:riv_corner_radius="@dimen/mypage_image_radius"
 
-        />
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp" />
 
     <TextView
         android:id="@+id/text_my_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:text="@string/mypage_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="17sp"
+        android:layout_below="@+id/imageView12"
         android:layout_centerHorizontal="true"
-        android:text="센더맨"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginTop="40dp" />
 
     <TextView
         android:id="@+id/text_my_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_my_name"
-        android:layout_alignStart="@+id/text_my_name"
-        android:layout_below="@+id/text_my_name"
-        android:text="aaa@aaaa.com"
-        android:textSize="14sp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="@string/mypage_email"
+        android:textSize="11sp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_alignTop="@+id/imageView14"
+        android:layout_toRightOf="@+id/imageView14"
+        android:layout_toEndOf="@+id/imageView14"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:id="@+id/text_my_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_my_email"
-        android:layout_alignStart="@+id/text_my_email"
-        android:layout_below="@+id/text_my_email"
-        android:text="010-0000-0000"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <ImageView
-        android:id="@+id/image_deliverer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_my_phone"
-        android:layout_alignStart="@+id/text_my_phone"
-        android:layout_below="@+id/text_my_phone"
-        android:src="@android:drawable/star_big_on" />
-
-    <TextView
-        android:id="@+id/text_my_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/my_image"
-        android:layout_toEndOf="@+id/image_deliverer"
-        android:layout_toRightOf="@+id/image_deliverer"
-        android:text="7.5"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="@string/mypage_phone"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="11sp"
+        android:layout_alignBottom="@+id/imageView15"
+        android:layout_toRightOf="@+id/imageView15"
+        android:layout_toEndOf="@+id/imageView15"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -75,8 +88,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/image_deliverer"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@+id/imageView11">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -90,7 +103,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="1"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="23sp" />
 
             <TextView
                 android:id="@+id/textView26"
@@ -99,7 +113,9 @@
                 android:layout_below="@+id/text_request_count"
                 android:gravity="center"
                 android:text="@string/request"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="10dp"
+                android:textSize="11sp" />
 
         </RelativeLayout>
 
@@ -115,7 +131,9 @@
                 android:layout_below="@+id/text_delivery_count"
                 android:gravity="center"
                 android:text="@string/delivery"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="10dp"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/text_delivery_count"
@@ -124,7 +142,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="2"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="23sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -139,7 +158,9 @@
                 android:layout_below="@+id/text_review_count"
                 android:gravity="center"
                 android:text="@string/review"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="10dp"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/text_review_count"
@@ -148,7 +169,38 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="1"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="23sp" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_rating_count"
+                android:gravity="center"
+                android:text="@string/mypage_rating"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="10dp"
+                android:textSize="11sp"
+                />
+
+            <TextView
+                android:id="@+id/text_rating_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/fontcolor"
+                android:text="1"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="23sp" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -156,15 +208,66 @@
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView29"></android.support.v7.widget.RecyclerView>
+        android:layout_below="@+id/textView29"
+        android:layout_marginTop="10dp"></android.support.v7.widget.RecyclerView>
 
     <TextView
         android:id="@+id/textView29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout"
         android:text="@string/review_detail"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="15sp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/imageView13"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/imageView11"
+        android:background="@color/mypageline"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/my_image" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/imageView12"
+        android:background="@color/mypageline"
+        android:layout_above="@+id/my_image"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/imageView13"
+        android:background="@color/mypageline"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView14"
+        android:src="@drawable/ic_mail"
+        android:layout_below="@+id/text_my_name"
+        android:layout_alignLeft="@+id/imageView15"
+        android:layout_alignStart="@+id/imageView15"
+        android:layout_marginTop="17dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView15"
+        android:src="@drawable/ic_phone"
+        android:layout_below="@+id/imageView14"
+        android:layout_alignLeft="@+id/text_my_name"
+        android:layout_alignStart="@+id/text_my_name"
+        android:layout_marginTop="5dp" />
 </RelativeLayout>

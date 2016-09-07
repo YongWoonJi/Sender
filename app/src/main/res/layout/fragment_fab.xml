@@ -14,7 +14,8 @@
         android:layout_above="@+id/text_question"
         android:layout_alignLeft="@+id/text_question"
         android:layout_alignStart="@+id/text_question"
-        android:layout_marginBottom="45dp" />
+        android:layout_marginBottom="45dp"
+        android:textSize="13sp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +27,8 @@
         android:layout_above="@+id/textView30"
         android:layout_alignRight="@+id/textView30"
         android:layout_alignEnd="@+id/textView30"
-        android:layout_marginBottom="45dp" />
+        android:layout_marginBottom="45dp"
+        android:textSize="13sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,6 +42,7 @@
         android:layout_marginBottom="107dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textSize="13sp" />
 
 </RelativeLayout>

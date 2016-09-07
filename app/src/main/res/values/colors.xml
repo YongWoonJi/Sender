@@ -6,12 +6,16 @@
     <color name="colorFAB1">#2196F3</color>
     <color name="colorFAB2">#E040FB</color>
     <color name="colorFAB3">#4cc12b</color>
-    <color name="black">#000</color>
+    <color name="black">#000000</color>
     <color name="whitebg">#ffffff</color>
     <color name="transparent">#00000000</color>
     <color name="whitefont">#ffffff</color>
     <color name="pink">#ff4e55</color>
     <color name="grayline">#e8e8e8</color>
+    <color name="mypageline">#d2d2d2</color>
+    <color name="fontcolor">#ff3d46</color>
+    <color name="floatingbtn">#E57536</color>
+    <color name="reviewlistbg">#F2F2F2</color>
 
 
     <drawable name="dialog_background">@android:color/transparent</drawable>

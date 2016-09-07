@@ -420,7 +420,7 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
     <string name="review_detail">상세리뷰</string>
     <string name="question_ask">문의하기</string>
     <string name="question_title">문의합니다</string>
-    <string name="question_title_bottom">고객님의 작은 의견에도 귀 기울이는 SENDER가 되겠습니다. 문의하신 사항은 담당자가 신속하게 답변해드리도록 노력하겠습니다.</string>
+    <string name="question_title_bottom">고객님의 작은 의견에도 귀 기울이는&#10; SENDER가 되겠습니다. 문의하신 사항은 담당자가&#10; 신속하게 답변해드리도록 노력하겠습니다.</string>
     <string name="title">제목</string>
     <string name="question_content">문의내용</string>
     <string name="receive_answer">답변수신</string>
@@ -479,5 +479,17 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
     <string name="checkbox">동의</string>
     <string name="checkbox2">동의</string>
     <string name="checkbox3">동의</string>
+    <string name="title_qa">문의하기</string>
+    <string name="title_notice">공지사항</string>
+    <string name="title_term">약관동의</string>
+    <string name="title_mypage">마이페이지</string>
+    <string name="mypage_name">센더맨</string>
+    <string name="mypage_email">aaa@aaaa.com</string>
+    <string name="mypage_phone">010-0000-0000</string>
+    <string name="mypage_rating">별점</string>
+    <string name="qa_title_hint">제목을 작성해 주세요.</string>
+    <string name="qa_contents_hint">문의 내용을 작성해 주세요.</string>
+    <string name="qa_title_count">(0/100)</string>
+    <string name="qa_contents_count">(0/700)</string>
 
 </resources>
