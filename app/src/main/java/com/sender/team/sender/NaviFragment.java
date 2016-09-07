@@ -47,13 +47,13 @@ public class NaviFragment extends Fragment {
         rv_navi.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         List<NaviItem> data = new ArrayList<>();
-        data.add(new MenuGroup(MenuAdapter.HEADER, null, 0, false));
-        data.add(new MenuGroup(MenuAdapter.GROUP, "마이페이지", 0, false));
-        data.add(new MenuGroup(MenuAdapter.GROUP, "공지사항", 0, false));
-        data.add(new MenuGroup(MenuAdapter.GROUP, "알림설정", 0, false));
-        data.add(new MenuGroup(MenuAdapter.GROUP, "약관동의", 0, true));
-        data.add(new MenuGroup(MenuAdapter.GROUP, "로그아웃", 0, false));
-        data.add(new MenuGroup(MenuAdapter.GROUP, "회원탈퇴", 0, false));
+        data.add(new MenuGroup(MenuAdapter.HEADER, null, 0, false, 0));
+        data.add(new MenuGroup(MenuAdapter.GROUP, "마이페이지", R.drawable.ic_mypage, false, 0));
+        data.add(new MenuGroup(MenuAdapter.GROUP, "공지사항", R.drawable.ic_notice, false, 0));
+        data.add(new MenuGroup(MenuAdapter.GROUP, "알림설정", R.drawable.ic_alarm, false, R.drawable.btn_alarm_selector));
+        data.add(new MenuGroup(MenuAdapter.GROUP, "약관동의", R.drawable.ic_check, true, 0));
+        data.add(new MenuGroup(MenuAdapter.GROUP, "로그아웃", R.drawable.ic_lock, false, 0));
+        data.add(new MenuGroup(MenuAdapter.GROUP, "회원탈퇴", 0, false, 0));
 
         ((MenuGroup) data.get(4)).children = new ArrayList<>();
         ((MenuGroup) data.get(4)).children.add(new MenuChild(MenuAdapter.SERVICE_TERMS, "서비스 이용약관"));

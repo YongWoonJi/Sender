@@ -7,5 +7,12 @@
     <color name="colorFAB2">#E040FB</color>
     <color name="colorFAB3">#4cc12b</color>
     <color name="black">#000</color>
+    <color name="whitebg">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="whitefont">#ffffff</color>
+    <color name="pink">#ff4e55</color>
+    <color name="grayline">#e8e8e8</color>
+
+
     <drawable name="dialog_background">@android:color/transparent</drawable>
 </resources>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -24,9 +23,10 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.text_userName)
     TextView textUserName;
-
-    @BindView(R.id.rating_score)
-    RatingBar ratingBar;
+    @BindView(R.id.text_header_email)
+    TextView textEmail;
+    @BindView(R.id.text_header_rating)
+    TextView textRating;
 
     public HeaderViewHolder(View itemView) {
         super(itemView);
@@ -40,9 +40,8 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
         this.item = data;
         Glide.with(context).load(data.getFileUrl()).into(imageProfile);
         textUserName.setText(data.getName());
-        ratingBar.setMax(10);
-        ratingBar.setStepSize(1);
-        ratingBar.setRating(data.getStar());
+        textEmail.setText(data.getEmail());
+        textRating.setText("" + data.getStar());
     }
 
 }

@@ -25,7 +25,9 @@
         android:id="@+id/btn_getNum"
         android:layout_alignBottom="@+id/edit_phone"
         android:layout_toRightOf="@+id/edit_phone"
-        android:layout_toEndOf="@+id/edit_phone" />
+        android:layout_toEndOf="@+id/edit_phone"
+        android:background="@color/pink"
+        android:textColor="@color/whitefont"/>
 
     <EditText
         android:layout_width="150dp"
@@ -33,7 +35,8 @@
         android:id="@+id/edit_authNum"
         android:layout_alignBottom="@+id/btn_ok"
         android:layout_toLeftOf="@+id/btn_ok"
-        android:layout_toStartOf="@+id/btn_ok" />
+        android:layout_toStartOf="@+id/btn_ok"
+        android:layout_marginTop="5dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -44,7 +47,10 @@
         android:layout_below="@+id/edit_phone"
         android:layout_toRightOf="@+id/edit_phone"
         android:layout_alignRight="@+id/btn_getNum"
-        android:layout_alignEnd="@+id/btn_getNum" />
+        android:layout_alignEnd="@+id/btn_getNum"
+        android:background="@color/pink"
+        android:textColor="@color/whitefont"
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,5 +77,7 @@
         android:id="@+id/btn_finish"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="74dp" />
+        android:layout_marginBottom="74dp"
+        android:background="@color/pink"
+        android:textColor="@color/whitefont"/>
 </RelativeLayout>

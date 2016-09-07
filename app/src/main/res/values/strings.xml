@@ -475,4 +475,9 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
     <string name="arrival_time">도착 요청시간</string>
     <string name="deliverer_search_header">DELIVERER 정보를 검색중입니다. \n3분이내 배정되지 않으면 배송요청은 자동취소됩니다.</string>
 
+    <string name="btn_next">다 음</string>
+    <string name="checkbox">동의</string>
+    <string name="checkbox2">동의</string>
+    <string name="checkbox3">동의</string>
+
 </resources>

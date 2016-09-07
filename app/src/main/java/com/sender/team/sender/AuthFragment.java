@@ -15,8 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +23,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
-import com.sender.team.sender.request.AddPhoneRequest;
+import com.sender.team.sender.manager.PropertyManager;
+import com.sender.team.sender.request.MyPageRequest;
 
 import java.util.Random;
 
@@ -98,31 +98,47 @@ public class AuthFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddPhoneRequest request = new AddPhoneRequest(getContext(), "010-1234-5678");
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                        if (!TextUtils.isEmpty(result.getResult())) {
-                            Log.i("SignUpActivity", result.getResult());
-                        } else {
-                            Log.i("SignUpActivity", result.getError());
-                        }
+//                AddPhoneRequest request = new AddPhoneRequest(getContext(), "010-1234-5678");
+//                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+//                    @Override
+//                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+//                        if (!TextUtils.isEmpty(result.getResult())) {
+//                            Log.i("SignUpActivity", result.getResult());
+//                        } else {
+//                            Log.i("SignUpActivity", result.getError());
+//                        }
+//
+//                        Intent intent = new Intent(getContext(), MainActivity.class);
+//                        startActivity(intent);
+//                        getActivity().finish();
+//
+//                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+//                    }
+//
+//                    @Override
+//                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+//                        Log.i("SignUpActivity", "리퀘스트 실패");
+//                        Intent intent = new Intent(getContext(), MainActivity.class);
+//                        startActivity(intent);
+//                        getActivity().finish();
+//
+//                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+//                    }
+//                });
 
+                MyPageRequest request = new MyPageRequest(getContext());
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                        PropertyManager.getInstance().setUserData(result.getResult());
                         Intent intent = new Intent(getContext(), MainActivity.class);
                         startActivity(intent);
                         getActivity().finish();
-
-                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
-                        Log.i("SignUpActivity", "리퀘스트 실패");
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                    public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
 
-                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     }
                 });
 

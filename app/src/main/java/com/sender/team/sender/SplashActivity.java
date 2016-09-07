@@ -193,7 +193,7 @@ public class SplashActivity extends AppCompatActivity {
                 PropertyManager.getInstance().setUserData(result.getResult());
                 UserData user = (UserData) getIntent().getSerializableExtra(ChattingActivity.EXTRA_USER);
                 if (user == null) {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, SignUpActivity.class));
                 } else {
                     Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                     Intent chatIntent = new Intent(SplashActivity.this, ChattingActivity.class);
