@@ -7,31 +7,39 @@
     android:background="@color/whitebg">
 
     <FrameLayout
-        android:id="@+id/toolbarLayout"
+    android:id="@+id/toolbarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/whitebg"></android.support.v7.widget.Toolbar>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/whitebg"></android.support.v7.widget.Toolbar>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/title_qa"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/title_qa"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-    </FrameLayout>
+</FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbarLayout">
+        android:layout_below="@+id/toolbarLayout"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
+        <View
+            android:id="@+id/line4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayline"
+            />
 
         <TextView
             android:id="@+id/textView22"
@@ -39,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView4"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="@string/question_title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="14dp" />
@@ -51,11 +59,11 @@
             android:layout_below="@+id/textView22"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/question_title_bottom"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:lineSpacingExtra="7dp"/>
+            android:lineSpacingExtra="7dp"
+            android:textSize="11sp" />
 
         <Button
             android:id="@+id/btn_question"
@@ -108,18 +116,32 @@
             android:layout_alignRight="@+id/btn_question"
             android:hint="제목을 작성해 주세요."
             android:layout_below="@+id/relativelayout"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="16dp"
             android:textSize="11sp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:maxLength="100"
-            android:background="@null"/>
+            android:background="@null"
+            android:singleLine="true" />
+        <View
+            android:id="@+id/line7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayline"
+            android:layout_below="@+id/edit_title"
+            android:layout_marginLeft="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="3dp" />
+
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:id="@+id/scrollView"
-            android:layout_below="@+id/edit_title">
+            android:layout_below="@+id/edit_title"
+            android:layout_marginTop="16dp">
         <EditText
             android:id="@+id/edit_contents"
             android:layout_width="match_parent"
@@ -135,8 +157,24 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:maxLength="700"
-            android:background="@null"/>
+            android:background="@null"
+            android:paddingBottom="10dp"/>
+
+
+
         </ScrollView>
+
+        <View
+            android:id="@+id/line8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayline"
+            android:layout_below="@+id/scrollView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" />
 
         <TextView
             android:id="@+id/textView35"
@@ -149,7 +187,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="11sp"
             android:textColor="@color/black"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp" />
 
         <RadioGroup
@@ -196,7 +234,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="11sp"
             android:textColor="@color/black"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp" />
 
         <ImageView
@@ -227,10 +265,10 @@
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:src="@drawable/ic01"
+            android:layout_below="@+id/line4"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic01" />
+            android:layout_marginTop="16dp" />
 
         <TextView
             android:layout_width="wrap_content"

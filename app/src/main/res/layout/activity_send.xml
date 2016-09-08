@@ -4,12 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.sender.team.sender.SendActivity"
-    android:nestedScrollingEnabled="false">
+    android:nestedScrollingEnabled="false"
+    android:background="@color/whitebg" >
+
+    <FrameLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/whitebg"></android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="배송요청 정보입력"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/line9"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayline"
+            android:layout_gravity="center_horizontal|bottom" />
+
+
+    </FrameLayout>
+
     <RelativeLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/toolbarLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
         <EditText
@@ -19,7 +51,8 @@
             android:layout_toLeftOf="@+id/btn_search"
             android:layout_toStartOf="@+id/btn_search"
             android:imeOptions="actionSearch"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:hint="목적지 지역검색" />
 
         <Button
             style="?android:attr/buttonStyleSmall"

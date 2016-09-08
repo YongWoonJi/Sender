@@ -9,14 +9,19 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -58,6 +63,12 @@ public class ReportActivity extends AppCompatActivity {
     @BindView(R.id.image_photo)
     ImageView imagePhoto;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.text_report_count)
+    TextView contentsCount;
+
     SpinnerAdapter mAdapter;
     String selectDeliverer;
 
@@ -70,7 +81,36 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report);
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        editContents.addTextChangedListener(new TextWatcher() {
+            String strCur;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int before, int count) {
+                    strCur = s.toString();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if( s.length() > 700 ) {
+                        editContents.setText(strCur);
+                        editContents.setSelection(start);
+                    } else{
+                        contentsCount.setText("(" + s.length() + "/700)");
+                    }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         mAdapter = new SpinnerAdapter();
         spinner.setAdapter(mAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

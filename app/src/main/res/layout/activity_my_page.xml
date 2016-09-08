@@ -53,9 +53,11 @@
         android:text="@string/mypage_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="17sp"
-        android:layout_below="@+id/imageView12"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
+        android:layout_alignTop="@+id/my_image"
+        android:layout_toRightOf="@+id/my_image"
+        android:layout_toEndOf="@+id/my_image"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="30dp" />
 
     <TextView
         android:id="@+id/text_my_email"

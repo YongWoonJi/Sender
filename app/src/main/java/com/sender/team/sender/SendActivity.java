@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -68,6 +69,9 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     @BindView(R.id.text_deliverer_search_content)
     TextView headerView;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     ArrayAdapter<POI> mAdapter;
     Map<POI, Marker> markerResolver = new HashMap<>();
     Map<Marker, POI> poiResolver = new HashMap<>();
@@ -93,7 +97,12 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         mAdapter = new ArrayAdapter<POI>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(mAdapter);
         listView.setVisibility(View.GONE);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, new InfoInputFragment())
                 .commit();

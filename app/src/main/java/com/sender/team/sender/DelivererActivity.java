@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -73,6 +74,9 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     @BindView(R.id.list_endSearch)
     ListView listEndSearch;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private static final int TYPE_START = 0;
     private static final int TYPE_END = 1;
 
@@ -90,7 +94,11 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deliverer);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
         mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 

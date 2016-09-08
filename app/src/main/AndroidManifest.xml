@@ -57,9 +57,11 @@
         <activity android:name=".SendActivity"
             android:screenOrientation="portrait"
             android:exported="true"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
         <activity android:name=".DelivererActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
         <activity android:name=".MyPageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"

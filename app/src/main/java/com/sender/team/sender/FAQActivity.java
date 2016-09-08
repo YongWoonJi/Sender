@@ -2,13 +2,20 @@ package com.sender.team.sender;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class FAQActivity extends AppCompatActivity {
 
     ExpandableListView listView;
     NoticeAdapter mAdapter;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     int expandposition = -1;
 
@@ -16,7 +23,13 @@ public class FAQActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faq);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+
         listView = (ExpandableListView) findViewById(R.id.expandableListView);
         mAdapter = new NoticeAdapter();
         listView.setAdapter(mAdapter);
