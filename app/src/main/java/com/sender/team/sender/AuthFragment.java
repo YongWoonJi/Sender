@@ -101,7 +101,7 @@ public class AuthFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (editPhone.getText().toString() != null) {
+                if (!TextUtils.isEmpty(editPhone.getText().toString())) {
                     AddPhoneRequest request = new AddPhoneRequest(getContext(), editPhone.getText().toString());
                     NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
