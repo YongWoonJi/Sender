@@ -126,7 +126,7 @@ public class LoginFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<Integer>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result, String errorMessage, Throwable e) {
                         Toast.makeText(getContext(), "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
                         Log.i("LoginFragment Fail",errorMessage);
                     }

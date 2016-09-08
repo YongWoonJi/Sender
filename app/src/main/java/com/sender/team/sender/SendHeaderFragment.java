@@ -57,7 +57,7 @@ public class SendHeaderFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                     }
                 });
                 clickSend();
@@ -77,7 +77,7 @@ public class SendHeaderFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                     }
                 });
 
@@ -106,7 +106,7 @@ public class SendHeaderFragment extends Fragment {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
@@ -131,7 +131,7 @@ public class SendHeaderFragment extends Fragment {
                         }
 
                         @Override
-                        public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                        public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                             Toast.makeText(getContext(), "리뷰 등록 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });

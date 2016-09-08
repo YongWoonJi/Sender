@@ -66,7 +66,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<DelivererListData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<DelivererListData>> request, NetworkResult<DelivererListData> result, String errorMessage, Throwable e) {
                 Toast.makeText(getActivity(), "delivererlist fail" + errorMessage, Toast.LENGTH_SHORT).show();
                 Log.i("DelivererListFragment", errorMessage);
             }
@@ -95,7 +95,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result, String errorMessage, Throwable e) {
                         Toast.makeText(getActivity(), "fail : " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -144,7 +144,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result, String errorMessage, Throwable e) {
                 Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
             }
         });

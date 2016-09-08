@@ -122,7 +122,7 @@ public class ReportActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<DeliveringHistoryData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<DeliveringHistoryData>> request, NetworkResult<DeliveringHistoryData> result, String errorMessage, Throwable e) {
 
             }
         });
@@ -245,7 +245,7 @@ public class ReportActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                 Toast.makeText(ReportActivity.this, "request failed", Toast.LENGTH_SHORT).show();
             }
         });

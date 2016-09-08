@@ -103,7 +103,7 @@ public class AcceptActivity extends Activity {
                                             }
 
                                             @Override
-                                            public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, String errorMessage, Throwable e) {
+                                            public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result, String errorMessage, Throwable e) {
                                                 Toast.makeText(AcceptActivity.this, "계약 실패", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }
@@ -143,21 +143,21 @@ public class AcceptActivity extends Activity {
                             }
 
                             @Override
-                            public void onFail(NetworkRequest<ReverseGeocodingData> request, String errorMessage, Throwable e) {
+                            public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
 
                             }
                         });
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<ReverseGeocodingData> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
 
                     }
                 });
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<ContractsData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<ContractsData>> request, NetworkResult<ContractsData> result, String errorMessage, Throwable e) {
 
             }
         });

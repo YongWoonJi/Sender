@@ -79,7 +79,7 @@ public class ChattingProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
                 Toast.makeText(ChattingProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });

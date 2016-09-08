@@ -85,7 +85,7 @@ public class NoticeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<NoticeListData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<NoticeListData>> request, NetworkResult<NoticeListData> result, String errorMessage, Throwable e) {
 
             }
         });

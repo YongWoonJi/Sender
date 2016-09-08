@@ -253,7 +253,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 }
 
                 @Override
-                public void onFail(NetworkRequest<POIResult> request, String errorMessage, Throwable e) {
+                public void onFail(NetworkRequest<POIResult> request, POIResult result, String errorMessage, Throwable e) {
 
                 }
             });
@@ -276,7 +276,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 }
 
                 @Override
-                public void onFail(NetworkRequest<POIResult> request, String errorMessage, Throwable e) {
+                public void onFail(NetworkRequest<POIResult> request, POIResult result, String errorMessage, Throwable e) {
 
                 }
             });
@@ -309,7 +309,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<DeliveringIdData>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result, String errorMessage, Throwable e) {
 
                     }
                 });

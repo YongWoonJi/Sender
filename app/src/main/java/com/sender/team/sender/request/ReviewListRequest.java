@@ -16,7 +16,7 @@ import okhttp3.Request;
  */
 public class ReviewListRequest extends AbstractRequest<NetworkResult<ReviewListData>> {
     Request request;
-    public ReviewListRequest(Context context, String currentPage , String itemsPerPage, String deliverer_id ){
+    public ReviewListRequest(Context context, String currentPage , String itemsPerPage, String deliverer_id ) {
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("reviews")
                 .addQueryParameter("currentPage",currentPage)

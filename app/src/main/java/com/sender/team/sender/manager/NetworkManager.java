@@ -5,11 +5,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.sender.team.sender.MyApplication;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.R;
 
 import java.io.File;
@@ -55,7 +55,7 @@ public class NetworkManager {
     OkHttpClient client_secure;
 
     private NetworkManager() {
-        createClient();
+//        createClient();
         createClientSecure();
     }
 
@@ -132,7 +132,7 @@ public class NetworkManager {
     public interface OnResultListener<T> {
         public void onSuccess(NetworkRequest<T> request, T result);
 
-        public void onFail(NetworkRequest<T> request, String errorMessage, Throwable e);
+        public void onFail(NetworkRequest<T> request, T result, String errorMessage, Throwable e);
     }
 
     void sendSuccess(NetworkRequest<?> request) {
@@ -159,7 +159,8 @@ public class NetworkManager {
 
     public <T> T getNetworkDataSync(int type, NetworkRequest<T> request) throws IOException {
         if (type == CLIENT_STANDARD) {
-            client = client_standard;
+//            client = client_standard;
+            client = client_secure;
         } else if (type == CLIENT_SECURE) {
             client = client_secure;
         } else {

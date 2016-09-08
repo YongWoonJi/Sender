@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
 
             }
         });
@@ -291,8 +291,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                 if (!TextUtils.isEmpty(result.getResult())) {
+                    PropertyManager.getInstance().setFacebookId("");
+                    PropertyManager.getInstance().setUserData(null);
                     Toast.makeText(MainActivity.this, "로그아웃 되었습니다", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                    Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+                    intent.putExtra(SplashActivity.FACEBOOK_LOGOUT, "facebooklogout");
                     startActivity(intent);
                     finish();
                 } else {
@@ -301,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                 Toast.makeText(MainActivity.this, "request failed", Toast.LENGTH_SHORT).show();
             }
         });
@@ -320,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         if (!TextUtils.isEmpty(result.getResult())) {
                             Toast.makeText(MainActivity.this, "정상적으로 탈퇴되었습니다", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
@@ -329,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                         Toast.makeText(MainActivity.this, "request failed", Toast.LENGTH_SHORT).show();
                     }
                 });

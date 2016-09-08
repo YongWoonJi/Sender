@@ -178,7 +178,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                 }
 
                 @Override
-                public void onFail(NetworkRequest<POIResult> request, String errorMessage, Throwable e) {
+                public void onFail(NetworkRequest<POIResult> request, POIResult result, String errorMessage, Throwable e) {
                     Toast.makeText(SendActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                     Log.i("Send", errorMessage);
                 }

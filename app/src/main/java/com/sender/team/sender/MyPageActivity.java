@@ -204,7 +204,7 @@ public class MyPageActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                     Toast.makeText(MyPageActivity.this, "Upload fail", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -226,7 +226,7 @@ public class MyPageActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result, String errorMessage, Throwable e) {
             }
         });
     }

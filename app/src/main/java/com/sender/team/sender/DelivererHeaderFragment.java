@@ -49,7 +49,7 @@ public class DelivererHeaderFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                         Toast.makeText(getContext(), "배송 시작 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -70,7 +70,7 @@ public class DelivererHeaderFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                         Toast.makeText(getContext(), "배송 완료 실패:"+  errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });

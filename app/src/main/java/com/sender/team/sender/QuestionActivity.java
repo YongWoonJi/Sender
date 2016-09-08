@@ -279,7 +279,7 @@ public class QuestionActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                 Toast.makeText(QuestionActivity.this, "문의내용 등록에 실패하였습니다", Toast.LENGTH_SHORT).show();
             }
         });

@@ -84,14 +84,14 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<ReverseGeocodingData> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
 
                     }
                 });
             }
 
             @Override
-            public void onFail(NetworkRequest<ReverseGeocodingData> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
 
             }
         });

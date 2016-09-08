@@ -182,7 +182,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                             }
 
                             @Override
-                            public void onFail(NetworkRequest<NetworkResult<ArrayList<ChattingReceiveData>>> request, String errorMessage, Throwable e) {
+                            public void onFail(NetworkRequest<NetworkResult<ArrayList<ChattingReceiveData>>> request, NetworkResult<ArrayList<ChattingReceiveData>> result, String errorMessage, Throwable e) {
                                 Toast.makeText(ChattingActivity.this, "fail r", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -190,7 +190,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 }
 
                 @Override
-                public void onFail(NetworkRequest<NetworkResult<String>> request, String errorMessage, Throwable e) {
+                public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                     Toast.makeText(ChattingActivity.this, "fail", Toast.LENGTH_SHORT).show();
                 }
             });

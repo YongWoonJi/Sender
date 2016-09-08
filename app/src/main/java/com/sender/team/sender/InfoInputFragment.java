@@ -251,7 +251,7 @@ public class InfoInputFragment extends Fragment {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result, String errorMessage, Throwable e) {
                 Toast.makeText(context, "fail =" + errorMessage, Toast.LENGTH_SHORT).show();
                 Log.i("InfoInputFragment", "fail = " + errorMessage);
             }

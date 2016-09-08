@@ -7,28 +7,30 @@
     tools:context="com.sender.team.sender.SplashActivity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="facebook"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/btn_facebook"
-        android:layout_marginLeft="53dp"
-        android:layout_marginStart="53dp"
-        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@drawable/btn_facebook_selector"
+        android:layout_marginLeft="104dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="203dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:visibility="visible" />
+        android:layout_alignParentBottom="true" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="naver"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/btn_naver"
-        android:layout_alignTop="@+id/btn_facebook"
+        android:visibility="gone"
+        android:background="@drawable/btn_naver_selector"
+        android:layout_marginRight="104dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="203dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="62dp"
-        android:layout_marginEnd="62dp"
-        android:visibility="visible" />
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -42,20 +44,31 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
+        android:id="@+id/image_cube_big"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="-20.5dp"
-        android:layout_marginStart="-20.5dp"
-        android:layout_marginBottom="-40dp"
+        android:layout_marginLeft="-35dp"
+        android:layout_marginStart="-35dp"
+        android:layout_marginBottom="-36dp"
         android:src="@drawable/main_logo_sizeup" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView3"
+        android:layout_width="100dp"
+        android:layout_height="57dp"
+        android:id="@+id/image_logo"
+        android:layout_marginTop="160dp"
+        android:src="@drawable/splash_activity_logo"
+        android:scaleType="fitXY"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="87dp"
+        android:layout_height="100dp"
+        android:id="@+id/image_cube_small"
+        android:src="@drawable/main_logo_small"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="101dp"
-        android:src="@drawable/type_logo_after" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="84dp"
+        android:visibility="invisible" />
 </RelativeLayout>

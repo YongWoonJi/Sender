@@ -10,13 +10,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -52,11 +57,23 @@ public class SplashActivity extends AppCompatActivity {
     @BindView(R.id.btn_naver)
     Button btnNaver;
 
+    @BindView(R.id.image_logo)
+    ImageView imageLogo;
+
+    @BindView(R.id.image_cube_small)
+    ImageView imageCubeSmall;
+
+    @BindView(R.id.image_cube_big)
+    ImageView imageCubeBig;
+
+    public final static String FACEBOOK_LOGOUT = "facebooklogout";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     LoginManager loginManager;
     CallbackManager callbackManager;
+
+    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +83,14 @@ public class SplashActivity extends AppCompatActivity {
 
         loginManager = LoginManager.getInstance();
         callbackManager = CallbackManager.Factory.create();
+        mHandler = new Handler(Looper.getMainLooper());
+
+        String code = getIntent().getStringExtra(FACEBOOK_LOGOUT);
+        if (code != null) {
+            if (code.equals("facebooklogout")) {
+                loginManager.logOut();
+            }
+        }
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -73,7 +98,12 @@ public class SplashActivity extends AppCompatActivity {
                 loginAndMoveMain();
             }
         };
-        checkRegistrationId();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkRegistrationId();
+            }
+        }, 1500);
     }
 
 
@@ -81,6 +111,12 @@ public class SplashActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(RegistrationIntentService.REGISTRATION_COMPLETE));
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        checkRegistrationId();
     }
 
     @Override
@@ -105,7 +141,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     AlertDialog dialog;
-    private void enableGPSSetting() {
+    private boolean enableGPSSetting() {
         ContentResolver res = getContentResolver();
         boolean gpsEnabled = Settings.Secure.isLocationProviderEnabled(res, LocationManager.GPS_PROVIDER);
         if (!gpsEnabled) {
@@ -127,7 +163,9 @@ public class SplashActivity extends AppCompatActivity {
             });
             dialog = builder.create();
             dialog.show();
+            return false;
         }
+        return true;
     }
 
 
@@ -165,24 +203,27 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void loginAndMoveMain() {
-        MyPageRequest request = new MyPageRequest(this);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                if (result.getResult() != null) {
-                    PropertyManager.getInstance().setUserData(result.getResult());
-                    moveMainActivity();
-                } else if (result.getError() != null) {
-                    loginSharedPreference();
-                    return;
+        if (enableGPSSetting()) {
+            MyPageRequest request = new MyPageRequest(this);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                    if (result.getResult() != null) {
+                        PropertyManager.getInstance().setUserData(result.getResult());
+                        moveMainActivity();
+                    } else {
+                        loginSharedPreference();
+                    }
                 }
-            }
 
-            @Override
-            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
-                setLoginDisplay();
-            }
-        });
+                @Override
+                public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
+                    if (result.getError() == 0) {
+                        loginSharedPreference();
+                    }
+                }
+            });
+        }
     }
 
     private void moveMainActivity() {
@@ -193,7 +234,7 @@ public class SplashActivity extends AppCompatActivity {
                 PropertyManager.getInstance().setUserData(result.getResult());
                 UserData user = (UserData) getIntent().getSerializableExtra(ChattingActivity.EXTRA_USER);
                 if (user == null) {
-                    startActivity(new Intent(SplashActivity.this, SignUpActivity.class));
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else {
                     Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                     Intent chatIntent = new Intent(SplashActivity.this, ChattingActivity.class);
@@ -205,7 +246,7 @@ public class SplashActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
+            public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
 
             }
         });
@@ -218,10 +259,26 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setLoginDisplay() {
-        // 로그인 버튼 보이는 애니메이션
         if (btnFacebook.getVisibility() == View.GONE && btnNaver.getVisibility() == View.GONE) {
-            btnFacebook.setVisibility(View.VISIBLE);
-            btnNaver.setVisibility(View.VISIBLE);
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    btnFacebook.setVisibility(View.VISIBLE);
+                    btnNaver.setVisibility(View.VISIBLE);
+
+                    Animation animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_cube_fade_out);
+                    imageCubeBig.startAnimation(animation);
+                    animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_cube_fade_in);
+                    imageCubeSmall.setVisibility(View.VISIBLE);
+                    imageCubeSmall.startAnimation(animation);
+                    btnFacebook.startAnimation(animation);
+                    btnNaver.startAnimation(animation);
+
+                    animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_logo_slide_down);
+                    imageLogo.startAnimation(animation);
+                }
+            };
+            mHandler.postDelayed(runnable, 1500);
         }
 
     }
@@ -259,13 +316,13 @@ public class SplashActivity extends AppCompatActivity {
                         moveSignUpActivity();
                     } else if (result.getResult() == 1) {
                         moveMainActivity();
-                    } else if (result.getError() != null) {
+                    } else {
                         resetFacebookAndSetLoginDisplay();
                     }
                 }
 
                 @Override
-                public void onFail(NetworkRequest<NetworkResult<Integer>> request, String errorMessage, Throwable e) {
+                public void onFail(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result, String errorMessage, Throwable e) {
                     loginManager.logOut();
                     facebookLogin();
                 }
@@ -302,14 +359,14 @@ public class SplashActivity extends AppCompatActivity {
                             } else if (result.getResult() == 1) {
                                 PropertyManager.getInstance().setFacebookId(token.getUserId());
                                 moveMainActivity();
-                            } else if (result.getError() != null) {
+                            } else {
                                 resetFacebookAndSetLoginDisplay();
                             }
                         }
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<Integer>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result, String errorMessage, Throwable e) {
                         resetFacebookAndSetLoginDisplay();
                     }
                 });
@@ -347,7 +404,7 @@ public class SplashActivity extends AppCompatActivity {
                             } else if (result.getResult() == 1) {
                                 PropertyManager.getInstance().setFacebookId(token.getUserId());
                                 moveMainActivity();
-                            } else if (result.getError() != null) {
+                            } else {
                                 // 로그인 실패
                                 Toast.makeText(SplashActivity.this, "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
                                 loginManager.logOut();
@@ -356,7 +413,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<Integer>> request, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result, String errorMessage, Throwable e) {
                         Toast.makeText(SplashActivity.this, "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
                         loginManager.logOut();
                     }

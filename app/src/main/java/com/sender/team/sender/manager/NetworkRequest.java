@@ -15,6 +15,7 @@ import okhttp3.ResponseBody;
 public abstract class NetworkRequest<T> implements Callback {
     T result;
     int error;
+    Response response;
     String errorMessage;
     Throwable exception;
     NetworkManager.OnResultListener<T> listener;
@@ -61,7 +62,7 @@ public abstract class NetworkRequest<T> implements Callback {
                 response.body().close();
             }
         } else {
-            sendError(response.message(), null);
+            sendError(parse(response.body()));
             response.close();
         }
     }
@@ -89,20 +90,20 @@ public abstract class NetworkRequest<T> implements Callback {
     }
 
     protected void sendError(String errorMessage, Throwable exception) {
-
         this.errorMessage = errorMessage;
         this.exception = exception;
         NetworkManager.getInstance().sendFail(this);
     }
 
+
     private void sendError(T result) {
         this.result = result;
-        NetworkManager.getInstance().sendSuccess(this);
+        NetworkManager.getInstance().sendFail(this);
     }
 
-     void  sendFail() {
+     void sendFail() {
         if (listener != null) {
-            listener.onFail(this, errorMessage, exception);
+            listener.onFail(this, result, errorMessage, exception);
         }
     }
 }
