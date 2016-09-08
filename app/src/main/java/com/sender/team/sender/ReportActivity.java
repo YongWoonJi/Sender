@@ -233,7 +233,7 @@ public class ReportActivity extends AppCompatActivity {
         String content = editContents.getText().toString();
 
         BoardRequest request = new BoardRequest(this, PropertyManager.getInstance().getUserData().getName(), esType, boardType, "", content, uploadFile);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                 if (!TextUtils.isEmpty(result.getResult())) {

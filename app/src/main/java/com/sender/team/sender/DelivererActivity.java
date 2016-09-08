@@ -242,7 +242,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         String keyword = editStart.getText().toString();
         if (!TextUtils.isEmpty(keyword)) {
             POISearchRequest request = new POISearchRequest(DelivererActivity.this, keyword);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<POIResult>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<POIResult>() {
                 @Override
                 public void onSuccess(NetworkRequest<POIResult> request, POIResult result) {
                     mStartAdapter.clear();
@@ -265,7 +265,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         String keyword = editEnd.getText().toString();
         if (!TextUtils.isEmpty(keyword)) {
             POISearchRequest request = new POISearchRequest(DelivererActivity.this, keyword);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<POIResult>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<POIResult>() {
                 @Override
                 public void onSuccess(NetworkRequest<POIResult> request, POIResult result) {
                     mEndAdapter.clear();
@@ -296,7 +296,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 DelivererRegisterRequest request = new DelivererRegisterRequest(DelivererActivity.this,
                         PropertyManager.getInstance().getUserData().getUser_id(), "" + poiStart.getLatitude(), "" + poiStart.getLongitude(),
                         "" + poiEnd.getLatitude(), "" + poiEnd.getLongitude(), depTime, arrTime);
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<DeliveringIdData>>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DeliveringIdData>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result) {
                         if (result != null) {

@@ -205,7 +205,7 @@ public class SplashActivity extends AppCompatActivity {
     private void loginAndMoveMain() {
         if (enableGPSSetting()) {
             MyPageRequest request = new MyPageRequest(this);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                     if (result.getResult() != null) {
@@ -228,7 +228,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void moveMainActivity() {
         MyPageRequest request = new MyPageRequest(this);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 PropertyManager.getInstance().setUserData(result.getResult());
@@ -300,15 +300,16 @@ public class SplashActivity extends AppCompatActivity {
 
     private void processFacebookLogin() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        if (!accessToken.getUserId().equals(PropertyManager.getInstance().getFacebookId())) {
-            resetFacebookAndSetLoginDisplay();
-            return;
-        }
+
         if (accessToken != null) {
+            if (!accessToken.getUserId().equals(PropertyManager.getInstance().getFacebookId())) {
+                resetFacebookAndSetLoginDisplay();
+                return;
+            }
             String token = accessToken.getToken();
             String regId = PropertyManager.getInstance().getRegistrationId();
             FacebookRequest request = new FacebookRequest(this, token, regId);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
                     if (result.getResult() == 0) {
@@ -324,11 +325,13 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onFail(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result, String errorMessage, Throwable e) {
                     loginManager.logOut();
-                    facebookLogin();
+//                    facebookLogin();
+                    setLoginDisplay();
                 }
             });
         } else {
-            facebookLogin();
+//            facebookLogin();
+            setLoginDisplay();
         }
     }
 
@@ -349,7 +352,7 @@ public class SplashActivity extends AppCompatActivity {
                     return;
                 }
                 FacebookRequest request = new FacebookRequest(SplashActivity.this, token.getToken(), PropertyManager.getInstance().getRegistrationId());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
                         if (result != null) {
@@ -395,7 +398,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 final AccessToken token = AccessToken.getCurrentAccessToken();
                 FacebookRequest request = new FacebookRequest(SplashActivity.this, token.getToken(), PropertyManager.getInstance().getRegistrationId());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
                         if (result != null) {

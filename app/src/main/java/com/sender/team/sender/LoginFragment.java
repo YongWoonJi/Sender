@@ -107,7 +107,7 @@ public class LoginFragment extends Fragment {
                 AccessToken token = AccessToken.getCurrentAccessToken();
                 FacebookRequest request = new FacebookRequest(getContext(), token.getToken(), "fPmhn6uzg1g:APA91bFIp2lQYqtiKc-KT8ARAI6PDJsFyp7ZGGhxP7WHS4sba6SLD0tVJOEpdMIcHPps5b6DNcKFpMSbW53u7YSVVj3LbYCCB5QW77bJEng1CTN0XD9uVZW3_rmf8Nl1hDUVd5UjtlLt");
                 Log.i("LoginFragment",token.getToken());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
                         if (result != null) {

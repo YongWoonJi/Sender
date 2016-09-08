@@ -103,12 +103,12 @@ public class AuthFragment extends Fragment {
             public void onClick(View view) {
                 if (editPhone.getText().toString() != null) {
                     AddPhoneRequest request = new AddPhoneRequest(getContext(), editPhone.getText().toString());
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                             if (!TextUtils.isEmpty(result.getResult())) {
                                 MyPageRequest req = new MyPageRequest(getContext());
-                                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, req, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+                                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, req, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
                                     @Override
                                     public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                                         PropertyManager.getInstance().setUserData(result.getResult());

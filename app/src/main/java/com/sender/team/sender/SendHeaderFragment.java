@@ -97,7 +97,7 @@ public class SendHeaderFragment extends Fragment {
         final RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         final EditText editComment = (EditText) view.findViewById(R.id.edit_comment);
         final OtherUserRequest request = new OtherUserRequest(getContext(), "1");
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 Glide.with(getContext()).load(result.getResult().getFileUrl()).into(imageProfile);

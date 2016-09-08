@@ -56,18 +56,18 @@ public class AcceptActivity extends Activity {
 
 
         SenderInfoRequest request = new SenderInfoRequest(this, "1");
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<ContractsData>>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractsData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractsData>> request, NetworkResult<ContractsData> result) {
                 final ContractsData data = result.getResult();
 
                 ReverseGeocodingRequest geo_request = new ReverseGeocodingRequest(AcceptActivity.this, data.getHere_lat(), data.getHere_lon());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, geo_request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, geo_request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
                     @Override
                     public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
                         start = result.getAddressInfo().getLegalDong();
                         ReverseGeocodingRequest geo_request2 = new ReverseGeocodingRequest(AcceptActivity.this, data.getAddr_lat(), data.getAddr_lon());
-                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, geo_request2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, geo_request2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
                             @Override
                             public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
                                 end = result.getAddressInfo().getLegalDong();

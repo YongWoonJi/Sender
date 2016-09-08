@@ -70,13 +70,13 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
         rating.setText(""+data.getStar());
 
         ReverseGeocodingRequest request = new ReverseGeocodingRequest(MyApplication.getContext(),data.getHere_lat(),data.getHere_lon());
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
             @Override
             public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
                 start = result.getAddressInfo().getLegalDong();
 
                 ReverseGeocodingRequest request2 = new ReverseGeocodingRequest(MyApplication.getContext(),data.getNext_lat(),data.getNext_lon());
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
                     @Override
                     public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
                         end = result.getAddressInfo().getLegalDong();

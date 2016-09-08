@@ -40,7 +40,7 @@ import okhttp3.OkHttpClient;
  */
 public class NetworkManager {
     public static final int CLIENT_STANDARD = 0;
-    public static final int CLIENT_SECURE = 1;
+    public static final int CLIENT_TMAP = 1;
 
     private static NetworkManager instance;
     public static NetworkManager getInstance() {
@@ -51,12 +51,11 @@ public class NetworkManager {
     }
 
     OkHttpClient client;
-    OkHttpClient client_standard;
-    OkHttpClient client_secure;
+    OkHttpClient client_tmap;
 
     private NetworkManager() {
-//        createClient();
-        createClientSecure();
+        createClient();
+        createTmapClient();
     }
 
     private void createClient() {
@@ -78,11 +77,12 @@ public class NetworkManager {
         builder.connectTimeout(30, TimeUnit.SECONDS);
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(10, TimeUnit.SECONDS);
-        client_standard = builder.build();
+        disableCertificateValidation(context, builder);
+        client = builder.build();
     }
 
 
-    private void createClientSecure() {
+    private void createTmapClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         Context context = MyApplication.getContext();
         ClearableCookieJar cookieJar =
@@ -101,8 +101,7 @@ public class NetworkManager {
         builder.connectTimeout(30, TimeUnit.SECONDS);
         builder.readTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(10, TimeUnit.SECONDS);
-        disableCertificateValidation(context, builder);
-        client_secure = builder.build();
+        client_tmap = builder.build();
     }
 
     public OkHttpClient getClient() {
@@ -146,27 +145,24 @@ public class NetworkManager {
     }
 
     public <T> void getNetworkData(int type, NetworkRequest<T> request, OnResultListener<T> listener) {
+        request.setOnResultListener(listener);
         if (type == CLIENT_STANDARD) {
-            client = client_standard;
-        } else if (type == CLIENT_SECURE) {
-            client = client_secure;
+            request.process(client);
+        } else if (type == CLIENT_TMAP) {
+            request.process(client_tmap);
         } else {
             throw new IllegalArgumentException("invalid data type");
         }
-        request.setOnResultListener(listener);
-        request.process(client);
     }
 
     public <T> T getNetworkDataSync(int type, NetworkRequest<T> request) throws IOException {
         if (type == CLIENT_STANDARD) {
-//            client = client_standard;
-            client = client_secure;
-        } else if (type == CLIENT_SECURE) {
-            client = client_secure;
+            return request.processSync(client);
+        } else if (type == CLIENT_STANDARD) {
+            return request.processSync(client_tmap);
         } else {
             throw new IllegalArgumentException("invalid data type");
         }
-        return request.processSync(client);
     }
 
     public void cancelAll() {

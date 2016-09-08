@@ -162,7 +162,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
 //            String userUrl = PropertyManager.getInstance().getUserData().getFileUrl();
 
             ChattingSendRequest request = new ChattingSendRequest(this, "1",message, uploadFile);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                     if (!TextUtils.isEmpty(result.getResult())){
@@ -171,7 +171,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
 
 
                         ChattingReceiveRequest receiveRequest = new ChattingReceiveRequest(ChattingActivity.this, Utils.getCurrentDate());
-                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, receiveRequest, new NetworkManager.OnResultListener<NetworkResult<ArrayList<ChattingReceiveData>>>() {
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, receiveRequest, new NetworkManager.OnResultListener<NetworkResult<ArrayList<ChattingReceiveData>>>() {
                             @Override
                             public void onSuccess(NetworkRequest<NetworkResult<ArrayList<ChattingReceiveData>>> request, NetworkResult<ArrayList<ChattingReceiveData>> result) {
                                 DBManager.getInstance().addMessage(result.getResult().get(0).getSender() , result.getResult().get(0).getSender().getFileUrl(), ChatContract.ChatMessage.TYPE_RECEIVE,
