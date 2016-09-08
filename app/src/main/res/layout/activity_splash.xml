@@ -39,7 +39,8 @@
         android:id="@+id/btn_logout"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="gone" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -53,11 +54,11 @@
         android:src="@drawable/main_logo_sizeup" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="57dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/image_logo"
         android:layout_marginTop="160dp"
-        android:src="@drawable/splash_activity_logo"
+        android:src="@drawable/activity_splash_logo"
         android:scaleType="fitXY"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

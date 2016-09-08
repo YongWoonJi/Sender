@@ -3,24 +3,38 @@ package com.sender.team.sender;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -54,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
 
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -69,8 +86,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.rv_list)
     RecyclerView listView;
 
-    ActionBarDrawerToggle mDrawerToggle;
+    @BindView(R.id.toolbar_logo)
+    ImageView toolbarLogo;
+
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+
+    @BindView(R.id.circleAnimIndicator)
+    CircleAnimIndicator circleAnimIndicator;
+
+    ImageView iconView;
+
     ChattingListAdapter mAdapter;
+
+    ColorDrawable toolbarColor;
+    Drawable homeAsUp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,27 +111,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                w.setStatusBarColor(Color.TRANSPARENT);
+//            }
+        }
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            };
+        }, 2500);
+
+        init();
+
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                supportInvalidateOptionsMenu();
-            }
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_menu_before);
 
+        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
-            public void onDrawerOpened(View drawerView) {
-                supportInvalidateOptionsMenu();
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                float offset = (appBarLayout.getY() / appbar.getTotalScrollRange());
+                toolbarColor.setAlpha((int)((offset * -1) * 255));
+                getSupportActionBar().setBackgroundDrawable(toolbarColor);
+                changeToolbarIconsColor(offset);
             }
+        });
 
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 float xPositionOpenDrawer = naviFragment.getWidth();
                 float xPositionWindowContent = (slideOffset * xPositionOpenDrawer);
                 coordinatorLayout.setTranslationX(xPositionWindowContent);
             }
-        };
-        drawer.addDrawerListener(mDrawerToggle);
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
         fab_background = (RelativeLayout)findViewById(R.id.fab_background);
         fab_background.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -183,6 +253,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initData();
     }
 
+    private void init() {
+        initViewPager();
+        toolbarColor = new ColorDrawable(Color.rgb(255, 255, 255));
+        homeAsUp = ContextCompat.getDrawable(this, R.drawable.btn_menu_before);
+    }
+
+    private void initViewPager() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                circleAnimIndicator.selectDot(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        circleAnimIndicator.setItemMargin(15);
+        circleAnimIndicator.setAnimDuration(300);
+        circleAnimIndicator.createDotPanel(4, R.drawable.non_indicator, R.drawable.sel_indicator);
+    }
+
+    private void changeToolbarIconsColor(float offset) {
+        int value;
+        int r, g, b;
+        if (((int)(255 - (-130 * offset))) == 0) {
+            value = 255;
+            r = g = b = 255;
+        } else {
+            value = (int) (255 - (-130 * offset));
+            r = (int) (255 - (-48 * offset));
+            g = (int) (255 - (-206 * offset));
+            b = (int) (255 - (-206 * offset));
+        }
+        homeAsUp.setColorFilter(Color.rgb(value, value, value), PorterDuff.Mode.SRC_IN);
+        getSupportActionBar().setHomeAsUpIndicator(homeAsUp);
+
+        if (iconView != null) {
+            iconView.setColorFilter(Color.rgb(value, value, value));
+        }
+
+        toolbarLogo.setColorFilter(Color.rgb(r, g, b));
+    }
+
     ChattingListData data;
     ArrayList<ChattingListData> list;
     private void initData() {
@@ -229,8 +352,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void animateFAB(){
-
+    public void animateFAB() {
         if(isFabOpen){
             fab_background.setVisibility(View.GONE);
             fab.startAnimation(rotate_backward);
@@ -293,7 +415,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.menu_info);
+        View view = MenuItemCompat.getActionView(item);
+        iconView = (ImageView) view.findViewById(R.id.toolbar_menu_icon);
+        iconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "정현이", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Toast.makeText(this, item.getItemId(), Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
             case android.R.id.home :
                 if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -302,9 +440,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     drawer.openDrawer(GravityCompat.START);
                 }
                 return true;
+            case R.id.menu_info :
+                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 
     @Override

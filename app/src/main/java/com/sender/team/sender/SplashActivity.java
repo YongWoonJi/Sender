@@ -260,27 +260,20 @@ public class SplashActivity extends AppCompatActivity {
 
     private void setLoginDisplay() {
         if (btnFacebook.getVisibility() == View.GONE && btnNaver.getVisibility() == View.GONE) {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    btnFacebook.setVisibility(View.VISIBLE);
-                    btnNaver.setVisibility(View.VISIBLE);
+            btnFacebook.setVisibility(View.VISIBLE);
+            btnNaver.setVisibility(View.VISIBLE);
 
-                    Animation animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_cube_fade_out);
-                    imageCubeBig.startAnimation(animation);
-                    animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_cube_fade_in);
-                    imageCubeSmall.setVisibility(View.VISIBLE);
-                    imageCubeSmall.startAnimation(animation);
-                    btnFacebook.startAnimation(animation);
-                    btnNaver.startAnimation(animation);
+            Animation animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_cube_fade_out);
+            imageCubeBig.startAnimation(animation);
+            animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_cube_fade_in);
+            imageCubeSmall.setVisibility(View.VISIBLE);
+            imageCubeSmall.startAnimation(animation);
+            btnFacebook.startAnimation(animation);
+            btnNaver.startAnimation(animation);
 
-                    animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_logo_slide_down);
-                    imageLogo.startAnimation(animation);
-                }
-            };
-            mHandler.postDelayed(runnable, 1500);
+            animation = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.activity_splash_logo_slide_down);
+            imageLogo.startAnimation(animation);
         }
-
     }
 
     private void loginSharedPreference() {

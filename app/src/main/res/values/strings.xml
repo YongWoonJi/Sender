@@ -495,4 +495,7 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
     <string name="report_count">(0/700)</string>
     <string name="deliverer_search">DELIVERER 검색</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

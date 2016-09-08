@@ -19,7 +19,7 @@ public class AddPhoneRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
     public AddPhoneRequest (Context context, String phone){
         HttpUrl url = getSecureUrlBuilder()
-                .port(4433)
+                .port(443)
                 .addPathSegment("members")
                 .build();
         RequestBody body = new FormBody.Builder()
