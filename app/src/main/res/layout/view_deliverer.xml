@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="98dp"
+    >
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/image_deliverer"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="@dimen/mypage_image_radius"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginRight="24dp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:id="@+id/imageView6"
-        android:layout_below="@+id/image_deliverer"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:src="@android:drawable/btn_star_big_on" />
+        android:src="@drawable/ic_star"
+        android:layout_alignTop="@+id/text_deliverer_rating"
+        android:layout_toRightOf="@+id/text_deliverer_nickname"
+        android:layout_toEndOf="@+id/text_deliverer_nickname"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,20 +35,23 @@
         android:text="6.7"
         android:gravity="center"
         android:id="@+id/text_deliverer_rating"
-        android:layout_alignTop="@+id/imageView6"
+        android:textSize="12sp"
+        android:layout_alignTop="@+id/text_deliverer_nickname"
         android:layout_toRightOf="@+id/imageView6"
         android:layout_toEndOf="@+id/imageView6"
-        android:layout_alignBottom="@+id/imageView6" />
+        android:layout_marginLeft="1dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="닉네임 / ID"
         android:id="@+id/text_deliverer_nickname"
-        android:layout_alignBaseline="@+id/btn_send"
-        android:layout_alignBottom="@+id/btn_send"
+        android:textSize="12sp"
+        android:layout_alignTop="@+id/image_deliverer"
         android:layout_toRightOf="@+id/image_deliverer"
-        android:layout_toEndOf="@+id/image_deliverer" />
+        android:layout_toEndOf="@+id/image_deliverer"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="16dp" />
 
     <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
@@ -59,18 +67,32 @@
         android:layout_height="wrap_content"
         android:text="서울대 후문 > 강남역 12번 출구"
         android:id="@+id/text_deliverer_location"
-        android:layout_alignBaseline="@+id/text_deliverer_rating"
-        android:layout_alignBottom="@+id/text_deliverer_rating"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/btn_send"
+        android:layout_alignEnd="@+id/btn_send"
+        android:layout_above="@+id/imageView32"
+        android:layout_marginBottom="16dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="49dp"
+        android:layout_height="20dp"
         android:text="요청"
         android:id="@+id/btn_send"
-        android:layout_alignParentTop="true"
+        android:textSize="11sp"
+        android:background="@color/fontcolor"
+        android:textColor="@color/whitefont"
+        android:layout_alignTop="@+id/text_deliverer_rating"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/imageView32"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grayline" />
+
 
 </RelativeLayout>

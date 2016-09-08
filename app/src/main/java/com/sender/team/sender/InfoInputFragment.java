@@ -12,8 +12,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +82,9 @@ public class InfoInputFragment extends Fragment {
     @BindView(R.id.object_image)
     ImageView objectImage;
 
+    @BindView(R.id.edit_memo)
+    EditText requestMemo;
+
     private static final int RC_GET_IMAGE = 1;
     private static final int RC_CATPURE_IMAGE = 2;
     private static final int INDEX_CAMERA = 0;
@@ -93,6 +99,7 @@ public class InfoInputFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (savedInstanceState != null) {
             String path = savedInstanceState.getString(FIELD_SAVE_FILE);
             if (!TextUtils.isEmpty(path)) {
@@ -115,6 +122,27 @@ public class InfoInputFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_info_input, container, false);
         ButterKnife.bind(this, view);
 
+        requestHour.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (requestHour.isFocusable()) {
+                    requestHour.setGravity(Gravity.RIGHT);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(editable.toString())) {
+                    requestHour.setGravity(Gravity.LEFT);
+                }
+            }
+        });
+
         Button btn = (Button) view.findViewById(R.id.btn_deliverer);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,12 +151,13 @@ public class InfoInputFragment extends Fragment {
                 String obName = objectName.getText().toString();
                 String obPrice = objectPrice.getText().toString();
                 String phone = receiverPhone.getText().toString();
+                String memo = requestMemo.getText().toString();
 
 
                 if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
 
                     if (!((SendActivity) getActivity()).isRequestCheck) {
-                        ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile);
+                        ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
                         ((SendActivity) getActivity()).isRequestCheck = true;
                     }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
 
@@ -201,7 +230,7 @@ public class InfoInputFragment extends Fragment {
             if (uploadFile != null) {
                 savedInstanceState.putString(FIELD_UPLOAD_FILE, uploadFile.getAbsolutePath());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -232,7 +261,7 @@ public class InfoInputFragment extends Fragment {
     }
 
 
-    public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng, String obName, String phone, String obPrice, String time, File uploadFile) {
+    public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng, String obName, String phone, String obPrice, String time, File uploadFile, String memo) {
 
         String hLat = String.valueOf(hereLat);
         String hLng = String.valueOf(hereLng);
@@ -240,13 +269,13 @@ public class InfoInputFragment extends Fragment {
         String aLng = String.valueOf(addrLng);
         //SendAcitivty의 현위치와 선택한 위치의 위도 경도값을 받아온다.
 
-        SenderRequest request = new SenderRequest(context, hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, "으아아");
+        SenderRequest request = new SenderRequest(context, hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, memo);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
 
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
                 PropertyManager.getInstance().setContractIdData(result.getResult());
-                Toast.makeText(context, "success wow " + result.getResult().getContract_id()+"  " + result.getResult().getSendingId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "success wow " + result.getResult().getContract_id() + "  " + result.getResult().getSendingId(), Toast.LENGTH_SHORT).show();
                 Log.i("InfoInputFragment", "contractid = " + result.getResult().getContract_id());
             }
 

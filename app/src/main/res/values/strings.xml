@@ -493,5 +493,6 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
     <string name="qa_contents_count">(0/700)</string>
     <string name="report_kind">유형분류</string>
     <string name="report_count">(0/700)</string>
+    <string name="deliverer_search">DELIVERER 검색</string>
 
 </resources>

@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sender.team.sender.DelivererActivity"
-    android:background="@color/whitebg">
+    android:background="@color/whitebg"
+    tools:context="com.sender.team.sender.DelivererActivity">
+
     <FrameLayout
         android:id="@+id/toolbarLayout"
         android:layout_width="match_parent"
@@ -30,197 +31,286 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="38dp"
         android:layout_below="@+id/toolbarLayout">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="입력완료"
-        android:id="@+id/btn_input"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        <Button
+            android:id="@+id/btn_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/fontcolor"
+            android:text="입력완료"
+            android:textColor="@color/whitefont" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_start"
-        android:hint="출발지 지역검색"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/btn_search_start"
-        android:layout_toStartOf="@+id/btn_search_start"
-        android:imeOptions="actionSearch"
-        android:singleLine="true" />
+        <EditText
+            android:id="@+id/edit_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_toLeftOf="@+id/btn_search_start"
+            android:layout_toStartOf="@+id/btn_search_start"
+            android:background="@null"
+            android:hint="출발지 지역검색"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textSize="12sp" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="검색"
-        android:id="@+id/btn_search_start"
-        android:layout_alignBottom="@+id/edit_start"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <Button
+            android:id="@+id/btn_search_start"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignBottom="@+id/edit_start"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/ic_search" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_end"
-        android:hint="목적지 지역검색"
-        android:layout_below="@+id/edit_start"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/btn_search_end"
-        android:layout_toStartOf="@+id/btn_search_end"
-        android:imeOptions="actionSearch"
-        android:singleLine="true" />
+        <EditText
+            android:id="@+id/edit_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/edit_start"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_toLeftOf="@+id/btn_search_end"
+            android:layout_toStartOf="@+id/btn_search_end"
+            android:background="@null"
+            android:hint="목적지 지역검색"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textSize="12sp" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="검색"
-        android:id="@+id/btn_search_end"
-        android:layout_alignBottom="@+id/edit_end"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <Button
+            android:id="@+id/btn_search_end"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignBottom="@+id/edit_end"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/ic_search" />
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/map_fragment"
-        android:layout_below="@+id/edit_end"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <fragment
+            android:id="@+id/map_fragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/edit_end"
+            android:layout_marginTop="16dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="출발 시각"
-        android:id="@+id/text_my_phone"
-        android:layout_below="@+id/map_fragment"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <EditText
+            android:id="@+id/edit_start_hour"
+            android:layout_width="290dp"
+            android:layout_height="20dp"
+            android:hint="출발시각"
+            android:inputType="number"
+            android:nextFocusDown="@+id/edit_start_min"
+            android:singleLine="true"
+            android:textSize="11dp"
+            android:background="@null"
+            android:maxLength="2"
+            android:layout_alignBottom="@+id/imageView37"
+            android:layout_toLeftOf="@+id/textView25"
+            android:layout_toStartOf="@+id/textView25" />
 
-    <EditText
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_start_hour"
-        android:layout_below="@+id/text_my_phone"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:singleLine="true"
-        android:inputType="number"
-        android:nextFocusDown="@+id/edit_start_min"/>
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="시"
+            android:textSize="11sp"
+            android:layout_alignTop="@+id/imageView35"
+            android:layout_toRightOf="@+id/edit_end_hour"
+            android:layout_toEndOf="@+id/edit_end_hour" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="시"
-        android:gravity="center"
-        android:id="@+id/textView25"
-        android:layout_alignBottom="@+id/edit_start_hour"
-        android:layout_toRightOf="@+id/edit_start_hour"
-        android:layout_toEndOf="@+id/edit_start_hour"
-        android:layout_below="@+id/text_my_phone" />
+        <EditText
+            android:id="@+id/edit_start_min"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:background="@null"
+            android:inputType="number"
+            android:nextFocusDown="@+id/edit_end_hour"
+            android:singleLine="true"
+            android:textSize="11dp"
+            android:maxLength="2"
+            android:gravity="right"
+            android:layout_alignTop="@+id/textView26"
+            android:layout_toLeftOf="@+id/textView26"
+            android:layout_toStartOf="@+id/textView26" />
 
-    <EditText
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_start_min"
-        android:layout_alignTop="@+id/textView25"
-        android:layout_toRightOf="@+id/textView27"
-        android:layout_toEndOf="@+id/textView27"
-        android:singleLine="true"
-        android:inputType="number"
-        android:nextFocusDown="@+id/edit_end_hour" />
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="분"
+            android:textSize="11sp"
+            android:layout_alignTop="@+id/textView25"
+            android:layout_alignRight="@+id/imageView37"
+            android:layout_alignEnd="@+id/imageView37" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="분"
-        android:gravity="center"
-        android:id="@+id/textView26"
-        android:layout_toRightOf="@+id/edit_start_min"
-        android:layout_toEndOf="@+id/edit_start_min"
-        android:layout_alignBottom="@+id/edit_start_min"
-        android:layout_alignTop="@+id/edit_start_min" />
+        <EditText
+            android:id="@+id/edit_end_hour"
+            android:layout_width="290dp"
+            android:layout_height="20dp"
+            android:background="@null"
+            android:hint="도착예정시각"
+            android:inputType="number"
+            android:nextFocusDown="@+id/edit_end_min"
+            android:singleLine="true"
+            android:textSize="11dp"
+            android:maxLength="2"
+            android:layout_alignTop="@+id/textView28"
+            android:layout_toLeftOf="@+id/textView28"
+            android:layout_toStartOf="@+id/textView28" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="도착 예정시각"
-        android:id="@+id/textView27"
-        android:layout_below="@+id/edit_start_hour"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="시"
+            android:textSize="11sp"
+            android:layout_alignTop="@+id/imageView36"
+            android:layout_toLeftOf="@+id/imageView39"
+            android:layout_toStartOf="@+id/imageView39" />
 
-    <EditText
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_end_hour"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView27"
-        android:layout_alignParentLeft="true"
-        android:singleLine="true"
-        android:inputType="number"
-        android:nextFocusDown="@+id/edit_end_min"/>
+        <EditText
+            android:id="@+id/edit_end_min"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textSize="11dp"
+            android:background="@null"
+            android:maxLength="2"
+            android:gravity="right"
+            android:layout_alignTop="@+id/textview"
+            android:layout_toLeftOf="@+id/textview"
+            android:layout_toStartOf="@+id/textview" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="시"
-        android:gravity="center"
-        android:id="@+id/textView28"
-        android:layout_alignBottom="@+id/edit_end_hour"
-        android:layout_toRightOf="@+id/edit_end_hour"
-        android:layout_toEndOf="@+id/edit_end_hour"
-        android:layout_alignTop="@+id/edit_end_hour" />
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="분"
+            android:textSize="11sp"
+            android:layout_alignTop="@+id/textView28"
+            android:layout_alignLeft="@+id/textView26"
+            android:layout_alignStart="@+id/textView26" />
 
-    <EditText
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_end_min"
-        android:layout_below="@+id/textView27"
-        android:layout_toRightOf="@+id/textView27"
-        android:layout_toEndOf="@+id/textView27"
-        android:singleLine="true"
-        android:inputType="number"/>
+        <ListView
+            android:id="@+id/list_startSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/edit_start"
+            android:background="#fff"
+            android:visibility="gone" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="분"
-        android:gravity="center"
-        android:id="@+id/textview"
-        android:layout_toRightOf="@+id/edit_end_min"
-        android:layout_toEndOf="@+id/edit_end_min"
-        android:layout_alignBottom="@+id/edit_end_min"
-        android:layout_alignTop="@+id/edit_end_min" />
+        <ListView
+            android:id="@+id/list_endSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/map_fragment"
+            android:background="#fff"
+            android:visibility="gone" />
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/list_startSearch"
-        android:background="#fff"
-        android:visibility="gone"
-        android:layout_below="@+id/edit_start"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/imageView33"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/edit_start"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/grayline" />
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/list_endSearch"
-        android:background="#fff"
-        android:visibility="gone"
-        android:layout_alignTop="@+id/map_fragment"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/imageView34"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/edit_end"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/grayline" />
+
+        <ImageView
+            android:id="@+id/imageView35"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/map_fragment"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_time" />
+
+        <ImageView
+            android:id="@+id/imageView36"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/imageView35"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_time" />
+
+        <ImageView
+            android:id="@+id/imageView37"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayline"
+            android:layout_below="@+id/imageView35"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="2dp" />
+
+        <ImageView
+            android:id="@+id/imageView38"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grayline"
+            android:layout_below="@+id/imageView36"
+            android:layout_alignLeft="@+id/imageView36"
+            android:layout_alignStart="@+id/imageView36" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/imageView39"
+            android:layout_above="@+id/btn_input"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp" />
 
     </RelativeLayout>
 

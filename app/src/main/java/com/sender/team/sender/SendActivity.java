@@ -381,10 +381,10 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
     boolean isRequestCheck = false;
 
-    public void receiveData(String obName, String phone, String price, String time, File uploadFile) {
+    public void receiveData(String obName, String phone, String price, String time, File uploadFile, String memo) {
         Fragment f = new InfoInputFragment();
         if (f != null) {
-            ((InfoInputFragment) f).setSenderData(getApplicationContext(),hereLat, hereLng, addrLat, addrLng, obName, phone, price, time,uploadFile);
+            ((InfoInputFragment) f).setSenderData(getApplicationContext(),hereLat, hereLng, addrLat, addrLng, obName, phone, price, time,uploadFile, memo);
         }
     }
 

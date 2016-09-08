@@ -53,7 +53,8 @@
         </activity>
         <activity
             android:name=".SignUpActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
         <activity android:name=".SendActivity"
             android:screenOrientation="portrait"
             android:exported="true"

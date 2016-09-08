@@ -12,7 +12,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,6 +102,49 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+
+
+        editStartHour.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (editStartHour.isFocusable()) {
+                    editStartHour.setGravity(Gravity.RIGHT);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(editable.toString())) {
+                    editStartHour.setGravity(Gravity.LEFT);
+                }
+            }
+        });
+
+        editEndHour.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (editEndHour.isFocusable()) {
+                    editEndHour.setGravity(Gravity.RIGHT);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(editable.toString())) {
+                    editEndHour.setGravity(Gravity.LEFT);
+                }
+            }
+        });
 
         mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
