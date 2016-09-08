@@ -131,6 +131,21 @@ public class DBManager extends SQLiteOpenHelper {
         return -1;
     }
 
+    public Cursor getChatUser() {
+        String table = ChatContract.ChatUser.TABLE + " INNER JOIN " +
+                ChatContract.ChatMessage.TABLE + " ON " +
+                ChatContract.ChatUser.TABLE + "." + ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID + " = " +
+                ChatContract.ChatMessage.TABLE + "." + ChatContract.ChatMessage._ID;
+        String[] columns = {ChatContract.ChatUser.TABLE + "." + ChatContract.ChatUser._ID,
+                ChatContract.ChatUser.COLUMN_SERVER_ID,
+                ChatContract.ChatUser.COLUMN_NAME,
+                ChatContract.ChatUser.COLUMN_PROFILE_IMAGE,
+                ChatContract.ChatMessage.COLUMN_MESSAGE,
+                ChatContract.ChatMessage.COLUMN_CREATED};
+        String sort = ChatContract.ChatUser.COLUMN_NAME + " COLLATE LOCALIZED ASC";
+        SQLiteDatabase db = getReadableDatabase();
+        return db.query(table, columns, null, null, null, null, sort);
+    }
 
     public Cursor getChatMessage(UserData user) {
         long userid = -1;

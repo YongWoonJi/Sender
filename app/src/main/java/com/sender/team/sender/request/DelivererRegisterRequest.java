@@ -18,14 +18,13 @@ import okhttp3.RequestBody;
  */
 public class DelivererRegisterRequest extends AbstractRequest<NetworkResult<DeliveringIdData>> {
     Request request;
-    public DelivererRegisterRequest(Context context, String user_id, String here_lat, String here_lon,
+    public DelivererRegisterRequest(Context context, String here_lat, String here_lon,
                                     String next_lat, String next_lon, String dep_time, String arr_time) {
         HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("deliverings")
                 .build();
 
         RequestBody body = new FormBody.Builder()
-                .add("user_id", user_id)
                 .add("here_lat", here_lat)
                 .add("here_lon", here_lon)
                 .add("next_lat", next_lat)

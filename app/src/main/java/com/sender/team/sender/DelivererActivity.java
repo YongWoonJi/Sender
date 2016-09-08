@@ -302,7 +302,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 String depTime = Utils.getCurrentDate() + " " + editStartHour + ":" + editStartMin + ":00";
                 String arrTime = Utils.getCurrentDate() + " " + editEndHour + ":" + editEndMin + ":00";
                 DelivererRegisterRequest request = new DelivererRegisterRequest(DelivererActivity.this,
-                        PropertyManager.getInstance().getUserData().getUser_id(), "" + poiStart.getLatitude(), "" + poiStart.getLongitude(),
+                         "" + poiStart.getLatitude(), "" + poiStart.getLongitude(),
                         "" + poiEnd.getLatitude(), "" + poiEnd.getLongitude(), depTime, arrTime);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DeliveringIdData>>() {
                     @Override

@@ -20,6 +20,7 @@ import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.ReverseGeocodingData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ContractsRequest;
 import com.sender.team.sender.request.ReverseGeocodingRequest;
 import com.sender.team.sender.request.SenderInfoRequest;
@@ -55,7 +56,7 @@ public class AcceptActivity extends Activity {
         final TextView textDetail = (TextView) dialogView.findViewById(R.id.text_details);
 
 
-        SenderInfoRequest request = new SenderInfoRequest(this, "1");
+        SenderInfoRequest request = new SenderInfoRequest(this, PropertyManager.getInstance().getDeliveringId().getDelivering_id());
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractsData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractsData>> request, NetworkResult<ContractsData> result) {
@@ -126,6 +127,18 @@ public class AcceptActivity extends Activity {
                                 builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, "1",null, STATE_CONTRACT_FAIL);
+                                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
+                                            @Override
+                                            public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
+                                                Toast.makeText(AcceptActivity.this, "계약 거절 완료", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result, String errorMessage, Throwable e) {
+                                                Toast.makeText(AcceptActivity.this, "계약 거절 실패", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                         finish();
                                     }
                                 });

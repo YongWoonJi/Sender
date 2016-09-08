@@ -1,6 +1,7 @@
 package com.sender.team.sender;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,9 @@ import java.util.List;
 public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<ChattingListData> data;
+    Cursor cursor;
 
-    public void setData(List<ChattingListData> data) {
+    public void setData( List<ChattingListData> data) {
         this.data = data;
         notifyDataSetChanged();
     }
@@ -38,8 +40,9 @@ public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final ChattingListViewHolder clh = (ChattingListViewHolder) holder;
+//        clh.setData(name, image, message, time);
         clh.setData(data.get(position));
         clh.layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,8 +53,8 @@ public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 } else if (clh.getData().getType() == 1){
                     intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.DELIVERER_HEADER);
                 }
-                intent.putExtra(ChattingActivity.RECEIVER_NAME, data.get(position).getName());
-                intent.putExtra(ChattingActivity.RECEIVER_IMAGE, data.get(position).getImageUrl());
+//                intent.putExtra(ChattingActivity.RECEIVER_NAME, data.get(position).getName());
+//                intent.putExtra(ChattingActivity.RECEIVER_IMAGE, data.get(position).getImageUrl());
                 clh.getContext().startActivity(intent);
             }
         });

@@ -46,8 +46,14 @@ public class ChattingListViewHolder extends RecyclerView.ViewHolder {
         Glide.with(context).load(data.getImageUrl()).into(imageProfile);
         textName.setText(data.getName());
         textMessage.setText(data.getMessage());
-        textTime.setText(data.getTime());
+        textTime.setText(com.sender.team.sender.Utils.getCurrentTime(Long.parseLong(data.getTime())));
     }
+//    public void setData(String name, String image, String message, String time) {
+//        Glide.with(context).load(image).into(imageProfile);
+//        textName.setText(name);
+//        textMessage.setText(message);
+//        textTime.setText(Utils.getCurrentTime());
+//    }
 
     public ChattingListData getData() {
         return this.item;

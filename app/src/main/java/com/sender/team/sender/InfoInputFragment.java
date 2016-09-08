@@ -240,7 +240,7 @@ public class InfoInputFragment extends Fragment {
         String aLng = String.valueOf(addrLng);
         //SendAcitivty의 현위치와 선택한 위치의 위도 경도값을 받아온다.
 
-        SenderRequest request = new SenderRequest(context, "1", hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, "으아아");
+        SenderRequest request = new SenderRequest(context, hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, "으아아");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
 
             @Override

@@ -15,6 +15,24 @@ public class ContractsData {
     private String info;
     private String rec_phone;
 
+    public String getSending_id() {
+        return sending_id;
+    }
+
+    public void setSending_id(String sending_id) {
+        this.sending_id = sending_id;
+    }
+
+    public String getDelivering_id() {
+        return delivering_id;
+    }
+
+    public void setDelivering_id(String delivering_id) {
+        this.delivering_id = delivering_id;
+    }
+
+    private String delivering_id;
+
     public String getAddr_lon() {
         return this.addr_lon;
     }
@@ -80,7 +98,6 @@ public class ContractsData {
     }
 
     public ContractsDataPic[] getPic() {
-
         return this.pic;
     }
 

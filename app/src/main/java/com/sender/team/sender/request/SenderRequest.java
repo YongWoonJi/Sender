@@ -21,7 +21,7 @@ import okhttp3.RequestBody;
 public class SenderRequest extends AbstractRequest<NetworkResult<ContractIdData>> {
     MediaType mediaType = MediaType.parse("image/*");
     Request request;
-    public SenderRequest (Context context, String user_id, String here_lat, String here_lon, String addr_lat, String addr_lon, String arr_time, String rec_phone,
+    public SenderRequest (Context context, String here_lat, String here_lon, String addr_lat, String addr_lon, String arr_time, String rec_phone,
                           String price, String info, File file, String memo){
         HttpUrl url = getSecureUrlBuilder()
                 .addPathSegment("contracts")
@@ -29,7 +29,6 @@ public class SenderRequest extends AbstractRequest<NetworkResult<ContractIdData>
 
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("user_id", user_id)
                 .addFormDataPart("here_lat", here_lat)
                 .addFormDataPart("here_lon", here_lon)
                 .addFormDataPart("addr_lat", addr_lat)

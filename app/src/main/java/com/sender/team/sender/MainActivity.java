@@ -2,6 +2,7 @@ package com.sender.team.sender;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -23,15 +24,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.sender.team.sender.data.ChatContract;
 import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.NetworkResult;
-import com.sender.team.sender.data.UserData;
+import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.LogoutRequest;
-import com.sender.team.sender.request.OtherUserRequest;
 import com.sender.team.sender.request.UserLeaveRequest;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -174,35 +176,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        mAdapter = new ChattingListAdapter();
+        listView.setAdapter(mAdapter);
+        listView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
         initData();
     }
 
     ChattingListData data;
     ArrayList<ChattingListData> list;
     private void initData() {
-        OtherUserRequest request = new OtherUserRequest(this, "3");
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                if (result.getResult() != null) {
-                    data = new ChattingListData();
-                    list = new ArrayList<>();
-                    list.add(data);
-                    data.setImageUrl(result.getResult().getFileUrl());
-                    data.setName(result.getResult().getName());
-                    data.setType(ChattingListData.TYPE_DELIVERER);
-                    mAdapter = new ChattingListAdapter();
-                    mAdapter.setData(list);
-                    listView.setAdapter(mAdapter);
-                    listView.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
-                }
-            }
+//        OtherUserRequest request = new OtherUserRequest(this, "3");
+//        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+//            @Override
+//            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+//                if (result.getResult() != null) {
+//                    data = new ChattingListData();
+//                    list = new ArrayList<>();
+//                    list.add(data);
+//                    data.setImageUrl(result.getResult().getFileUrl());
+//                    data.setName(result.getResult().getName());
+//                    data.setType(ChattingListData.TYPE_DELIVERER);
+//                    mAdapter = new ChattingListAdapter();
+//                    mAdapter.setData(list);
+//                    listView.setAdapter(mAdapter);
+//                    listView.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
+//                }
+//            }
+//
+//            @Override
+//            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
+//
+//            }
+//        });
 
-            @Override
-            public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
+        Cursor cursor = DBManager.getInstance().getChatUser();
 
+        if (cursor != null){
+            list = new ArrayList<>();
+
+            while (cursor.moveToNext()){
+                data = new ChattingListData();
+                data.setName(cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_NAME)));
+                data.setImageUrl(cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_PROFILE_IMAGE)));
+                data.setMessage(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE)));
+                data.setTime(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED)));
+                list.add(data);
             }
-        });
+            mAdapter.setData(list);
+        }
+
     }
 
 

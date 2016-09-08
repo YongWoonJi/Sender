@@ -28,4 +28,13 @@ public class ChatContract {
         public static final String COLUMN_IMAGE = "imageurl";
         public static final String COLUMN_CREATED = "created";
     }
+
+    public interface ContractInfo extends BaseColumns {
+        public static final String TABLE = "contractinfo";
+        public static final String COLUMN_SENDING_ID = "contractid";
+        public static final String COLUMN_SENDGIN_USER_ID = "contractid";
+        public static final String COLUMN_DELIVERING_ID = "contractid";
+        public static final String COLUMN_DELIVERING_USER_ID = "deliveringuserid";
+        public static final String COLUMN_ADDRESS = "address";
+    }
 }
