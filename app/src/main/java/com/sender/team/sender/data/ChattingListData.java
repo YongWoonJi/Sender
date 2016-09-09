@@ -6,6 +6,7 @@ package com.sender.team.sender.data;
 public class ChattingListData {
     public static final int TYPE_SENDER = 0;
     public static final int TYPE_DELIVERER = 1;
+    public static final int TYPE_EMPTY = 2;
 
     private String name;
     private String message;

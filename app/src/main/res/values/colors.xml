@@ -15,6 +15,7 @@
     <color name="mypageline">#d2d2d2</color>
     <color name="fontcolor">#ff3d46</color>
     <color name="reviewlistbg">#F2F2F2</color>
+    <color name="font_gray">#606060</color>
 
 
     <drawable name="dialog_background">@android:color/transparent</drawable>

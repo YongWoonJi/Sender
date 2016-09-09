@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.sender.team.sender.R;
+import com.sender.team.sender.Utils;
 import com.sender.team.sender.data.ChattingListData;
 
 import butterknife.BindView;
@@ -33,6 +34,9 @@ public class ChattingListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_time)
     TextView textTime;
 
+    @BindView(R.id.text_empty)
+    TextView textEmpty;
+
     Context context;
     public ChattingListViewHolder(View itemView) {
         super(itemView);
@@ -43,17 +47,21 @@ public class ChattingListViewHolder extends RecyclerView.ViewHolder {
     ChattingListData item;
     public void setData(ChattingListData data) {
         this.item = data;
-        Glide.with(context).load(data.getImageUrl()).into(imageProfile);
-        textName.setText(data.getName());
-        textMessage.setText(data.getMessage());
-        textTime.setText(com.sender.team.sender.Utils.getCurrentTime(Long.parseLong(data.getTime())));
+
+        if (data.getType() == ChattingListData.TYPE_EMPTY) {
+            imageProfile.setImageResource(R.drawable.profile);
+            textName.setVisibility(View.GONE);
+            textMessage.setVisibility(View.GONE);
+            textTime.setVisibility(View.GONE);
+            textEmpty.setVisibility(View.VISIBLE);
+            textEmpty.setText(data.getMessage());
+        } else {
+            Glide.with(context).load(data.getImageUrl()).into(imageProfile);
+            textName.setText(data.getName());
+            textMessage.setText(data.getMessage());
+            textTime.setText(Utils.getCurrentTime(Long.parseLong(data.getTime())));
+        }
     }
-//    public void setData(String name, String image, String message, String time) {
-//        Glide.with(context).load(image).into(imageProfile);
-//        textName.setText(name);
-//        textMessage.setText(message);
-//        textTime.setText(Utils.getCurrentTime());
-//    }
 
     public ChattingListData getData() {
         return this.item;

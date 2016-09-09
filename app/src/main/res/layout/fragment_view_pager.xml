@@ -4,11 +4,9 @@
     android:layout_height="match_parent"
     tools:context="com.sender.team.sender.ViewPagerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/view_picture"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 </FrameLayout>

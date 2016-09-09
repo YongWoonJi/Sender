@@ -2,11 +2,11 @@ package com.sender.team.sender.widget;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.sender.team.sender.R;
 import com.sender.team.sender.data.UserData;
 
@@ -38,9 +38,13 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
     Context context;
     public void setData(UserData data) {
         this.item = data;
-        Glide.with(context).load(data.getFileUrl()).into(imageProfile);
+//        Glide.with(context).load(data.getFileUrl()).into(imageProfile);
         textUserName.setText(data.getName());
-        textEmail.setText(data.getEmail());
+        if (TextUtils.isEmpty(data.getEmail())) {
+            textEmail.setText(context.getString(R.string.empty_email));
+        } else {
+            textEmail.setText(data.getEmail());
+        }
         textRating.setText("" + data.getStar());
     }
 

@@ -45,6 +45,18 @@ public class ViewPagerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_pager, container, false);
         ImageView iv = (ImageView) view.findViewById(R.id.view_picture);
         switch (position) {
+            case 0:
+                iv.setImageResource(R.drawable.sender_main);
+                break;
+            case 1:
+                iv.setImageResource(R.drawable.sender_main1);
+                break;
+            case 2:
+                iv.setImageResource(R.drawable.sender_main2);
+                break;
+            case 3:
+                iv.setImageResource(R.drawable.sender_main3);
+                break;
             default:
                 iv.setImageResource(R.drawable.sender_main);
         }

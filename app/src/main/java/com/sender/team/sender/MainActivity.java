@@ -61,9 +61,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAB3 = "tab3";
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab,fab1,fab2,fab3;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
-    private RelativeLayout fab_background;
+    private ImageView iconView;
+    private ChattingListAdapter mAdapter;
+    private ColorDrawable toolbarColor;
+    private Drawable homeAsUp;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -95,12 +97,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.circleAnimIndicator)
     CircleAnimIndicator circleAnimIndicator;
 
-    ImageView iconView;
+    @BindView(R.id.fab_background)
+    RelativeLayout fab_background;
 
-    ChattingListAdapter mAdapter;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
-    ColorDrawable toolbarColor;
-    Drawable homeAsUp;
+    @BindView(R.id.fab1)
+    FloatingActionButton fab1;
+
+    @BindView(R.id.fab2)
+    FloatingActionButton fab2;
+
+    @BindView(R.id.fab3)
+    FloatingActionButton fab3;
 
 
     @Override
@@ -111,31 +121,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                w.setStatusBarColor(Color.TRANSPARENT);
-//            }
-        }
-
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            };
-        }, 2500);
-
-        init();
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_menu_before);
+
+        mAdapter = new ChattingListAdapter();
+        listView.setAdapter(mAdapter);
+        listView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
+
+        init();
+        initData();
+    }
+
+    private void init() {
+        initViewPager();
+        setStatusBar();
+        toolbarColor = new ColorDrawable(Color.rgb(255, 255, 255));
+        homeAsUp = ContextCompat.getDrawable(this, R.drawable.btn_menu_before);
 
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -171,17 +175,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        fab_background = (RelativeLayout)findViewById(R.id.fab_background);
+
         fab_background.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                animateFAB();
                 return true;
             }
         });
-        fab = (FloatingActionButton)findViewById(R.id.fab);
-        fab1 = (FloatingActionButton)findViewById(R.id.fab1);
-        fab2 = (FloatingActionButton)findViewById(R.id.fab2);
-        fab3 = (FloatingActionButton)findViewById(R.id.fab3);
+
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
@@ -215,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                 }
-
             }
 
             @Override
@@ -245,18 +246,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-
-        mAdapter = new ChattingListAdapter();
-        listView.setAdapter(mAdapter);
-        listView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
-        initData();
-    }
-
-    private void init() {
-        initViewPager();
-        toolbarColor = new ColorDrawable(Color.rgb(255, 255, 255));
-        homeAsUp = ContextCompat.getDrawable(this, R.drawable.btn_menu_before);
     }
 
     private void initViewPager() {
@@ -284,6 +273,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         circleAnimIndicator.createDotPanel(4, R.drawable.non_indicator, R.drawable.sel_indicator);
     }
 
+    private void setStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                w.setStatusBarColor(Color.TRANSPARENT);
+//            }
+        }
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            };
+        }, 2000);
+    }
+
     private void changeToolbarIconsColor(float offset) {
         int value;
         int r, g, b;
@@ -292,9 +302,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             r = g = b = 255;
         } else {
             value = (int) (255 - (-130 * offset));
-            r = (int) (255 - (-48 * offset));
-            g = (int) (255 - (-206 * offset));
-            b = (int) (255 - (-206 * offset));
+            r = 255;
+            g = (int) (255 - (-194 * offset));
+            b = (int) (255 - (-185 * offset));
         }
         homeAsUp.setColorFilter(Color.rgb(value, value, value), PorterDuff.Mode.SRC_IN);
         getSupportActionBar().setHomeAsUpIndicator(homeAsUp);
@@ -309,32 +319,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ChattingListData data;
     ArrayList<ChattingListData> list;
     private void initData() {
-//        OtherUserRequest request = new OtherUserRequest(this, "3");
-//        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_SECURE, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
-//            @Override
-//            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-//                if (result.getResult() != null) {
-//                    data = new ChattingListData();
-//                    list = new ArrayList<>();
-//                    list.add(data);
-//                    data.setImageUrl(result.getResult().getFileUrl());
-//                    data.setName(result.getResult().getName());
-//                    data.setType(ChattingListData.TYPE_DELIVERER);
-//                    mAdapter = new ChattingListAdapter();
-//                    mAdapter.setData(list);
-//                    listView.setAdapter(mAdapter);
-//                    listView.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
-//                }
-//            }
-//
-//            @Override
-//            public void onFail(NetworkRequest<NetworkResult<UserData>> request, String errorMessage, Throwable e) {
-//
-//            }
-//        });
-
         Cursor cursor = DBManager.getInstance().getChatUser();
-
         if (cursor != null){
             list = new ArrayList<>();
 
@@ -345,6 +330,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 data.setMessage(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE)));
                 data.setTime(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED)));
                 list.add(data);
+            }
+
+            int count = 0;
+            while (count < (10 - cursor.getCount())) {
+                data = new ChattingListData();
+                data.setMessage(getString(R.string.empty_chatting_list));
+                data.setType(ChattingListData.TYPE_EMPTY);
+                list.add(data);
+                count++;
             }
             mAdapter.setData(list);
         }
