@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sender.team.sender.FAQActivity">
+    tools:context="com.sender.team.sender.FAQActivity"
+    android:background="@color/whitebg">
     <FrameLayout
         android:id="@+id/toolbarLayout"
         android:layout_width="match_parent"
@@ -41,5 +42,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:groupIndicator="@null"
-        android:layout_below="@+id/toolbarLayout" />
+        android:layout_below="@+id/toolbarLayout"
+        android:headerDividersEnabled="false"
+        android:stackFromBottom="false"
+        android:nestedScrollingEnabled="false"
+        android:drawSelectorOnTop="false"
+        android:footerDividersEnabled="false" />
 </RelativeLayout>

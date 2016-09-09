@@ -2,244 +2,258 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
     tools:context="com.sender.team.sender.InfoInputFragment">
 
-
-    <EditText
-        android:layout_width="290dp"
-        android:layout_height="20dp"
-        android:id="@+id/edit_infoinput_hour"
-        android:inputType="number"
-        android:nextFocusDown="@+id/edit_infoinput_min"
-        android:hint="도착 요청시간"
-        android:textSize="11sp"
-        android:background="@null"
-        android:layout_above="@+id/imageView23"
-        android:layout_alignLeft="@+id/edit_object_price"
-        android:layout_alignStart="@+id/edit_object_price"
-        android:layout_toLeftOf="@+id/textView10"
-        android:layout_toStartOf="@+id/textView10"
-        android:paddingBottom="2dp"
-        android:maxLength="2" />
-
-    <EditText
-        android:layout_width="30dp"
-        android:layout_height="20dp"
-        android:id="@+id/edit_infoinput_min"
-        android:inputType="number"
-        android:textSize="11sp"
-        android:background="@null"
-        android:layout_above="@+id/edit_object_price"
-        android:layout_toLeftOf="@+id/textView7"
-        android:layout_toStartOf="@+id/textView7"
-        android:paddingBottom="2dp"
-        android:maxLength="2"
-        android:gravity="right" />
-
-    <Button
+    <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/deliverer_search"
-        android:id="@+id/btn_deliverer"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/whitefont"
-        android:background="@color/fontcolor" />
-
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="#e6e6e6"
-        android:id="@+id/object_image"
-        android:layout_below="@+id/edit_memo"
-        android:layout_alignRight="@+id/imageView31"
-        android:layout_alignEnd="@+id/imageView31"
-        android:src="@drawable/ic_photo" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:id="@+id/edit_object_name"
-        android:hint="@string/object_name"
-        android:inputType="text"
-        android:singleLine="true"
-        android:textSize="11sp"
-        android:layout_above="@+id/imageView22"
-        android:layout_alignLeft="@+id/edit_infoinput_hour"
-        android:layout_alignStart="@+id/edit_infoinput_hour"
-        android:background="@null"
-        android:paddingBottom="2dp"
-         />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:id="@+id/edit_receiver_phone"
-        android:hint="@string/receiver_phone"
-        android:inputType="phone"
-        android:textSize="11sp"
-        android:layout_above="@+id/imageView25"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/imageView24"
-        android:layout_toEndOf="@+id/imageView24"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:layout_marginLeft="10dp"
-        android:paddingBottom="2dp" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:id="@+id/edit_object_price"
-        android:hint="@string/price_suggestion"
-        android:inputType="number"
-        android:textSize="11sp"
-        android:layout_above="@+id/imageView24"
-        android:layout_toRightOf="@+id/imageView23"
-        android:layout_toEndOf="@+id/imageView23"
-        android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edit_object_name"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:background="@null"
-        android:paddingBottom="2dp" />
+        android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/imageView21"
-        android:src="@drawable/ic_name"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp" />
+        <ImageView
+            android:id="@+id/imageView22"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_time" />
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/imageView22"
-        android:src="@drawable/ic_time"
-        android:layout_below="@+id/imageView21"
-        android:layout_alignLeft="@+id/imageView21"
-        android:layout_alignStart="@+id/imageView21"
-        android:layout_marginTop="16dp" />
+        <EditText
+            android:id="@+id/edit_infoinput_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="도착 요청시간"
+            android:inputType="number"
+            android:maxLength="2"
+            android:nextFocusDown="@+id/edit_infoinput_min"
+            android:paddingBottom="2dp"
+            android:textSize="11sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:text="분"
-        android:id="@+id/textView7"
-        android:textSize="11sp"
-        android:layout_alignTop="@+id/edit_infoinput_min"
-        android:layout_alignRight="@+id/object_image"
-        android:layout_alignEnd="@+id/object_image"
-         />
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="시"
+            android:textSize="11sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:text="시"
-        android:id="@+id/textView10"
-        android:textSize="11sp"
-        android:layout_alignTop="@+id/textView7"
-        android:layout_toLeftOf="@+id/object_image"
-        android:layout_toStartOf="@+id/object_image" />
+        <EditText
+            android:id="@+id/edit_infoinput_min"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="2dp"
+            android:background="@null"
+            android:gravity="right"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textSize="11sp" />
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/imageView23"
-        android:layout_below="@+id/imageView22"
-        android:layout_alignLeft="@+id/imageView22"
-        android:layout_alignStart="@+id/imageView22"
-        android:src="@drawable/ic_money"
-        android:layout_marginTop="16dp" />
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/imageView24"
-        android:layout_below="@+id/imageView23"
-        android:layout_alignLeft="@+id/imageView23"
-        android:layout_alignStart="@+id/imageView23"
-        android:src="@drawable/ic_phonebook"
-        android:layout_marginTop="16dp" />
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="분"
+            android:textSize="11sp" />
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/imageView25"
-        android:layout_below="@+id/imageView24"
-        android:layout_alignLeft="@+id/imageView24"
-        android:layout_alignStart="@+id/imageView24"
-        android:src="@drawable/ic_memo"
-        android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_deliverer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/fontcolor"
+        android:text="@string/deliverer_search"
+        android:textColor="@color/whitefont" />
+
 
     <EditText
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_object_name"
+        android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:id="@+id/edit_memo"
-        android:hint="메모"
-        android:textSize="11sp"
-        android:layout_alignBottom="@+id/imageView25"
-        android:layout_marginTop="16dp"
-        android:background="@null"
-        android:layout_toRightOf="@+id/imageView25"
-        android:layout_alignRight="@+id/object_image"
-        android:layout_alignEnd="@+id/object_image"
         android:layout_marginLeft="10dp"
-        android:paddingBottom="2dp" />
+        android:layout_marginRight="16dp"
+        android:layout_toEndOf="@+id/imageView21"
+        android:layout_toRightOf="@+id/imageView21"
+        android:background="@null"
+        android:hint="@string/object_name"
+        android:inputType="text"
+        android:paddingBottom="2dp"
+        android:singleLine="true"
+        android:textSize="11sp" />
+
+    <EditText
+        android:id="@+id/edit_receiver_phone"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/imageView28"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/imageView24"
+        android:layout_toRightOf="@+id/imageView24"
+        android:background="@null"
+        android:hint="@string/receiver_phone"
+        android:inputType="phone"
+        android:paddingBottom="2dp"
+        android:textSize="11sp" />
+
+    <EditText
+        android:id="@+id/edit_object_price"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/imageView23"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/imageView23"
+        android:layout_toRightOf="@+id/imageView23"
+        android:background="@null"
+        android:hint="@string/price_suggestion"
+        android:inputType="number"
+        android:paddingBottom="2dp"
+        android:textSize="11sp" />
 
     <ImageView
+        android:id="@+id/imageView21"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/imageView26"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/imageView26"
+        android:src="@drawable/ic_name" />
+
+
+    <ImageView
+        android:id="@+id/imageView23"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/linearLayout5"
+        android:layout_alignStart="@+id/linearLayout5"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_money" />
+
+    <ImageView
+        android:id="@+id/imageView24"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/linearLayout4"
+        android:layout_alignStart="@+id/linearLayout4"
+        android:layout_alignTop="@+id/edit_receiver_phone"
+        android:src="@drawable/ic_phonebook" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView24"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <ImageView
+            android:id="@+id/imageView25"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignLeft="@+id/imageView24"
+            android:layout_alignStart="@+id/imageView24"
+            android:layout_below="@+id/imageView24"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_memo" />
+
+        <EditText
+            android:id="@+id/edit_memo"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_alignBottom="@+id/imageView25"
+            android:layout_alignEnd="@+id/object_image"
+            android:layout_alignRight="@+id/object_image"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_toRightOf="@+id/imageView25"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="메모"
+            android:paddingBottom="2dp"
+            android:textSize="11sp" />
+
+        <ImageView
+            android:id="@+id/object_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/imageView31"
+            android:layout_alignRight="@+id/imageView31"
+            android:layout_below="@+id/edit_memo"
+            android:layout_gravity="bottom"
+            android:background="#e6e6e6"
+            android:src="@drawable/ic_photo" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView26"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:id="@+id/imageView26"
-        android:layout_below="@+id/edit_object_name"
         android:layout_alignLeft="@+id/btn_deliverer"
         android:layout_alignStart="@+id/btn_deliverer"
-        android:background="@color/grayline"
+        android:layout_below="@+id/edit_object_name"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp" />
+        android:layout_marginRight="16dp"
+        android:background="@color/grayline" />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
         android:id="@+id/imageView27"
-        android:background="@color/grayline"
-        android:layout_below="@+id/edit_infoinput_hour"
-        android:layout_alignLeft="@+id/imageView26"
-        android:layout_alignStart="@+id/imageView26"
-        android:layout_marginRight="16dp" />
-
-    <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_alignLeft="@+id/linearLayout5"
+        android:layout_alignStart="@+id/linearLayout5"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_marginRight="16dp"
+        android:background="@color/grayline" />
+
+    <ImageView
         android:id="@+id/imageView28"
-        android:background="@color/grayline"
-        android:layout_below="@+id/edit_object_price"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_alignLeft="@+id/imageView27"
         android:layout_alignStart="@+id/imageView27"
-        android:layout_marginRight="16dp" />
+        android:layout_below="@+id/edit_object_price"
+        android:layout_marginRight="16dp"
+        android:background="@color/grayline" />
 
     <ImageView
+        android:id="@+id/imageView29"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:id="@+id/imageView29"
-        android:background="@color/grayline"
-        android:layout_below="@+id/edit_receiver_phone"
         android:layout_alignLeft="@+id/imageView28"
         android:layout_alignStart="@+id/imageView28"
-        android:layout_marginRight="16dp" />
+        android:layout_below="@+id/edit_receiver_phone"
+        android:layout_marginRight="16dp"
+        android:background="@color/grayline" />
 
     <ImageView
+        android:id="@+id/imageView31"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:id="@+id/imageView31"
-        android:background="@color/grayline"
-        android:layout_below="@+id/object_image"
-        android:layout_alignLeft="@+id/imageView29"
-        android:layout_alignStart="@+id/imageView29"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp" />
+        android:layout_below="@+id/linearLayout4"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/grayline" />
 
 
 </RelativeLayout>

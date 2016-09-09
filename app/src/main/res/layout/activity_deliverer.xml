@@ -31,21 +31,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="38dp"
-        android:layout_below="@+id/toolbarLayout">
-
-        <Button
-            android:id="@+id/btn_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@color/fontcolor"
-            android:text="입력완료"
-            android:textColor="@color/whitefont" />
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_alignParentBottom="true">
 
         <EditText
             android:id="@+id/edit_start"
@@ -113,9 +102,30 @@
             android:layout_below="@+id/edit_end"
             android:layout_marginTop="16dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/map_fragment"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/linearLayout2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:id="@+id/imageView35"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_time" />
         <EditText
             android:id="@+id/edit_start_hour"
-            android:layout_width="290dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:hint="출발시각"
             android:inputType="number"
@@ -124,20 +134,18 @@
             android:textSize="11dp"
             android:background="@null"
             android:maxLength="2"
-            android:layout_alignBottom="@+id/imageView37"
-            android:layout_toLeftOf="@+id/textView25"
-            android:layout_toStartOf="@+id/textView25" />
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="2dp" />
 
         <TextView
             android:id="@+id/textView25"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="20dp"
             android:gravity="center"
             android:text="시"
-            android:textSize="11sp"
-            android:layout_alignTop="@+id/imageView35"
-            android:layout_toRightOf="@+id/edit_end_hour"
-            android:layout_toEndOf="@+id/edit_end_hour" />
+            android:textSize="12sp"
+            android:textIsSelectable="false" />
 
         <EditText
             android:id="@+id/edit_start_min"
@@ -150,24 +158,45 @@
             android:textSize="11dp"
             android:maxLength="2"
             android:gravity="right"
-            android:layout_alignTop="@+id/textView26"
+            android:layout_alignBottom="@+id/imageView37"
             android:layout_toLeftOf="@+id/textView26"
-            android:layout_toStartOf="@+id/textView26" />
+            android:layout_toStartOf="@+id/textView26"
+            android:layout_marginRight="2dp" />
 
         <TextView
             android:id="@+id/textView26"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="20dp"
             android:gravity="center"
             android:text="분"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:layout_alignTop="@+id/textView25"
             android:layout_alignRight="@+id/imageView37"
-            android:layout_alignEnd="@+id/imageView37" />
+            android:layout_alignEnd="@+id/imageView37"
+            android:textIsSelectable="false" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:id="@+id/linearLayout3">
+
+            <ImageView
+                android:id="@+id/imageView36"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_time" />
         <EditText
             android:id="@+id/edit_end_hour"
-            android:layout_width="290dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:background="@null"
             android:hint="도착예정시각"
@@ -176,20 +205,18 @@
             android:singleLine="true"
             android:textSize="11dp"
             android:maxLength="2"
-            android:layout_alignTop="@+id/textView28"
-            android:layout_toLeftOf="@+id/textView28"
-            android:layout_toStartOf="@+id/textView28" />
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="2dp" />
 
         <TextView
             android:id="@+id/textView28"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="20dp"
             android:gravity="center"
             android:text="시"
-            android:textSize="11sp"
-            android:layout_alignTop="@+id/imageView36"
-            android:layout_toLeftOf="@+id/imageView39"
-            android:layout_toStartOf="@+id/imageView39" />
+            android:textSize="12sp"
+            android:textIsSelectable="false" />
 
         <EditText
             android:id="@+id/edit_end_min"
@@ -201,20 +228,17 @@
             android:background="@null"
             android:maxLength="2"
             android:gravity="right"
-            android:layout_alignTop="@+id/textview"
-            android:layout_toLeftOf="@+id/textview"
-            android:layout_toStartOf="@+id/textview" />
+            android:layout_marginRight="2dp" />
 
         <TextView
             android:id="@+id/textview"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="20dp"
             android:gravity="center"
             android:text="분"
-            android:textSize="11sp"
-            android:layout_alignTop="@+id/textView28"
-            android:layout_alignLeft="@+id/textView26"
-            android:layout_alignStart="@+id/textView26" />
+            android:textSize="12sp"
+            android:textIsSelectable="false" />
+        </LinearLayout>
 
         <ListView
             android:id="@+id/list_startSearch"
@@ -260,56 +284,41 @@
             android:layout_marginTop="2dp"
             android:background="@color/grayline" />
 
-        <ImageView
-            android:id="@+id/imageView35"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/map_fragment"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_time" />
 
-        <ImageView
-            android:id="@+id/imageView36"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/imageView35"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/ic_time" />
+
+
 
         <ImageView
             android:id="@+id/imageView37"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/grayline"
-            android:layout_below="@+id/imageView35"
+            android:layout_below="@+id/linearLayout2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="2dp" />
+            android:layout_marginRight="16dp" />
+
+        <Button
+            android:id="@+id/btn_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fontcolor"
+            android:text="입력완료"
+            android:textColor="@color/whitefont"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <ImageView
             android:id="@+id/imageView38"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/grayline"
-            android:layout_below="@+id/imageView36"
-            android:layout_alignLeft="@+id/imageView36"
-            android:layout_alignStart="@+id/imageView36" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/imageView39"
-            android:layout_above="@+id/btn_input"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/linearLayout3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp" />
 
     </RelativeLayout>

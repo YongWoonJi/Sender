@@ -80,28 +80,22 @@ public class FAQAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        TextView view;
-
         if(convertView == null){
-            view = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent,false);
-        } else{
-            view = (TextView)convertView;
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_group, parent,false);
         }
-        view.setText(items.get(groupPosition).groupName);
-        return view;
+        TextView textGroup=(TextView) convertView.findViewById(R.id.faq_group_name);
+        textGroup.setText(items.get(groupPosition).groupName);
+        return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        TextView view;
-        if (convertView == null) {
-            view = (TextView)LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-        } else {
-            view = (TextView)convertView;
+        if(convertView == null){
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_child, parent,false);
         }
-
-        view.setText(items.get(groupPosition).children.get(childPosition).contents);
-        return view;
+        TextView textGroup=(TextView) convertView.findViewById(R.id.faq_child_name);
+        textGroup.setText(items.get(groupPosition).children.get(childPosition).contents);
+        return convertView;
     }
 
     @Override

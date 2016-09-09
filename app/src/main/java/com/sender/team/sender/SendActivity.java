@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -184,6 +185,8 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                         POI poi = result.getSearchPoiInfo().getPois().getPoi()[0];
                         moveMap(poi.getLatitude(), poi.getLongitude());
                     }
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                 }
 
                 @Override

@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 public class FAQActivity extends AppCompatActivity {
 
     ExpandableListView listView;
-    NoticeAdapter mAdapter;
+    FAQAdapter mAdapter;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -31,7 +31,7 @@ public class FAQActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
         listView = (ExpandableListView) findViewById(R.id.expandableListView);
-        mAdapter = new NoticeAdapter();
+        mAdapter = new FAQAdapter();
         listView.setAdapter(mAdapter);
 
 
