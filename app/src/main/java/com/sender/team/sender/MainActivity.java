@@ -425,7 +425,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(this, item.getItemId(), Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
             case android.R.id.home :
                 if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -433,9 +432,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     drawer.openDrawer(GravityCompat.START);
                 }
-                return true;
-            case R.id.menu_info :
-                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

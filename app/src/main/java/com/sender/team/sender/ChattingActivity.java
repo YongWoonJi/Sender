@@ -87,8 +87,8 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 getSupportFragmentManager().beginTransaction().add(R.id.container,new DelivererHeaderFragment()).commit();
                 break;
             }
-                default:
-                    break;
+            default:
+                break;
         }
 
         mAdapter = new ChattingAdapter();
@@ -217,7 +217,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     @Override
     protected void onStart() {
         super.onStart();
-        updateMessage();
+//        updateMessage();
     }
 
     @Override

@@ -20,6 +20,7 @@ public class ChattingReceiveRequest extends AbstractRequest<NetworkResult<ArrayL
     Request request;
     public ChattingReceiveRequest(Context context, String date){
         HttpUrl url = getSecureUrlBuilder()
+                .port(4433)
                 .addPathSegment("chattings")
                 .addQueryParameter("lastDate", date)
                 .build();

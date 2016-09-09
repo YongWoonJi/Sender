@@ -22,6 +22,7 @@ public class ChattingSendRequest extends AbstractRequest<NetworkResult<String>> 
     Request request;
     public ChattingSendRequest(Context context, String receiver_id, String message, File pic){
         HttpUrl url = getBaseUrlBuilder()
+                .port(8080)
                 .addPathSegment("notification")
                 .addPathSegment("chattings")
                 .build();
