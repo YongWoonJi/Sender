@@ -224,7 +224,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     @Override
     protected void onStart() {
         super.onStart();
-        updateMessage();
+//        updateMessage();
         mLBM.registerReceiver(mReceiver, new IntentFilter(MyGcmListenerService.ACTION_CHAT));
     }
 

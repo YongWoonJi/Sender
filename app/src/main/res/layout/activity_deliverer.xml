@@ -248,7 +248,8 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/edit_start"
             android:background="#fff"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:elevation="10dp" />
 
         <ListView
             android:id="@+id/list_endSearch"
@@ -258,7 +259,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/map_fragment"
             android:background="#fff"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:elevation="10dp" />
 
         <ImageView
             android:id="@+id/imageView33"

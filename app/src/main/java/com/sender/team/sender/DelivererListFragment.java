@@ -53,7 +53,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         mAdapter = new DelivererAdapter();
         mAdapter.setOnDialogListener(this);
         rv_view.setAdapter(mAdapter);
-        DelivererListRequest request = new DelivererListRequest(getContext(), "1", "1");
+        DelivererListRequest request = new DelivererListRequest(getContext(), "1", "100");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DelivererListData>>() {
 
             @Override
