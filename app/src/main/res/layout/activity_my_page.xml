@@ -212,7 +212,14 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/textView29"
         android:layout_marginTop="10dp"></android.support.v7.widget.RecyclerView>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView29"
+        android:layout_marginTop="10dp"
+        android:id="@+id/text_empty_my_review"
+        android:visibility="gone"
+        />
     <TextView
         android:id="@+id/textView29"
         android:layout_width="wrap_content"

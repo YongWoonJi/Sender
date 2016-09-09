@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -59,6 +60,8 @@ public class MyPageActivity extends AppCompatActivity {
     TextView reviewCount;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.text_empty_my_review)
+    TextView emptyText;
 
     private static final int RC_GET_IMAGE = 1;
     private static final int RC_CATPURE_IMAGE = 2;
@@ -215,18 +218,27 @@ public class MyPageActivity extends AppCompatActivity {
     private void getReviewListData() {
         //리뷰 리스트 보기
         UserData userId = PropertyManager.getInstance().getUserData();
-        ReviewListRequest reviewRequest = new ReviewListRequest(MyPageActivity.this,"1","1", userId.getUser_id());
+        ReviewListRequest reviewRequest = new ReviewListRequest(MyPageActivity.this,"1","1", "8");
+
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, reviewRequest, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
-                mAdapter.clear();
-                mAdapter.setReviewData(result.getResult().getData().getReview());
-                reviewCount.setText("" + result.getResult().getData().getReview().size());
-
+                    mAdapter.clear();
+                    mAdapter.setReviewData(result.getResult().getData().getReview());
+                    reviewCount.setText("" + result.getResult().getData().getReview().size());
+                    emptyText.setVisibility(View.GONE);
+                    listView.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result, String errorMessage, Throwable e) {
+                Toast.makeText(MyPageActivity.this, "error : "+errorMessage, Toast.LENGTH_SHORT).show();
+                Log.i("MyPageActivity", errorMessage);
+                reviewCount.setText("0");
+                emptyText.setText("리뷰가 없습니다.");
+                emptyText.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+
             }
         });
     }

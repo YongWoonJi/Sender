@@ -53,6 +53,15 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatMessage.COLUMN_IMAGE + " TEXT," +
                 ChatContract.ChatMessage.COLUMN_CREATED + " INTEGER);";
         sqLiteDatabase.execSQL(sql);
+
+//        sql = "CREATE TABLE " + ChatContract.ContractInfo.TABLE + "(" +
+//                ChatContract.ContractInfo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+//                ChatContract.ContractInfo.COLUMN_SENDING_ID + " TEXT," +
+//                ChatContract.ContractInfo.COLUMN_SENDING_USER_ID + " TEXT," +
+//                ChatContract.ContractInfo.COLUMN_DELIVERING_ID + " TEXT," +
+//                ChatContract.ContractInfo.COLUMN_DELIVERING_USER_ID + " TEXT," +
+//                ChatContract.ContractInfo.COLUMN_ADDRESS + " TEXT);";
+//        sqLiteDatabase.execSQL(sql);
     }
 
     @Override
@@ -62,6 +71,18 @@ public class DBManager extends SQLiteOpenHelper {
 
     ContentValues values = new ContentValues();
 
+//    public long addContractInfo(ContractsInfoData data, String address){
+//        SQLiteDatabase db = getWritableDatabase();
+//        values.clear();
+//        values.put(ChatContract.ContractInfo.COLUMN_CONTRACT_ID, data.getContract_id());
+//        values.put(ChatContract.ContractInfo.COLUMN_SENDING_ID, data.getSending_id());
+//        values.put(ChatContract.ContractInfo.COLUMN_SENDING_USER_ID, data.getSending_user_id());
+//        values.put(ChatContract.ContractInfo.COLUMN_DELIVERING_ID, data.getDeliverer_id());
+//        values.put(ChatContract.ContractInfo.COLUMN_DELIVERING_USER_ID, data.getDelivering_user_id());
+//        values.put(ChatContract.ContractInfo.COLUMN_ADDRESS, address);
+//        return db.insert(ChatContract.ChatUser.TABLE, null, values);
+//    }
+
 
     public long addUser(UserData user) {
         if (getUserId(Long.parseLong(user.getUser_id())) == -1) {
@@ -70,6 +91,7 @@ public class DBManager extends SQLiteOpenHelper {
             values.put(ChatContract.ChatUser.COLUMN_SERVER_ID, user.getUser_id());
             values.put(ChatContract.ChatUser.COLUMN_NAME, user.getName());
             values.put(ChatContract.ChatUser.COLUMN_PROFILE_IMAGE, user.getFileUrl());
+            values.put(ChatContract.ChatUser.COLUMN_ADDRESS, user.getAddress());
             return db.insert(ChatContract.ChatUser.TABLE, null, values);
         }
         throw new IllegalArgumentException("aleady user added");
@@ -130,6 +152,7 @@ public class DBManager extends SQLiteOpenHelper {
         }
         return -1;
     }
+
 
     public Cursor getChatUser() {
         String table = ChatContract.ChatUser.TABLE + " INNER JOIN " +

@@ -2,12 +2,16 @@ package com.sender.team.sender;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,18 +27,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sender.team.sender.data.ChatContract;
-import com.sender.team.sender.data.ChattingReceiveData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.UserData;
+import com.sender.team.sender.gcm.MyGcmListenerService;
 import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
-import com.sender.team.sender.manager.PropertyManager;
-import com.sender.team.sender.request.ChattingReceiveRequest;
 import com.sender.team.sender.request.ChattingSendRequest;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -66,12 +67,18 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     ChattingAdapter mAdapter;
     String name;
     String imgUrl;
+
+    LocalBroadcastManager mLBM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
+
+        mLBM = LocalBroadcastManager.getInstance(this);
+
         Intent intent = getIntent();
         int i = intent.getIntExtra(HEADER_TYPE, 0);
         name = intent.getStringExtra(RECEIVER_NAME);
@@ -87,8 +94,8 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 getSupportFragmentManager().beginTransaction().add(R.id.container,new DelivererHeaderFragment()).commit();
                 break;
             }
-            default:
-                break;
+                default:
+                    break;
         }
 
         mAdapter = new ChattingAdapter();
@@ -153,7 +160,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     }
 
 
-    UserData user = PropertyManager.getInstance().getUserData();
+    UserData user;
 
     @OnClick(R.id.btn_message_send)
     public void onClickSendMessage(){
@@ -170,22 +177,22 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                         updateMessage();
 
 
-                        ChattingReceiveRequest receiveRequest = new ChattingReceiveRequest(ChattingActivity.this, Utils.getCurrentDate());
-                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, receiveRequest, new NetworkManager.OnResultListener<NetworkResult<ArrayList<ChattingReceiveData>>>() {
-                            @Override
-                            public void onSuccess(NetworkRequest<NetworkResult<ArrayList<ChattingReceiveData>>> request, NetworkResult<ArrayList<ChattingReceiveData>> result) {
-                                DBManager.getInstance().addMessage(result.getResult().get(0).getSender() , result.getResult().get(0).getSender().getFileUrl(), ChatContract.ChatMessage.TYPE_RECEIVE,
-                                        result.getResult().get(0).getMessage(), new Date());
-                                user = result.getResult().get(0).getSender();
-                                updateMessage();
-                                mAdapter.setRecieveData(uploadFile, name, imgUrl);
-                            }
-
-                            @Override
-                            public void onFail(NetworkRequest<NetworkResult<ArrayList<ChattingReceiveData>>> request, NetworkResult<ArrayList<ChattingReceiveData>> result, String errorMessage, Throwable e) {
-                                Toast.makeText(ChattingActivity.this, "fail r", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+//                        ChattingReceiveRequest receiveRequest = new ChattingReceiveRequest(ChattingActivity.this, Utils.getCurrentDate());
+//                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, receiveRequest, new NetworkManager.OnResultListener<NetworkResult<List<ChattingReceiveData>>>() {
+//                            @Override
+//                            public void onSuccess(NetworkRequest<NetworkResult<List<ChattingReceiveData>>> request, NetworkResult<List<ChattingReceiveData>> result) {
+//                                DBManager.getInstance().addMessage(result.getResult().get(0).getSender() , result.getResult().get(0).getSender().getFileUrl(), ChatContract.ChatMessage.TYPE_RECEIVE,
+//                                        result.getResult().get(0).getMessage(), new Date());
+//                                user = result.getResult().get(0).getSender();
+//                                updateMessage();
+//                                mAdapter.setRecieveData(uploadFile, name, imgUrl);
+//                            }
+//
+//                            @Override
+//                            public void onFail(NetworkRequest<NetworkResult<List<ChattingReceiveData>>> request, NetworkResult<List<ChattingReceiveData>> result, String errorMessage, Throwable e) {
+//                                Toast.makeText(ChattingActivity.this, "fail r", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
                     }
                 }
 
@@ -217,13 +224,31 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     @Override
     protected void onStart() {
         super.onStart();
-//        updateMessage();
+        updateMessage();
+        mLBM.registerReceiver(mReceiver, new IntentFilter(MyGcmListenerService.ACTION_CHAT));
     }
+
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            UserData u = (UserData) intent.getSerializableExtra(MyGcmListenerService.EXTRA_CHAT_USER);
+            if (u.getUser_id() == user.getUser_id()) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateMessage();
+                    }
+                });
+                intent.putExtra(MyGcmListenerService.EXTRA_RESULT, true);
+            }
+        }
+    };
 
     @Override
     protected void onStop() {
         super.onStop();
         mAdapter.changeCursor(null);
+        mLBM.unregisterReceiver(mReceiver);
     }
 
     private void updateMessage() {

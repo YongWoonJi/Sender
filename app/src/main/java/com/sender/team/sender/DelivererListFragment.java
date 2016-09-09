@@ -60,9 +60,11 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             public void onSuccess(NetworkRequest<NetworkResult<DelivererListData>> request, NetworkResult<DelivererListData> result) {
                 for (int i = 0; i < result.getResult().getData().size(); i++) {
                     ((SendActivity) getActivity()).addMarker(result.getResult().getData().get(i));
+                    Log.i("delivery_id", String.valueOf(result.getResult().getData().get(i).getDeilver_id()));
                     Log.i("DelivererListFragment", String.valueOf(result.getResult().getData().get(i).getNext_lat()) + " , " + String.valueOf(result.getResult().getData().get(i).getNext_lon()));
                 }
                 mAdapter.setDelivererData(result.getResult().getData());
+
             }
 
             @Override
@@ -87,7 +89,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int contractId = PropertyManager.getInstance().getContractIdData().getContract_id();
-                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), String.valueOf(deliverId), null);
+                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), PropertyManager.getInstance().getOtherDelivererId(), null);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
@@ -133,14 +135,16 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         final ReviewAdapter adapter = new ReviewAdapter();
         listView.setAdapter(adapter);
         listView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        deliverId = mAdapter.getDeliverId(position);
+        deliverId = position;
         String delId = String.valueOf(mAdapter.getDeliverId(position));
+        PropertyManager.getInstance().setOtherDelivererId(delId);
 
-        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "1", delId);
+        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "1", "8");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
                 adapter.setReviewData(result.getResult().getData().getReview());
+
             }
 
             @Override

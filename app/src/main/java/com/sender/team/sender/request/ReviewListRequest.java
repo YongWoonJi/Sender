@@ -18,6 +18,7 @@ public class ReviewListRequest extends AbstractRequest<NetworkResult<ReviewListD
     Request request;
     public ReviewListRequest(Context context, String currentPage , String itemsPerPage, String deliverer_id ) {
         HttpUrl url = getBaseUrlBuilder()
+                .port(80)
                 .addPathSegment("reviews")
                 .addQueryParameter("currentPage",currentPage)
                 .addQueryParameter("itemsPerPage",itemsPerPage)

@@ -21,6 +21,7 @@ public class DelivererRegisterRequest extends AbstractRequest<NetworkResult<Deli
     public DelivererRegisterRequest(Context context, String here_lat, String here_lon,
                                     String next_lat, String next_lon, String dep_time, String arr_time) {
         HttpUrl url = getSecureUrlBuilder()
+                .port(443)
                 .addPathSegment("deliverings")
                 .build();
 

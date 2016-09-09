@@ -8,6 +8,7 @@ import com.sender.team.sender.data.NetworkResult;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -15,14 +16,16 @@ import okhttp3.Request;
 /**
  * Created by Tacademy on 2016-09-02.
  */
-public class ChattingReceiveRequest extends AbstractRequest<NetworkResult<ArrayList<ChattingReceiveData>>> {
+public class ChattingReceiveRequest extends AbstractRequest<NetworkResult<List<ChattingReceiveData>>> {
 
     Request request;
-    public ChattingReceiveRequest(Context context, String date){
+    public ChattingReceiveRequest(Context context, String sendId, String contractId){
         HttpUrl url = getSecureUrlBuilder()
                 .port(4433)
                 .addPathSegment("chattings")
-                .addQueryParameter("lastDate", date)
+//                .addQueryParameter("lastDate", date)
+                .addQueryParameter("senderId", sendId)
+                .addQueryParameter("contractId", contractId)
                 .build();
 
         request = new Request.Builder()

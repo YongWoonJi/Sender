@@ -12,6 +12,7 @@ public class ChatContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_PROFILE_IMAGE = "profileimageurl";
+        public static final String COLUMN_ADDRESS = "address";
         public static final String COLUMN_LAST_MESSAGE_ID = "lastid";
 
     }
@@ -29,12 +30,13 @@ public class ChatContract {
         public static final String COLUMN_CREATED = "created";
     }
 
-    public interface ContractInfo extends BaseColumns {
-        public static final String TABLE = "contractinfo";
-        public static final String COLUMN_SENDING_ID = "contractid";
-        public static final String COLUMN_SENDGIN_USER_ID = "contractid";
-        public static final String COLUMN_DELIVERING_ID = "contractid";
-        public static final String COLUMN_DELIVERING_USER_ID = "deliveringuserid";
-        public static final String COLUMN_ADDRESS = "address";
-    }
+//    public interface ContractInfo extends BaseColumns {
+//        public static final String TABLE = "contractinfo";
+//        public static final String COLUMN_CONTRACT_ID = "contractid";
+//        public static final String COLUMN_SENDING_ID = "sendingid";
+//        public static final String COLUMN_SENDING_USER_ID = "sendinguserid";
+//        public static final String COLUMN_DELIVERING_ID = "deliveringid";
+//        public static final String COLUMN_DELIVERING_USER_ID = "deliveringuserid";
+//        public static final String COLUMN_ADDRESS = "address";
+//    }
 }

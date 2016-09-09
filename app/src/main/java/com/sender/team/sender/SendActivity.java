@@ -124,7 +124,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                         selectPoi = poi;
                         Marker m = markerResolver.get(poi);
                         m.showInfoWindow();
-
+                        searchView.setText(poi.getName());
                     }
                 });
                 mMap.clear();

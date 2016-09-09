@@ -128,6 +128,8 @@ public class NetworkManager {
         }
     };
 
+
+
     public interface OnResultListener<T> {
         public void onSuccess(NetworkRequest<T> request, T result);
 

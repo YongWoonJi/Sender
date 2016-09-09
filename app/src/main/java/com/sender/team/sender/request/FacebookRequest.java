@@ -1,6 +1,7 @@
 package com.sender.team.sender.request;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
 import com.sender.team.sender.data.NetworkResult;
@@ -20,6 +21,7 @@ public class FacebookRequest extends AbstractRequest<NetworkResult<Integer>> {
     Request request;
 
     public FacebookRequest(Context context, String access_token, String registration_token) {
+        Log.i("facebook", access_token +" , " +registration_token);
         HttpUrl url = getSecureUrlBuilder()
                 .port(443)
                 .addPathSegment("auth")

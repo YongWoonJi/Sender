@@ -147,7 +147,7 @@ public class InfoInputFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String time = Utils.getCurrentDate() + " " + requestHour + ":" + requestMin + ":00";
+                String time = Utils.getCurrentDate() + " " + requestHour.getText().toString() + ":" + requestMin.getText().toString() + ":00";
                 String obName = objectName.getText().toString();
                 String obPrice = objectPrice.getText().toString();
                 String phone = receiverPhone.getText().toString();
@@ -165,6 +165,10 @@ public class InfoInputFragment extends Fragment {
                             .replace(R.id.container, new DelivererListFragment())
                             .addToBackStack(null)
                             .commit();
+
+                    ((SendActivity) getActivity()).searchView.setVisibility(View.GONE);
+                    ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
+                    ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
 
                 } else {
                     Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -230,7 +234,7 @@ public class InfoInputFragment extends Fragment {
             if (uploadFile != null) {
                 savedInstanceState.putString(FIELD_UPLOAD_FILE, uploadFile.getAbsolutePath());
             }
-        } catch (Exception e) {
+        }catch (Exception e){
 
         }
     }
@@ -263,11 +267,12 @@ public class InfoInputFragment extends Fragment {
 
     public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng, String obName, String phone, String obPrice, String time, File uploadFile, String memo) {
 
-        String hLat = String.valueOf(hereLat);
-        String hLng = String.valueOf(hereLng);
-        String aLat = String.valueOf(addrLat);
-        String aLng = String.valueOf(addrLng);
+        final String hLat = String.valueOf(hereLat);
+        final String hLng = String.valueOf(hereLng);
+        final String aLat = String.valueOf(addrLat);
+        final String aLng = String.valueOf(addrLng);
         //SendAcitivty의 현위치와 선택한 위치의 위도 경도값을 받아온다.
+        Log.i("InfoInputFragment",hLat+" , "+hLng+" , "+aLat+" , "+aLng);
 
         SenderRequest request = new SenderRequest(context, hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, memo);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
@@ -275,7 +280,7 @@ public class InfoInputFragment extends Fragment {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
                 PropertyManager.getInstance().setContractIdData(result.getResult());
-                Toast.makeText(context, "success wow " + result.getResult().getContract_id() + "  " + result.getResult().getSendingId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "success wow " + result.getResult().getContract_id()+"  " + result.getResult().getSendingId(), Toast.LENGTH_SHORT).show();
                 Log.i("InfoInputFragment", "contractid = " + result.getResult().getContract_id());
             }
 
@@ -296,9 +301,7 @@ public class InfoInputFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        ((SendActivity) getActivity()).searchView.setVisibility(View.GONE);
-        ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
-        ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
+
     }
 
 }

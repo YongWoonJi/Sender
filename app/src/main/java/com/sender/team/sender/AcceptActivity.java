@@ -16,12 +16,17 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.sender.team.sender.data.ContractIdData;
 import com.sender.team.sender.data.ContractsData;
+import com.sender.team.sender.data.ContractsInfoData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.ReverseGeocodingData;
+import com.sender.team.sender.data.UserData;
+import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
+import com.sender.team.sender.request.ContractsInfoRequest;
 import com.sender.team.sender.request.ContractsRequest;
+import com.sender.team.sender.request.OtherUserRequest;
 import com.sender.team.sender.request.ReverseGeocodingRequest;
 import com.sender.team.sender.request.SenderInfoRequest;
 
@@ -96,10 +101,13 @@ public class AcceptActivity extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         //13.계약 체결하기
-                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, "1", null, STATE_CONTRACT_SUCCESS);
+                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), null, STATE_CONTRACT_SUCCESS);//1자리에 contract_id 들어가야함
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
                                             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
+
+                                                String address = start+" > "+end;
+                                                getsendingInfo(String.valueOf(result.getResult().getContract_id()),address);
                                                 Toast.makeText(AcceptActivity.this, "계약성공: " + result, Toast.LENGTH_SHORT).show();
                                             }
 
@@ -175,6 +183,35 @@ public class AcceptActivity extends Activity {
             }
         });
 
-
     }
+
+    public void getsendingInfo(String contract_id, final String address){
+        ContractsInfoRequest request = new ContractsInfoRequest(this,contract_id);
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractsInfoData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<ContractsInfoData>> request, NetworkResult<ContractsInfoData> result) {
+                String id = String.valueOf(result.getResult().getSending_user_id());
+                OtherUserRequest otherUserRequest = new OtherUserRequest(AcceptActivity.this,id);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, otherUserRequest, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                        UserData data = result.getResult();
+                        data.setAddress(address);
+                        DBManager.getInstance().addUser(data);
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<ContractsInfoData>> request, NetworkResult<ContractsInfoData> result, String errorMessage, Throwable e) {
+
+            }
+        });
+    }
+
 }

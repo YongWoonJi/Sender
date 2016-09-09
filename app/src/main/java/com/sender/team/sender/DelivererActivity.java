@@ -2,7 +2,6 @@ package com.sender.team.sender;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -166,6 +165,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     public void run() {
                         addMarker(poiStart, TYPE_START);
                         listStartSearch.setVisibility(View.GONE);
+                        editStart.setText(poiStart.getName());
                     }
                 });
             }
@@ -180,6 +180,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     public void run() {
                         addMarker(poiEnd, TYPE_END);
                         listEndSearch.setVisibility(View.GONE);
+                        editEnd.setText(poiEnd.getName());
                     }
                 });
             }
@@ -304,6 +305,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     listStartSearch.setVisibility(View.VISIBLE);
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(editStart.getWindowToken(), 0);
+
                 }
 
                 @Override
@@ -345,8 +347,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String depTime = Utils.getCurrentDate() + " " + editStartHour + ":" + editStartMin + ":00";
-                String arrTime = Utils.getCurrentDate() + " " + editEndHour + ":" + editEndMin + ":00";
+                String depTime = Utils.getCurrentDate() + " " + editStartHour.getText().toString() + ":" + editStartMin.getText().toString() + ":00";
+                String arrTime = Utils.getCurrentDate() + " " + editEndHour.getText().toString() + ":" + editEndMin.getText().toString() + ":00";
                 DelivererRegisterRequest request = new DelivererRegisterRequest(DelivererActivity.this,
                          "" + poiStart.getLatitude(), "" + poiStart.getLongitude(),
                         "" + poiEnd.getLatitude(), "" + poiEnd.getLongitude(), depTime, arrTime);
@@ -356,8 +358,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                         if (result != null) {
                             PropertyManager.getInstance().setDeliveringId(result.getResult());
                             Toast.makeText(DelivererActivity.this, "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(DelivererActivity.this, NotificationService.class);
-                            startService(intent);
+//                            Intent intent = new Intent(DelivererActivity.this, NotificationService.class);
+//                            startService(intent);
                             finish();
                         }
                     }

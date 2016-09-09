@@ -24,6 +24,7 @@ public class SenderRequest extends AbstractRequest<NetworkResult<ContractIdData>
     public SenderRequest (Context context, String here_lat, String here_lon, String addr_lat, String addr_lon, String arr_time, String rec_phone,
                           String price, String info, File file, String memo){
         HttpUrl url = getSecureUrlBuilder()
+                .port(443)
                 .addPathSegment("contracts")
                 .build();
 

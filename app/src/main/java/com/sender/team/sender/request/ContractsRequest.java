@@ -20,6 +20,7 @@ public class ContractsRequest extends AbstractRequest<NetworkResult<ContractIdDa
     Request request;
     public ContractsRequest(Context context, String constract_id ,String delivering_id, String state){
         HttpUrl url = getBaseUrlBuilder()
+                .port(80)
                 .addPathSegment("contracts")
                 .build();
 

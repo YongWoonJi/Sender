@@ -18,6 +18,7 @@ public class DelivererListRequest extends AbstractRequest<NetworkResult<Delivere
     Request request;
     public DelivererListRequest(Context context, String currentPage, String itemsPerPage) {
         HttpUrl url = getSecureUrlBuilder()
+                .port(443)
                 .addPathSegment("deliverings")
                 .addQueryParameter("currentPage", currentPage)
                 .addQueryParameter("itemsPerPage", itemsPerPage)

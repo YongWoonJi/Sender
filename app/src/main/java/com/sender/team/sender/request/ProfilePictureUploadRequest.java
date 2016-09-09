@@ -23,6 +23,7 @@ public class ProfilePictureUploadRequest extends AbstractRequest<NetworkResult<S
 
     public ProfilePictureUploadRequest(Context context, File file) {
         HttpUrl url = getBaseUrlBuilder()
+                .port(80)
                 .addPathSegment("members")
                 .addPathSegment("me")
                 .build();

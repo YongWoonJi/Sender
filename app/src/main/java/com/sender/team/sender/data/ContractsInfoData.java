@@ -2,7 +2,7 @@ package com.sender.team.sender.data;
 
 public class ContractsInfoData {
     private int delivering_user_id;
-    private int deliverer_id;
+    private int delivering_id;
     private String res_time;
     private int contract_id;
     private int state;
@@ -27,11 +27,11 @@ public class ContractsInfoData {
     }
 
     public int getDeliverer_id() {
-        return this.deliverer_id;
+        return this.delivering_id;
     }
 
     public void setDeliverer_id(int deliverer_id) {
-        this.deliverer_id = deliverer_id;
+        this.delivering_id = deliverer_id;
     }
 
     public String getRes_time() {

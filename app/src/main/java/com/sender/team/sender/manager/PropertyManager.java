@@ -37,6 +37,21 @@ public class PropertyManager {
     private static final String KEY_FACEBOOK_ID = "facebookid";
     private static final String KEY_DELIVER_ID = "delivering_id";
 
+    private String here_lat;
+    private String here_lng;
+    private String addr_lat;
+    private String addr_lng;
+
+    public String getOtherDelivererId() {
+        return otherDelivererId;
+    }
+
+    public void setOtherDelivererId(String otherDelivererId) {
+        this.otherDelivererId = otherDelivererId;
+    }
+
+    private String otherDelivererId;
+
     private PropertyManager() {
         Context context = MyApplication.getContext();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -85,6 +100,26 @@ public class PropertyManager {
         return mPrefs.getString(KEY_FACEBOOK_ID, "");
     }
 
+    public String getHere_lat() {
+        return here_lat;
+    }
 
+    public String getHere_lng() {
+        return here_lng;
+    }
 
+    public String getAddr_lat() {
+        return addr_lat;
+    }
+
+    public String getAddr_lng() {
+        return addr_lng;
+    }
+
+    public void setAddress(String here_lat, String here_lng, String addr_lat, String addr_lng){
+        this.here_lat = here_lat;
+        this.here_lng = here_lng;
+        this.addr_lng = addr_lng;
+        this.addr_lat = addr_lat;
+    }
 }

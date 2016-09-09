@@ -105,14 +105,6 @@ public class ContractsData {
         this.pic = pic;
     }
 
-    public String getSender_id() {
-        return this.sending_id;
-    }
-
-    public void setSender_id(String sending_id) {
-        this.sending_id = sending_id;
-    }
-
     public String getInfo() {
         return this.info;
     }
