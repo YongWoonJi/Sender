@@ -17,6 +17,8 @@
     <color name="reviewlistbg">#F2F2F2</color>
     <color name="font_gray">#606060</color>
     <color name="colorchildfont">#797979</color>
+    <color name="colorstatusblue">#00bff3</color>
+    <color name="colorstatusgreen">#00ff00</color>
 
 
     <drawable name="dialog_background">@android:color/transparent</drawable>

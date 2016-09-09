@@ -3,56 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sender.team.sender.ChattingActivity"
-    android:padding="@dimen/activity_horizontal_margin">
+    tools:context="com.sender.team.sender.ChattingActivity">
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ></FrameLayout>
-    <RelativeLayout
+        android:layout_height="wrap_content"></FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/container"
-        android:paddingTop="25dp">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="전송"
-            android:id="@+id/btn_message_send"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+        android:layout_above="@+id/linearLayout6" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/edit_message_send"
-            android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/btn_message_send"
-            android:layout_toStartOf="@+id/btn_message_send"
-            android:layout_toRightOf="@+id/image_chatting_picture"
-            android:layout_toEndOf="@+id/image_chatting_picture" />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/rv_list2"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_above="@+id/edit_message_send" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/fontcolor"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout6">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/image_chatting_picture"
-            android:src="@android:drawable/ic_input_add"
-            android:layout_alignTop="@+id/edit_message_send"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_add"
+            android:layout_marginLeft="16dp"
+            android:layout_gravity="center_vertical" />
 
+        <EditText
+            android:id="@+id/edit_message_send"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:background="@drawable/view_chatting_layoutbackground"
+            android:textSize="12sp"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/btn_message_send"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="전 송"
+            android:background="@color/transparent"
+            android:textColor="@color/whitefont"
+            android:layout_marginRight="16dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

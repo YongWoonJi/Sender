@@ -1,33 +1,156 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="#d2d2d2"
+    android:layout_height="111dp"
+    android:background="@color/whitebg"
     tools:context="com.sender.team.sender.SendHeaderFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout7">
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="160dp"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center|bottom"
+            android:text="배송시작"
+            android:textSize="12sp"
+            android:layout_marginRight="10dp" />
+
+        <Button
+            android:id="@+id/btn_end"
+            android:layout_width="160dp"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/btn_start"
+            android:layout_toRightOf="@+id/btn_start"
+            android:text="배송완료"
+            android:textSize="12sp"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="146dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView40"
+        android:background="@color/colorstatusblue"
+        android:layout_above="@+id/imageView41"
+        android:layout_toLeftOf="@+id/imageView41"
+        android:layout_toStartOf="@+id/imageView41" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView41"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="146dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView42"
+        android:layout_alignBottom="@+id/imageView41"
+        android:layout_toRightOf="@+id/imageView41"
+        android:layout_toEndOf="@+id/imageView41"
+        android:background="@color/colorstatusgreen" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView43"
+        android:src="@drawable/ic_point"
+        android:layout_above="@+id/imageView40"
+        android:layout_alignLeft="@+id/imageView44"
+        android:layout_alignStart="@+id/imageView44" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView44"
+        android:layout_below="@+id/imageView43"
+        android:layout_toLeftOf="@+id/imageView40"
+        android:layout_toStartOf="@+id/imageView40" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView45"
+        android:src="@drawable/ic_point"
+        android:layout_above="@+id/imageView40"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView46"
+        android:layout_alignTop="@+id/imageView42"
+        android:layout_toRightOf="@+id/imageView42"
+        android:layout_toEndOf="@+id/imageView42" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView47"
+        android:src="@drawable/ic_point"
+        android:layout_above="@+id/imageView42"
+        android:layout_alignRight="@+id/imageView46"
+        android:layout_alignEnd="@+id/imageView46" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="배송중"
+        android:id="@+id/textView8"
+        android:layout_above="@+id/imageView45"
+        android:layout_centerHorizontal="true"
+        android:textSize="11sp" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView48"
+        android:layout_alignTop="@+id/imageView43"
+        android:layout_toLeftOf="@+id/imageView43"
+        android:layout_toStartOf="@+id/imageView43" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배송시작"
-        android:id="@+id/btn_start"
-        android:layout_gravity="left|top"
-        android:layout_marginLeft="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_alignTop="@+id/btn_end"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/textView9"
+        android:layout_alignBottom="@+id/textView8"
+        android:layout_alignLeft="@+id/imageView48"
+        android:layout_alignStart="@+id/imageView48"
+        android:textSize="11sp" />
 
-    <Button
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView49"
+        android:layout_alignTop="@+id/imageView47"
+        android:layout_toRightOf="@+id/imageView47"
+        android:layout_toEndOf="@+id/imageView47" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배송완료"
-        android:id="@+id/btn_end"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="60dp"
-        android:layout_marginEnd="60dp" />
+        android:id="@+id/textView11"
+        android:layout_alignBottom="@+id/imageView49"
+        android:layout_alignRight="@+id/imageView49"
+        android:layout_alignEnd="@+id/imageView49"
+        android:textSize="11sp" />
 
 </RelativeLayout>

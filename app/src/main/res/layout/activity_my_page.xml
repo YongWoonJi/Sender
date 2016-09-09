@@ -38,7 +38,7 @@
         android:layout_height="@dimen/mypage_image_size"
         android:src="@mipmap/ic_launcher"
         android:scaleType="centerCrop"
-        app:riv_corner_radius="@dimen/mypage_image_radius"
+        app:riv_corner_radius="100dp"
 
         android:layout_below="@+id/toolbarLayout"
         android:layout_alignParentLeft="true"
