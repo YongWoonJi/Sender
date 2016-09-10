@@ -5,13 +5,13 @@ package com.sender.team.sender.data;
  */
 public class NetworkResult<T> {
     private T result;
-    private int error;
+    private String error;
 
     public T getResult() {
         return this.result;
     }
 
-    public int getError() {
+    public String getError() {
         return error;
     }
 }
