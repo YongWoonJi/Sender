@@ -87,8 +87,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
                 long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
                 String image = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_IMAGE));
-                rvh.setChatReceiverData(profileImage,name,message,time,image);
-//                rvh.setChatReceiverData(data.getSender().getFileUrl(),data.getSender().getName(),message,time);
+                rvh.setChatReceiverData(profileImage, name, message, time, image);
                 break;
             }
         }

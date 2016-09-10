@@ -45,8 +45,12 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setChatReceiverData(String profile, String name, String message, long time, String image){
-        Glide.with(MyApplication.getContext()).load(profile).into(receiverImage);
-        receiverName.setText(name);
+        if (profile != null) {
+            Glide.with(MyApplication.getContext()).load(profile).into(receiverImage);
+        }
+        if (name != null) {
+            receiverName.setText(name);
+        }
         receiverContent.setText(message);
         receiverTime.setText(Utils.getCurrentTime(time));
         if (image != null){

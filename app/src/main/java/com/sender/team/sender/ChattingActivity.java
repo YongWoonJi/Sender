@@ -15,6 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import com.sender.team.sender.gcm.MyGcmListenerService;
 import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ChattingSendRequest;
 
 import java.io.File;
@@ -51,6 +53,9 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
 
     public static final String RECEIVER_NAME = "receiverName";
     public static final String RECEIVER_IMAGE = "receiverImage";
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.rv_list2)
     RecyclerView listview;
@@ -74,8 +79,15 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
+
+        /////////////////////////////////////////////////////
+        user = PropertyManager.getInstance().getUserData();
 
         mLBM = LocalBroadcastManager.getInstance(this);
 
@@ -86,12 +98,12 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
 
         switch (i){
             case SEND_HEADER :{
-                getSupportFragmentManager().beginTransaction().add(R.id.container,new SendHeaderFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new SendHeaderFragment()).commit();
                 break;
             }
             case DELIVERER_HEADER :
             {
-                getSupportFragmentManager().beginTransaction().add(R.id.container,new DelivererHeaderFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new DelivererHeaderFragment()).commit();
                 break;
             }
                 default:
@@ -99,6 +111,16 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         }
 
         mAdapter = new ChattingAdapter();
+
+        /////////////////////////////// 임의 데이터 처리
+        PropertyManager.getInstance().getUserData().setUser_id("1");
+//        PropertyManager.getInstance().getUserData().setAddress("");
+//        PropertyManager.getInstance().getUserData().setFileUrl("");
+        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_SEND, "안녕하세요?", new Date());
+        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_RECEIVE, "어 그래", new Date());
+        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_SEND, "윗쪽과 왼쪽에는 1px의 검정 라인으로 늘어날 부분을 지정하고 오른쪽과 아랫쪽에는 마찬가지로 검정 라인으로 내용이 들어갈 부분을 지정해 줍니다.", new Date());
+        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_RECEIVE, "사드 배치는 한국의 내정으로 중국 정부는 간섭할 권리가 없다\", \"사드 배치가 이유가 있다\", \"우리도 사드를 배치하자\", \"북한이 탄도미사일에다 핵실험까지 하는 마당이 한국의 사드 배치 결정이 어떻게 틀린 것이냐\"는 내용의 글이 잇따랐다", new Date());
+
         listview.setAdapter(mAdapter);
         listview.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
 
@@ -224,7 +246,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     @Override
     protected void onStart() {
         super.onStart();
-//        updateMessage();
+        updateMessage();
         mLBM.registerReceiver(mReceiver, new IntentFilter(MyGcmListenerService.ACTION_CHAT));
     }
 

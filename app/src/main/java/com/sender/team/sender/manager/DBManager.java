@@ -42,6 +42,7 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser.COLUMN_NAME + " TEXT," +
 //                ChatContract.ChatUser.COLUMN_EMAIL + " TEXT NOT NULL," +
                 ChatContract.ChatUser.COLUMN_PROFILE_IMAGE + " TEXT," +
+                ChatContract.ChatUser.COLUMN_ADDRESS + " TEXT," +
                 ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID + " INTEGER);";
         sqLiteDatabase.execSQL(sql);
 

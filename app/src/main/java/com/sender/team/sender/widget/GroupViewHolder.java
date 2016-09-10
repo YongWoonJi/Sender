@@ -1,5 +1,6 @@
 package com.sender.team.sender.widget;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -32,9 +33,13 @@ public class GroupViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.layout)
     public LinearLayout layout;
 
+
+    Context context;
     public GroupViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+
+        context = itemView.getContext();
     }
 
     boolean oldSelected;

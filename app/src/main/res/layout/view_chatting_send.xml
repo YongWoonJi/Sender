@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
+        android:textSize="9sp"
         android:id="@+id/text_chatting_sender_time"
         android:layout_alignBottom="@+id/linearLayout"
         android:layout_toLeftOf="@+id/linearLayout"
@@ -20,23 +22,26 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:gravity="right"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
             android:id="@+id/text_chatting_sender_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/talk_stroke_01_nine" />
+            android:background="@drawable/talk_stroke_01_fillin_nine"
+            android:textColor="@color/whitefont"
+            android:textSize="14sp"
+            android:maxWidth="230dp"
+            android:gravity="center_vertical" />
 
         <ImageView
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/image_chatting_sender_img"
-            android:scaleType="center"/>
+            android:maxWidth="230dp" />
     </LinearLayout>
 
 </RelativeLayout>

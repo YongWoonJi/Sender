@@ -3,17 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/chatting_background"
     tools:context="com.sender.team.sender.ChattingActivity">
+
+    <FrameLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="@color/whitebg"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/title_mypage"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/fontcolor" />
+
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/container"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_above="@+id/linearLayout6" />
 
     <LinearLayout

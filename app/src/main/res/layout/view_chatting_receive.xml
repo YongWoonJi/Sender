@@ -1,55 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/image_chatting_receiver" />
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/image_chatting_receiver"
+        android:layout_marginRight="7dp"
+        android:layout_marginEnd="7dp"
+        app:riv_corner_radius="50dp"
+        android:src="@drawable/default_profile" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
+        android:textSize="9sp"
         android:id="@+id/text_chatting_receive_time"
         android:layout_alignBottom="@+id/linearLayout"
         android:layout_toRightOf="@+id/linearLayout"
-        android:layout_toEndOf="@+id/linearLayout" />
+        android:layout_toEndOf="@+id/linearLayout"
+        android:text="오후 4:54" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="정현맨"
+        android:textSize="14sp"
+        android:id="@+id/text_chatting_receiver_name"
+        android:layout_alignTop="@id/image_chatting_receiver"
+        android:layout_toRightOf="@id/image_chatting_receiver"
+        android:layout_toEndOf="@id/image_chatting_receiver"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/text_chatting_receiver_name"
         android:layout_toRightOf="@+id/image_chatting_receiver"
-        android:layout_toEndOf="@+id/image_chatting_receiver"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp">
+        android:layout_toEndOf="@+id/image_chatting_receiver">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/text_chatting_receiver_name" />
-        <LinearLayout
+            android:id="@+id/text_chatting_receiver_content"
+            android:background="@drawable/talk_white_02_nine"
+            android:textSize="14sp"
+            android:maxWidth="230dp"
+            android:gravity="center_vertical" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="left">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
-                android:id="@+id/text_chatting_receiver_content" />
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/image_chatting_receiver_img"/>
-        </LinearLayout>
-
+            android:id="@+id/image_chatting_receiver_img"
+            android:maxWidth="230dp" />
     </LinearLayout>
 
 </RelativeLayout>

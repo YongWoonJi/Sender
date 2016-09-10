@@ -75,7 +75,8 @@
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
         <activity android:name=".ChattingActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
         <activity
             android:name=".ChattingProfileActivity"
             android:screenOrientation="portrait"
