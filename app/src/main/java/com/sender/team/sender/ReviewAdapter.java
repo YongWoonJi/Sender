@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sender.team.sender.data.Review;
+import com.sender.team.sender.widget.ReviewViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

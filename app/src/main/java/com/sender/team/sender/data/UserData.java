@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class UserData implements Serializable {
     private int deliver_req;
     private int deliver_com;
-    private String user_id;
+    private String id;
     private String phone;
     private String name;
     private String fileUrl;
@@ -40,11 +40,11 @@ public class UserData implements Serializable {
     }
 
     public String getUser_id() {
-        return this.user_id;
+        return this.id;
     }
 
     public void setUser_id(String user_id) {
-        this.user_id = user_id;
+        this.id = user_id;
     }
 
     public String getPhone() {

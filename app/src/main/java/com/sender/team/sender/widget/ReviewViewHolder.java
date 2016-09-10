@@ -1,4 +1,4 @@
-package com.sender.team.sender;
+package com.sender.team.sender.widget;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.sender.team.sender.MyApplication;
+import com.sender.team.sender.R;
+import com.sender.team.sender.Utils;
 import com.sender.team.sender.data.Review;
 
 /**
@@ -18,7 +21,7 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
     public ReviewViewHolder(View itemView) {
         super(itemView);
-       userImg = (ImageView) itemView.findViewById(R.id.review_img);
+        userImg = (ImageView) itemView.findViewById(R.id.review_img);
         name = (TextView)itemView.findViewById(R.id.text_review_name);
         rating = (TextView)itemView.findViewById(R.id.text_review_rating);
         message = (TextView)itemView.findViewById(R.id.text_review_message);
@@ -32,6 +35,6 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
         name.setText(data.getName());
         rating.setText("" + data.getStar());
         message.setText(data.getContent());
-        date.setText(data.getDate());
+        date.setText(Utils.getCurrentTime(data.getDate()));
     }
 }

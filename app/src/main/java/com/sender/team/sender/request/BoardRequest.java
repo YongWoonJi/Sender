@@ -28,7 +28,6 @@ public class BoardRequest extends AbstractRequest<NetworkResult<String>> {
                 .build();
 
         MultipartBody.Builder builder;
-//        if (title != null) {
             builder = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("nickname", name)
@@ -36,14 +35,6 @@ public class BoardRequest extends AbstractRequest<NetworkResult<String>> {
                     .addFormDataPart("boardType", boardType)
                     .addFormDataPart("title", title)
                     .addFormDataPart("content", content);
-//        } else {
-//            builder = new MultipartBody.Builder()
-//                    .setType(MultipartBody.FORM)
-//                    .addFormDataPart("nickname", name)
-//                    .addFormDataPart("esType", esType)
-//                    .addFormDataPart("boardType", boardType)
-//                    .addFormDataPart("content", content);
-//        }
 
         if (file != null) {
             builder.addFormDataPart("pic", file.getName(), RequestBody.create(mediaType, file));

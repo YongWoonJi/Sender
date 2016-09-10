@@ -56,8 +56,9 @@
         android:layout_alignTop="@+id/my_image"
         android:layout_toRightOf="@+id/my_image"
         android:layout_toEndOf="@+id/my_image"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="30dp" />
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"/>
 
     <TextView
         android:id="@+id/text_my_email"
@@ -104,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="1"
+                android:text="0"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="23sp" />
 
@@ -143,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="2"
+                android:text="0"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="23sp" />
         </RelativeLayout>
@@ -170,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="1"
+                android:text="0"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="23sp" />
         </RelativeLayout>
@@ -200,7 +201,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textColor="@color/fontcolor"
-                android:text="1"
+                android:text="0"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="23sp" />
         </RelativeLayout>
@@ -218,8 +219,9 @@
         android:layout_below="@+id/textView29"
         android:layout_marginTop="10dp"
         android:id="@+id/text_empty_my_review"
+        android:background="@color/reviewlistbg"
         android:visibility="gone"
-        />
+        android:gravity="center" />
     <TextView
         android:id="@+id/textView29"
         android:layout_width="wrap_content"
@@ -227,7 +229,7 @@
         android:text="@string/review_detail"
         android:textSize="15sp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/imageView13"
         android:layout_centerHorizontal="true" />
 
@@ -238,7 +240,7 @@
         android:background="@color/mypageline"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/my_image" />
 
     <ImageView

@@ -29,11 +29,28 @@
 
     </FrameLayout>
 
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grayline"
+        android:layout_below="@id/toolbarLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbarLayout"
+        android:layout_below="@+id/line"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grayline"
+        android:layout_below="@id/container"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -41,10 +58,6 @@
         android:id="@+id/rv_list2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_below="@+id/container"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

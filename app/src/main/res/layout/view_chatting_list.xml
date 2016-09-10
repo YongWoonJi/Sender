@@ -37,7 +37,10 @@
         android:textColor="@color/font_gray"
         android:layout_alignBottom="@+id/image_profile"
         android:layout_alignLeft="@+id/text_name"
-        android:layout_alignStart="@+id/text_name" />
+        android:layout_alignStart="@+id/text_name"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:maxWidth="220dp" />
 
     <TextView
         android:layout_width="wrap_content"

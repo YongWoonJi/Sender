@@ -74,6 +74,12 @@ public class SplashActivity extends AppCompatActivity {
     CallbackManager callbackManager;
 
     Handler mHandler;
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            checkRegistrationId();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +104,7 @@ public class SplashActivity extends AppCompatActivity {
                 loginAndMoveMain();
             }
         };
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkRegistrationId();
-            }
-        }, 1500);
+        mHandler.postDelayed(runnable, 1500);
     }
 
 
@@ -128,6 +129,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        mHandler.removeCallbacks(runnable);
+        NetworkManager.getInstance().cancelAll();
     }
 
     @Override

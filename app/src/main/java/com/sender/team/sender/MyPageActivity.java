@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,26 +39,34 @@ public class MyPageActivity extends AppCompatActivity {
 
     @BindView(R.id.rv_list)
     RecyclerView listView;
-    ReviewAdapter mAdapter;
 
     @BindView(R.id.text_delivery_count)
     TextView deliveryCount;
+
     @BindView(R.id.text_my_email)
     TextView email;
+
     @BindView(R.id.text_request_count)
     TextView requestCount;
+
     @BindView(R.id.text_my_phone)
     TextView phone;
+
     @BindView(R.id.text_my_name)
     TextView name;
+
     @BindView(R.id.my_image)
     ImageView profileImage;
+
     @BindView(R.id.text_rating_count)
     TextView rating;
+
     @BindView(R.id.text_review_count)
     TextView reviewCount;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.text_empty_my_review)
     TextView emptyText;
 
@@ -70,6 +77,8 @@ public class MyPageActivity extends AppCompatActivity {
 
     private static final String FIELD_SAVE_FILE = "savedfile";
     private static final String FIELD_UPLOAD_FILE = "uploadfile";
+
+    ReviewAdapter mAdapter;
 
     File savedFile = null;
     File uploadFile = null;
@@ -113,12 +122,24 @@ public class MyPageActivity extends AppCompatActivity {
             }
         }
 
-        name.setText(user.getName());
-        email.setText(user.getEmail());
-        phone.setText(user.getPhone());
-        rating.setText("" + user.getStar());
-        requestCount.setText("" + user.getDeliver_req());
-        deliveryCount.setText("" + user.getDeliver_com());
+        if (!TextUtils.isEmpty(user.getName())) {
+            name.setText(user.getName());
+        }
+        if (!TextUtils.isEmpty(user.getEmail())) {
+            email.setText(user.getEmail());
+        }
+        if (!TextUtils.isEmpty(user.getPhone())) {
+            phone.setText(user.getPhone());
+        }
+        if (!TextUtils.isEmpty("" + user.getStar())) {
+            rating.setText("" + user.getStar());
+        }
+        if (!TextUtils.isEmpty("" + user.getDeliver_req())) {
+            requestCount.setText("" + user.getDeliver_req());
+        }
+        if (!TextUtils.isEmpty("" + user.getDeliver_com())) {
+            deliveryCount.setText("" + user.getDeliver_com());
+        }
     }
 
     @OnClick(R.id.my_image)
@@ -198,17 +219,17 @@ public class MyPageActivity extends AppCompatActivity {
         }
 
         /// 이미지 뷰에 그릴때 업로드
-        if (uploadFile != null){
+        if (uploadFile != null) {
             ProfilePictureUploadRequest request = new ProfilePictureUploadRequest(this, uploadFile);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                    Toast.makeText(MyPageActivity.this, "Upload success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyPageActivity.this, "이미지 등록에 성공했습니다", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-                    Toast.makeText(MyPageActivity.this, "Upload fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyPageActivity.this, "이미지 등록에 실패했습니다", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -217,27 +238,28 @@ public class MyPageActivity extends AppCompatActivity {
 
     private void getReviewListData() {
         //리뷰 리스트 보기
-        UserData userId = PropertyManager.getInstance().getUserData();
-        ReviewListRequest reviewRequest = new ReviewListRequest(MyPageActivity.this,"1","1", "8");
+        String userId = PropertyManager.getInstance().getUserData().getUser_id();
+        ReviewListRequest reviewRequest = new ReviewListRequest(MyPageActivity.this, "1", "100", userId);
 
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, reviewRequest, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
+                if (result.getResult() != null) {
                     mAdapter.clear();
                     mAdapter.setReviewData(result.getResult().getData().getReview());
                     reviewCount.setText("" + result.getResult().getData().getReview().size());
                     emptyText.setVisibility(View.GONE);
                     listView.setVisibility(View.VISIBLE);
+                } else {
+                    reviewCount.setText("0");
+                    emptyText.setText("리뷰가 없습니다");
+                    emptyText.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onFail(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result, String errorMessage, Throwable e) {
-                Toast.makeText(MyPageActivity.this, "error : "+errorMessage, Toast.LENGTH_SHORT).show();
-                Log.i("MyPageActivity", errorMessage);
-                reviewCount.setText("0");
-                emptyText.setText("리뷰가 없습니다.");
-                emptyText.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
 
             }
         });

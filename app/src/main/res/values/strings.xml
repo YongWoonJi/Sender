@@ -490,7 +490,7 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
     <string name="title_term">약관동의</string>
     <string name="title_mypage">마이페이지</string>
     <string name="mypage_name">센더맨</string>
-    <string name="mypage_email">aaa@aaaa.com</string>
+    <string name="mypage_email">이메일 주소가 없습니다</string>
     <string name="mypage_phone">010-0000-0000</string>
     <string name="mypage_rating">별점</string>
     <string name="qa_title_hint">제목을 작성해 주세요.</string>

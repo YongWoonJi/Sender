@@ -179,10 +179,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab_background.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                animateFAB();
+                if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+                    animateFAB();
+                }
                 return true;
             }
         });
+
 
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);

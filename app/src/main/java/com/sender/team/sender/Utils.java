@@ -29,4 +29,15 @@ public class Utils {
         Date date = new Date(time);
         return formatter.format(date);
     }
+
+    public static String getCurrentTime(String time) {
+        Date date = null;
+        try {
+            date = convertStringToTime(time);
+        } catch (ParseException e) {
+            return null;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("a hh:mm");
+        return formatter.format(date);
+    }
 }
