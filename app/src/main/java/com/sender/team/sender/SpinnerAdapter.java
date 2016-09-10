@@ -12,11 +12,11 @@ import com.sender.team.sender.data.DeliveringHistoryData;
  * Created by Tacademy on 2016-09-01.
  */
 public class SpinnerAdapter extends BaseAdapter {
-//    List<String> items = new ArrayList<>();
     DeliveringHistoryData data;
     public void setItems(DeliveringHistoryData data) {
-//        this.items = items;
-        this.data = data;
+        if (this.data != data){
+            this.data = data;
+        }
         notifyDataSetChanged();
     }
 
@@ -28,7 +28,7 @@ public class SpinnerAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return data.getData();
+        return data.getData().get(position);
     }
 
     @Override
@@ -44,7 +44,13 @@ public class SpinnerAdapter extends BaseAdapter {
         } else {
             view = (TextView) convertView;
         }
-        view.setText(data.getData().get(position).getName() + "  -  " + data.getData().get(position).getDate());
+        if (data != null) {
+            if (data.getData().get(position).getName().equals("__emptydata")) {
+                view.setText("배송원 목록이 없습니다");
+            } else {
+                view.setText(data.getData().get(position).getName() + "  -  " + data.getData().get(position).getDate());
+            }
+        }
         return view;
     }
 
@@ -56,7 +62,13 @@ public class SpinnerAdapter extends BaseAdapter {
         } else {
             view = (TextView) convertView;
         }
-        view.setText(data.getData().get(position).getName() + "  -  " + data.getData().get(position).getDate());
+        if (data != null) {
+            if (data.getData().get(position).getName().equals("__emptydata")) {
+                view.setText("배송원 목록이 없습니다");
+            } else {
+                view.setText(data.getData().get(position).getName() + "  -  " + data.getData().get(position).getDate());
+            }
+        }
         return view;
     }
 }

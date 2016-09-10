@@ -20,18 +20,31 @@ import okhttp3.RequestBody;
 public class BoardRequest extends AbstractRequest<NetworkResult<String>> {
     MediaType mediaType = MediaType.parse("image/*");
     Request request;
+
     public BoardRequest(Context context, String name, String esType, String boardType, String title, String content, File file) {
         HttpUrl url = getSecureUrlBuilder()
+                .port(443)
                 .addPathSegment("boards")
                 .build();
 
-        MultipartBody.Builder builder = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("nickname", name)
-                .addFormDataPart("esType", esType)
-                .addFormDataPart("boardType", boardType)
-                .addFormDataPart("title", title)
-                .addFormDataPart("content", content);
+        MultipartBody.Builder builder;
+//        if (title != null) {
+            builder = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("nickname", name)
+                    .addFormDataPart("esType", esType)
+                    .addFormDataPart("boardType", boardType)
+                    .addFormDataPart("title", title)
+                    .addFormDataPart("content", content);
+//        } else {
+//            builder = new MultipartBody.Builder()
+//                    .setType(MultipartBody.FORM)
+//                    .addFormDataPart("nickname", name)
+//                    .addFormDataPart("esType", esType)
+//                    .addFormDataPart("boardType", boardType)
+//                    .addFormDataPart("content", content);
+//        }
+
         if (file != null) {
             builder.addFormDataPart("pic", file.getName(), RequestBody.create(mediaType, file));
         }
@@ -51,6 +64,7 @@ public class BoardRequest extends AbstractRequest<NetworkResult<String>> {
 
     @Override
     protected Type getType() {
-        return new TypeToken<NetworkResult<String>>(){}.getType();
+        return new TypeToken<NetworkResult<String>>() {
+        }.getType();
     }
 }

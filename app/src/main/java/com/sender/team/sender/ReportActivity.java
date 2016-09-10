@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -26,15 +27,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.sender.team.sender.data.CompleteDelivererData;
 import com.sender.team.sender.data.DeliveringHistoryData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
-import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.BoardRequest;
 import com.sender.team.sender.request.DeliveringHistoryRequest;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +44,7 @@ import butterknife.OnClick;
 
 public class ReportActivity extends AppCompatActivity {
 
-    private static final String esType = "2";
+    private static final String esType = "0";
 
     private static final String FIELD_SAVE_FILE = "savefile";
     private static final String FIELD_UPLOAD_FILE = "uploadfile";
@@ -117,7 +119,8 @@ public class ReportActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                selectDeliverer = (String) spinner.getItemAtPosition(position);
+                CompleteDelivererData arr = (CompleteDelivererData) mAdapter.getItem(position);
+                selectDeliverer = arr.getName();
             }
 
             @Override
@@ -153,19 +156,33 @@ public class ReportActivity extends AppCompatActivity {
         }
     }
 
-    private void initData() {
 
+    private void initData() {
             DeliveringHistoryRequest request = new DeliveringHistoryRequest(this);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DeliveringHistoryData>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<DeliveringHistoryData>> request, NetworkResult<DeliveringHistoryData> result) {
+                    if (result.getResult() != null) {
                         DeliveringHistoryData data = result.getResult();
                         mAdapter.setItems(data);
+                    } else if (result.getError() != null) {
+                        DeliveringHistoryData data = new DeliveringHistoryData();
+                        ArrayList<CompleteDelivererData> list = new ArrayList<>();
+                        list.add(new CompleteDelivererData());
+                        list.get(0).setName("__emptydata");
+                        data.setData(list);
+                        mAdapter.setItems(data);
+                        spinner.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View view, MotionEvent motionEvent) {
+                                return true;
+                            }
+                        });
+                    }
                 }
 
                 @Override
                 public void onFail(NetworkRequest<NetworkResult<DeliveringHistoryData>> request, NetworkResult<DeliveringHistoryData> result, String errorMessage, Throwable e) {
-                    Log.i("ReportActiviy", errorMessage);
                     mAdapter.setItems(null);
                 }
             });
@@ -275,16 +292,17 @@ public class ReportActivity extends AppCompatActivity {
         }
         String content = editContents.getText().toString();
 
-        BoardRequest request = new BoardRequest(this, PropertyManager.getInstance().getUserData().getName(), esType, boardType, "", content, uploadFile);
+        BoardRequest request = new BoardRequest(this, selectDeliverer, esType, boardType, "", content, uploadFile);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                if (!TextUtils.isEmpty(result.getResult())) {
+//                if (!TextUtils.isEmpty(result.getResult())) {
                     Toast.makeText(ReportActivity.this, "등록되었습니다", Toast.LENGTH_SHORT).show();
                     finish();
-                } else {
-                    Toast.makeText(ReportActivity.this, "게시글 등록에 실패하였습니다", Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toast.makeText(ReportActivity.this, "게시글 등록에 실패하였습니다", Toast.LENGTH_SHORT).show();
+//                    finish();
+//                }
             }
 
             @Override

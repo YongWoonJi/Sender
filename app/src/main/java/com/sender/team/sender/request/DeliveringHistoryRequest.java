@@ -19,6 +19,7 @@ public class DeliveringHistoryRequest extends AbstractRequest<NetworkResult<Deli
 
     public DeliveringHistoryRequest(Context context) {
         HttpUrl url = getBaseUrlBuilder()
+                .port(80)
                 .addPathSegments("members/me/deliverings")
                 .build();
 
