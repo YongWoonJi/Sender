@@ -6,28 +6,29 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.sender.team.sender.data.DeliveringHistoryData;
 
 /**
  * Created by Tacademy on 2016-09-01.
  */
 public class SpinnerAdapter extends BaseAdapter {
-    List<String> items = new ArrayList<>();
-
-    public void setItems(ArrayList<String> items) {
-        this.items = items;
+//    List<String> items = new ArrayList<>();
+    DeliveringHistoryData data;
+    public void setItems(DeliveringHistoryData data) {
+//        this.items = items;
+        this.data = data;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        if (data == null)return 0;
+        return data.getData().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return items.get(position);
+        return data.getData();
     }
 
     @Override
@@ -43,7 +44,7 @@ public class SpinnerAdapter extends BaseAdapter {
         } else {
             view = (TextView) convertView;
         }
-        view.setText(items.get(position));
+        view.setText(data.getData().get(position).getName() + "  -  " + data.getData().get(position).getDate());
         return view;
     }
 
@@ -55,7 +56,7 @@ public class SpinnerAdapter extends BaseAdapter {
         } else {
             view = (TextView) convertView;
         }
-        view.setText(items.get(position));
+        view.setText(data.getData().get(position).getName() + "  -  " + data.getData().get(position).getDate());
         return view;
     }
 }

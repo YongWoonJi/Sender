@@ -1,11 +1,16 @@
 package com.sender.team.sender;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sender.team.sender.data.DelivererData;
+import com.sender.team.sender.data.ReverseGeocodingData;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.request.ReverseGeocodingRequest;
 import com.sender.team.sender.widget.DelivererViewHolder;
 
 import java.util.ArrayList;
@@ -18,8 +23,48 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     List<DelivererData> data = new ArrayList<>();
 
-    public void setDelivererData(List<DelivererData> data){
+    Context context;
+    public DelivererAdapter(Context context) {
+        this.context = context;
+    }
+
+    public void setDelivererData(final List<DelivererData> data) {
         if (this.data != data){
+            for (int i = 0; i < data.size(); i++) {
+                final int position = i;
+                ReverseGeocodingRequest request = new ReverseGeocodingRequest(context, data.get(position).getHere_lat(), data.get(position).getHere_lon());
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
+                        if (result != null) {
+                            data.get(position).setStartingPoint(result.getAddressInfo().getLegalDong());
+                            ReverseGeocodingRequest request2 = new ReverseGeocodingRequest(context, data.get(position).getNext_lat(), data.get(position).getNext_lon());
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
+                                    if (result != null) {
+                                        data.get(position).setDestination(result.getAddressInfo().getLegalDong());
+                                    } else {
+                                        data.remove(position);
+                                    }
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
+
+                                }
+                            });
+                        } else {
+                            data.remove(position);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
+
+                    }
+                });
+            }
             this.data = data;
         }
         notifyDataSetChanged();

@@ -1,18 +1,18 @@
 package com.sender.team.sender.data;
 
 public class Review {
-    private String date;
+    private String review_date;
     private int star;
     private String name;
     private String fileUrl;
     private String content;
 
     public String getDate() {
-        return this.date;
+        return this.review_date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.review_date = date;
     }
 
     public int getStar() {

@@ -153,7 +153,6 @@ public class InfoInputFragment extends Fragment {
                 String phone = receiverPhone.getText().toString();
                 String memo = requestMemo.getText().toString();
 
-
                 if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
 
                     if (!((SendActivity) getActivity()).isRequestCheck) {
@@ -265,7 +264,8 @@ public class InfoInputFragment extends Fragment {
     }
 
 
-    public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng, String obName, String phone, String obPrice, String time, File uploadFile, String memo) {
+    public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng,
+                              String obName, String phone, String obPrice, String time, File uploadFile, String memo) {
 
         final String hLat = String.valueOf(hereLat);
         final String hLng = String.valueOf(hereLng);

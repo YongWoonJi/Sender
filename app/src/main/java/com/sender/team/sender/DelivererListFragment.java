@@ -50,7 +50,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_deliverer_list, container, false);
         ButterKnife.bind(this, view);
-        mAdapter = new DelivererAdapter();
+        mAdapter = new DelivererAdapter(getContext());
         mAdapter.setOnDialogListener(this);
         rv_view.setAdapter(mAdapter);
         DelivererListRequest request = new DelivererListRequest(getContext(), "1", "100");
@@ -182,12 +182,12 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         ((SendActivity) getActivity()).showMarkerInfo(data);
     }
 
+
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         ((SendActivity) getActivity()).searchView.setVisibility(View.VISIBLE);
         ((SendActivity) getActivity()).searchBtn.setVisibility(View.VISIBLE);
         ((SendActivity) getActivity()).headerView.setVisibility(View.GONE);
     }
-
 }

@@ -7,7 +7,16 @@ import java.util.ArrayList;
  */
 public class DeliveringHistoryData {
     private int totalCount;
-    private ArrayList<String> name;
+    private ArrayList<CompleteDelivererData> data;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public int getTotalCount() {
         return totalCount;
@@ -17,11 +26,11 @@ public class DeliveringHistoryData {
         this.totalCount = totalCount;
     }
 
-    public ArrayList<String> getName() {
-        return name;
+    public ArrayList<CompleteDelivererData> getData() {
+        return data;
     }
 
-    public void setName(ArrayList<String> name) {
-        this.name = name;
+    public void setData(ArrayList<CompleteDelivererData> name) {
+        this.data = name;
     }
 }

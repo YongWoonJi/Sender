@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -153,19 +154,21 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        DeliveringHistoryRequest request = new DeliveringHistoryRequest(this);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DeliveringHistoryData>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetworkResult<DeliveringHistoryData>> request, NetworkResult<DeliveringHistoryData> result) {
-                DeliveringHistoryData data = result.getResult();
-                mAdapter.setItems(data.getName());
-            }
 
-            @Override
-            public void onFail(NetworkRequest<NetworkResult<DeliveringHistoryData>> request, NetworkResult<DeliveringHistoryData> result, String errorMessage, Throwable e) {
+            DeliveringHistoryRequest request = new DeliveringHistoryRequest(this);
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DeliveringHistoryData>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetworkResult<DeliveringHistoryData>> request, NetworkResult<DeliveringHistoryData> result) {
+                        DeliveringHistoryData data = result.getResult();
+                        mAdapter.setItems(data);
+                }
 
-            }
-        });
+                @Override
+                public void onFail(NetworkRequest<NetworkResult<DeliveringHistoryData>> request, NetworkResult<DeliveringHistoryData> result, String errorMessage, Throwable e) {
+                    Log.i("ReportActiviy", errorMessage);
+                    mAdapter.setItems(null);
+                }
+            });
     }
 
 

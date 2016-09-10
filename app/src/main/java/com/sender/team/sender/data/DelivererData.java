@@ -14,6 +14,8 @@ public class DelivererData {
     private float star;
     private String originalFilename;
     private String fileUrl;
+    private String startingPoint;
+    private String destination;
 
     public String getPhone() {
         return phone;
@@ -117,5 +119,21 @@ public class DelivererData {
 
     public void setOriginalFilename(String originalFilename) {
         this.originalFilename = originalFilename;
+    }
+
+    public String getStartingPoint() {
+        return startingPoint;
+    }
+
+    public void setStartingPoint(String startingPoint) {
+        this.startingPoint = startingPoint;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }
