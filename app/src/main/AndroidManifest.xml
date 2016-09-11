@@ -44,7 +44,7 @@
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar">
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarTransparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

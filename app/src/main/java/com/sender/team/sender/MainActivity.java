@@ -26,6 +26,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -158,7 +159,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                float offset = (appBarLayout.getY() / appbar.getTotalScrollRange());
+                float offset = appBarLayout.getY() / (appbar.getTotalScrollRange() / 2);
+                if (offset < -1) {
+                    offset = -1;
+                }
+                Log.i("AAA", "offset : " + offset);
                 toolbarColor.setAlpha((int)((offset * -1) * 255));
                 getSupportActionBar().setBackgroundDrawable(toolbarColor);
                 changeToolbarIconsColor(offset);
@@ -228,26 +233,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         handler.postDelayed(runnable, 5000);
     }
 
+
+    ImageView tabIcon1;
+    ImageView tabIcon2;
+    ImageView tabIcon3;
+    TextView textMenu1;
+    TextView textMenu2;
+    TextView textMenu3;
     private void initTabLayout() {
         View view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
-        ImageView iv = (ImageView) view.findViewById(R.id.image_icon);
-        iv.setImageResource(R.drawable.btn_tab01_icon);
-        TextView tv = (TextView) view.findViewById(R.id.text_menu_title);
-        tv.setText("요청하기");
+        tabIcon1 = (ImageView) view.findViewById(R.id.image_icon);
+        tabIcon1.setImageResource(R.drawable.btn_tab01_icon);
+        textMenu1 = (TextView) view.findViewById(R.id.text_menu_title);
+        textMenu1.setText("요청하기");
         tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB1));
 
         view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
-        iv = (ImageView) view.findViewById(R.id.image_icon);
-        iv.setImageResource(R.drawable.btn_tab02_icon);
-        tv = (TextView) view.findViewById(R.id.text_menu_title);
-        tv.setText("배송하기");
+        tabIcon2 = (ImageView) view.findViewById(R.id.image_icon);
+        tabIcon2.setImageResource(R.drawable.btn_tab02_icon);
+        textMenu2 = (TextView) view.findViewById(R.id.text_menu_title);
+        textMenu2.setText("배송하기");
         tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB2));
 
         view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
-        iv = (ImageView) view.findViewById(R.id.image_icon);
-        iv.setImageResource(R.drawable.btn_tab03_icon);
-        tv = (TextView) view.findViewById(R.id.text_menu_title);
-        tv.setText("마이페이지");
+        tabIcon3 = (ImageView) view.findViewById(R.id.image_icon);
+        tabIcon3.setImageResource(R.drawable.btn_tab03_icon);
+        textMenu3 = (TextView) view.findViewById(R.id.text_menu_title);
+        textMenu3.setText("마이페이지");
         tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB3));
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -343,13 +355,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void changeToolbarIconsColor(float offset) {
-        int value;
+        int value = (int) (255 - (-130 * offset));
         int r, g, b;
-        if (((int)(255 - (-130 * offset))) == 0) {
+        if (value == 0) {
             value = 255;
             r = g = b = 255;
         } else {
-            value = (int) (255 - (-130 * offset));
             r = 255;
             g = (int) (255 - (-194 * offset));
             b = (int) (255 - (-185 * offset));
@@ -362,7 +373,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         toolbarLogo.setColorFilter(Color.rgb(r, g, b));
+
         tabs.setBackgroundColor(Color.rgb(r, g, b));
+
+        value = (int) (159 + (-96 * offset));
+        if (value == 0) {
+            value = 125;
+        }
+        tabIcon1.setColorFilter(Color.rgb(value, value, value));
+        tabIcon2.setColorFilter(Color.rgb(value, value, value));
+        tabIcon3.setColorFilter(Color.rgb(value, value, value));
+        textMenu1.setTextColor(Color.rgb(value, value, value));
+        textMenu2.setTextColor(Color.rgb(value, value, value));
+        textMenu3.setTextColor(Color.rgb(value, value, value));
     }
 
     ChattingListData data;

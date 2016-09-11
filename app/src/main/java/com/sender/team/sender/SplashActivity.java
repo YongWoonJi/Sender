@@ -87,10 +87,10 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStatusBar();
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
-        setStatusBar();
 
         loginManager = LoginManager.getInstance();
         callbackManager = CallbackManager.Factory.create();
@@ -154,9 +154,6 @@ public class SplashActivity extends AppCompatActivity {
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                w.setStatusBarColor(Color.TRANSPARENT);
-//            }
         }
     }
 
