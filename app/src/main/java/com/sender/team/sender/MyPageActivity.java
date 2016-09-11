@@ -252,7 +252,7 @@ public class MyPageActivity extends AppCompatActivity {
                     listView.setVisibility(View.VISIBLE);
                 } else {
                     reviewCount.setText("0");
-                    emptyText.setText("리뷰가 없습니다");
+                    emptyText.setText(R.string.empty_reivew);
                     emptyText.setVisibility(View.VISIBLE);
                     listView.setVisibility(View.GONE);
                 }

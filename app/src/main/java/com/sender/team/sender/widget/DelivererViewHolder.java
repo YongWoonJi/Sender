@@ -3,6 +3,7 @@ package com.sender.team.sender.widget;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +18,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Tacademy on 2016-08-25.
  */
-public class DelivererViewHolder extends RecyclerView.ViewHolder {
+public class DelivererViewHolder extends RecyclerView.ViewHolder implements Checkable{
     @BindView(R.id.text_deliverer_rating)
     TextView rating;
     @BindView(R.id.text_deliverer_nickname)
@@ -26,8 +27,38 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
     TextView location;
     @BindView(R.id.image_deliverer)
     ImageView delivererImage;
+    @BindView(R.id.image_deliverer_select)
+    ImageView delivererSelect;
 
     OnSendListener listener;
+
+    boolean isChecked;
+    @Override
+    public void setChecked(boolean checked) {
+        if (isChecked != checked) {
+            isChecked = checked;
+            drawCheck();
+        }
+    }
+
+    private void drawCheck() {
+        if (isChecked) {
+            delivererSelect.setImageResource(R.drawable.ic_after);
+        } else {
+            delivererSelect.setImageResource(R.drawable.ic);
+        }
+    }
+
+    @Override
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    @Override
+    public void toggle() {
+        setChecked(!isChecked);
+    }
+
     public interface OnSendListener {
         void onClickSend(int position);
         void onClickDeliverer(int position, View view);
@@ -44,7 +75,9 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onClickDeliverer(getAdapterPosition(), view);
+                if (listener != null) {
+                    listener.onClickDeliverer(getAdapterPosition(), view);
+                }
             }
         });
 
@@ -64,5 +97,6 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder {
         name.setText(data.getName());
         rating.setText(""+data.getStar());
         location.setText(data.getStartingPoint() + " > "+ data.getDestination());
+
     }
 }

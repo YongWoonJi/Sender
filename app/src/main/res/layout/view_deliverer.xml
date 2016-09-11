@@ -94,5 +94,14 @@
         android:layout_alignParentBottom="true"
         android:background="@color/grayline" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_deliverer_select"
+        android:src="@drawable/ic"
+        android:layout_above="@+id/imageView6"
+        android:layout_alignLeft="@+id/image_deliverer"
+        android:layout_alignStart="@+id/image_deliverer" />
+
 
 </RelativeLayout>

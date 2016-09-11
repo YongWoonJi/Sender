@@ -82,6 +82,8 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     Map<DelivererData, Marker> deliverMarkerResolver = new HashMap<>();
     Map<Marker, DelivererData> deliverDelivererDataResolver = new HashMap<>();
 
+    Map<Integer, DelivererData> deliverSelect = new HashMap<>();
+
     @BindView(R.id.listView)
     ListView listView;
 
@@ -147,7 +149,24 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         });
     }
 
+    private void animateMap(DelivererData data, final Runnable callback) {
+        if (mMap != null) {
+            double lat = Double.parseDouble(data.getHere_lat());
+            double lng = Double.parseDouble(data.getHere_lon());
+            CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(lat, lng));
+            mMap.animateCamera(update, new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    callback.run();
+                }
 
+                @Override
+                public void onCancel() {
+
+                }
+            });
+        }
+    }
 
     private void animateMap(double lat, double lng, final Runnable callback) {
         if (mMap != null) {
@@ -293,19 +312,20 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         addrLng = poi.getLongitude();
     }
 
-    protected void addMarker(DelivererData data) {
+    protected void addMarker(DelivererData data, int i) {
 
         MarkerOptions options = new MarkerOptions();
         double lat = Double.parseDouble(data.getHere_lat());
         double lon = Double.parseDouble(data.getHere_lon());
         options.position(new LatLng(lat,lon));
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         options.anchor(0.5f, 1);
         options.title(data.getName());
 
         Marker marker = mMap.addMarker(options);
         deliverMarkerResolver.put(data, marker);
         deliverDelivererDataResolver.put(marker, data);
+        deliverSelect.put(i,data);
 
     }
 
@@ -318,7 +338,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                     .tilt(45)
                     .zoom(17)
                     .build();
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 15);
 //            CameraUpdate update = CameraUpdateFactory.newCameraPosition(position);
 
             mMap.moveCamera(update);
@@ -393,7 +413,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
     @Override
     public void onMapClick(LatLng latLng) {
-        addMarker(latLng.latitude, latLng.longitude, "my marker");
+//        addMarker(latLng.latitude, latLng.longitude, "my marker");
     }
 
 
@@ -431,9 +451,26 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         }
     }
 
-    public void showMarkerInfo(DelivererData data){
-        marker = deliverMarkerResolver.get(data);
-        marker.showInfoWindow();
+    public void showMarkerInfo(final DelivererData data){
+        reDrawMarker();
+        MarkerOptions options = new MarkerOptions();
+        double lat = Double.parseDouble(data.getHere_lat());
+        double lng = Double.parseDouble(data.getHere_lon());
+        options.position(new LatLng(lat,lng));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+        options.anchor(0.5f, 1);
+        options.title(data.getName());
+        Marker m = mMap.addMarker(options);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),11));
+        m.showInfoWindow();
+    }
+
+    public void reDrawMarker(){
+        mMap.clear();
+        for (int i = 0; i<deliverMarkerResolver.size(); i++){
+            addMarker(deliverSelect.get(i), i);
+        }
     }
 
 }

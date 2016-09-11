@@ -23,13 +23,16 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     List<DelivererData> data = new ArrayList<>();
 
+    int checkedPosition = -1;
+
     Context context;
+
     public DelivererAdapter(Context context) {
         this.context = context;
     }
 
     public void setDelivererData(final List<DelivererData> data) {
-        if (this.data != data){
+        if (this.data != data) {
             for (int i = 0; i < data.size(); i++) {
                 final int position = i;
                 ReverseGeocodingRequest request = new ReverseGeocodingRequest(context, data.get(position).getHere_lat(), data.get(position).getHere_lon());
@@ -70,14 +73,21 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    public int getDeliverId(int position){
+    public void clear() {
+        data.clear();
+        notifyDataSetChanged();
+    }
+
+    public int getDeliverId(int position) {
         return data.get(position).getDeilver_id();
     }
 
     OnDialogListener listener;
+
     public interface OnDialogListener {
         void DialogShow(int position);
-        void delivererShow(int position, View view,DelivererData data);
+
+        void delivererShow(int position, View view, DelivererData data);
     }
 
     public void setOnDialogListener(OnDialogListener listener) {
@@ -96,6 +106,7 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         DelivererViewHolder dvh = (DelivererViewHolder) holder;
         dvh.setDelivererData(data.get(position));
+        dvh.setChecked(checkedPosition == position);
         dvh.setListener(this);
     }
 
@@ -111,6 +122,23 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onClickDeliverer(int position, View view) {
-        listener.delivererShow(position,view, data.get(position));
+        setItemChecked(position, true);
+        if (listener != null) {
+            listener.delivererShow(position, view, data.get(position));
+        }
+    }
+
+    public void setItemChecked(int position, boolean isChecked) {
+        if (checkedPosition != position) {
+            if (isChecked) {
+                checkedPosition = position;
+                notifyDataSetChanged();
+            }
+        } else {
+            if (!isChecked) {
+                checkedPosition = -1;
+                notifyDataSetChanged();
+            }
+        }
     }
 }

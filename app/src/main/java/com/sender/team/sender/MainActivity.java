@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter = new ChattingListAdapter();
         listView.setAdapter(mAdapter);
         listView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
+        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(1).margin(220,0).build());
 
         init();
         initData();

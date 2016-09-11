@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sender.team.sender.data.ContractIdData;
@@ -59,12 +60,11 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<DelivererListData>> request, NetworkResult<DelivererListData> result) {
                 for (int i = 0; i < result.getResult().getData().size(); i++) {
-                    ((SendActivity) getActivity()).addMarker(result.getResult().getData().get(i));
+                    ((SendActivity) getActivity()).addMarker(result.getResult().getData().get(i), i);
                     Log.i("delivery_id", String.valueOf(result.getResult().getData().get(i).getDeilver_id()));
                     Log.i("DelivererListFragment", String.valueOf(result.getResult().getData().get(i).getNext_lat()) + " , " + String.valueOf(result.getResult().getData().get(i).getNext_lon()));
                 }
                 mAdapter.setDelivererData(result.getResult().getData());
-
             }
 
             @Override
@@ -80,6 +80,10 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     private void clickSend() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -93,7 +97,13 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
-                        Toast.makeText(getActivity(), "success : " + result.getResult().toString(), Toast.LENGTH_SHORT).show();
+                        if (result.getResult().getMessage() !=null && result.getError() == null){
+                            Toast.makeText(getActivity(), "success : " + result.getResult().toString(), Toast.LENGTH_SHORT).show();
+                            getActivity().finish();
+                        } else if (result.getResult().getMessage() == null && result.getError() != null){
+                            Toast.makeText(getActivity(), "fail : " + result.getError(), Toast.LENGTH_SHORT).show();
+                        }
+
                     }
 
                     @Override
@@ -102,8 +112,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                     }
                 });
 
-                Toast.makeText(getContext(), "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
+
 
             }
         });
@@ -131,20 +140,29 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     @Override
     public void DialogShow(int position) {
         View view = getLayoutInflater(null).inflate(R.layout.view_dialog_review, null, false);
-        RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_view_dialog);
+        final RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_view_dialog);
         final ReviewAdapter adapter = new ReviewAdapter();
+        final TextView emptyReview = (TextView)view.findViewById(R.id.text_empty_my_review);
         listView.setAdapter(adapter);
         listView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         deliverId = position;
         String delId = String.valueOf(mAdapter.getDeliverId(position));
         PropertyManager.getInstance().setOtherDelivererId(delId);
 
-        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "1", "8");
+        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "1", delId);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
-                adapter.setReviewData(result.getResult().getData().getReview());
-
+                if (result.getResult() != null) {
+                    adapter.clear();
+                    adapter.setReviewData(result.getResult().getData().getReview());
+                    emptyReview.setVisibility(View.GONE);
+                    listView.setVisibility(View.VISIBLE);
+                } else {
+                    emptyReview.setText(R.string.empty_reivew);
+                    emptyReview.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -182,12 +200,15 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         ((SendActivity) getActivity()).showMarkerInfo(data);
     }
 
-
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         ((SendActivity) getActivity()).searchView.setVisibility(View.VISIBLE);
         ((SendActivity) getActivity()).searchBtn.setVisibility(View.VISIBLE);
         ((SendActivity) getActivity()).headerView.setVisibility(View.GONE);
+        ((SendActivity)getActivity()).mMap.clear();
+
+        mAdapter.clear();
+
     }
 }

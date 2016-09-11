@@ -6,4 +6,5 @@
     <dimen name="icon_right_margin">10dp</dimen>
     <dimen name="mypage_image_size">115dp</dimen>
     <dimen name="mypage_image_radius">50dp</dimen>
+    <dimen name="review_columns_hieght">95dp</dimen>
 </resources>
