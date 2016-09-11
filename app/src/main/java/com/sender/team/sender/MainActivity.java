@@ -26,6 +26,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -36,6 +37,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sender.team.sender.data.ChatContract;
@@ -56,6 +58,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MenuAdapter.OnNaviMenuSelectedListener {
 
+    public static final int VIEWPAGER_COUNT = 4;
     private static final String TAB1 = "tab1";
     private static final String TAB2 = "tab2";
     private static final String TAB3 = "tab3";
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ChattingListAdapter mAdapter;
     private ColorDrawable toolbarColor;
     private Drawable homeAsUp;
+    private Handler handler;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -112,10 +116,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.fab3)
     FloatingActionButton fab3;
 
+    int index;
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            index++;
+            viewPager.setCurrentItem(index);
+            handler.postDelayed(this, 3000);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -126,18 +140,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_menu_before);
 
-        mAdapter = new ChattingListAdapter();
-        listView.setAdapter(mAdapter);
-        listView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(1).margin(220,0).build());
 
         init();
         initData();
     }
 
     private void init() {
-        initViewPager();
+        handler = new Handler(Looper.getMainLooper());
         setStatusBar();
+        initViewPager();
+        initTabLayout();
+        initRecyclerView();
+        initFab();
         toolbarColor = new ColorDrawable(Color.rgb(255, 255, 255));
         homeAsUp = ContextCompat.getDrawable(this, R.drawable.btn_menu_before);
 
@@ -174,31 +188,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+    }
 
+    private void initRecyclerView() {
+        mAdapter = new ChattingListAdapter();
+        listView.setAdapter(mAdapter);
+        listView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(1).margin(220, 0).build());
+    }
 
-        fab_background.setOnTouchListener(new View.OnTouchListener() {
+    private void initViewPager() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(VIEWPAGER_COUNT * 1000);
+        index = viewPager.getCurrentItem();
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
-                    animateFAB();
-                }
-                return true;
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                handler.removeCallbacks(runnable);
+                index = viewPager.getCurrentItem();
+                handler.postDelayed(runnable, 5000);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                circleAnimIndicator.selectDot(position % VIEWPAGER_COUNT);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
 
+        circleAnimIndicator.setItemMargin(15);
+        circleAnimIndicator.setAnimDuration(300);
+        circleAnimIndicator.createDotPanel(4, R.drawable.non_indicator, R.drawable.sel_indicator);
 
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
-        fab.setOnClickListener(this);
-        fab1.setOnClickListener(this);
-        fab2.setOnClickListener(this);
-        fab3.setOnClickListener(this);
+        handler.postDelayed(runnable, 5000);
+    }
 
-        tabs.addTab(tabs.newTab().setText("요청하기").setTag(TAB1).setIcon(R.drawable.btn_tab01_icon));
-        tabs.addTab(tabs.newTab().setText("배송하기").setTag(TAB2).setIcon(R.drawable.btn_tab02_icon));
-        tabs.addTab(tabs.newTab().setText("마이페이지").setTag(TAB3).setIcon(R.drawable.btn_tab03_icon));
+    private void initTabLayout() {
+        View view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
+        ImageView iv = (ImageView) view.findViewById(R.id.image_icon);
+        iv.setImageResource(R.drawable.btn_tab01_icon);
+        TextView tv = (TextView) view.findViewById(R.id.text_menu_title);
+        tv.setText("요청하기");
+        tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB1));
+
+        view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
+        iv = (ImageView) view.findViewById(R.id.image_icon);
+        iv.setImageResource(R.drawable.btn_tab02_icon);
+        tv = (TextView) view.findViewById(R.id.text_menu_title);
+        tv.setText("배송하기");
+        tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB2));
+
+        view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
+        iv = (ImageView) view.findViewById(R.id.image_icon);
+        iv.setImageResource(R.drawable.btn_tab03_icon);
+        tv = (TextView) view.findViewById(R.id.text_menu_title);
+        tv.setText("마이페이지");
+        tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB3));
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -251,29 +301,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void initViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    private void initFab() {
+        fab_background.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                circleAnimIndicator.selectDot(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+                    animateFAB();
+                }
+                return true;
             }
         });
 
-        circleAnimIndicator.setItemMargin(15);
-        circleAnimIndicator.setAnimDuration(300);
-        circleAnimIndicator.createDotPanel(4, R.drawable.non_indicator, R.drawable.sel_indicator);
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        fab.setOnClickListener(this);
+        fab1.setOnClickListener(this);
+        fab2.setOnClickListener(this);
+        fab3.setOnClickListener(this);
     }
 
     private void setStatusBar() {
@@ -287,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            }
         }
 
-        Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -317,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         toolbarLogo.setColorFilter(Color.rgb(r, g, b));
+        tabs.setBackgroundColor(Color.rgb(r, g, b));
     }
 
     ChattingListData data;

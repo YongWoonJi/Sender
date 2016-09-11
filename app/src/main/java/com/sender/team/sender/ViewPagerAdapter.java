@@ -15,11 +15,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return ViewPagerFragment.newInstance(position);
+        return ViewPagerFragment.newInstance(position % MainActivity.VIEWPAGER_COUNT);
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return Integer.MAX_VALUE;
     }
+
+
 }
