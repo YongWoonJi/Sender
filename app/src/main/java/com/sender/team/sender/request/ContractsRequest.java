@@ -32,6 +32,7 @@ public class ContractsRequest extends AbstractRequest<NetworkResult<ContractIdDa
                     .add("receiver_id", receiver_id)
                     .add("state", state )
                     .build();
+
         } else if(delivering_id != null && state == null) {
             body = new FormBody.Builder()
                     .add("contract_id", contract_id)

@@ -244,29 +244,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void moveMainActivity() {
-        MyPageRequest request = new MyPageRequest(this);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                PropertyManager.getInstance().setUserData(result.getResult());
-                UserData user = (UserData) getIntent().getSerializableExtra(ChattingActivity.EXTRA_USER);
-                if (user == null) {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                } else {
-                    Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-                    Intent chatIntent = new Intent(SplashActivity.this, ChattingActivity.class);
-                    chatIntent.putExtra(ChattingActivity.EXTRA_USER, user);
-                    Intent[] intents = {mainIntent, chatIntent};
-                    startActivities(intents);
-                }
-                finish();
-            }
-
-            @Override
-            public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
-
-            }
-        });
+        UserData user = (UserData) getIntent().getSerializableExtra(ChattingActivity.EXTRA_USER);
+        if (user == null) {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        } else {
+            Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent chatIntent = new Intent(SplashActivity.this, ChattingActivity.class);
+            chatIntent.putExtra(ChattingActivity.EXTRA_USER, user);
+            Intent[] intents = {mainIntent, chatIntent};
+            startActivities(intents);
+        }
+        finish();
     }
 
     private void moveSignUpActivity() {
@@ -326,7 +314,7 @@ public class SplashActivity extends AppCompatActivity {
                         // 등록이 안된 사용자
                         moveSignUpActivity();
                     } else if (result.getResult() == 1) {
-                        moveMainActivity();
+                        loginAndMoveMain();
                     } else {
                         resetFacebookAndSetLoginDisplay();
                     }
@@ -371,7 +359,7 @@ public class SplashActivity extends AppCompatActivity {
                                 moveSignUpActivity();
                             } else if (result.getResult() == 1) {
                                 PropertyManager.getInstance().setFacebookId(token.getUserId());
-                                moveMainActivity();
+                                loginAndMoveMain();
                             } else {
                                 resetFacebookAndSetLoginDisplay();
                             }
@@ -416,7 +404,7 @@ public class SplashActivity extends AppCompatActivity {
                                 moveSignUpActivity();
                             } else if (result.getResult() == 1) {
                                 PropertyManager.getInstance().setFacebookId(token.getUserId());
-                                moveMainActivity();
+                                loginAndMoveMain();
                             } else {
                                 // 로그인 실패
                                 Toast.makeText(SplashActivity.this, "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();

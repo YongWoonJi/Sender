@@ -15,22 +15,22 @@ import com.sender.team.sender.data.UserData;
 public class PropertyManager {
     private static PropertyManager instance;
     public static PropertyManager getInstance() {
-        if (instance == null) {
-            synchronized (PropertyManager.class) {
+//        if (instance == null) {
+//            synchronized (PropertyManager.class) {
                 if (instance == null) {
                     instance = new PropertyManager();
                 }
                 return instance;
-            }
-        }
-        return instance;
+//            }
+//        }
+//        return instance;
     }
 
     SharedPreferences mPrefs;
     SharedPreferences.Editor mEditor;
 
     private UserData userData;
-    private DeliveringIdData deliveringId;
+    private DeliveringIdData deliveringData;
     private String otherDelivererId;
     private int receiver_id;
     private ContractIdData contractIdData;
@@ -74,12 +74,12 @@ public class PropertyManager {
         return userData;
     }
 
-    public DeliveringIdData getDeliveringId() {
-        return deliveringId;
+    public DeliveringIdData getDeliveringData() {
+        return deliveringData;
     }
 
-    public void setDeliveringId(DeliveringIdData deliveringId) {
-        this.deliveringId = deliveringId;
+    public void setDeliveringData(DeliveringIdData deliveringData) {
+        this.deliveringData = deliveringData;
     }
 
     public ContractIdData getContractIdData() {

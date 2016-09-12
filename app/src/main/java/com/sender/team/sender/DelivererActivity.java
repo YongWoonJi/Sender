@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -359,9 +358,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result) {
                         if (result != null) {
-                            PropertyManager.getInstance().setDeliveringId(result.getResult());
-                            Toast.makeText(DelivererActivity.this, "등록이 완료되었습니다", Toast.LENGTH_SHORT).show();
-                            Log.i("DelivererAcivity", result.getResult().getDelivering_id());
+                            PropertyManager.getInstance().setDeliveringData(result.getResult());
+                            Toast.makeText(DelivererActivity.this, "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
 //                            Intent intent = new Intent(DelivererActivity.this, NotificationService.class);
 //                            startService(intent);
                             finish();

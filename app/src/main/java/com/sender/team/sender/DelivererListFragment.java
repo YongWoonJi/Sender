@@ -207,8 +207,8 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         ((SendActivity) getActivity()).searchBtn.setVisibility(View.VISIBLE);
         ((SendActivity) getActivity()).headerView.setVisibility(View.GONE);
         ((SendActivity)getActivity()).mMap.clear();
+
         mAdapter.clear();
-        mAdapter.setListenerReset();
 
     }
 }

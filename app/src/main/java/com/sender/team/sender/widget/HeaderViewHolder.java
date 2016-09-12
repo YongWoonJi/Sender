@@ -39,7 +39,9 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
     public void setData(UserData data) {
         this.item = data;
 //        Glide.with(context).load(data.getFileUrl()).into(imageProfile);
-        textUserName.setText(data.getName());
+        if (!TextUtils.isEmpty(data.getName())) {
+            textUserName.setText(data.getName());
+        }
         if (TextUtils.isEmpty(data.getEmail())) {
             textEmail.setText(context.getString(R.string.empty_email));
         } else {
