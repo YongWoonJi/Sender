@@ -13,7 +13,6 @@ import android.os.Looper;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -38,6 +37,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RelativeLayout naviFragment;
 
     @BindView(R.id.tab)
-    TabLayout tabs;
+    LinearLayout tabs;
 
     @BindView(R.id.rv_list)
     RecyclerView listView;
@@ -117,6 +117,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.fab3)
     FloatingActionButton fab3;
+
+    @BindView(R.id.image_icon1)
+    ImageView tabIcon1;
+
+    @BindView(R.id.image_icon2)
+    ImageView tabIcon2;
+
+    @BindView(R.id.image_icon3)
+    ImageView tabIcon3;
+
+    @BindView(R.id.text_menu_title1)
+    TextView textMenu1;
+
+    @BindView(R.id.text_menu_title2)
+    TextView textMenu2;
+
+    @BindView(R.id.text_menu_title3)
+    TextView textMenu3;
+
+    @BindView(R.id.indicator1)
+    View indicator1;
+
+    @BindView(R.id.indicator2)
+    View indicator2;
+
+    @BindView(R.id.tab1)
+    LinearLayout tab1;
+
+    @BindView(R.id.tab2)
+    LinearLayout tab2;
+
+    @BindView(R.id.tab3)
+    LinearLayout tab3;
+
 
     int index;
     Runnable runnable = new Runnable() {
@@ -235,81 +269,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    ImageView tabIcon1;
-    ImageView tabIcon2;
-    ImageView tabIcon3;
-    TextView textMenu1;
-    TextView textMenu2;
-    TextView textMenu3;
+
     private void initTabLayout() {
-        View view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
-        tabIcon1 = (ImageView) view.findViewById(R.id.image_icon);
         tabIcon1.setImageResource(R.drawable.btn_tab01_icon);
-        textMenu1 = (TextView) view.findViewById(R.id.text_menu_title);
         textMenu1.setText("요청하기");
-        tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB1));
 
-        view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
-        tabIcon2 = (ImageView) view.findViewById(R.id.image_icon);
         tabIcon2.setImageResource(R.drawable.btn_tab02_icon);
-        textMenu2 = (TextView) view.findViewById(R.id.text_menu_title);
         textMenu2.setText("배송하기");
-        tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB2));
 
-        view = LayoutInflater.from(this).inflate(R.layout.view_tabs, null);
-        tabIcon3 = (ImageView) view.findViewById(R.id.image_icon);
         tabIcon3.setImageResource(R.drawable.btn_tab03_icon);
-        textMenu3 = (TextView) view.findViewById(R.id.text_menu_title);
         textMenu3.setText("마이페이지");
-        tabs.addTab(tabs.newTab().setCustomView(view).setTag(TAB3));
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:{
-                        Intent intent = new Intent(MainActivity.this, SendActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
-                    case 1:{
-                        Intent intent = new Intent(MainActivity.this, DelivererActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
 
-                    case 2:{
-                        Intent intent = new Intent(MainActivity.this, MyPageActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
-                }
+        tab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SendActivity.class);
+                startActivity(intent);
             }
+        });
 
+        tab2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DelivererActivity.class);
+                startActivity(intent);
             }
+        });
 
+        tab3.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:{
-                        Intent intent = new Intent(MainActivity.this, SendActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
-                    case 1:{
-                        Intent intent = new Intent(MainActivity.this, DelivererActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
-
-                    case 2:{
-                        Intent intent = new Intent(MainActivity.this, MyPageActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
-                }
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MyPageActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -387,6 +378,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textMenu1.setTextColor(Color.rgb(value, value, value));
         textMenu2.setTextColor(Color.rgb(value, value, value));
         textMenu3.setTextColor(Color.rgb(value, value, value));
+        indicator1.setBackgroundColor(Color.argb(150, value, value, value));
+        indicator2.setBackgroundColor(Color.argb(150, value, value, value));
     }
 
     ChattingListData data;
@@ -492,7 +485,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 LayoutInflater inflater= getLayoutInflater();
                 view = inflater.inflate(R.layout.view_main_version, null);
-                Toast.makeText(MainActivity.this, "정현이", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setView(view);
                 final AlertDialog dialog = builder.create();
@@ -570,6 +562,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         if (!TextUtils.isEmpty(result.getResult())) {
+                            PropertyManager.getInstance().setFacebookId("");
+                            PropertyManager.getInstance().setUserData(null);
                             Toast.makeText(MainActivity.this, "정상적으로 탈퇴되었습니다", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                             startActivity(intent);
