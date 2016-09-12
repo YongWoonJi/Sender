@@ -5,4 +5,5 @@ package com.sender.team.sender.data;
  */
 public class NoticeChildData {
   public String content;
+  public String noticeImage;
 }

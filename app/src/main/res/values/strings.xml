@@ -473,6 +473,7 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
 
     <string name="profile_image">프로필 사진</string>
     <string name="object_image">물건 사진</string>
+    <string name="image_register">사진 등록</string>
     <string name="camera">카메라</string>
     <string name="gallery">갤러리</string>
     <string name="title_activity_maps">Map</string>

@@ -82,6 +82,10 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return data.get(position).getDeilver_id();
     }
 
+    public int getId(int position) {
+        return data.get(position).getId();
+    }
+
     OnDialogListener listener;
 
     public interface OnDialogListener {
@@ -94,6 +98,9 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.listener = listener;
     }
 
+    public void setListenerReset(){
+        this.listener = null;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -108,12 +115,15 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         dvh.setDelivererData(data.get(position));
         dvh.setChecked(checkedPosition == position);
         dvh.setListener(this);
+
     }
 
     @Override
     public int getItemCount() {
         return data.size();
     }
+
+
 
     @Override
     public void onClickSend(int position) {

@@ -9,6 +9,7 @@ public class DelivererListData {
     private int itemsPerPage;
     private int currentPage;
 
+
     public List<DelivererData> getData() {
         return this.data;
     }

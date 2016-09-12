@@ -93,17 +93,16 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int contractId = PropertyManager.getInstance().getContractIdData().getContract_id();
-                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), PropertyManager.getInstance().getOtherDelivererId(), null);
+                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), "" + PropertyManager.getInstance().getReceiver_id(),PropertyManager.getInstance().getOtherDelivererId(), null);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
-                        if (result.getResult().getMessage() !=null && result.getError() == null){
+                        if (result.getResult() !=null && result.getError() == null){
                             Toast.makeText(getActivity(), "success : " + result.getResult().toString(), Toast.LENGTH_SHORT).show();
                             getActivity().finish();
-                        } else if (result.getResult().getMessage() == null && result.getError() != null){
+                        } else if (result.getResult() == null && result.getError() != null){
                             Toast.makeText(getActivity(), "fail : " + result.getError(), Toast.LENGTH_SHORT).show();
                         }
-
                     }
 
                     @Override
@@ -138,7 +137,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     }
 
     @Override
-    public void DialogShow(int position) {
+    public void DialogShow(final int position) {
         View view = getLayoutInflater(null).inflate(R.layout.view_dialog_review, null, false);
         final RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_view_dialog);
         final ReviewAdapter adapter = new ReviewAdapter();
@@ -188,6 +187,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         builder.setPositiveButton("요청하기", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                PropertyManager.getInstance().setReceiver_id(mAdapter.getId(position));
                 clickSend();
             }
         });
@@ -207,8 +207,8 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         ((SendActivity) getActivity()).searchBtn.setVisibility(View.VISIBLE);
         ((SendActivity) getActivity()).headerView.setVisibility(View.GONE);
         ((SendActivity)getActivity()).mMap.clear();
-
         mAdapter.clear();
+        mAdapter.setListenerReset();
 
     }
 }

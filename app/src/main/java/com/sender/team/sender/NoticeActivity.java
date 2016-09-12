@@ -42,7 +42,7 @@ public class NoticeActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView = (ExpandableListView) findViewById(R.id.expandableListView);
-        mAdapter = new NoticeAdapter();
+        mAdapter = new NoticeAdapter(this);
         listView.setAdapter(mAdapter);
 
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -74,13 +74,13 @@ public class NoticeActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        NoticeRequest request = new NoticeRequest(this, "1", "1", "0");
+        NoticeRequest request = new NoticeRequest(this, "1", "1", "1");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<NoticeListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<NoticeListData>> request, NetworkResult<NoticeListData> result) {
                 ArrayList<NoticeData> data = result.getResult().getData();
                 for (NoticeData d : data) {
-                    mAdapter.put(d.getTitle(), d.getContent());
+                    mAdapter.put(d.getTitle(), d.getContent(),d.getWrite_date(), d.getFileUrl());
                 }
             }
 

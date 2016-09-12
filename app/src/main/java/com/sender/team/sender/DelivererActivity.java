@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -163,6 +164,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 animateMap(poiStart.getLatitude(), poiStart.getLongitude(), new Runnable() {
                     @Override
                     public void run() {
+                        map.clear();
                         addMarker(poiStart, TYPE_START);
                         listStartSearch.setVisibility(View.GONE);
                         editStart.setText(poiStart.getName());
@@ -178,6 +180,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 animateMap(poiEnd.getLatitude(), poiEnd.getLongitude(), new Runnable() {
                     @Override
                     public void run() {
+                        map.clear();
                         addMarker(poiEnd, TYPE_END);
                         listEndSearch.setVisibility(View.GONE);
                         editEnd.setText(poiEnd.getName());
@@ -357,7 +360,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     public void onSuccess(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result) {
                         if (result != null) {
                             PropertyManager.getInstance().setDeliveringId(result.getResult());
-                            Toast.makeText(DelivererActivity.this, "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DelivererActivity.this, "등록이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                            Log.i("DelivererAcivity", result.getResult().getDelivering_id());
 //                            Intent intent = new Intent(DelivererActivity.this, NotificationService.class);
 //                            startService(intent);
                             finish();

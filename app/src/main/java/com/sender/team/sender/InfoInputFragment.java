@@ -153,12 +153,12 @@ public class InfoInputFragment extends Fragment {
                 String phone = receiverPhone.getText().toString();
                 String memo = requestMemo.getText().toString();
 
-//                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
-//
-//                    if (!((SendActivity) getActivity()).isRequestCheck) {
-//                        ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
-//                        ((SendActivity) getActivity()).isRequestCheck = true;
-//                    }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
+                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
+
+                    if (!((SendActivity) getActivity()).isRequestCheck) {
+                        ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
+                        ((SendActivity) getActivity()).isRequestCheck = true;
+                    }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
 
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, new DelivererListFragment())
@@ -169,9 +169,9 @@ public class InfoInputFragment extends Fragment {
                     ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
                     ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
 
-//                } else {
-//                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
-//                }
+                } else {
+                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
 
                 if (callback != null) {
                     callback.onClickButton();
@@ -179,13 +179,14 @@ public class InfoInputFragment extends Fragment {
             }
         });
 
+        ((SendActivity) getActivity()).backMarker();
         return view;
     }
 
     @OnClick(R.id.object_image)
     public void onUploadImage(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.profile_image);
+        builder.setTitle(R.string.object_image);
         builder.setItems(R.array.select_image, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -280,7 +281,7 @@ public class InfoInputFragment extends Fragment {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
                 PropertyManager.getInstance().setContractIdData(result.getResult());
-                Toast.makeText(context, "success wow " + result.getResult().getContract_id()+"  " + result.getResult().getSendingId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "success" + result.getResult().getContract_id()+"  " + result.getResult().getSendingId(), Toast.LENGTH_SHORT).show();
                 Log.i("InfoInputFragment", "contractid = " + result.getResult().getContract_id());
             }
 
@@ -290,18 +291,6 @@ public class InfoInputFragment extends Fragment {
                 Log.i("InfoInputFragment", "fail = " + errorMessage);
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        ((SendActivity) getActivity()).backMarker();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
     }
 
 }

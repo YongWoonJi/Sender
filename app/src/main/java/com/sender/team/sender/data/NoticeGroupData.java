@@ -8,5 +8,6 @@ import java.util.List;
  */
 public class NoticeGroupData {
     public String title;
+    public String date;
     public List<NoticeChildData> children = new ArrayList<>();
 }

@@ -3,7 +3,7 @@ package com.sender.team.sender.data;
 public class DelivererData {
     private String here_lat;
     private String next_lon;
-    private int user_id;
+    private int id;
     private int delivering_id;
     private String dep_time;
     private String here_lon;
@@ -65,12 +65,12 @@ public class DelivererData {
         this.next_lon = next_lon;
     }
 
-    public int getUser_id() {
-        return this.user_id;
+    public int getId() {
+        return this.id;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getDeilver_id() {

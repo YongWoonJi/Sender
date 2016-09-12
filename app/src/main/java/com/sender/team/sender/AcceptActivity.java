@@ -101,7 +101,7 @@ public class AcceptActivity extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         //13.계약 체결하기
-                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), null, STATE_CONTRACT_SUCCESS);//1자리에 contract_id 들어가야함
+                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), "" + PropertyManager.getInstance().getReceiver_id(),null, STATE_CONTRACT_SUCCESS);//1자리에 contract_id 들어가야함
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
                                             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
@@ -135,7 +135,7 @@ public class AcceptActivity extends Activity {
                                 builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, "1",null, STATE_CONTRACT_FAIL);
+                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, "" + PropertyManager.getInstance().getContractIdData().getContract_id(), "" + PropertyManager.getInstance().getReceiver_id(), null, STATE_CONTRACT_FAIL);
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
                                             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {

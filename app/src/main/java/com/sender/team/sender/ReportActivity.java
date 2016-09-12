@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -197,7 +196,7 @@ public class ReportActivity extends AppCompatActivity {
     @OnClick(R.id.image_photo)
     public void addImage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("이미지를 선택해주세요");
+        builder.setTitle(R.string.image_register);
         builder.setItems(R.array.select_image, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {

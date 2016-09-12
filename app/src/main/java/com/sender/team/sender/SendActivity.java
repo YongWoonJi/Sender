@@ -451,7 +451,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         }
     }
 
-    public void showMarkerInfo(final DelivererData data){
+    public void showMarkerInfo(DelivererData data){
         reDrawMarker();
         MarkerOptions options = new MarkerOptions();
         double lat = Double.parseDouble(data.getHere_lat());
@@ -468,7 +468,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
     public void reDrawMarker(){
         mMap.clear();
-        for (int i = 0; i<deliverMarkerResolver.size(); i++){
+        for (int i = 0; i<deliverSelect.size(); i++){
             addMarker(deliverSelect.get(i), i);
         }
     }

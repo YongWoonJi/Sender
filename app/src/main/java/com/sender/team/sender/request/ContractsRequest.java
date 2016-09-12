@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
  */
 public class ContractsRequest extends AbstractRequest<NetworkResult<ContractIdData>> {
     Request request;
-    public ContractsRequest(Context context, String constract_id ,String delivering_id, String state){
+    public ContractsRequest(Context context, String contract_id, String receiver_id, String delivering_id, String state){
         HttpUrl url = getBaseUrlBuilder()
                 .port(80)
                 .addPathSegment("contracts")
@@ -28,12 +28,14 @@ public class ContractsRequest extends AbstractRequest<NetworkResult<ContractIdDa
 
         if (delivering_id == null && state != null) {
             body = new FormBody.Builder()
-                    .add("contract_id", constract_id)
+                    .add("contract_id", contract_id)
+                    .add("receiver_id", receiver_id)
                     .add("state", state )
                     .build();
         } else if(delivering_id != null && state == null) {
             body = new FormBody.Builder()
-                    .add("contract_id", constract_id)
+                    .add("contract_id", contract_id)
+                    .add("receiver_id", receiver_id)
                     .add("delivering_id", delivering_id )
                     .build();
         }

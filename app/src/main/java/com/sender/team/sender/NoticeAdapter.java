@@ -1,11 +1,14 @@
 package com.sender.team.sender;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sender.team.sender.data.NoticeChildData;
 import com.sender.team.sender.data.NoticeGroupData;
 
@@ -18,8 +21,13 @@ import java.util.List;
 public class NoticeAdapter extends BaseExpandableListAdapter {
     List<NoticeGroupData> items = new ArrayList<>();
 
+    Context context;
 
-    public void put(String title, String content) {
+    public NoticeAdapter(Context context) {
+        this.context = context;
+    }
+
+    public void put(String title, String content, String date, String image) {
         NoticeGroupData group = null;
         for (NoticeGroupData g : items) {
             if (g.title.equals(title)) {
@@ -30,12 +38,14 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
         if (group == null) {
             group = new NoticeGroupData();
             group.title = title;
+            group.date = date;
             items.add(group);
         }
 
         if (content != null) {
             NoticeChildData child = new NoticeChildData();
             child.content = content;
+            child.noticeImage = image;
             group.children.add(child);
         }
 
@@ -84,7 +94,9 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_notice_group, parent,false);
         }
         TextView textGroup=(TextView) convertView.findViewById(R.id.text_notice_group);
+        TextView textDateGroup = (TextView) convertView.findViewById(R.id.text_notice_date);
         textGroup.setText(items.get(groupPosition).title);
+        textDateGroup.setText(items.get(groupPosition).date);
         return convertView;
     }
 
@@ -93,8 +105,10 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
         if(convertView == null){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_child, parent,false);
         }
-        TextView textGroup=(TextView) convertView.findViewById(R.id.faq_child_name);
-        textGroup.setText(items.get(groupPosition).children.get(childPosition).content);
+        TextView textChild = (TextView) convertView.findViewById(R.id.faq_child_name);
+        ImageView imageChild = (ImageView) convertView.findViewById(R.id.image_notice);
+        textChild.setText(items.get(groupPosition).children.get(childPosition).content);
+        Glide.with(context).load(items.get(groupPosition).children.get(childPosition).noticeImage).into(imageChild);
         return convertView;
     }
 

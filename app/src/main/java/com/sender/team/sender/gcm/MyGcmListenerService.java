@@ -79,7 +79,7 @@ public class MyGcmListenerService extends GcmListenerService {
         } else {
             // normal downstream message.
             String cid = String.valueOf(PropertyManager.getInstance().getContractIdData().getContract_id());
-            ContractsRequest request = new ContractsRequest(MyApplication.getContext(), cid, null, AcceptActivity.STATE_CONTRACT_BEFORE);
+            ContractsRequest request = new ContractsRequest(MyApplication.getContext(), cid, "" + PropertyManager.getInstance().getReceiver_id(), null, AcceptActivity.STATE_CONTRACT_BEFORE);
             try {
                 NetworkResult<ContractIdData> result = NetworkManager.getInstance().getNetworkDataSync(NetworkManager.CLIENT_STANDARD,request);
                 ContractIdData idData = result.getResult();

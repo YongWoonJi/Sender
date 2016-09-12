@@ -31,6 +31,8 @@ public class PropertyManager {
 
     private UserData userData;
     private DeliveringIdData deliveringId;
+    private String otherDelivererId;
+    private int receiver_id;
     private ContractIdData contractIdData;
 
     private static final String KEY_REGISTRATION_ID = "regid";
@@ -42,6 +44,12 @@ public class PropertyManager {
     private String addr_lat;
     private String addr_lng;
 
+    private PropertyManager() {
+        Context context = MyApplication.getContext();
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        mEditor = mPrefs.edit();
+    }
+
     public String getOtherDelivererId() {
         return otherDelivererId;
     }
@@ -50,12 +58,12 @@ public class PropertyManager {
         this.otherDelivererId = otherDelivererId;
     }
 
-    private String otherDelivererId;
+    public int getReceiver_id() {
+        return receiver_id;
+    }
 
-    private PropertyManager() {
-        Context context = MyApplication.getContext();
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        mEditor = mPrefs.edit();
+    public void setReceiver_id(int receiver_id) {
+        this.receiver_id = receiver_id;
     }
 
     public void setUserData(UserData data) {
