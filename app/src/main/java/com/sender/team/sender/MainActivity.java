@@ -1,6 +1,5 @@
 package com.sender.team.sender;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -27,6 +26,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +36,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -489,7 +490,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         iconView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LayoutInflater inflater= getLayoutInflater();
+                view = inflater.inflate(R.layout.view_main_version, null);
                 Toast.makeText(MainActivity.this, "정현이", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setView(view);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                Button btn = (Button) view.findViewById(R.id.btn_version_ok);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
         return true;
@@ -539,11 +554,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void unregister() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("정말 SENDER를\n떠나시는 건가요?\n\n탈퇴하시면 SENDER에서의 기록이 모두 삭제됩니다");
-        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_leave, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog_Transparent);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setGravity(Gravity.CENTER);
+        dialog.show();
+
+        Button btn = (Button) view.findViewById(R.id.btn_leave_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View view) {
                 UserLeaveRequest request = new UserLeaveRequest(MainActivity.this, PropertyManager.getInstance().getUserData().getUser_id());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
@@ -565,12 +586,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
 
+        btn = (Button) view.findViewById(R.id.btn_leave_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
-        builder.create().show();
     }
 }

@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="111dp"
+    android:paddingBottom="10dp"
     android:background="@color/whitebg"
     tools:context="com.sender.team.sender.SendHeaderFragment">
 
@@ -17,31 +18,35 @@
         <Button
             android:id="@+id/btn_start"
             android:layout_width="160dp"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center|bottom"
             android:text="배송시작"
             android:textSize="12sp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:background="@color/fontcolor"
+            android:textColor="@color/whitefont" />
 
         <Button
             android:id="@+id/btn_end"
             android:layout_width="160dp"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/btn_start"
             android:layout_toRightOf="@+id/btn_start"
             android:text="배송완료"
             android:textSize="12sp"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:background="@color/chatting_background"
+            android:textColor="@color/whitefont" />
     </LinearLayout>
 
     <ImageView
         android:layout_width="146dp"
         android:layout_height="3dp"
-        android:id="@+id/imageView40"
-        android:background="@color/colorstatusblue"
+        android:id="@+id/image_status_one"
+        android:background="@color/colorstatusgreen"
         android:layout_above="@+id/imageView41"
         android:layout_toLeftOf="@+id/imageView41"
         android:layout_toStartOf="@+id/imageView41" />
@@ -56,7 +61,7 @@
     <ImageView
         android:layout_width="146dp"
         android:layout_height="3dp"
-        android:id="@+id/imageView42"
+        android:id="@+id/image_status_two"
         android:layout_alignBottom="@+id/imageView41"
         android:layout_toRightOf="@+id/imageView41"
         android:layout_toEndOf="@+id/imageView41"
@@ -67,7 +72,7 @@
         android:layout_height="20dp"
         android:id="@+id/imageView43"
         android:src="@drawable/ic_point"
-        android:layout_above="@+id/imageView40"
+        android:layout_above="@+id/image_status_one"
         android:layout_alignLeft="@+id/imageView44"
         android:layout_alignStart="@+id/imageView44" />
 
@@ -76,31 +81,31 @@
         android:layout_height="3dp"
         android:id="@+id/imageView44"
         android:layout_below="@+id/imageView43"
-        android:layout_toLeftOf="@+id/imageView40"
-        android:layout_toStartOf="@+id/imageView40" />
+        android:layout_toLeftOf="@+id/image_status_one"
+        android:layout_toStartOf="@+id/image_status_one" />
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:id="@+id/imageView45"
         android:src="@drawable/ic_point"
-        android:layout_above="@+id/imageView40"
+        android:layout_above="@+id/image_status_one"
         android:layout_centerHorizontal="true" />
 
     <ImageView
         android:layout_width="10dp"
         android:layout_height="3dp"
         android:id="@+id/imageView46"
-        android:layout_alignTop="@+id/imageView42"
-        android:layout_toRightOf="@+id/imageView42"
-        android:layout_toEndOf="@+id/imageView42" />
+        android:layout_alignTop="@+id/image_status_two"
+        android:layout_toRightOf="@+id/image_status_two"
+        android:layout_toEndOf="@+id/image_status_two" />
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:id="@+id/imageView47"
         android:src="@drawable/ic_point"
-        android:layout_above="@+id/imageView42"
+        android:layout_above="@+id/image_status_two"
         android:layout_alignRight="@+id/imageView46"
         android:layout_alignEnd="@+id/imageView46" />
 

@@ -1,33 +1,167 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="#d2d2d2"
+    android:layout_height="111dp"
+    android:paddingBottom="10dp"
+    android:background="@color/whitebg"
     tools:context=".DelivererHeaderFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+
+    <ImageView
+        android:layout_width="146dp"
+        android:layout_height="3dp"
+        android:id="@+id/image_status_one"
+        android:background="@color/colorstatusgreen"
+        android:layout_above="@+id/imageView41"
+        android:layout_toLeftOf="@+id/imageView41"
+        android:layout_toStartOf="@+id/imageView41" />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/delivery_start"
-        android:id="@+id/btn_delivery_start"
-        android:layout_gravity="left|center_vertical" />
+        android:id="@+id/imageView41"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="146dp"
+        android:layout_height="3dp"
+        android:id="@+id/image_status_two"
+        android:layout_alignBottom="@+id/imageView41"
+        android:layout_toRightOf="@+id/imageView41"
+        android:layout_toEndOf="@+id/imageView41"
+        android:background="@color/colorstatusgreen" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView43"
+        android:src="@drawable/ic_point"
+        android:layout_above="@+id/image_status_one"
+        android:layout_alignLeft="@+id/imageView44"
+        android:layout_alignStart="@+id/imageView44" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView44"
+        android:layout_below="@+id/imageView43"
+        android:layout_toLeftOf="@+id/image_status_one"
+        android:layout_toStartOf="@+id/image_status_one" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView45"
+        android:src="@drawable/ic_point"
+        android:layout_above="@+id/image_status_one"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView46"
+        android:layout_alignTop="@+id/image_status_two"
+        android:layout_toRightOf="@+id/image_status_two"
+        android:layout_toEndOf="@+id/image_status_two" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/imageView47"
+        android:src="@drawable/ic_point"
+        android:layout_above="@+id/image_status_two"
+        android:layout_alignRight="@+id/imageView46"
+        android:layout_alignEnd="@+id/imageView46" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="배송중"
+        android:id="@+id/textView8"
+        android:layout_above="@+id/imageView45"
+        android:layout_centerHorizontal="true"
+        android:textSize="11sp" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView48"
+        android:layout_alignTop="@+id/imageView43"
+        android:layout_toLeftOf="@+id/imageView43"
+        android:layout_toStartOf="@+id/imageView43" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="배송시작"
+        android:id="@+id/textView9"
+        android:layout_alignBottom="@+id/textView8"
+        android:layout_alignLeft="@+id/imageView48"
+        android:layout_alignStart="@+id/imageView48"
+        android:textSize="11sp" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="3dp"
+        android:id="@+id/imageView49"
+        android:layout_alignTop="@+id/imageView47"
+        android:layout_toRightOf="@+id/imageView47"
+        android:layout_toEndOf="@+id/imageView47" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="배송완료"
+        android:id="@+id/textView11"
+        android:layout_alignBottom="@+id/imageView49"
+        android:layout_alignRight="@+id/imageView49"
+        android:layout_alignEnd="@+id/imageView49"
+        android:textSize="11sp" />
+
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="104dp"
+        android:layout_height="30dp"
         android:text="@string/delivery_end"
         android:id="@+id/btn_delivery_end"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_alignTop="@+id/btn_call"
+        android:layout_centerHorizontal="true"
+        android:textSize="12sp"
+        android:textColor="@color/whitefont"
+        android:background="@color/chatting_background" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="104dp"
+        android:layout_height="30dp"
         android:text="@string/call"
         android:id="@+id/btn_call"
-        android:layout_gravity="right|center_vertical" />
-</FrameLayout>
+        android:layout_gravity="right|center_vertical"
+        android:layout_alignTop="@+id/btn_delivery_start"
+        android:layout_toRightOf="@+id/btn_delivery_end"
+        android:layout_toEndOf="@+id/btn_delivery_end"
+        android:textSize="12sp"
+        android:layout_marginLeft="8dp"
+        android:background="@color/fontcolor"
+        android:textColor="@color/whitefont" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="104dp"
+        android:layout_height="30dp"
+        android:text="@string/delivery_start"
+        android:id="@+id/btn_delivery_start"
+        android:layout_gravity="left|bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/btn_delivery_end"
+        android:layout_toStartOf="@+id/btn_delivery_end"
+        android:textSize="12sp"
+        android:layout_marginRight="8dp"
+        android:background="@color/fontcolor"
+        android:textColor="@color/whitefont" />
+</RelativeLayout>

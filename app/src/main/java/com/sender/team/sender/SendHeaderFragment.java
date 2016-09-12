@@ -1,7 +1,6 @@
 package com.sender.team.sender;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +20,7 @@ import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ContractsUpdateRequest;
 import com.sender.team.sender.request.OtherUserRequest;
 import com.sender.team.sender.request.ReviewRequest;
@@ -31,6 +31,7 @@ import com.sender.team.sender.request.ReviewRequest;
  */
 public class SendHeaderFragment extends Fragment {
 
+    public static boolean statusFlag = false;
     public static final int START_DELIVERY = 2;
     public static final int END_DELIVERY = 3;
 
@@ -45,50 +46,60 @@ public class SendHeaderFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_send_header, container, false);
 
-        final Button btnEnd = (Button)view.findViewById(R.id.btn_end);
-        btnEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //15. 배송 상태 변경하기
-                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", ""+END_DELIVERY);
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                    }
+        final ImageView imageStatusTwo = (ImageView) view.findViewById(R.id.image_status_two);
+        final Button btnEnd = (Button) view.findViewById(R.id.btn_end);
+            btnEnd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //15. 배송 상태 변경하기
+                    ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + END_DELIVERY);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                            imageStatusTwo.setImageResource(R.color.colorstatusblue);
+                            btnEnd.setBackgroundResource(R.color.chatting_background);
+                            statusFlag = true;
+                        }
 
-                    @Override
-                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-                    }
-                });
-                clickSend();
-            }
-        });
+                        @Override
+                        public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+                        }
+                    });
+                    clickSend();
+                }
+            });
         btnEnd.setEnabled(false);
 
-        final Button btnStart = (Button)view.findViewById(R.id.btn_start);
+        final ImageView imageStatusOne = (ImageView) view.findViewById(R.id.image_status_one);
+        final Button btnStart = (Button) view.findViewById(R.id.btn_start);
+
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //15. 배송 상태 변경하기
-                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", ""+START_DELIVERY);
+                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + START_DELIVERY);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        imageStatusOne.setImageResource(R.color.colorstatusblue);
+                        btnStart.setBackgroundResource(R.color.chatting_background);
+                        btnEnd.setBackgroundResource(R.color.fontcolor);
+                        btnEnd.setEnabled(true);
+                        btnStart.setEnabled(false);
                     }
 
                     @Override
                     public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
                     }
                 });
-
-                btnEnd.setEnabled(true);
-                btnStart.setEnabled(false);
             }
         });
 
         return view;
     }
+
     AlertDialog dialog;
+
     private void clickSend() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_evalution, null);
         final TextView textName = (TextView) view.findViewById(R.id.text_name);
@@ -102,7 +113,7 @@ public class SendHeaderFragment extends Fragment {
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                 Glide.with(getContext()).load(result.getResult().getFileUrl()).into(imageProfile);
                 textName.setText(result.getResult().getName());
-                textRating.setText(""+result.getResult().getStar());
+                textRating.setText("" + result.getResult().getStar());
             }
 
             @Override
@@ -111,19 +122,19 @@ public class SendHeaderFragment extends Fragment {
             }
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("별점 및 리뷰");
-        builder.setView(view);
-        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+
+        Button btn = (Button) view.findViewById(R.id.btn_review_submit);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View view) {
                 float star = ratingBar.getRating();
                 String comment = editComment.getText().toString();
                 if (star <= 0 && TextUtils.isEmpty(comment)) {
                     Toast.makeText(getActivity(), "리뷰를 입력해 주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     // ReviewRequest 추가해야함
-                    ReviewRequest request= new ReviewRequest(getContext(),"1", "1", comment, ""+(int)star);
+                    String userId = PropertyManager.getInstance().getUserData().getUser_id();
+                    ReviewRequest request = new ReviewRequest(getContext(), userId, "1", comment, "" + (int) star);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -132,7 +143,7 @@ public class SendHeaderFragment extends Fragment {
 
                         @Override
                         public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-                            Toast.makeText(getContext(), "리뷰 등록 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "리뷰 등록 실패:" + errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -140,6 +151,35 @@ public class SendHeaderFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(view);
+//        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                float star = ratingBar.getRating();
+//                String comment = editComment.getText().toString();
+//                if (star <= 0 && TextUtils.isEmpty(comment)) {
+//                    Toast.makeText(getActivity(), "리뷰를 입력해 주세요", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    // ReviewRequest 추가해야함
+//                    ReviewRequest request= new ReviewRequest(getContext(),"1", "1", comment, ""+(int)star);
+//                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+//                        @Override
+//                        public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+//                            Toast.makeText(getContext(), result.getResult().toString(), Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+//                            Toast.makeText(getContext(), "리뷰 등록 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                }
+//                Toast.makeText(getContext(), "배송이 완료되었습니다", Toast.LENGTH_SHORT).show();
+//                getActivity().finish();
+//            }
+//        });
 
         dialog = builder.create();
         dialog.show();

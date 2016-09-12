@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/chatting_background"
+    android:background="@color/whitebg"
     tools:context="com.sender.team.sender.ChattingActivity">
 
     <FrameLayout
@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/title_mypage"
+            android:text="SENDER 채팅창"
             android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -61,7 +61,9 @@
         android:layout_below="@+id/container"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/linearLayout6" />
+        android:layout_above="@+id/linearLayout6"
+        android:layout_marginTop="10dp"
+        android:background="@color/chatting_background"/>
 
     <LinearLayout
         android:layout_width="match_parent"

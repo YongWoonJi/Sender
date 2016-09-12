@@ -26,7 +26,6 @@ public class NoticeActivity extends AppCompatActivity {
     ExpandableListView listView;
     NoticeAdapter mAdapter;
 
-    int width;
     int expandposition = -1;
 
     @Override

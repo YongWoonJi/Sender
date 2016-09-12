@@ -78,21 +78,30 @@ public class AuthFragment extends Fragment {
             }
         });
 
-
         btn = (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_auth, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("인증되었습니다");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                builder.setView(view);
+//                builder.setMessage("인증되었습니다");
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                    }
+//                });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
 
+                Button btn = (Button) view.findViewById(R.id.btn_auth_ok);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
                     }
                 });
-                AlertDialog dialog = builder.create();
-                dialog.show();
             }
         });
 

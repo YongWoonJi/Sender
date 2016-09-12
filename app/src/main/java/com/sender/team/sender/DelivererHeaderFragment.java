@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.sender.team.sender.data.NetworkResult;
@@ -34,6 +35,8 @@ public class DelivererHeaderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_deliverer_header, container, false);
+
+        final ImageView imageStatusOne = (ImageView) view.findViewById(R.id.image_status_one);
         final Button btnStart = (Button)view.findViewById(R.id.btn_delivery_start);
         final Button btnEnd = (Button)view.findViewById(R.id.btn_delivery_end);
         btnEnd.setEnabled(false);
@@ -45,6 +48,11 @@ public class DelivererHeaderFragment extends Fragment {
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        imageStatusOne.setImageResource(R.color.colorstatusblue);
+                        btnStart.setBackgroundResource(R.color.chatting_background);
+                        btnEnd.setBackgroundResource(R.color.fontcolor);
+                        btnEnd.setEnabled(true);
+                        btnStart.setEnabled(false);
                         Toast.makeText(getContext(), "배송 시작", Toast.LENGTH_SHORT).show();
                     }
 
@@ -53,8 +61,6 @@ public class DelivererHeaderFragment extends Fragment {
                         Toast.makeText(getContext(), "배송 시작 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
-                btnStart.setEnabled(false);
-                btnEnd.setEnabled(true);
             }
         });
 
@@ -62,10 +68,13 @@ public class DelivererHeaderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //15. 배송 상태 변경하기
+                final ImageView imageStatusTwo = (ImageView) view.findViewById(R.id.image_status_two);
                 ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + END_DELIVERY);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        imageStatusTwo.setImageResource(R.color.colorstatusblue);
+                        btnEnd.setBackgroundResource(R.color.chatting_background);
                         Toast.makeText(getContext(), "배송 완료", Toast.LENGTH_SHORT).show();
                     }
 
@@ -83,7 +92,7 @@ public class DelivererHeaderFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:010-0000-0000"));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-0000-0000"));
                 startActivity(intent);
             }
         });
