@@ -30,9 +30,6 @@ import com.sender.team.sender.request.OtherUserRequest;
 import com.sender.team.sender.request.ReverseGeocodingRequest;
 import com.sender.team.sender.request.SenderInfoRequest;
 
-import java.text.ParseException;
-import java.util.Calendar;
-
 public class AcceptActivity extends Activity {
 
     public static final String STATE_CONTRACT_BEFORE = "1";
@@ -80,17 +77,13 @@ public class AcceptActivity extends Activity {
                                 Glide.with(AcceptActivity.this)
                                         .load(data.getPic()[0].getFileUrl())
                                         .into(imageProduct);
-                                try {
-                                    Calendar ca = Calendar.getInstance();
-                                    ca.setTime(Utils.convertStringToTime(data.getArr_time()));
 
-                                    textWord.setText(start + " -> " + end + "\n" +
-                                            ca.get(Calendar.HOUR_OF_DAY) + ":" + ca.get(Calendar.MINUTE) + " 도착 / " +
-                                            data.getInfo() + " / " + data.getPrice() + "원");
-                                    textDetail.setText(data.getName() + "님으로부터 배송요청이 왔습니다\n수락하시겠습니까?");
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+
+                                textWord.setText(start + " -> " + end + "\n" +
+                                        Utils.getCurrentTime(data.getArr_time()) + " 도착 / " +
+                                        data.getInfo() + " / " + data.getPrice() + "원");
+                                textDetail.setText(data.getName() + "님으로부터 배송요청이 왔습니다\n수락하시겠습니까?");
+
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AcceptActivity.this, android.R.style.Theme_Material_Light_Dialog_Alert);
                                 builder.setTitle("배송요청");
@@ -101,7 +94,7 @@ public class AcceptActivity extends Activity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         //13.계약 체결하기
-                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), "" + PropertyManager.getInstance().getReceiver_id(),null, STATE_CONTRACT_SUCCESS);//1자리에 contract_id 들어가야함
+                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), "" + PropertyManager.getInstance().getReceiver_id(), null, STATE_CONTRACT_SUCCESS);//1자리에 contract_id 들어가야함
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
                                             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {

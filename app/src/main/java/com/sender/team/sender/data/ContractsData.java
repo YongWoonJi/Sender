@@ -1,19 +1,30 @@
 package com.sender.team.sender.data;
 
 public class ContractsData {
+    private String delivering_id;
+    private String sending_id;
+    private String id;
+    private String name;
+    private String contract_id;
     private String here_lat;
     private String here_lon;
-    private String name;
-    private String addr_lon;
-    private int price;
     private String addr_lat;
-    private String memo;
-    private String arr_time;
-    private ContractsDataPic[] pic;
-    private String sending_id;
-    private String contract_id;
+    private String addr_lon;
     private String info;
+    private String arr_time;
     private String rec_phone;
+    private int price;
+    private String memo;
+    private ContractsDataPic[] pic;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getSending_id() {
         return sending_id;
@@ -31,7 +42,6 @@ public class ContractsData {
         this.delivering_id = delivering_id;
     }
 
-    private String delivering_id;
 
     public String getAddr_lon() {
         return this.addr_lon;

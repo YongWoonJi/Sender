@@ -79,8 +79,10 @@ public class MyGcmListenerService extends GcmListenerService {
                 case TYPE_CHATTING :
                     break;
                 case TYPE_CONFIRM :
+
                     break;
                 case TYPE_REJECT :
+
                     break;
                 default :
                     break;
