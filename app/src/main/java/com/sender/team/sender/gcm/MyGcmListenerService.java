@@ -224,7 +224,7 @@ public class MyGcmListenerService extends GcmListenerService {
     }
 
     private void deliveryReject(Bundle data){
-        sendNotification(data.getString("type"));
+            sendNotification(data.getString("type"));
     }
 
 

@@ -21,7 +21,7 @@ public class ChattingReceiveRequest extends AbstractRequest<NetworkResult<List<C
     Request request;
     public ChattingReceiveRequest(Context context, String sendId, String contractId){
         HttpUrl url = getSecureUrlBuilder()
-                .port(4433)
+                .port(443)
                 .addPathSegment("chattings")
 //                .addQueryParameter("lastDate", date)
                 .addQueryParameter("senderId", sendId)

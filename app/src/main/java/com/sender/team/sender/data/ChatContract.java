@@ -10,7 +10,6 @@ public class ChatContract {
         public static final String TABLE = "chatuser";
         public static final String COLUMN_SERVER_ID = "sid";
         public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_PROFILE_IMAGE = "profileimageurl";
         public static final String COLUMN_ADDRESS = "address";
         public static final String COLUMN_LAST_MESSAGE_ID = "lastid";
@@ -24,6 +23,7 @@ public class ChatContract {
 
         public static final String TABLE = "chatmessage";
         public static final String COLUMN_USER_ID = "uid";
+        public static final String COLUMN_CONTRACT_ID = "contractid";
         public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_MESSAGE = "message";
         public static final String COLUMN_IMAGE = "imageurl";

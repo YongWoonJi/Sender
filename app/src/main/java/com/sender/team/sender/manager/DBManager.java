@@ -41,7 +41,6 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 ChatContract.ChatUser.COLUMN_SERVER_ID + " INTEGER," +
                 ChatContract.ChatUser.COLUMN_NAME + " TEXT," +
-//                ChatContract.ChatUser.COLUMN_EMAIL + " TEXT NOT NULL," +
                 ChatContract.ChatUser.COLUMN_PROFILE_IMAGE + " TEXT," +
                 ChatContract.ChatUser.COLUMN_ADDRESS + " TEXT," +
                 ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID + " INTEGER);";
@@ -50,6 +49,7 @@ public class DBManager extends SQLiteOpenHelper {
         sql = "CREATE TABLE " + ChatContract.ChatMessage.TABLE + "(" +
                 ChatContract.ChatMessage._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 ChatContract.ChatMessage.COLUMN_USER_ID + " INTEGER," +
+                ChatContract.ChatMessage.COLUMN_CONTRACT_ID + " INTEGER, " +
                 ChatContract.ChatMessage.COLUMN_TYPE + " INTEGER," +
                 ChatContract.ChatMessage.COLUMN_MESSAGE + " TEXT," +
                 ChatContract.ChatMessage.COLUMN_IMAGE + " TEXT," +
@@ -72,19 +72,6 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     ContentValues values = new ContentValues();
-
-//    public long addContractInfo(ContractsInfoData data, String address){
-//        SQLiteDatabase db = getWritableDatabase();
-//        values.clear();
-//        values.put(ChatContract.ContractInfo.COLUMN_CONTRACT_ID, data.getContract_id());
-//        values.put(ChatContract.ContractInfo.COLUMN_SENDING_ID, data.getSending_id());
-//        values.put(ChatContract.ContractInfo.COLUMN_SENDING_USER_ID, data.getSending_user_id());
-//        values.put(ChatContract.ContractInfo.COLUMN_DELIVERING_ID, data.getDeliverer_id());
-//        values.put(ChatContract.ContractInfo.COLUMN_DELIVERING_USER_ID, data.getDelivering_user_id());
-//        values.put(ChatContract.ContractInfo.COLUMN_ADDRESS, address);
-//        return db.insert(ChatContract.ChatUser.TABLE, null, values);
-//    }
-
 
     public long addUser(UserData user) {
         if (getUserId(Long.parseLong(user.getUser_id())) == -1) {
@@ -114,6 +101,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         values.clear();
         values.put(ChatContract.ChatMessage.COLUMN_USER_ID, (long) uid);
+        values.put(ChatContract.ChatMessage.COLUMN_CONTRACT_ID, user.getContractId());
         values.put(ChatContract.ChatMessage.COLUMN_TYPE, type);
         values.put(ChatContract.ChatMessage.COLUMN_MESSAGE, message);
         values.put(ChatContract.ChatMessage.COLUMN_IMAGE, image);
@@ -165,6 +153,7 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser.COLUMN_SERVER_ID,
                 ChatContract.ChatUser.COLUMN_NAME,
                 ChatContract.ChatUser.COLUMN_PROFILE_IMAGE,
+                ChatContract.ChatMessage.COLUMN_CONTRACT_ID,
                 ChatContract.ChatMessage.COLUMN_MESSAGE,
                 ChatContract.ChatMessage.COLUMN_CREATED};
         String sort = ChatContract.ChatUser.COLUMN_NAME + " COLLATE LOCALIZED ASC";
@@ -190,8 +179,8 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatMessage.COLUMN_MESSAGE,
                 ChatContract.ChatMessage.COLUMN_IMAGE,
                 ChatContract.ChatMessage.COLUMN_CREATED};
-        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ?";
-        String[] args = {"" + userid};
+        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ? AND " + ChatContract.ChatMessage.COLUMN_CONTRACT_ID + " = ?";
+        String[] args = {"" + userid, user.getContractId()};
         String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
         SQLiteDatabase db = getReadableDatabase();
         return db.query(ChatContract.ChatMessage.TABLE, columns, selection, args, null, null, sort);
@@ -215,10 +204,11 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatMessage.COLUMN_MESSAGE,
                 ChatContract.ChatMessage.COLUMN_IMAGE,
                 ChatContract.ChatMessage.COLUMN_CREATED};
-        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ?";
-        String[] args = {"" + userid};
+        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ? AND " + ChatContract.ChatMessage.COLUMN_CONTRACT_ID + " = ?";
+        String[] args = {"" + userid, String.valueOf(user.getContractId())};
         String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
         SQLiteDatabase db = getReadableDatabase();
         return db.query(ChatContract.ChatMessage.TABLE, columns, selection, args, null, null, sort);
     }
+
 }

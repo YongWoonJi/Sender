@@ -6,7 +6,6 @@ import android.app.KeyguardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -108,13 +107,13 @@ public class AcceptActivity extends Activity {
                                                     public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
                                                         UserData user = result.getResult();
                                                         user.setAddress(start + " -> " + end);
+                                                        user.setContractId(data.getContract_id());
                                                         DBManager.getInstance().addMessage(user, null, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
-                                                        Log.i("AAAAA", "여기까지옴 : " + user.getUser_id() + ", " + user.getName() + ", " + user.getFileUrl());
-                                                        Toast.makeText(AcceptActivity.this, "계약성공: " + result, Toast.LENGTH_SHORT).show();
                                                         Intent intent = new Intent(AcceptActivity.this, SplashActivity.class);
                                                         intent.putExtra(ChattingActivity.EXTRA_USER, user);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         startActivity(intent);
+                                                        Toast.makeText(AcceptActivity.this, "계약성공: " + result, Toast.LENGTH_SHORT).show();
                                                         finish();
                                                     }
 

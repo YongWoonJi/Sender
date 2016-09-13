@@ -61,22 +61,19 @@ public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //            });
 //        }
         clh.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(clh.getContext(), ChattingActivity.class);
-                    if (clh.getData().getType() == ChattingListData.TYPE_SENDER) {
-                        intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.SEND_HEADER);
-                    } else if (clh.getData().getType() == ChattingListData.TYPE_DELIVERER) {
-                        intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.DELIVERER_HEADER);
-                    }
-                    //////////////////////////// 임의코드 지워야함...
-//                    intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.SEND_HEADER);
-//                intent.putExtra(ChattingActivity.RECEIVER_NAME, data.get(position).getName());
-//                intent.putExtra(ChattingActivity.RECEIVER_IMAGE, data.get(position).getImageUrl());
-                    intent.putExtra(ChattingActivity.EXTRA_CHATTINGLIST_DATA, data.get(position));
-                    clh.getContext().startActivity(intent);
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(clh.getContext(), ChattingActivity.class);
+                if (clh.getData().getType() == ChattingListData.TYPE_SENDER) {
+                    intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.SEND_HEADER);
+                } else if (clh.getData().getType() == ChattingListData.TYPE_DELIVERER) {
+                    intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.DELIVERER_HEADER);
                 }
-            });
+
+                intent.putExtra(ChattingActivity.EXTRA_CHATTINGLIST_DATA, data.get(position));
+                clh.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

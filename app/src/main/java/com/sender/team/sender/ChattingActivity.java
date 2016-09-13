@@ -34,7 +34,6 @@ import com.sender.team.sender.gcm.MyGcmListenerService;
 import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
-import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ChattingSendRequest;
 
 import java.io.File;
@@ -52,8 +51,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     public static final String EXTRA_USER = "user";
     public static final String EXTRA_CHATTINGLIST_DATA = "main_user";
 
-    public static final String RECEIVER_NAME = "receiverName";
-    public static final String RECEIVER_IMAGE = "receiverImage";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -68,11 +65,10 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     ImageView imageChatPicture;
 
     ChattingAdapter mAdapter;
-    String name;
-    String imgUrl;
 
     UserData user;
     ChattingListData cUser;
+    private boolean isUserDataEmpty = false;
 
     LocalBroadcastManager mLBM;
 
@@ -87,8 +83,13 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
+
         user = (UserData) getIntent().getSerializableExtra(EXTRA_USER);
-        cUser = (ChattingListData) getIntent().getSerializableExtra(EXTRA_CHATTINGLIST_DATA);
+        if (user == null) {
+            cUser = (ChattingListData) getIntent().getSerializableExtra(EXTRA_CHATTINGLIST_DATA);
+            isUserDataEmpty = true;
+        }
+
 
         mAdapter = new ChattingAdapter();
         listview.setAdapter(mAdapter);
@@ -98,16 +99,13 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
 
         Intent intent = getIntent();
         int i = intent.getIntExtra(HEADER_TYPE, 0);
-        name = intent.getStringExtra(RECEIVER_NAME);
-        imgUrl = intent.getStringExtra(RECEIVER_IMAGE);
 
         switch (i){
             case SEND_HEADER :{
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new SendHeaderFragment()).commit();
                 break;
             }
-            case DELIVERER_HEADER :
-            {
+            case DELIVERER_HEADER : {
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new DelivererHeaderFragment()).commit();
                 break;
             }
@@ -188,7 +186,16 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         if (!TextUtils.isEmpty(message)) {
 //            String userUrl = PropertyManager.getInstance().getUserData().getFileUrl();
 
-            ChattingSendRequest request = new ChattingSendRequest(this, "" + PropertyManager.getInstance().getReceiver_id() ,message, uploadFile);
+            String contractId;
+            String receiverId;
+            if (isUserDataEmpty) {
+                contractId = String.valueOf(cUser.getContractId());
+                receiverId = String.valueOf(cUser.getId());
+            } else {
+                contractId = user.getContractId();
+                receiverId = user.getUser_id();
+            }
+            ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId ,message, uploadFile);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -332,6 +339,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             }
         } else if (requestCode == RC_CATPURE_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
+                path = savedFile.getAbsolutePath();
                 uploadFile = savedFile;
 //                Glide.with(this)
 //                        .load(uploadFile)

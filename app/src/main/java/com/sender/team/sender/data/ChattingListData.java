@@ -11,6 +11,7 @@ public class ChattingListData implements Serializable{
     public static final int TYPE_EMPTY = 2;
 
     private long id;
+    private long contractId;
     private String name;
     private String message;
     private String time;
@@ -23,6 +24,14 @@ public class ChattingListData implements Serializable{
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(long contractId) {
+        this.contractId = contractId;
     }
 
     public String getName() {

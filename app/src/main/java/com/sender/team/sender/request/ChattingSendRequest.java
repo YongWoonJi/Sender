@@ -20,25 +20,19 @@ import okhttp3.RequestBody;
 public class ChattingSendRequest extends AbstractRequest<NetworkResult<String>> {
     MediaType mediaType = MediaType.parse("image/*");
     Request request;
-    public ChattingSendRequest(Context context, String receiver_id, String message, File pic){
+    public ChattingSendRequest(Context context, String contract_id, String receiver_id, String message, File pic){
         HttpUrl url = getBaseUrlBuilder()
-                .port(8080)
+                .port(80)
                 .addPathSegment("notification")
                 .addPathSegment("chattings")
                 .build();
 
-        MultipartBody.Builder builder;
-
-        if (pic == null){
-            builder = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("receiver_id", receiver_id)
-                    .addFormDataPart("message", message);
-        } else {
-            builder = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("receiver_id", receiver_id)
-                    .addFormDataPart("message", message);
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("contract_id", contract_id)
+                .addFormDataPart("receiver_id", receiver_id)
+                .addFormDataPart("message", message);
+        if (pic != null) {
             builder.addFormDataPart("pic", pic.getName(), RequestBody.create(mediaType, pic));
         }
 

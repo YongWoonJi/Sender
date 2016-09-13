@@ -14,6 +14,15 @@ public class UserData implements Serializable {
     private String introduction;
     private float star;
     private String address;
+    private String contractId;
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
 
     public String getAddress() {
         return address;
