@@ -21,7 +21,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,9 +59,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     @BindView(R.id.rv_list2)
     RecyclerView listview;
 
-    @BindView(R.id.btn_message_send)
-    Button messageSend;
-
     @BindView(R.id.edit_message_send)
     EditText editMessage;
 
@@ -72,6 +68,8 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     ChattingAdapter mAdapter;
     String name;
     String imgUrl;
+
+    UserData user;
 
     LocalBroadcastManager mLBM;
 
@@ -87,8 +85,8 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
         /////////////////////////////////////////////////////
-        user = PropertyManager.getInstance().getUserData();
 
+        user = (UserData) getIntent().getSerializableExtra(EXTRA_USER);
         mLBM = LocalBroadcastManager.getInstance(this);
 
         Intent intent = getIntent();
@@ -182,15 +180,13 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     }
 
 
-    UserData user;
-
     @OnClick(R.id.btn_message_send)
     public void onClickSendMessage(){
         final String message = editMessage.getText().toString();
         if (!TextUtils.isEmpty(message)){
 //            String userUrl = PropertyManager.getInstance().getUserData().getFileUrl();
 
-            ChattingSendRequest request = new ChattingSendRequest(this, "1",message, uploadFile);
+            ChattingSendRequest request = new ChattingSendRequest(this, "" + PropertyManager.getInstance().getReceiver_id() ,message, uploadFile);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -198,23 +194,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                         DBManager.getInstance().addMessage(user, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
                         updateMessage();
 
-
-//                        ChattingReceiveRequest receiveRequest = new ChattingReceiveRequest(ChattingActivity.this, Utils.getCurrentDate());
-//                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, receiveRequest, new NetworkManager.OnResultListener<NetworkResult<List<ChattingReceiveData>>>() {
-//                            @Override
-//                            public void onSuccess(NetworkRequest<NetworkResult<List<ChattingReceiveData>>> request, NetworkResult<List<ChattingReceiveData>> result) {
-//                                DBManager.getInstance().addMessage(result.getResult().get(0).getSender() , result.getResult().get(0).getSender().getFileUrl(), ChatContract.ChatMessage.TYPE_RECEIVE,
-//                                        result.getResult().get(0).getMessage(), new Date());
-//                                user = result.getResult().get(0).getSender();
-//                                updateMessage();
-//                                mAdapter.setRecieveData(uploadFile, name, imgUrl);
-//                            }
-//
-//                            @Override
-//                            public void onFail(NetworkRequest<NetworkResult<List<ChattingReceiveData>>> request, NetworkResult<List<ChattingReceiveData>> result, String errorMessage, Throwable e) {
-//                                Toast.makeText(ChattingActivity.this, "fail r", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
                     }
                 }
 
@@ -283,11 +262,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         Intent intent = new Intent(this, ChattingProfileActivity.class);
         startActivity(intent);
     }
-
-//    private void updateMessage(ChattingReceiveData data) {
-//        Cursor c = DBManager.getInstance().getChatMessage(data);
-//        mAdapter.changeCursor(c);
-//    }
 
     private static final int RC_GET_IMAGE = 1;
     private static final int RC_CATPURE_IMAGE = 2;

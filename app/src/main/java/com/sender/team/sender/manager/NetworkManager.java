@@ -160,7 +160,7 @@ public class NetworkManager {
     public <T> T getNetworkDataSync(int type, NetworkRequest<T> request) throws IOException {
         if (type == CLIENT_STANDARD) {
             return request.processSync(client);
-        } else if (type == CLIENT_STANDARD) {
+        } else if (type == CLIENT_TMAP) {
             return request.processSync(client_tmap);
         } else {
             throw new IllegalArgumentException("invalid data type");

@@ -33,18 +33,18 @@ import com.sender.team.sender.ChattingActivity;
 import com.sender.team.sender.MainActivity;
 import com.sender.team.sender.R;
 import com.sender.team.sender.SplashActivity;
+import com.sender.team.sender.Utils;
+import com.sender.team.sender.data.ChatContract;
 import com.sender.team.sender.data.ChattingReceiveData;
-import com.sender.team.sender.data.ContractsInfoData;
 import com.sender.team.sender.data.NetworkResult;
-import com.sender.team.sender.data.ReverseGeocodingData;
-import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
-import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
-import com.sender.team.sender.request.ContractsInfoRequest;
-import com.sender.team.sender.request.OtherUserRequest;
-import com.sender.team.sender.request.ReverseGeocodingRequest;
+import com.sender.team.sender.request.ChattingReceiveRequest;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.List;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -52,6 +52,7 @@ public class MyGcmListenerService extends GcmListenerService {
     public static final String ACTION_CHAT = "com.sender.team.sender.action.chatmessage";
     public static final String EXTRA_CHAT_USER = "chatuser";
     public static final String EXTRA_RESULT = "result";
+    public static final String EXTRA_REJECT = "reject";
 
     public static final String TYPE_DELIVERY = "delivery";
     public static final String TYPE_CHATTING = "chat";
@@ -77,12 +78,13 @@ public class MyGcmListenerService extends GcmListenerService {
                     popupDeliveryRequest(data);
                     break;
                 case TYPE_CHATTING :
+                    chattingReceive();
                     break;
                 case TYPE_CONFIRM :
 
                     break;
                 case TYPE_REJECT :
-
+                    deliveryReject(data);
                     break;
                 default :
                     break;
@@ -124,7 +126,27 @@ public class MyGcmListenerService extends GcmListenerService {
         }
     }
 
-
+    private void chattingReceive(){
+        ChattingReceiveRequest request = new ChattingReceiveRequest(this, "" + PropertyManager.getInstance().getReceiver_id(), "" + PropertyManager.getInstance().getContractIdData().getContract_id());
+        try {
+            NetworkResult<List<ChattingReceiveData>> result = NetworkManager.getInstance().getNetworkDataSync(NetworkManager.CLIENT_STANDARD, request);
+            List<ChattingReceiveData> list = result.getResult();
+            for (ChattingReceiveData c : list) {
+                DBManager.getInstance().addMessage(c.getSender(), c.getSender().getFileUrl(), ChatContract.ChatMessage.TYPE_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
+                Intent i = new Intent(ACTION_CHAT);
+                i.putExtra(EXTRA_CHAT_USER, c.getSender());
+                mLBM.sendBroadcastSync(i);
+                boolean processed = i.getBooleanExtra(EXTRA_RESULT, false);
+                if (!processed) {
+                    sendNotification(c);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void sendNotification(ChattingReceiveData m) {
         Intent intent = new Intent(this, SplashActivity.class);
@@ -182,70 +204,74 @@ public class MyGcmListenerService extends GcmListenerService {
 
     }
 
-
-    public void searchDelivererInfo(String contractId) {
-        ContractsInfoRequest request = new ContractsInfoRequest(this,contractId);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractsInfoData>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetworkResult<ContractsInfoData>> request, NetworkResult<ContractsInfoData> result) {
-                String id = String.valueOf(result.getResult().getDelivering_user_id());
-                OtherUserRequest otherUserRequest = new OtherUserRequest(MyGcmListenerService.this,id);
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, otherUserRequest, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                        UserData data = result.getResult();
-                        makeAddress();
-                        data.setAddress(address);
-                        DBManager.getInstance().addUser(data);
-                    }
-
-                    @Override
-                    public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onFail(NetworkRequest<NetworkResult<ContractsInfoData>> request, NetworkResult<ContractsInfoData> result, String errorMessage, Throwable e) {
-
-            }
-        });
+    private void deliveryReject(Bundle data){
+            sendNotification(data.getString("type"));
     }
 
-    String address;
-    public String makeAddress(){
-        String here_lat = PropertyManager.getInstance().getHere_lat();
-        String here_lng = PropertyManager.getInstance().getHere_lng();
-        final String addr_lat = PropertyManager.getInstance().getAddr_lat();
-        final String addr_lng = PropertyManager.getInstance().getAddr_lng();
 
-        ReverseGeocodingRequest request = new ReverseGeocodingRequest(this, here_lat, here_lng);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
-            @Override
-            public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
-                final String start = result.getAddressInfo().getLegalDong();
-                ReverseGeocodingRequest request2 = new ReverseGeocodingRequest(MyGcmListenerService.this,addr_lat, addr_lng);
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
-                        String end = result.getAddressInfo().getLegalDong();
-                        address =  start + " > " + end;
-                    }
-
-                    @Override
-                    public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
-
-            }
-        });
-    return null;
-    }
+//    public void searchDelivererInfo(String contractId) {
+//        ContractsInfoRequest request = new ContractsInfoRequest(this,contractId);
+//        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractsInfoData>>() {
+//            @Override
+//            public void onSuccess(NetworkRequest<NetworkResult<ContractsInfoData>> request, NetworkResult<ContractsInfoData> result) {
+//                String id = String.valueOf(result.getResult().getDelivering_user_id());
+//                OtherUserRequest otherUserRequest = new OtherUserRequest(MyGcmListenerService.this,id);
+//                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, otherUserRequest, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+//                    @Override
+//                    public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+//                        UserData data = result.getResult();
+//                        makeAddress();
+//                        data.setAddress(address);
+//                        DBManager.getInstance().addUser(data);
+//                    }
+//
+//                    @Override
+//                    public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
+//
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onFail(NetworkRequest<NetworkResult<ContractsInfoData>> request, NetworkResult<ContractsInfoData> result, String errorMessage, Throwable e) {
+//
+//            }
+//        });
+//    }
+//
+//    String address;
+//    public String makeAddress(){
+//        String here_lat = PropertyManager.getInstance().getHere_lat();
+//        String here_lng = PropertyManager.getInstance().getHere_lng();
+//        final String addr_lat = PropertyManager.getInstance().getAddr_lat();
+//        final String addr_lng = PropertyManager.getInstance().getAddr_lng();
+//
+//        ReverseGeocodingRequest request = new ReverseGeocodingRequest(this, here_lat, here_lng);
+//        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+//            @Override
+//            public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
+//                final String start = result.getAddressInfo().getLegalDong();
+//                ReverseGeocodingRequest request2 = new ReverseGeocodingRequest(MyGcmListenerService.this,addr_lat, addr_lng);
+//                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+//                    @Override
+//                    public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
+//                        String end = result.getAddressInfo().getLegalDong();
+//                        address =  start + " > " + end;
+//                    }
+//
+//                    @Override
+//                    public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
+//
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
+//
+//            }
+//        });
+//    return null;
+//    }
 
 }

@@ -30,7 +30,7 @@ public class BoardRequest extends AbstractRequest<NetworkResult<String>> {
         MultipartBody.Builder builder;
             builder = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("nickname", name)
+                    .addFormDataPart("name", name)
                     .addFormDataPart("esType", esType)
                     .addFormDataPart("boardType", boardType)
                     .addFormDataPart("title", title)

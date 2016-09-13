@@ -156,6 +156,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
+
     private void initData() {
             DeliveringHistoryRequest request = new DeliveringHistoryRequest(this);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DeliveringHistoryData>>() {
