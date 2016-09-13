@@ -123,11 +123,4 @@ public class PropertyManager {
     public String getAddr_lng() {
         return addr_lng;
     }
-
-    public void setAddress(String here_lat, String here_lng, String addr_lat, String addr_lng){
-        this.here_lat = here_lat;
-        this.here_lng = here_lng;
-        this.addr_lng = addr_lng;
-        this.addr_lat = addr_lat;
-    }
 }

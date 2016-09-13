@@ -14,8 +14,8 @@ public class DelivererData {
     private float star;
     private String originalFilename;
     private String fileUrl;
-    private String startingPoint;
-    private String destination;
+    private String here_unit;
+    private String next_unit;
 
     public String getPhone() {
         return phone;
@@ -121,19 +121,19 @@ public class DelivererData {
         this.originalFilename = originalFilename;
     }
 
-    public String getStartingPoint() {
-        return startingPoint;
+    public String getHere_unit() {
+        return here_unit;
     }
 
-    public void setStartingPoint(String startingPoint) {
-        this.startingPoint = startingPoint;
+    public void setHere_unit(String here_unit) {
+        this.here_unit = here_unit;
     }
 
-    public String getDestination() {
-        return destination;
+    public String getNext_unit() {
+        return next_unit;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setNext_unit(String next_unit) {
+        this.next_unit = next_unit;
     }
 }

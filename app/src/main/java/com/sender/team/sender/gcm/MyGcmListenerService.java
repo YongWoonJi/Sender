@@ -81,7 +81,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     chattingReceive();
                     break;
                 case TYPE_CONFIRM :
-
+                    confirmNotification(data.getString("type"));
                     break;
                 case TYPE_REJECT :
                     deliveryReject(data);
@@ -168,6 +168,26 @@ public class MyGcmListenerService extends GcmListenerService {
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
     }
+
+    private void confirmNotification(String message) {
+        Intent intent = new Intent(this, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker(message)
+                .setContentTitle(message)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
 
     private void sendNotification(String message) {
         Intent intent = new Intent(this, MainActivity.class);

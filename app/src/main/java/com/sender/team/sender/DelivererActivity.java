@@ -40,11 +40,13 @@ import com.sender.team.sender.data.DeliveringIdData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.POI;
 import com.sender.team.sender.data.POIResult;
+import com.sender.team.sender.data.ReverseGeocodingData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.DelivererRegisterRequest;
 import com.sender.team.sender.request.POISearchRequest;
+import com.sender.team.sender.request.ReverseGeocodingRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -342,35 +344,64 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
 
+
+
     AlertDialog dialog;
+    String hereAddr, nextAddr, depTime, arrTime;
     private void clickSend() {
         AlertDialog.Builder builder = new AlertDialog.Builder(DelivererActivity.this);
         builder.setMessage("입력을 완료하시겠습니까?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String depTime = Utils.getCurrentDate() + " " + editStartHour.getText().toString() + ":" + editStartMin.getText().toString() + ":00";
-                String arrTime = Utils.getCurrentDate() + " " + editEndHour.getText().toString() + ":" + editEndMin.getText().toString() + ":00";
-                DelivererRegisterRequest request = new DelivererRegisterRequest(DelivererActivity.this,
-                         "" + poiStart.getLatitude(), "" + poiStart.getLongitude(),
-                        "" + poiEnd.getLatitude(), "" + poiEnd.getLongitude(), depTime, arrTime);
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DeliveringIdData>>() {
+                depTime = Utils.getCurrentDate() + " " + editStartHour.getText().toString() + ":" + editStartMin.getText().toString() + ":00";
+                arrTime = Utils.getCurrentDate() + " " + editEndHour.getText().toString() + ":" + editEndMin.getText().toString() + ":00";
+
+                ReverseGeocodingRequest geoRequest = new ReverseGeocodingRequest(DelivererActivity.this,  "" + poiStart.getLatitude(), "" + poiStart.getLongitude());
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, geoRequest, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
                     @Override
-                    public void onSuccess(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result) {
+                    public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
                         if (result != null) {
-                            PropertyManager.getInstance().setDeliveringData(result.getResult());
-                            Toast.makeText(DelivererActivity.this, "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(DelivererActivity.this, NotificationService.class);
-//                            startService(intent);
-                            finish();
+                            hereAddr = result.getAddressInfo().getLegalDong();
+                            ReverseGeocodingRequest geoRequest2 = new ReverseGeocodingRequest(DelivererActivity.this,  "" + poiEnd.getLatitude(), "" + poiEnd.getLongitude());
+                            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, geoRequest2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
+                                @Override
+                                public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
+                                    nextAddr = result.getAddressInfo().getLegalDong();
+                                    DelivererRegisterRequest req = new DelivererRegisterRequest(DelivererActivity.this,
+                                            "" + poiStart.getLatitude(), "" + poiStart.getLongitude(), hereAddr,
+                                            "" + poiEnd.getLatitude(), "" + poiEnd.getLongitude(), nextAddr, depTime, arrTime);
+                                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, req, new NetworkManager.OnResultListener<NetworkResult<DeliveringIdData>>() {
+                                        @Override
+                                        public void onSuccess(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result) {
+                                            if (result != null) {
+                                                PropertyManager.getInstance().setDeliveringData(result.getResult());
+                                                Toast.makeText(DelivererActivity.this, "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFail(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result, String errorMessage, Throwable e) {
+
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
+
+                                }
+                            });
                         }
                     }
 
                     @Override
-                    public void onFail(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result, String errorMessage, Throwable e) {
+                    public void onFail(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result, String errorMessage, Throwable e) {
 
                     }
                 });
+
             }
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

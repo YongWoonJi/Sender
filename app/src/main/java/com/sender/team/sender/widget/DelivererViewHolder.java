@@ -91,12 +91,12 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder implements Chec
     }
 
     DelivererData data;
-    public void setDelivererData(final DelivererData data){
+    public void setDelivererData(DelivererData data){
         this.data = data;
         Glide.with(MyApplication.getContext()).load(data.getFileUrl()).into(delivererImage);
         name.setText(data.getName());
         rating.setText(""+data.getStar());
-        location.setText(data.getStartingPoint() + " > "+ data.getDestination());
+        location.setText(data.getHere_unit() + " > "+ data.getNext_unit());
 
     }
 }
