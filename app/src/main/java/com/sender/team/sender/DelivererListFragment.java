@@ -1,16 +1,16 @@
 package com.sender.team.sender;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,12 +86,27 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     }
 
     private void clickSend() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("요청하시겠습니까?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_leave, null, false);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AppTheme_Dialog_Transparent);
+        builder.setView(view);
+        ImageView imageView = (ImageView) view.findViewById(R.id.image_dialog);
+        imageView.setImageResource(R.drawable.pop_logo03);
+        TextView textView = (TextView) view.findViewById(R.id.text_dialog);
+        textView.setText("요청하시겠습니까?");
+        TextView textContents = (TextView) view.findViewById(R.id.text_dialog_two);
+        textContents.setVisibility(View.GONE);
+        Button btn = (Button) view.findViewById(R.id.btn_leave_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View view) {
+                dialog.dismiss();
+                DialogShow(deliverId);
+            }
+        });
+        btn= (Button) view.findViewById(R.id.btn_leave_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 int contractId = PropertyManager.getInstance().getContractIdData().getContract_id();
                 ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), "" + PropertyManager.getInstance().getReceiver_id(), PropertyManager.getInstance().getOtherDelivererId(), null);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
@@ -110,29 +125,10 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                         Toast.makeText(getActivity(), "fail : " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-
-            }
-        });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                DialogShow(deliverId);
             }
         });
 
         dialog = builder.create();
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
-                    DialogShow(deliverId);
-                }
-                return false;
-            }
-        });
         dialog.show();
     }
 
@@ -170,25 +166,22 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             }
         });
 
-//        List<ReviewDataTemp> list = new ArrayList<>();
-//        ReviewDataTemp data;
-//        for (int i = 0; i < 10; i++) {
-//            data = new ReviewDataTemp();
-//            data.name = "정현맨" + i;
-//            data.message = "좋아요 ㅎㅎ";
-//            data.rating = 8.9f;
-//            list.add(data);
-//        }
-//
-//        adapter.setReviewData(list);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("DELIVERER ID");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AppTheme_Dialog_Transparent);
         builder.setView(view);
-        builder.setPositiveButton("요청하기", new DialogInterface.OnClickListener() {
+        Button btn = (Button) view.findViewById(R.id.btn_review_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View view) {
                 PropertyManager.getInstance().setReceiver_id(mAdapter.getId(position));
+                dialog.dismiss();
                 clickSend();
+            }
+        });
+        btn = (Button) view.findViewById(R.id.btn_review_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
         dialog = builder.create();

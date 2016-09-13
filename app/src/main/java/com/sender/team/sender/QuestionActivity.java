@@ -13,8 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -227,21 +230,37 @@ public class QuestionActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_question)
     public void onClickQuestion() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuestionActivity.this);
-        builder.setMessage("위 내용을 등록하시겠습니까?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_leave, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog_Transparent);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+
+        TextView textView = (TextView) view.findViewById(R.id.text_dialog);
+        textView.setText("위 내용을 등록하시겠습니까?");
+
+        TextView textContents = (TextView) view.findViewById(R.id.text_dialog_two);
+        textContents.setVisibility(View.GONE);
+
+        ImageView imageView = (ImageView) view.findViewById(R.id.image_dialog);
+        imageView.setImageResource(R.drawable.pop_logo04);
+        dialog.show();
+
+
+        Button btn = (Button) view.findViewById(R.id.btn_leave_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View view) {
                 sendUploadRequest();
             }
         });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+        btn = (Button) view.findViewById(R.id.btn_leave_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(QuestionActivity.this, "취소되었습니다", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
-        builder.create().show();
     }
 
 

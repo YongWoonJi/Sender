@@ -3,7 +3,7 @@
     <string name="facebook_app_id">1750407855222125</string>
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>
-    
+
     <!-- MainActivity -->
     <string name="empty_chatting_list">채팅목록이 없습니다</string>
 

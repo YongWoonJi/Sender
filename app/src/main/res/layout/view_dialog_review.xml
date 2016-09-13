@@ -1,19 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-     <android.support.v7.widget.RecyclerView
-         android:id="@+id/rv_view_dialog"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"/>
+    android:layout_height="wrap_content">
 
-     <TextView
+     <LinearLayout
          android:layout_width="match_parent"
-         android:layout_height="@dimen/review_columns_hieght"
-         android:layout_below="@+id/textView29"
-         android:layout_marginTop="10dp"
-         android:id="@+id/text_empty_my_review"
-         android:background="@color/reviewlistbg"
-         android:visibility="gone"
-         android:gravity="center" />
-</FrameLayout>
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         android:layout_marginTop="36dp"
+         android:id="@+id/linearLayout8"
+         android:background="@color/whitebg"
+         android:weightSum="1">
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="DELIVERER의 지난 배송 내역"
+              android:id="@+id/text_dialog"
+              android:layout_gravity="center_horizontal"
+              android:gravity="center"
+              android:layout_marginTop="50dp"
+              android:textSize="12sp"
+              android:textColor="@color/black" />
+
+          <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent">
+               <android.support.v7.widget.RecyclerView
+                   android:id="@+id/rv_view_dialog"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="16dp"
+                   android:layout_marginRight="16dp"
+                   android:layout_marginTop="10dp" />
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="@dimen/review_columns_hieght"
+                   android:layout_below="@+id/textView29"
+                   android:layout_marginTop="10dp"
+                   android:id="@+id/text_empty_my_review"
+                   android:background="@color/reviewlistbg"
+                   android:visibility="gone"
+                   android:gravity="center" />
+          </FrameLayout>
+
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:id="@+id/imageView53"
+              android:layout_gravity="center_horizontal"
+              android:background="@color/fontcolor" />
+
+          <LinearLayout
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+               <Button
+                   android:layout_width="wrap_content"
+                   android:layout_height="40dp"
+                   android:text="CANCEL"
+                   android:id="@+id/btn_review_cancel"
+                   android:layout_weight="1"
+                   android:background="@color/whitebg"
+                   android:textSize="12sp" />
+
+               <Button
+                   android:layout_width="wrap_content"
+                   android:layout_height="40dp"
+                   android:text="OK"
+                   android:id="@+id/btn_review_ok"
+                   android:layout_weight="1"
+                   android:background="@color/fontcolor"
+                   android:textColor="@color/whitefont"
+                   android:textSize="12sp" />
+          </LinearLayout>
+
+     </LinearLayout>
+
+
+     <ImageView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/image_dialog"
+         android:layout_gravity="center_horizontal"
+         android:src="@drawable/pop_logo"
+         android:layout_alignParentTop="true"
+         android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

@@ -1,96 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:weightSum="1">
-
-    <ImageView
-        android:id="@+id/image_product"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.43"
-        android:src="@mipmap/ic_launcher" />
-
-    <TextView
-        android:id="@+id/text_word"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="15dp"
-        android:text="서울대 연구공원 웨딩홀 -> 강남역 1번출구\n16:00 도착 / 서류봉투 / 5200원"
-        android:textAlignment="center"
-        android:textColor="#757575"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="36dp">
 
         <ImageView
-            android:id="@+id/imageView51"
-            android:layout_width="16dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_memo"
-            android:layout_weight="0" />
+            android:id="@+id/image_product"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginTop="50dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/text_word"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="메모"
-            android:id="@+id/text_accept_memo"
-            android:layout_weight="0"
-            android:textSize="10sp" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="15dp"
+            android:text="서울대 연구공원 웨딩홀 -> 강남역 1번출구\n16:00 도착 / 서류봉투 / 5200원"
+            android:textAlignment="center"
+            android:textColor="#757575"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView51"
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:src="@drawable/ic_memo" />
+
+            <TextView
+                android:id="@+id/text_accept_memo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0"
+                android:text="메모"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:text="정현맨님으로부터 배송요청이 왔습니다\n수락하시겠습니까?"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+
+        <ImageView
+            android:id="@+id/imageView50"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@color/fontcolor" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/btn_accept_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/whitebg"
+                android:text="CANCEL" />
+
+            <Button
+                android:id="@+id/btn_accept_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/fontcolor"
+                android:text="OK" />
+        </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/text_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:text="정현맨님으로부터 배송요청이 왔습니다\n수락하시겠습니까?"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
-
 
     <ImageView
-        android:id="@+id/imageView50"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:background="@color/fontcolor" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/whitebg"
-            android:text="CANCEL" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/fontcolor"
-            android:text="OK" />
-    </LinearLayout>
-
-</LinearLayout>
+        android:id="@+id/imageView40"
+        android:src="@drawable/pop_logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

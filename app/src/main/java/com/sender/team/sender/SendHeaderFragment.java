@@ -46,6 +46,7 @@ public class SendHeaderFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_send_header, container, false);
 
+
         final ImageView imageStatusTwo = (ImageView) view.findViewById(R.id.image_status_two);
         final Button btnEnd = (Button) view.findViewById(R.id.btn_end);
             btnEnd.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +123,13 @@ public class SendHeaderFragment extends Fragment {
             }
         });
 
-
+        ImageView imageView = (ImageView)view.findViewById(R.id.image_dialog_evalution_close);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
         Button btn = (Button) view.findViewById(R.id.btn_review_submit);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,38 +159,10 @@ public class SendHeaderFragment extends Fragment {
             }
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog_Transparent);
         builder.setView(view);
-//        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                float star = ratingBar.getRating();
-//                String comment = editComment.getText().toString();
-//                if (star <= 0 && TextUtils.isEmpty(comment)) {
-//                    Toast.makeText(getActivity(), "리뷰를 입력해 주세요", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    // ReviewRequest 추가해야함
-//                    ReviewRequest request= new ReviewRequest(getContext(),"1", "1", comment, ""+(int)star);
-//                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
-//                        @Override
-//                        public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-//                            Toast.makeText(getContext(), result.getResult().toString(), Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        @Override
-//                        public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-//                            Toast.makeText(getContext(), "리뷰 등록 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
-//                Toast.makeText(getContext(), "배송이 완료되었습니다", Toast.LENGTH_SHORT).show();
-//                getActivity().finish();
-//            }
-//        });
-
         dialog = builder.create();
         dialog.show();
-
 
     }
 

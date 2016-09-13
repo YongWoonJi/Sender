@@ -3,12 +3,12 @@ package com.sender.team.sender;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +58,7 @@ public class AcceptActivity extends Activity {
         final ImageView imageProduct = (ImageView) dialogView.findViewById(R.id.image_product);
         final TextView textWord = (TextView) dialogView.findViewById(R.id.text_word);
         final TextView textDetail = (TextView) dialogView.findViewById(R.id.text_details);
+        final TextView textMemo = (TextView) dialogView.findViewById(R.id.text_accept_memo);
 
 
         SenderInfoRequest request = new SenderInfoRequest(this, PropertyManager.getInstance().getMyDeliveringId());
@@ -86,16 +87,17 @@ public class AcceptActivity extends Activity {
                                         Utils.getCurrentTime(data.getArr_time()) + " 도착 / " +
                                         data.getInfo() + " / " + data.getPrice() + "원");
                                 textDetail.setText(data.getName() + "님으로부터 배송요청이 왔습니다\n수락하시겠습니까?");
+                                textMemo.setText(data.getMemo());
 
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(AcceptActivity.this, android.R.style.Theme_Material_Light_Dialog_Alert);
-                                builder.setTitle("배송요청");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(AcceptActivity.this, R.style.AppTheme_Dialog_Transparent);
                                 builder.setIcon(R.mipmap.ic_launcher);
                                 builder.setView(dialogView);
 
-                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                Button btn = (Button)findViewById(R.id.btn_accept_ok);
+                                btn.setOnClickListener(new View.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                    public void onClick(View view) {
                                         //13.계약 체결하기
                                         ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), "" + data.getId(), null, STATE_CONTRACT_SUCCESS);
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
@@ -134,9 +136,10 @@ public class AcceptActivity extends Activity {
                                     }
                                 });
 
-                                builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                                btn = (Button) findViewById(R.id.btn_accept_cancel);
+                                btn.setOnClickListener(new View.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                    public void onClick(View view) {
                                         ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), "" + PropertyManager.getInstance().getReceiver_id(), null, STATE_CONTRACT_FAIL);
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
@@ -152,13 +155,12 @@ public class AcceptActivity extends Activity {
                                         finish();
                                     }
                                 });
-
-                                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                    @Override
-                                    public void onCancel(DialogInterface dialog) {
-                                        finish();
-                                    }
-                                });
+//                                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//                                    @Override
+//                                    public void onCancel(DialogInterface dialog) {
+//                                        finish();
+//                                    }
+//                                });
 
                                 AlertDialog dialog = builder.create();
 //                                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);

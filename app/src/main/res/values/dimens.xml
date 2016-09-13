@@ -7,4 +7,6 @@
     <dimen name="mypage_image_size">115dp</dimen>
     <dimen name="mypage_image_radius">50dp</dimen>
     <dimen name="review_columns_hieght">95dp</dimen>
+    <dimen name="dialog_width">300dp</dimen>
+    <dimen name="dialog_height">400dp</dimen>
 </resources>
