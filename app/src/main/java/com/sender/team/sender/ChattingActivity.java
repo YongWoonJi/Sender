@@ -90,6 +90,10 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         user = (UserData) getIntent().getSerializableExtra(EXTRA_USER);
         cUser = (ChattingListData) getIntent().getSerializableExtra(EXTRA_CHATTINGLIST_DATA);
 
+        mAdapter = new ChattingAdapter();
+        listview.setAdapter(mAdapter);
+        listview.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+
         mLBM = LocalBroadcastManager.getInstance(this);
 
         Intent intent = getIntent();
@@ -111,8 +115,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                     break;
         }
 
-        mAdapter = new ChattingAdapter();
-
         /////////////////////////////// 임의 데이터 처리
 //        PropertyManager.getInstance().getUserData().setUser_id("1");
 //        PropertyManager.getInstance().getUserData().setAddress("");
@@ -121,9 +123,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
 //        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_RECEIVE, "어 그래", new Date());
 //        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_SEND, "윗쪽과 왼쪽에는 1px의 검정 라인으로 늘어날 부분을 지정하고 오른쪽과 아랫쪽에는 마찬가지로 검정 라인으로 내용이 들어갈 부분을 지정해 줍니다.", new Date());
 //        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_RECEIVE, "사드 배치는 한국의 내정으로 중국 정부는 간섭할 권리가 없다\", \"사드 배치가 이유가 있다\", \"우리도 사드를 배치하자\", \"북한이 탄도미사일에다 핵실험까지 하는 마당이 한국의 사드 배치 결정이 어떻게 틀린 것이냐\"는 내용의 글이 잇따랐다", new Date());
-
-        listview.setAdapter(mAdapter);
-        listview.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
 
         editMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

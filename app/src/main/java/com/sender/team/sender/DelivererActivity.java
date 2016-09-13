@@ -158,6 +158,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 .findFragmentById(R.id.map_fragment);
         fragment.getMapAsync(this);
 
+
         listStartSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -165,12 +166,14 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 animateMap(poiStart.getLatitude(), poiStart.getLongitude(), new Runnable() {
                     @Override
                     public void run() {
-                        map.clear();
-                        addMarker(poiStart, TYPE_START);
                         listStartSearch.setVisibility(View.GONE);
                         editStart.setText(poiStart.getName());
                     }
                 });
+                if (startMarker != null) {
+                    startMarker.remove();
+                }
+                addMarker(poiStart, TYPE_START);
             }
         });
 
@@ -181,12 +184,14 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 animateMap(poiEnd.getLatitude(), poiEnd.getLongitude(), new Runnable() {
                     @Override
                     public void run() {
-                        map.clear();
-                        addMarker(poiEnd, TYPE_END);
                         listEndSearch.setVisibility(View.GONE);
                         editEnd.setText(poiEnd.getName());
                     }
                 });
+                if (endMarker != null) {
+                    endMarker.remove();
+                }
+                addMarker(poiEnd, TYPE_END);
             }
         });
 
@@ -267,22 +272,36 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+
+    Marker startMarker;
+    Marker endMarker;
+
+//    Map<POI, Marker> startMarker = new HashMap<>();
+//    Map<POI, Marker> endMarker = new HashMap<>();
+
     private void addMarker(POI poi, int type) {
         MarkerOptions options = new MarkerOptions();
         options.position(new LatLng(poi.getLatitude(), poi.getLongitude()));
-        switch (type) {
-            case 0:
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-                break;
-            case 1:
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                break;
-        }
         options.anchor(0.5f, 1);
         options.title(poi.getName());
         options.snippet(poi.getMiddleAddrName() + " " + poi.getLowerAddrName());
+        switch (type) {
+            case 0: {
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                startMarker = map.addMarker(options);
+//                startMarker.put(poi, marker);
+                break;
+            }
 
-        Marker marker = map.addMarker(options);
+            case 1: {
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                endMarker = map.addMarker(options);
+//                endMarker.put(poi, marker);
+                break;
+            }
+
+        }
+
     }
 
 
