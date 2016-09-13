@@ -13,7 +13,7 @@ public class ChatContract {
         public static final String COLUMN_PROFILE_IMAGE = "profileimageurl";
         public static final String COLUMN_ADDRESS = "address";
         public static final String COLUMN_LAST_MESSAGE_ID = "lastid";
-
+        public static final String COLUMN_CHAT_CONTRACT_ID = "chatcontractid";
     }
 
     public interface ChatMessage extends BaseColumns {

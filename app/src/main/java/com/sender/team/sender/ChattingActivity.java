@@ -220,7 +220,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             if (mAdapter.getItemCount() > 0) {
                 listview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
             }
-        }else {
+        } else {
             Toast.makeText(ChattingActivity.this, "내용을 입력하세요.", Toast.LENGTH_SHORT).show();
         }
     }

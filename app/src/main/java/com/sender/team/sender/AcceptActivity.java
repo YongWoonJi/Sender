@@ -94,7 +94,7 @@ public class AcceptActivity extends Activity {
                                 builder.setIcon(R.mipmap.ic_launcher);
                                 builder.setView(dialogView);
 
-                                Button btn = (Button)findViewById(R.id.btn_accept_ok);
+                                Button btn = (Button) dialogView.findViewById(R.id.btn_accept_ok);
                                 btn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -136,7 +136,7 @@ public class AcceptActivity extends Activity {
                                     }
                                 });
 
-                                btn = (Button) findViewById(R.id.btn_accept_cancel);
+                                btn = (Button) dialogView.findViewById(R.id.btn_accept_cancel);
                                 btn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

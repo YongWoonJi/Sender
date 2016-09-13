@@ -60,20 +60,22 @@ public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                }
 //            });
 //        }
-        clh.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(clh.getContext(), ChattingActivity.class);
-                if (clh.getData().getType() == ChattingListData.TYPE_SENDER) {
-                    intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.SEND_HEADER);
-                } else if (clh.getData().getType() == ChattingListData.TYPE_DELIVERER) {
-                    intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.DELIVERER_HEADER);
-                }
+        if (data.get(position).getType() != ChattingListData.TYPE_EMPTY) {
+            clh.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(clh.getContext(), ChattingActivity.class);
+                    if (clh.getData().getType() == ChattingListData.TYPE_SENDER) {
+                        intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.SEND_HEADER);
+                    } else if (clh.getData().getType() == ChattingListData.TYPE_DELIVERER) {
+                        intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.DELIVERER_HEADER);
+                    }
 
-                intent.putExtra(ChattingActivity.EXTRA_CHATTINGLIST_DATA, data.get(position));
-                clh.getContext().startActivity(intent);
-            }
-        });
+                    intent.putExtra(ChattingActivity.EXTRA_CHATTINGLIST_DATA, data.get(position));
+                    clh.getContext().startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
