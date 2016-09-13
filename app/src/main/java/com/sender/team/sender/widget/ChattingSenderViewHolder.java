@@ -1,6 +1,7 @@
 package com.sender.team.sender.widget;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,8 +34,14 @@ public class ChattingSenderViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setChatSenderData(String image, String content, long time){
-        Glide.with(MyApplication.getContext()).load(image).into(senderImage);
-        sendContent.setText(content);
-        sendTime.setText(Utils.getCurrentTime(time));
+        if (!TextUtils.isEmpty(image)) {
+            Glide.with(MyApplication.getContext()).load(image).into(senderImage);
+        }
+        if (!TextUtils.isEmpty(content)) {
+            sendContent.setText(content);
+        }
+        if (time != 0) {
+            sendTime.setText(Utils.getCurrentTime(time));
+        }
     }
 }

@@ -255,12 +255,14 @@ public class SplashActivity extends AppCompatActivity {
             startActivities(intents);
         }
         finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void moveSignUpActivity() {
         Intent intent = new Intent(this, SignUpActivity.class);
         // 만약 현재 정보를 intent에 추가해야하면 putExtra 코드 추가해야함
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     private void setLoginDisplay() {

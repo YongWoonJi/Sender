@@ -177,13 +177,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
-        android:background="@color/whitebg"
+        android:background="#fcfcfc"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#e8e8e8"
+        android:layout_height="2dp"
+        android:background="@drawable/drop_shadow"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <RelativeLayout

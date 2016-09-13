@@ -178,6 +178,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         init();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         initData();
     }
 
@@ -388,7 +393,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Cursor cursor = DBManager.getInstance().getChatUser();
         if (cursor != null){
             list = new ArrayList<>();
-
             while (cursor.moveToNext()){
                 data = new ChattingListData();
                 data.setName(cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_NAME)));

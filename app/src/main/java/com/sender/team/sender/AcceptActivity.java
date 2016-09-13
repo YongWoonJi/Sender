@@ -14,9 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.sender.team.sender.data.ChatContract;
 import com.sender.team.sender.data.ContractIdData;
 import com.sender.team.sender.data.ContractsData;
-import com.sender.team.sender.data.ContractsInfoData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.ReverseGeocodingData;
 import com.sender.team.sender.data.UserData;
@@ -24,11 +24,12 @@ import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
-import com.sender.team.sender.request.ContractsInfoRequest;
 import com.sender.team.sender.request.ContractsRequest;
 import com.sender.team.sender.request.OtherUserRequest;
 import com.sender.team.sender.request.ReverseGeocodingRequest;
 import com.sender.team.sender.request.SenderInfoRequest;
+
+import java.util.Date;
 
 public class AcceptActivity extends Activity {
 
@@ -38,6 +39,7 @@ public class AcceptActivity extends Activity {
     String start;
     String end;
 
+    ContractsData data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
@@ -62,7 +64,8 @@ public class AcceptActivity extends Activity {
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractsData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractsData>> request, NetworkResult<ContractsData> result) {
-                final ContractsData data = result.getResult();
+                data = result.getResult();
+
 
                 ReverseGeocodingRequest geo_request = new ReverseGeocodingRequest(AcceptActivity.this, data.getHere_lat(), data.getHere_lon());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, geo_request, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
@@ -98,10 +101,27 @@ public class AcceptActivity extends Activity {
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
                                             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
+                                                OtherUserRequest req = new OtherUserRequest(AcceptActivity.this, data.getId());
+                                                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, req, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+                                                    @Override
+                                                    public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                                                        UserData user = result.getResult();
+                                                        user.setAddress(start + " -> " + end);
+                                                        DBManager.getInstance().addMessage(user, null, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                                                        Toast.makeText(AcceptActivity.this, "계약성공: " + result, Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(AcceptActivity.this, SplashActivity.class);
+                                                        intent.putExtra(ChattingActivity.EXTRA_USER, user);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
 
-                                                String address = start+" > "+end;
-                                                getsendingInfo(String.valueOf(result.getResult().getContract_id()),address);
-                                                Toast.makeText(AcceptActivity.this, "계약성공: " + result, Toast.LENGTH_SHORT).show();
+                                                    @Override
+                                                    public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
+
+                                                    }
+                                                });
+
                                             }
 
                                             @Override
@@ -110,29 +130,17 @@ public class AcceptActivity extends Activity {
                                                 finish();
                                             }
                                         });
-
-
-                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                        Intent intent2 = new Intent(getApplicationContext(), ChattingActivity.class);
-                                        intent2.putExtra("key", ChattingActivity.DELIVERER_HEADER);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                                        Intent[] intents = {intent, intent2};
-
-                                        startActivities(intents);
-                                        finish();
                                     }
                                 });
 
                                 builder.setNegativeButton("닫기", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, "" + PropertyManager.getInstance().getContractIdData().getContract_id(), "" + PropertyManager.getInstance().getReceiver_id(), null, STATE_CONTRACT_FAIL);
+                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), "" + PropertyManager.getInstance().getReceiver_id(), null, STATE_CONTRACT_FAIL);
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
                                             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
-                                                Toast.makeText(AcceptActivity.this, "계약 거절 완료", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AcceptActivity.this, "계약이 거절되었습니다", Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override
@@ -176,35 +184,6 @@ public class AcceptActivity extends Activity {
             }
         });
 
-    }
-
-    public void getsendingInfo(String contract_id, final String address){
-        ContractsInfoRequest request = new ContractsInfoRequest(this,contract_id);
-        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractsInfoData>>() {
-            @Override
-            public void onSuccess(NetworkRequest<NetworkResult<ContractsInfoData>> request, NetworkResult<ContractsInfoData> result) {
-                String id = String.valueOf(result.getResult().getSending_user_id());
-                OtherUserRequest otherUserRequest = new OtherUserRequest(AcceptActivity.this,id);
-                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, otherUserRequest, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
-                    @Override
-                    public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
-                        UserData data = result.getResult();
-                        data.setAddress(address);
-                        DBManager.getInstance().addUser(data);
-                    }
-
-                    @Override
-                    public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onFail(NetworkRequest<NetworkResult<ContractsInfoData>> request, NetworkResult<ContractsInfoData> result, String errorMessage, Throwable e) {
-
-            }
-        });
     }
 
 }
