@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -398,6 +399,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 final AccessToken token = AccessToken.getCurrentAccessToken();
                 FacebookRequest request = new FacebookRequest(SplashActivity.this, token.getToken(), PropertyManager.getInstance().getRegistrationId());
+                Log.i("AAAAA", "accessToken : " + token.getToken() + " regId : " + PropertyManager.getInstance().getRegistrationId());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {

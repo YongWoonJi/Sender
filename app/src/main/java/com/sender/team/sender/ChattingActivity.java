@@ -206,7 +206,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                             DBManager.getInstance().addMessage(user, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
                         }
                         updateMessage();
-
                     }
                 }
 

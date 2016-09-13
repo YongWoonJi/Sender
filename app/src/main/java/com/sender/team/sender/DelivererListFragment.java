@@ -95,6 +95,10 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         textView.setText("요청하시겠습니까?");
         TextView textContents = (TextView) view.findViewById(R.id.text_dialog_two);
         textContents.setVisibility(View.GONE);
+
+        dialog = builder.create();
+        dialog.show();
+
         Button btn = (Button) view.findViewById(R.id.btn_leave_cancel);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +107,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                 DialogShow(deliverId);
             }
         });
+
         btn= (Button) view.findViewById(R.id.btn_leave_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,8 +133,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             }
         });
 
-        dialog = builder.create();
-        dialog.show();
+
     }
 
     @Override

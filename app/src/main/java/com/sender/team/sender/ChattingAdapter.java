@@ -26,7 +26,6 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (cursor != null) {
             cursor.close();
         }
-        cursor = c;
         notifyDataSetChanged();
     }
 

@@ -36,6 +36,8 @@ public class PropertyManager {
     private static final String KEY_REGISTRATION_ID = "regid";
     private static final String KEY_FACEBOOK_ID = "facebookid";
     private static final String KEY_DELIVERING_ID = "delivering_id";
+    private static final String KEY_OTHERDELIVERING_ID = "otherdelivering_id";
+    private static final String KEY_CONTRACT_ID = "contract_id";
 
     private String here_lat;
     private String here_lng;
@@ -58,11 +60,12 @@ public class PropertyManager {
     }
 
     public String getOtherDelivererId() {
-        return otherDelivererId;
+        return mPrefs.getString(KEY_OTHERDELIVERING_ID, "");
     }
 
     public void setOtherDelivererId(String otherDelivererId) {
-        this.otherDelivererId = otherDelivererId;
+        mEditor.putString(KEY_OTHERDELIVERING_ID, otherDelivererId);
+        mEditor.commit();
     }
 
     public int getReceiver_id() {

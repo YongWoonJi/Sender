@@ -37,14 +37,19 @@ import com.sender.team.sender.Utils;
 import com.sender.team.sender.data.ChatContract;
 import com.sender.team.sender.data.ChattingReceiveData;
 import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ChattingReceiveRequest;
+import com.sender.team.sender.request.OtherUserRequest;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+
+import java.util.Date;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -169,23 +174,38 @@ public class MyGcmListenerService extends GcmListenerService {
 
     }
 
-    private void confirmNotification(String message) {
-        Intent intent = new Intent(this, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker(message)
-                .setContentTitle(message)
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setContentIntent(pendingIntent);
+    private void confirmNotification(final String message) {
+        OtherUserRequest request = new OtherUserRequest(this, PropertyManager.getInstance().getOtherDelivererId());
+        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+            @Override
+            public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                UserData data;
+                data = result.getResult();
+                DBManager.getInstance().addMessage(data, null, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                Intent intent = new Intent(MyGcmListenerService.this, SplashActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(MyGcmListenerService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MyGcmListenerService.this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setTicker(message)
+                        .setContentTitle(message)
+                        .setContentText(message)
+                        .setAutoCancel(true)
+                        .setDefaults(NotificationCompat.DEFAULT_ALL)
+                        .setContentIntent(pendingIntent);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+            }
+
+            @Override
+            public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
+
+            }
+        });
     }
 
 
@@ -210,7 +230,6 @@ public class MyGcmListenerService extends GcmListenerService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
-
 
     private void popupDeliveryRequest(Bundle data) {
         KeyguardManager km = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
