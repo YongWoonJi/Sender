@@ -23,8 +23,8 @@ public class ChattingSendRequest extends AbstractRequest<NetworkResult<String>> 
     public ChattingSendRequest(Context context, String contract_id, String receiver_id, String message, File pic){
         HttpUrl url = getBaseUrlBuilder()
                 .port(80)
-                .addPathSegment("notification")
                 .addPathSegment("chattings")
+                .addQueryParameter("action", "send")
                 .build();
 
         MultipartBody.Builder builder = new MultipartBody.Builder()

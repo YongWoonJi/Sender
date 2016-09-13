@@ -200,7 +200,11 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                     if (!TextUtils.isEmpty(result.getResult())){
-                        DBManager.getInstance().addMessage(user, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
+                        if (isUserDataEmpty) {
+                            DBManager.getInstance().addMessage(cUser, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
+                        } else {
+                            DBManager.getInstance().addMessage(user, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
+                        }
                         updateMessage();
 
                     }

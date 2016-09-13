@@ -42,7 +42,7 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser.COLUMN_SERVER_ID + " INTEGER," +
                 ChatContract.ChatUser.COLUMN_NAME + " TEXT," +
                 ChatContract.ChatUser.COLUMN_PROFILE_IMAGE + " TEXT," +
-                ChatContract.ChatUser.COLUMN_ADDRESS + " TEXT," +
+//                ChatContract.ChatUser.COLUMN_ADDRESS + " TEXT," +
                 ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID + " INTEGER);";
         sqLiteDatabase.execSQL(sql);
 
@@ -80,7 +80,20 @@ public class DBManager extends SQLiteOpenHelper {
             values.put(ChatContract.ChatUser.COLUMN_SERVER_ID, user.getUser_id());
             values.put(ChatContract.ChatUser.COLUMN_NAME, user.getName());
             values.put(ChatContract.ChatUser.COLUMN_PROFILE_IMAGE, user.getFileUrl());
-            values.put(ChatContract.ChatUser.COLUMN_ADDRESS, user.getAddress());
+//            values.put(ChatContract.ChatUser.COLUMN_ADDRESS, user.getAddress());
+            return db.insert(ChatContract.ChatUser.TABLE, null, values);
+        }
+        throw new IllegalArgumentException("aleady user added");
+    }
+
+    public long addUser(ChattingListData user) {
+        if (getUserId(user.getId()) == -1) {
+            SQLiteDatabase db = getWritableDatabase();
+            values.clear();
+            values.put(ChatContract.ChatUser.COLUMN_SERVER_ID, user.getId());
+            values.put(ChatContract.ChatUser.COLUMN_NAME, user.getName());
+            values.put(ChatContract.ChatUser.COLUMN_PROFILE_IMAGE, user.getImageUrl());
+//            values.put(ChatContract.ChatUser.COLUMN_ADDRESS, user.);
             return db.insert(ChatContract.ChatUser.TABLE, null, values);
         }
         throw new IllegalArgumentException("aleady user added");
@@ -124,6 +137,45 @@ public class DBManager extends SQLiteOpenHelper {
         }
 
     }
+
+
+    public long addMessage(ChattingListData user, String image, int type, String message, Date date) {
+        Long uid = resolveUserId.get(user.getId());
+        if (uid == null) {
+            long id = getUserId(user.getId());
+            if (id == -1) {
+                id = addUser(user);
+            }
+            resolveUserId.put(user.getId(), id);
+            uid = id;
+        }
+        SQLiteDatabase db = getWritableDatabase();
+        values.clear();
+        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, (long) uid);
+        values.put(ChatContract.ChatMessage.COLUMN_CONTRACT_ID, user.getContractId());
+        values.put(ChatContract.ChatMessage.COLUMN_TYPE, type);
+        values.put(ChatContract.ChatMessage.COLUMN_MESSAGE, message);
+        values.put(ChatContract.ChatMessage.COLUMN_IMAGE, image);
+        long current = date.getTime();
+        values.put(ChatContract.ChatMessage.COLUMN_CREATED, current);
+
+        try {
+            db.beginTransaction();
+            long mid = db.insert(ChatContract.ChatMessage.TABLE, null, values);
+
+            values.clear();
+            values.put(ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID, mid);
+            String selection = ChatContract.ChatUser._ID + " = ?";
+            String[] args = {"" + uid};
+            db.update(ChatContract.ChatUser.TABLE, values, selection, args);
+            db.setTransactionSuccessful();
+            return mid;
+        } finally {
+            db.endTransaction();
+        }
+
+    }
+
 
 
     public long getUserId(long serverId) {
