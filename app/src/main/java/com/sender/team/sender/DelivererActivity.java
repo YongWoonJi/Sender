@@ -276,9 +276,6 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     Marker startMarker;
     Marker endMarker;
 
-//    Map<POI, Marker> startMarker = new HashMap<>();
-//    Map<POI, Marker> endMarker = new HashMap<>();
-
     private void addMarker(POI poi, int type) {
         MarkerOptions options = new MarkerOptions();
         options.position(new LatLng(poi.getLatitude(), poi.getLongitude()));
@@ -289,14 +286,12 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
             case 0: {
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
                 startMarker = map.addMarker(options);
-//                startMarker.put(poi, marker);
                 break;
             }
 
             case 1: {
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
                 endMarker = map.addMarker(options);
-//                endMarker.put(poi, marker);
                 break;
             }
 

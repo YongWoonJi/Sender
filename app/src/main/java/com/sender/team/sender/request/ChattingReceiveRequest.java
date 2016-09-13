@@ -23,7 +23,6 @@ public class ChattingReceiveRequest extends AbstractRequest<NetworkResult<List<C
         HttpUrl url = getSecureUrlBuilder()
                 .port(443)
                 .addPathSegment("chattings")
-//                .addQueryParameter("lastDate", date)
                 .addQueryParameter("senderId", sendId)
                 .addQueryParameter("contractId", contractId)
                 .build();

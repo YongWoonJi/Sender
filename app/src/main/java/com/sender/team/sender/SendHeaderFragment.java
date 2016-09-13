@@ -134,7 +134,7 @@ public class SendHeaderFragment extends Fragment {
                 } else {
                     // ReviewRequest 추가해야함
                     String userId = PropertyManager.getInstance().getUserData().getUser_id();
-                    ReviewRequest request = new ReviewRequest(getContext(), userId, "1", comment, "" + (int) star);
+                    ReviewRequest request = new ReviewRequest(getContext(), "1", comment, "" + (int) star);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {

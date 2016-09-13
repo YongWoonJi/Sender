@@ -17,14 +17,14 @@ import okhttp3.RequestBody;
  */
 public class ReviewRequest extends AbstractRequest<NetworkResult<String>> {
     Request request;
-    public ReviewRequest(Context context, String user_id, String constract_id, String content ,String star){
+    public ReviewRequest(Context context, String contract_id, String content ,String star){
         HttpUrl url = getBaseUrlBuilder()
+                .port(80)
                 .addPathSegment("reviews")
                 .build();
 
         RequestBody body = new FormBody.Builder()
-                .add("user_id", user_id )
-                .add("constract_id", constract_id )
+                .add("contract_id", contract_id )
                 .add("content", content )
                 .add("star", star )
                 .build();

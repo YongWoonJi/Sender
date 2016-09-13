@@ -18,10 +18,11 @@ import okhttp3.RequestBody;
 public class ContractsUpdateRequest extends AbstractRequest<NetworkResult<String>> {
     //16 배송 상태 변경하기
     Request request;
-    public ContractsUpdateRequest(Context context, String constract_id, String state){
+    public ContractsUpdateRequest(Context context, String contract_id, String state){
         HttpUrl url = getBaseUrlBuilder()
+                .port(80)
                 .addPathSegment("contracts")
-                .addPathSegment(constract_id)
+                .addPathSegment(contract_id)
                 .build();
 
         RequestBody body = new FormBody.Builder()
