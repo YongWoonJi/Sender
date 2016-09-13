@@ -140,7 +140,7 @@ public class AcceptActivity extends Activity {
                                 btn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), "" + PropertyManager.getInstance().getReceiver_id(), null, STATE_CONTRACT_FAIL);
+                                        ContractsRequest request = new ContractsRequest(AcceptActivity.this, data.getContract_id(), data.getId(), null, STATE_CONTRACT_FAIL);
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
                                             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
