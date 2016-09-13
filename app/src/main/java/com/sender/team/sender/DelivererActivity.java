@@ -375,7 +375,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                                         @Override
                                         public void onSuccess(NetworkRequest<NetworkResult<DeliveringIdData>> request, NetworkResult<DeliveringIdData> result) {
                                             if (result != null) {
-                                                PropertyManager.getInstance().setDeliveringData(result.getResult());
+                                                PropertyManager.getInstance().setMyDeliveringId(result.getResult().getDelivering_id());
                                                 Toast.makeText(DelivererActivity.this, "요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }

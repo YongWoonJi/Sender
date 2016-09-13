@@ -93,7 +93,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int contractId = PropertyManager.getInstance().getContractIdData().getContract_id();
-                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), "" + PropertyManager.getInstance().getReceiver_id(),PropertyManager.getInstance().getOtherDelivererId(), null);
+                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), "" + PropertyManager.getInstance().getReceiver_id(), PropertyManager.getInstance().getOtherDelivererId(), null);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {

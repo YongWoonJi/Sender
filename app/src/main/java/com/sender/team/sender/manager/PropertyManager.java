@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.data.ContractIdData;
-import com.sender.team.sender.data.DeliveringIdData;
 import com.sender.team.sender.data.UserData;
 
 /**
@@ -30,14 +29,13 @@ public class PropertyManager {
     SharedPreferences.Editor mEditor;
 
     private UserData userData;
-    private DeliveringIdData deliveringData;
     private String otherDelivererId;
     private int receiver_id;
     private ContractIdData contractIdData;
 
     private static final String KEY_REGISTRATION_ID = "regid";
     private static final String KEY_FACEBOOK_ID = "facebookid";
-    private static final String KEY_DELIVER_ID = "delivering_id";
+    private static final String KEY_DELIVERING_ID = "delivering_id";
 
     private String here_lat;
     private String here_lng;
@@ -48,6 +46,15 @@ public class PropertyManager {
         Context context = MyApplication.getContext();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPrefs.edit();
+    }
+
+    public String getMyDeliveringId() {
+        return mPrefs.getString(KEY_DELIVERING_ID, "");
+    }
+
+    public void setMyDeliveringId(String delid) {
+        mEditor.putString(KEY_DELIVERING_ID, delid);
+        mEditor.commit();
     }
 
     public String getOtherDelivererId() {
@@ -72,14 +79,6 @@ public class PropertyManager {
 
     public UserData getUserData() {
         return userData;
-    }
-
-    public DeliveringIdData getDeliveringData() {
-        return deliveringData;
-    }
-
-    public void setDeliveringData(DeliveringIdData deliveringData) {
-        this.deliveringData = deliveringData;
     }
 
     public ContractIdData getContractIdData() {

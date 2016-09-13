@@ -40,7 +40,7 @@ public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ChattingListViewHolder clh = (ChattingListViewHolder) holder;
 
         clh.setData(data.get(position));
@@ -73,6 +73,7 @@ public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                    intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.SEND_HEADER);
 //                intent.putExtra(ChattingActivity.RECEIVER_NAME, data.get(position).getName());
 //                intent.putExtra(ChattingActivity.RECEIVER_IMAGE, data.get(position).getImageUrl());
+                    intent.putExtra(ChattingActivity.EXTRA_CHATTINGLIST_DATA, data.get(position));
                     clh.getContext().startActivity(intent);
                 }
             });

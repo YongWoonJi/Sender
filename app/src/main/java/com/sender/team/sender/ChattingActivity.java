@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sender.team.sender.data.ChatContract;
+import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.gcm.MyGcmListenerService;
@@ -49,6 +50,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     public static final int SEND_HEADER = 1;
     public static final int DELIVERER_HEADER = 2;
     public static final String EXTRA_USER = "user";
+    public static final String EXTRA_CHATTINGLIST_DATA = "main_user";
 
     public static final String RECEIVER_NAME = "receiverName";
     public static final String RECEIVER_IMAGE = "receiverImage";
@@ -70,6 +72,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     String imgUrl;
 
     UserData user;
+    ChattingListData cUser;
 
     LocalBroadcastManager mLBM;
 
@@ -84,9 +87,9 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
-        /////////////////////////////////////////////////////
-
         user = (UserData) getIntent().getSerializableExtra(EXTRA_USER);
+        cUser = (ChattingListData) getIntent().getSerializableExtra(EXTRA_CHATTINGLIST_DATA);
+
         mLBM = LocalBroadcastManager.getInstance(this);
 
         Intent intent = getIntent();
@@ -253,7 +256,12 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     }
 
     private void updateMessage() {
-        Cursor c = DBManager.getInstance().getChatMessage(user);
+        Cursor c = null;
+        if (user != null) {
+            c = DBManager.getInstance().getChatMessage(user);
+        } else if (cUser != null) {
+            c = DBManager.getInstance().getChatMessage(cUser);
+        }
         mAdapter.changeCursor(c);
     }
 

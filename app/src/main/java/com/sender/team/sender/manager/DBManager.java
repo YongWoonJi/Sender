@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.data.ChatContract;
+import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.UserData;
 
 import java.util.Date;
@@ -178,6 +179,31 @@ public class DBManager extends SQLiteOpenHelper {
             long id = getUserId(Long.parseLong(user.getUser_id()));
             if (id != -1) {
                 resolveUserId.put(Long.parseLong(user.getUser_id()), id);
+                userid = id;
+            }
+        } else {
+            userid = uid;
+        }
+
+        String[] columns = {ChatContract.ChatMessage._ID,
+                ChatContract.ChatMessage.COLUMN_TYPE,
+                ChatContract.ChatMessage.COLUMN_MESSAGE,
+                ChatContract.ChatMessage.COLUMN_IMAGE,
+                ChatContract.ChatMessage.COLUMN_CREATED};
+        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ?";
+        String[] args = {"" + userid};
+        String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
+        SQLiteDatabase db = getReadableDatabase();
+        return db.query(ChatContract.ChatMessage.TABLE, columns, selection, args, null, null, sort);
+    }
+
+    public Cursor getChatMessage(ChattingListData user) {
+        long userid = -1;
+        Long uid = resolveUserId.get(user.getId());
+        if (uid == null) {
+            long id = getUserId(user.getId());
+            if (id != -1) {
+                resolveUserId.put(user.getId(), id);
                 userid = id;
             }
         } else {

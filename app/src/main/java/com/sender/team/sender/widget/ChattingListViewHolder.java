@@ -49,13 +49,17 @@ public class ChattingListViewHolder extends RecyclerView.ViewHolder {
         this.item = data;
 
         if (data.getType() == ChattingListData.TYPE_EMPTY) {
-            imageProfile.setImageResource(R.drawable.profile);
             textName.setVisibility(View.GONE);
             textMessage.setVisibility(View.GONE);
             textTime.setVisibility(View.GONE);
             textEmpty.setVisibility(View.VISIBLE);
+            imageProfile.setImageResource(R.drawable.profile);
             textEmpty.setText(data.getMessage());
         } else {
+            textName.setVisibility(View.VISIBLE);
+            textMessage.setVisibility(View.VISIBLE);
+            textTime.setVisibility(View.VISIBLE);
+            textEmpty.setVisibility(View.GONE);
             Glide.with(context).load(data.getImageUrl()).into(imageProfile);
             textName.setText(data.getName());
             textMessage.setText(data.getMessage());
