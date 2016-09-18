@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name">Sender</string>
     <string name="facebook_app_id">1750407855222125</string>
-    <string name="drawer_open">open drawer</string>
-    <string name="drawer_close">close drawer</string>
 
     <!-- MainActivity -->
     <string name="empty_chatting_list">채팅목록이 없습니다</string>
+    <string name="finish">\'뒤로\'버튼을 한번 더 누르시면 종료됩니다</string>
 
     <!-- HeaderViewHolder -->
     <string name="empty_email">이메일 주소가 없습니다</string>

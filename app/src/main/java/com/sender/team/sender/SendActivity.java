@@ -261,7 +261,8 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerDragListener(this);
 
-
+        Location location = mLM.getLastKnownLocation(mProvider);
+        moveMap(location.getLatitude(), location.getLongitude());
     }
 
     private void clear() {

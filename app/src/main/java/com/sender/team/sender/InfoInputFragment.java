@@ -1,16 +1,21 @@
 package com.sender.team.sender;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -44,6 +49,9 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class InfoInputFragment extends Fragment {
+
+    private static final int RC_PERMISSION_GET_IMAGE = 101;
+    private static final int RC_PERMISSION_GET_CAPTURE_IMAGE = 102;
 
 
     public InfoInputFragment() {
@@ -204,15 +212,63 @@ public class InfoInputFragment extends Fragment {
     }
 
     private void getGalleryImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(intent, RC_GET_IMAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                        ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                }
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_GET_IMAGE);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent, RC_GET_IMAGE);
+            }
+        } else {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+            startActivityForResult(intent, RC_GET_IMAGE);
+        }
     }
 
     private void getCaptureImage() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
-        startActivityForResult(intent, RC_CATPURE_IMAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                        ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                }
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_GET_CAPTURE_IMAGE);
+            } else {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+                startActivityForResult(intent, RC_CATPURE_IMAGE);
+            }
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+            startActivityForResult(intent, RC_CATPURE_IMAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_PERMISSION_GET_IMAGE) {
+            if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent, RC_GET_IMAGE);
+            }
+        } else if (requestCode == RC_PERMISSION_GET_CAPTURE_IMAGE) {
+            if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+                startActivityForResult(intent, RC_CATPURE_IMAGE);
+            }
+        }
     }
 
     private Uri getSaveFile() {
@@ -280,15 +336,12 @@ public class InfoInputFragment extends Fragment {
 
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
-                PropertyManager.getInstance().setContractIdData(result.getResult());
-                Toast.makeText(context, "success" + result.getResult().getContract_id()+"  " + result.getResult().getSendingId(), Toast.LENGTH_SHORT).show();
-                Log.i("InfoInputFragment", "contractid = " + result.getResult().getContract_id());
+                PropertyManager.getInstance().setLastContractId(result.getResult().getContract_id());
             }
 
             @Override
             public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result, String errorMessage, Throwable e) {
-                Toast.makeText(context, "fail =" + errorMessage, Toast.LENGTH_SHORT).show();
-                Log.i("InfoInputFragment", "fail = " + errorMessage);
+
             }
         });
     }

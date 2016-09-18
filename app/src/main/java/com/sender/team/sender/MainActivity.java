@@ -1,6 +1,9 @@
 package com.sender.team.sender;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -10,10 +13,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -45,6 +50,7 @@ import android.widget.Toast;
 import com.sender.team.sender.data.ChatContract;
 import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.gcm.MyGcmListenerService;
 import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
@@ -60,6 +66,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MenuAdapter.OnNaviMenuSelectedListener {
 
+    private static final int MESSAGE_BACK_KEY_TIMEOUT = 1;
     public static final int VIEWPAGER_COUNT = 4;
     private static final String TAB1 = "tab1";
     private static final String TAB2 = "tab2";
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ColorDrawable toolbarColor;
     private Drawable homeAsUp;
     private Handler handler;
+
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -162,6 +170,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    LocalBroadcastManager mLBM;
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    initData();
+                }
+            });
+            intent.putExtra(MyGcmListenerService.EXTRA_RESULT_CONFIRM, true);
+        }
+    };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,10 +207,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
         initData();
+        mLBM.registerReceiver(mReceiver, new IntentFilter(MyGcmListenerService.ACTION_CONFIRM));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mLBM.unregisterReceiver(mReceiver);
     }
 
     private void init() {
-        handler = new Handler(Looper.getMainLooper());
+        mLBM = LocalBroadcastManager.getInstance(this);
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case MESSAGE_BACK_KEY_TIMEOUT :
+                        isBackpressed = false;
+                        break;
+                }
+            }
+        };
         setStatusBar();
         initViewPager();
         initTabLayout();
@@ -400,6 +441,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 data.setName(cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_NAME)));
                 data.setImageUrl(cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_PROFILE_IMAGE)));
                 data.setMessage(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE)));
+                data.setPhone(cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_PHONE)));
                 data.setTime(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED)));
                 list.add(data);
             }
@@ -413,9 +455,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 count++;
             }
             mAdapter.setData(list);
+            cursor.close();
         }
 
     }
+
 
 
     public void animateFAB() {
@@ -469,6 +513,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private boolean isBackpressed = false;
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -476,7 +521,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (isFabOpen) {
             animateFAB();
         } else {
-            super.onBackPressed();
+            if (!isBackpressed) {
+                Toast.makeText(this, getString(R.string.finish), Toast.LENGTH_SHORT).show();
+                isBackpressed = true;
+                handler.sendEmptyMessageDelayed(MESSAGE_BACK_KEY_TIMEOUT, 2000);
+            } else {
+                handler.removeMessages(MESSAGE_BACK_KEY_TIMEOUT);
+                finish();
+            }
         }
     }
 
@@ -552,14 +604,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void unregister() {
-        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_leave, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_basic, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog_Transparent);
         builder.setView(view);
         final AlertDialog dialog = builder.create();
         dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.show();
 
-        Button btn = (Button) view.findViewById(R.id.btn_leave_ok);
+        Button btn = (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -587,7 +639,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        btn = (Button) view.findViewById(R.id.btn_leave_cancel);
+        btn = (Button) view.findViewById(R.id.btn_cancel);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

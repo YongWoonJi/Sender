@@ -110,7 +110,7 @@ public class AcceptActivity extends Activity {
                                                         UserData user = result.getResult();
                                                         user.setAddress(start + " -> " + end);
                                                         user.setContractId(data.getContract_id());
-                                                        DBManager.getInstance().addMessage(user, null, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                                                        DBManager.getInstance().addMessage(user, null, ChatContract.ChatMessage.TYPE_RECEIVE, null, new Date());
                                                         Intent intent = new Intent(AcceptActivity.this, SplashActivity.class);
                                                         intent.putExtra(ChattingActivity.EXTRA_USER, user);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

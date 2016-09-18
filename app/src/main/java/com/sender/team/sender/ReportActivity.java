@@ -260,7 +260,7 @@ public class ReportActivity extends AppCompatActivity {
 
     AlertDialog dialog;
     private void clickSend() {
-        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_leave, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_basic, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog_Transparent);
         builder.setView(view);
         final AlertDialog dialog = builder.create();
@@ -276,7 +276,7 @@ public class ReportActivity extends AppCompatActivity {
         dialog.show();
 
 
-        Button btn = (Button) view.findViewById(R.id.btn_leave_ok);
+        Button btn = (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -284,7 +284,7 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
-        btn = (Button) view.findViewById(R.id.btn_leave_cancel);
+        btn = (Button) view.findViewById(R.id.btn_cancel);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

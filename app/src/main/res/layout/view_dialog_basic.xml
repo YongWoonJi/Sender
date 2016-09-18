@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="370dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -32,10 +32,10 @@
             android:layout_marginTop="16dp"
             android:textSize="11sp" />
 
-        <ImageView
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:id="@+id/imageView53"
+            android:id="@+id/view4"
             android:layout_gravity="center_horizontal"
             android:background="@color/fontcolor"
             android:layout_marginTop="30dp" />
@@ -49,16 +49,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="CANCEL"
-                android:id="@+id/btn_leave_cancel"
+                android:id="@+id/btn_cancel"
                 android:layout_weight="1"
                 android:background="@color/whitebg"
                 android:textSize="12sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/fontcolor" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="OK"
-                android:id="@+id/btn_leave_ok"
+                android:id="@+id/btn_ok"
                 android:layout_weight="1"
                 android:background="@color/fontcolor"
                 android:textColor="@color/whitefont"

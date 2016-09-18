@@ -50,7 +50,7 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     OnDialogListener listener;
 
     public interface OnDialogListener {
-        void DialogShow(int position);
+        void dialogShow(int position);
 
         void delivererShow(int position, View view, DelivererData data);
     }
@@ -84,7 +84,7 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onClickSend(int position) {
-        listener.DialogShow(position);
+        listener.dialogShow(position);
     }
 
     @Override

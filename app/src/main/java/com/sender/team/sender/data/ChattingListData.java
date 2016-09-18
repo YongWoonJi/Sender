@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Tacademy on 2016-09-02.
  */
-public class ChattingListData implements Serializable{
+public class ChattingListData implements Serializable {
     public static final int TYPE_SENDER = 0;
     public static final int TYPE_DELIVERER = 1;
     public static final int TYPE_EMPTY = 2;
@@ -14,6 +14,7 @@ public class ChattingListData implements Serializable{
     private long contractId;
     private String name;
     private String message;
+    private String phone;
     private String time;
     private String imageUrl;
     private int type;
@@ -48,6 +49,14 @@ public class ChattingListData implements Serializable{
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getTime() {

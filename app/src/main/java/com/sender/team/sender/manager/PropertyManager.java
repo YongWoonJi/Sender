@@ -14,15 +14,10 @@ import com.sender.team.sender.data.UserData;
 public class PropertyManager {
     private static PropertyManager instance;
     public static PropertyManager getInstance() {
-//        if (instance == null) {
-//            synchronized (PropertyManager.class) {
-                if (instance == null) {
-                    instance = new PropertyManager();
-                }
-                return instance;
-//            }
-//        }
-//        return instance;
+        if (instance == null) {
+            instance = new PropertyManager();
+        }
+        return instance;
     }
 
     SharedPreferences mPrefs;
@@ -35,14 +30,11 @@ public class PropertyManager {
 
     private static final String KEY_REGISTRATION_ID = "regid";
     private static final String KEY_FACEBOOK_ID = "facebookid";
-    private static final String KEY_DELIVERING_ID = "delivering_id";
+    private static final String KEY_MY_DELIVERING_ID = "delivering_id";
+    private static final String KEY_RECEIVER_ID = "receiverid";
     private static final String KEY_OTHERDELIVERING_ID = "otherdelivering_id";
-    private static final String KEY_CONTRACT_ID = "contract_id";
-
-    private String here_lat;
-    private String here_lng;
-    private String addr_lat;
-    private String addr_lng;
+    private static final String KEY_LAST_CHATUSER_PHONE = "lastchatphone";
+    private static final String KEY_LAST_CONTRACT_ID = "lastcontractid";
 
     private PropertyManager() {
         Context context = MyApplication.getContext();
@@ -50,30 +42,51 @@ public class PropertyManager {
         mEditor = mPrefs.edit();
     }
 
-    public String getMyDeliveringId() {
-        return mPrefs.getString(KEY_DELIVERING_ID, "");
+
+
+    public String getLastContractId() {
+        return mPrefs.getString(KEY_LAST_CONTRACT_ID, "");
     }
 
-    public void setMyDeliveringId(String delid) {
-        mEditor.putString(KEY_DELIVERING_ID, delid);
+    public void setLastContractId(int contractId) {
+        mEditor.putString(KEY_LAST_CONTRACT_ID, "" + contractId);
         mEditor.commit();
     }
 
-    public String getOtherDelivererId() {
+    public String getLastChatuserPhone() {
+        return mPrefs.getString(KEY_LAST_CHATUSER_PHONE, "");
+    }
+
+    public void setLastChatuserPhone(String phone) {
+        mEditor.putString(KEY_LAST_CHATUSER_PHONE, phone);
+        mEditor.commit();
+    }
+
+    public String getMyDeliveringId() {
+        return mPrefs.getString(KEY_MY_DELIVERING_ID, "");
+    }
+
+    public void setMyDeliveringId(String delid) {
+        mEditor.putString(KEY_MY_DELIVERING_ID, delid);
+        mEditor.commit();
+    }
+
+    public String getOtherDeliveringId() {
         return mPrefs.getString(KEY_OTHERDELIVERING_ID, "");
     }
 
-    public void setOtherDelivererId(String otherDelivererId) {
+    public void setOtherDeliveringId(String otherDelivererId) {
         mEditor.putString(KEY_OTHERDELIVERING_ID, otherDelivererId);
         mEditor.commit();
     }
 
-    public int getReceiver_id() {
-        return receiver_id;
+    public String getReceiver_id() {
+        return mPrefs.getString(KEY_RECEIVER_ID, "");
     }
 
     public void setReceiver_id(int receiver_id) {
-        this.receiver_id = receiver_id;
+        mEditor.putString(KEY_RECEIVER_ID, "" + receiver_id);
+        mEditor.commit();
     }
 
     public void setUserData(UserData data) {
@@ -110,19 +123,4 @@ public class PropertyManager {
         return mPrefs.getString(KEY_FACEBOOK_ID, "");
     }
 
-    public String getHere_lat() {
-        return here_lat;
-    }
-
-    public String getHere_lng() {
-        return here_lng;
-    }
-
-    public String getAddr_lat() {
-        return addr_lat;
-    }
-
-    public String getAddr_lng() {
-        return addr_lng;
-    }
 }

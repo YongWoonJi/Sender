@@ -1,5 +1,6 @@
 package com.sender.team.sender;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -8,12 +9,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -70,8 +74,11 @@ public class SplashActivity extends AppCompatActivity {
     @BindView(R.id.image_cube_big)
     ImageView imageCubeBig;
 
-    public final static String FACEBOOK_LOGOUT = "facebooklogout";
-    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    public static final String FACEBOOK_LOGOUT = "facebooklogout";
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final int RC_PERMISSION = 100;
+    private boolean isPermissionGranted;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     LoginManager loginManager;
@@ -99,7 +106,7 @@ public class SplashActivity extends AppCompatActivity {
 
         String code = getIntent().getStringExtra(FACEBOOK_LOGOUT);
         if (code != null) {
-            if (code.equals("facebooklogout")) {
+            if (code.equals(FACEBOOK_LOGOUT)) {
                 loginManager.logOut();
             }
         }
@@ -179,13 +186,44 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }
             });
+            builder.setCancelable(false);
             dialog = builder.create();
             dialog.show();
             return false;
         }
-        return true;
+
+        requestPermission();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return isPermissionGranted;
+        } else {
+            return true;
+        }
     }
 
+    private void requestPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            }
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, RC_PERMISSION);
+        } else {
+            isPermissionGranted = true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_PERMISSION) {
+            if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                isPermissionGranted = true;
+                loginAndMoveMain();
+            } else {
+                isPermissionGranted = false;
+                finish();
+            }
+        }
+    }
 
     private boolean checkPlayServices() {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();

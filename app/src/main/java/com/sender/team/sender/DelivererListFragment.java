@@ -86,7 +86,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     }
 
     private void clickSend() {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_leave, null, false);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_basic, null, false);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AppTheme_Dialog_Transparent);
         builder.setView(view);
         ImageView imageView = (ImageView) view.findViewById(R.id.image_dialog);
@@ -99,25 +99,24 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         dialog = builder.create();
         dialog.show();
 
-        Button btn = (Button) view.findViewById(R.id.btn_leave_cancel);
+        Button btn = (Button) view.findViewById(R.id.btn_cancel);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                DialogShow(deliverId);
+                dialogShow(deliverId);
             }
         });
 
-        btn= (Button) view.findViewById(R.id.btn_leave_ok);
+        btn= (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int contractId = PropertyManager.getInstance().getContractIdData().getContract_id();
-                ContractsRequest request = new ContractsRequest(getActivity(), String.valueOf(contractId), "" + PropertyManager.getInstance().getReceiver_id(), PropertyManager.getInstance().getOtherDelivererId(), null);
+                ContractsRequest request = new ContractsRequest(getActivity(), PropertyManager.getInstance().getLastContractId(), PropertyManager.getInstance().getReceiver_id(), PropertyManager.getInstance().getOtherDeliveringId(), null);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
-                        if (result.getResult() !=null && result.getError() == null){
+                        if (result.getResult() != null && result.getError() == null){
                             Toast.makeText(getActivity(), "success : " + result.getResult().toString(), Toast.LENGTH_SHORT).show();
                             getActivity().finish();
                         } else if (result.getResult() == null && result.getError() != null){
@@ -137,8 +136,8 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     }
 
     @Override
-    public void DialogShow(final int position) {
-        View view = getLayoutInflater(null).inflate(R.layout.view_dialog_review, null, false);
+    public void dialogShow(final int position) {
+        final View view = getLayoutInflater(null).inflate(R.layout.view_dialog_review, null, false);
         final RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_view_dialog);
         final ReviewAdapter adapter = new ReviewAdapter();
         final TextView emptyReview = (TextView)view.findViewById(R.id.text_empty_my_review);
@@ -146,9 +145,9 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         listView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         deliverId = position;
         String delId = String.valueOf(mAdapter.getDeliverId(position));
-        PropertyManager.getInstance().setOtherDelivererId(delId);
+        PropertyManager.getInstance().setOtherDeliveringId(delId);
 
-        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "1", delId);
+        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "100", delId);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
@@ -162,6 +161,26 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                     emptyReview.setVisibility(View.VISIBLE);
                     listView.setVisibility(View.GONE);
                 }
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AppTheme_Dialog_Transparent);
+                builder.setView(view);
+                Button btn = (Button) view.findViewById(R.id.btn_review_ok);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        PropertyManager.getInstance().setReceiver_id(mAdapter.getId(position));
+                        dialog.dismiss();
+                        clickSend();
+                    }
+                });
+                btn = (Button) view.findViewById(R.id.btn_review_cancel);
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog = builder.create();
+                dialog.show();
             }
 
             @Override
@@ -169,27 +188,6 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                 Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
             }
         });
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AppTheme_Dialog_Transparent);
-        builder.setView(view);
-        Button btn = (Button) view.findViewById(R.id.btn_review_ok);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PropertyManager.getInstance().setReceiver_id(mAdapter.getId(position));
-                dialog.dismiss();
-                clickSend();
-            }
-        });
-        btn = (Button) view.findViewById(R.id.btn_review_cancel);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog = builder.create();
-        dialog.show();
     }
 
     @Override
@@ -206,6 +204,5 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         ((SendActivity)getActivity()).mMap.clear();
 
         mAdapter.clear();
-
     }
 }

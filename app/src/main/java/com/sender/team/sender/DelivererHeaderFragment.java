@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ContractsUpdateRequest;
 
 
@@ -92,7 +93,7 @@ public class DelivererHeaderFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-0000-0000"));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + PropertyManager.getInstance().getLastChatuserPhone()));
                 startActivity(intent);
             }
         });

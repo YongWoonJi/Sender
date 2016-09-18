@@ -34,6 +34,7 @@ import com.sender.team.sender.gcm.MyGcmListenerService;
 import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
+import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ChattingSendRequest;
 
 import java.io.File;
@@ -87,7 +88,10 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         user = (UserData) getIntent().getSerializableExtra(EXTRA_USER);
         if (user == null) {
             cUser = (ChattingListData) getIntent().getSerializableExtra(EXTRA_CHATTINGLIST_DATA);
+            PropertyManager.getInstance().setLastChatuserPhone(cUser.getPhone());
             isUserDataEmpty = true;
+        } else {
+            PropertyManager.getInstance().setLastChatuserPhone(user.getPhone());
         }
 
 
@@ -112,16 +116,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 default:
                     break;
         }
-
-        /////////////////////////////// 임의 데이터 처리
-//        PropertyManager.getInstance().getUserData().setUser_id("1");
-//        PropertyManager.getInstance().getUserData().setAddress("");
-//        PropertyManager.getInstance().getUserData().setFileUrl("");
-//        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_SEND, "안녕하세요?", new Date());
-//        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_RECEIVE, "어 그래", new Date());
-//        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_SEND, "윗쪽과 왼쪽에는 1px의 검정 라인으로 늘어날 부분을 지정하고 오른쪽과 아랫쪽에는 마찬가지로 검정 라인으로 내용이 들어갈 부분을 지정해 줍니다.", new Date());
-//        DBManager.getInstance().addMessage(PropertyManager.getInstance().getUserData(), null, ChatContract.ChatMessage.TYPE_RECEIVE, "사드 배치는 한국의 내정으로 중국 정부는 간섭할 권리가 없다\", \"사드 배치가 이유가 있다\", \"우리도 사드를 배치하자\", \"북한이 탄도미사일에다 핵실험까지 하는 마당이 한국의 사드 배치 결정이 어떻게 틀린 것이냐\"는 내용의 글이 잇따랐다", new Date());
-
         editMessage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -245,14 +239,26 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         @Override
         public void onReceive(Context context, Intent intent) {
             UserData u = (UserData) intent.getSerializableExtra(MyGcmListenerService.EXTRA_CHAT_USER);
-            if (u.getUser_id() == user.getUser_id()) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateMessage();
-                    }
-                });
-                intent.putExtra(MyGcmListenerService.EXTRA_RESULT, true);
+            if (isUserDataEmpty) {
+                if (u.getUser_id().equals("" + cUser.getId())) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateMessage();
+                        }
+                    });
+                    intent.putExtra(MyGcmListenerService.EXTRA_RESULT, true);
+                }
+            } else {
+                if (u.getUser_id().equals(user.getUser_id())) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateMessage();
+                        }
+                    });
+                    intent.putExtra(MyGcmListenerService.EXTRA_RESULT, true);
+                }
             }
         }
     };

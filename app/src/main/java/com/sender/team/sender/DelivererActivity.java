@@ -227,7 +227,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onStart() {
         super.onStart();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         Location location = mLM.getLastKnownLocation(mProvider);
@@ -241,7 +241,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onStop() {
         super.onStop();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mLM.removeUpdates(mListener);
@@ -443,14 +443,15 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         map.setMyLocationEnabled(true);
 
         map.getUiSettings().setCompassEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
-
+        Location location = mLM.getLastKnownLocation(mProvider);
+        moveMap(location.getLatitude(), location.getLongitude());
     }
 
     LocationListener mListener = new LocationListener() {
