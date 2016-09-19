@@ -1,16 +1,17 @@
 package com.sender.team.sender.data;
 
-public class ChattingReceiveData {
-    private String date;
-    private UserData sender;
-    private String message;
+import java.util.ArrayList;
 
-    public String getDate() {
-        return this.date;
+public class ChattingReceiveData {
+    private ArrayList<ChattingReceiveMessage> data;
+    private UserData sender;
+
+    public ArrayList<ChattingReceiveMessage> getData() {
+        return this.data;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setData(ArrayList<ChattingReceiveMessage> data) {
+        this.data = data;
     }
 
     public UserData getSender() {
@@ -19,13 +20,5 @@ public class ChattingReceiveData {
 
     public void setSender(UserData sender) {
         this.sender = sender;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

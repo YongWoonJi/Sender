@@ -36,6 +36,7 @@ import com.sender.team.sender.SplashActivity;
 import com.sender.team.sender.Utils;
 import com.sender.team.sender.data.ChatContract;
 import com.sender.team.sender.data.ChattingReceiveData;
+import com.sender.team.sender.data.ChattingReceiveMessage;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.DBManager;
@@ -48,7 +49,6 @@ import com.sender.team.sender.request.OtherUserRequest;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -103,16 +103,16 @@ public class MyGcmListenerService extends GcmListenerService {
     private void chattingReceive(Bundle data){
         ChattingReceiveRequest request = new ChattingReceiveRequest(this, data.getString(EXTRA_SENDER_ID), data.getString(EXTRA_CONTRACT_ID));
         try {
-            NetworkResult<List<ChattingReceiveData>> result = NetworkManager.getInstance().getNetworkDataSync(NetworkManager.CLIENT_STANDARD, request);
-            List<ChattingReceiveData> list = result.getResult();
-            for (ChattingReceiveData c : list) {
-                DBManager.getInstance().addMessage(c.getSender(), c.getSender().getFileUrl(), ChatContract.ChatMessage.TYPE_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
+            NetworkResult<ChattingReceiveData> result = NetworkManager.getInstance().getNetworkDataSync(NetworkManager.CLIENT_STANDARD, request);
+            ChattingReceiveData cData = result.getResult();
+            for (ChattingReceiveMessage c : cData.getData()) {
+                DBManager.getInstance().addMessage(cData.getSender(), c.getUrl(), ChatContract.ChatMessage.TYPE_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
                 Intent i = new Intent(ACTION_CHAT);
-                i.putExtra(EXTRA_CHAT_USER, c.getSender());
+                i.putExtra(EXTRA_CHAT_USER, cData.getSender());
                 mLBM.sendBroadcastSync(i);
                 boolean processed = i.getBooleanExtra(EXTRA_RESULT, false);
                 if (!processed) {
-                    sendNotification(c);
+                    sendNotification(cData);
                 }
             }
         } catch (IOException e) {
@@ -131,7 +131,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker("SENDER")
                 .setContentTitle(m.getSender().getName())
-                .setContentText(m.getMessage())
+                .setContentText(m.getData().get(m.getData().size() - 1).getMessage())
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setContentIntent(pendingIntent);

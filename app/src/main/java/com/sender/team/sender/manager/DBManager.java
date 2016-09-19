@@ -192,6 +192,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
 
+
     public Cursor getChatUser() {
         String table = ChatContract.ChatUser.TABLE + " INNER JOIN " +
                 ChatContract.ChatMessage.TABLE + " ON " +

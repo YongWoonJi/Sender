@@ -336,7 +336,7 @@ public class InfoInputFragment extends Fragment {
 
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
-                PropertyManager.getInstance().setLastContractId(result.getResult().getContract_id());
+                PropertyManager.getInstance().setLastContractId("" + result.getResult().getContract_id());
             }
 
             @Override

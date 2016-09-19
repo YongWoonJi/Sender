@@ -17,7 +17,8 @@
         android:layout_marginRight="7dp"
         android:layout_marginEnd="7dp"
         app:riv_corner_radius="50dp"
-        android:src="@drawable/default_profile" />
+        android:src="@drawable/default_profile"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:layout_width="wrap_content"

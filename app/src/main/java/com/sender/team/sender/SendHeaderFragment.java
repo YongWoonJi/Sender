@@ -32,8 +32,8 @@ import com.sender.team.sender.request.ReviewRequest;
 public class SendHeaderFragment extends Fragment {
 
     public static boolean statusFlag = false;
-    public static final int START_DELIVERY = 2;
-    public static final int END_DELIVERY = 3;
+    public static final int START_DELIVERY = 3;
+    public static final int END_DELIVERY = 4;
 
     public SendHeaderFragment() {
         // Required empty public constructor
@@ -53,17 +53,18 @@ public class SendHeaderFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     //15. 배송 상태 변경하기
-                    ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + END_DELIVERY);
+                    ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + END_DELIVERY);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                             imageStatusTwo.setImageResource(R.color.colorstatusblue);
-                            btnEnd.setBackgroundResource(R.color.chatting_background);
+//                            btnEnd.setBackgroundResource(R.color.chatting_background);
                             statusFlag = true;
                         }
 
                         @Override
                         public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+
                         }
                     });
                     clickSend();
@@ -78,7 +79,7 @@ public class SendHeaderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //15. 배송 상태 변경하기
-                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + START_DELIVERY);
+                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + START_DELIVERY);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -108,7 +109,7 @@ public class SendHeaderFragment extends Fragment {
         final ImageView imageProfile = (ImageView) view.findViewById(R.id.image_profile);
         final RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         final EditText editComment = (EditText) view.findViewById(R.id.edit_comment);
-        final OtherUserRequest request = new OtherUserRequest(getContext(), "1");
+        final OtherUserRequest request = new OtherUserRequest(getContext(), PropertyManager.getInstance().getContractedReceiverId());
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
@@ -141,7 +142,7 @@ public class SendHeaderFragment extends Fragment {
                 } else {
                     // ReviewRequest 추가해야함
                     String userId = PropertyManager.getInstance().getUserData().getUser_id();
-                    ReviewRequest request = new ReviewRequest(getContext(), "1", comment, "" + (int) star);
+                    ReviewRequest request = new ReviewRequest(getContext(), PropertyManager.getInstance().getLastContractId(), comment, "" + (int) star);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {

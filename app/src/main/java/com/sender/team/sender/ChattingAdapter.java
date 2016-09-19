@@ -8,19 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sender.team.sender.data.ChatContract;
+import com.sender.team.sender.data.ChattingListData;
+import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.widget.ChattingReceiverViewHolder;
 import com.sender.team.sender.widget.ChattingSenderViewHolder;
-
-import java.io.File;
 
 /**
  * Created by Tacademy on 2016-08-25.
  */
 public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ChattingReceiverViewHolder.ChatReceiverImage{
 
+    private static final int VIEW_TYPE_SEND = 1;
+    private static final int VIEW_TYPE_RECEIVE = 2;
+
+
     Cursor cursor;
-    File senderChatImage;
-    String name, profileImage;
+    UserData user;
+    ChattingListData cUser;
 
     public void changeCursor(Cursor c) {
         if (cursor != null) {
@@ -30,14 +34,14 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public void setRecieveData(File chatImage, String name, String profileImage){
-        this.senderChatImage = chatImage;
-        this.name = name;
-        this.profileImage = profileImage;
+    public ChattingAdapter(UserData user) {
+        this.user = user;
     }
 
-    private static final int VIEW_TYPE_SEND = 1;
-    private static final int VIEW_TYPE_RECEIVE = 2;
+    public ChattingAdapter(ChattingListData cUser) {
+        this.cUser = cUser;
+    }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -89,7 +93,11 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
                     long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
                     String image = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_IMAGE));
-                    rvh.setChatReceiverData(profileImage, name, message, time, image);
+                    if (user != null) {
+                        rvh.setChatReceiverData(user, message, time, image);
+                    } else if (user == null) {
+                        rvh.setChatReceiverData(cUser, message, time, image);
+                    }
                     break;
                 }
             }

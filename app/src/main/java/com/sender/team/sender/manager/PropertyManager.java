@@ -35,6 +35,7 @@ public class PropertyManager {
     private static final String KEY_OTHERDELIVERING_ID = "otherdelivering_id";
     private static final String KEY_LAST_CHATUSER_PHONE = "lastchatphone";
     private static final String KEY_LAST_CONTRACT_ID = "lastcontractid";
+    private static final String KEY_CONTRACTED_RECEIVER_ID = "contractedreceiverid";
 
     private PropertyManager() {
         Context context = MyApplication.getContext();
@@ -43,12 +44,20 @@ public class PropertyManager {
     }
 
 
+    public String getContractedReceiverId() {
+        return mPrefs.getString(KEY_CONTRACTED_RECEIVER_ID, "");
+    }
+
+    public void setContractedReceiverId(String id) {
+        mEditor.putString(KEY_CONTRACTED_RECEIVER_ID, id);
+        mEditor.commit();
+    }
 
     public String getLastContractId() {
         return mPrefs.getString(KEY_LAST_CONTRACT_ID, "");
     }
 
-    public void setLastContractId(int contractId) {
+    public void setLastContractId(String contractId) {
         mEditor.putString(KEY_LAST_CONTRACT_ID, "" + contractId);
         mEditor.commit();
     }

@@ -73,7 +73,7 @@ public class NoticeActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        NoticeRequest request = new NoticeRequest(this, "1", "1", "1");
+        NoticeRequest request = new NoticeRequest(this, "1", "100");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<NoticeListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<NoticeListData>> request, NetworkResult<NoticeListData> result) {

@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide;
 import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.R;
 import com.sender.team.sender.Utils;
+import com.sender.team.sender.data.ChattingListData;
+import com.sender.team.sender.data.UserData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,12 +47,31 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setChatReceiverData(String profile, String name, String message, long time, String image){
-        if (!TextUtils.isEmpty(profile)) {
-            Glide.with(MyApplication.getContext()).load(profile).into(receiverImage);
+    public void setChatReceiverData(UserData user, String message, long time, String image){
+        if (!TextUtils.isEmpty(user.getFileUrl())) {
+            Glide.with(MyApplication.getContext()).load(user.getFileUrl()).into(receiverImage);
         }
-        if (!TextUtils.isEmpty(name)) {
-            receiverName.setText(name);
+        if (!TextUtils.isEmpty(user.getName())) {
+            receiverName.setText(user.getName());
+        }
+        if (!TextUtils.isEmpty(message)) {
+            receiverContent.setText(message);
+        }
+        if (time != 0) {
+            receiverTime.setText(Utils.getCurrentTime(time));
+        }
+        if (!TextUtils.isEmpty(image)){
+            Glide.with(MyApplication.getContext()).load(image).into(receiverImageContentImage);
+        }
+    }
+
+
+    public void setChatReceiverData(ChattingListData user, String message, long time, String image){
+        if (!TextUtils.isEmpty(user.getImageUrl())) {
+            Glide.with(MyApplication.getContext()).load(user.getImageUrl()).into(receiverImage);
+        }
+        if (!TextUtils.isEmpty(user.getName())) {
+            receiverName.setText(user.getName());
         }
         if (!TextUtils.isEmpty(message)) {
             receiverContent.setText(message);

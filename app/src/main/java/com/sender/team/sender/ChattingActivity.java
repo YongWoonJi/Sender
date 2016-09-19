@@ -89,13 +89,18 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         if (user == null) {
             cUser = (ChattingListData) getIntent().getSerializableExtra(EXTRA_CHATTINGLIST_DATA);
             PropertyManager.getInstance().setLastChatuserPhone(cUser.getPhone());
+            PropertyManager.getInstance().setContractedReceiverId("" + cUser.getId());
+            PropertyManager.getInstance().setLastContractId("" + cUser.getContractId());
+            mAdapter = new ChattingAdapter(cUser);
             isUserDataEmpty = true;
         } else {
             PropertyManager.getInstance().setLastChatuserPhone(user.getPhone());
+            PropertyManager.getInstance().setContractedReceiverId("" + user.getUser_id());
+            PropertyManager.getInstance().setLastContractId(user.getContractId());
+            mAdapter = new ChattingAdapter(user);
         }
 
 
-        mAdapter = new ChattingAdapter();
         listview.setAdapter(mAdapter);
         listview.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
 

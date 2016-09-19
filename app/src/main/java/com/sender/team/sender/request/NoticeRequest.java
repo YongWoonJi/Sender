@@ -16,12 +16,11 @@ import okhttp3.Request;
  */
 public class NoticeRequest extends AbstractRequest<NetworkResult<NoticeListData>> {
     Request request;
-    public NoticeRequest (Context context, String currentPage, String itemsPerPage, String type){
+    public NoticeRequest (Context context, String currentPage, String itemsPerPage){
         HttpUrl url = getBaseUrlBuilder()
                 .addPathSegment("notices")
                 .addQueryParameter("currentPage", currentPage)
                 .addQueryParameter("itemsPerPage", itemsPerPage)
-                .addQueryParameter("type", type)
                 .build();
 
         request = new Request.Builder()
