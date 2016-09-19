@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +30,14 @@ public class TermsFragment extends Fragment {
     @BindView(R.id.text_terms3)
     TextView terms3;
 
+    @BindView(R.id.checkBox)
+    CheckBox checkBoxOne;
+
+    @BindView(R.id.checkBox2)
+    CheckBox checkBoxTwo;
+
+    @BindView(R.id.checkBox3)
+    CheckBox checkBoxThree;
 
     public TermsFragment() {
         // Required empty public constructor
@@ -49,11 +59,16 @@ public class TermsFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new AuthFragment()).commit();
+                if (checkBoxOne.isChecked() == true
+                        && checkBoxTwo.isChecked() == true
+                        && checkBoxThree.isChecked() == true) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, new AuthFragment()).commit();
+                } else{
+                    Toast.makeText(getContext(), "이용약관에 동의 해주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
         return view;
     }
 

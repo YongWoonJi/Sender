@@ -17,7 +17,8 @@
         android:text="현재 버전 1.0"
         android:id="@+id/textView15"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:textSize="13sp" />
 
     <TextView
         android:layout_width="180dp"
@@ -28,15 +29,17 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/scrollview_rectangle"
         android:textColor="@color/black"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textSize="13sp" />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:text="OK"
         android:id="@+id/btn_version_ok"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:background="@color/fontcolor"
-        android:textColor="@color/whitefont" />
+        android:textColor="@color/whitefont"
+        android:textSize="13sp" />
 </LinearLayout>

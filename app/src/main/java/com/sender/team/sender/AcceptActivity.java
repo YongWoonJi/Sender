@@ -165,6 +165,10 @@ public class AcceptActivity extends Activity {
                                 AlertDialog dialog = builder.create();
 //                                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                                 dialog.show();
+
+                                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                                params.width = 825;
+                                dialog.getWindow().setAttributes(params);
                             }
 
                             @Override

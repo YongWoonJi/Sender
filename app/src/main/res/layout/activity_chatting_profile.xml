@@ -37,7 +37,7 @@
         android:layout_below="@+id/imageView2"
         android:layout_centerHorizontal="true"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="17sp" />
 
     <TextView
         android:layout_width="150dp"
@@ -51,7 +51,7 @@
         android:textColor="@color/black"
         android:background="@drawable/scrollview_rectangle"
         android:gravity="center"
-        android:textSize="11sp" />
+        android:textSize="13sp" />
 
     <Button
         android:layout_width="50dp"

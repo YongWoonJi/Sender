@@ -12,6 +12,7 @@ import com.sender.team.sender.data.MenuGroup;
 import com.sender.team.sender.data.NaviItem;
 import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.widget.ChildViewHolder;
+import com.sender.team.sender.widget.FooterViewHolder;
 import com.sender.team.sender.widget.GroupViewHolder;
 import com.sender.team.sender.widget.HeaderViewHolder;
 
@@ -26,6 +27,7 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int HEADER = 0;
     public static final int GROUP = 1;
     public static final int CHILD = 2;
+    public static final int FOOTER = 3;
 
     public static final int SERVICE_TERMS = 0;
     public static final int INFO_TERMS = 1;
@@ -76,6 +78,11 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ChildViewHolder cvh = new ChildViewHolder(view);
                 return cvh;
             }
+            case FOOTER : {
+                View view = LayoutInflater.from(context).inflate(R.layout.view_footer, parent, false);
+                FooterViewHolder fvh = new FooterViewHolder(view);
+                return  fvh;
+            }
         }
 
         return null;
@@ -88,6 +95,16 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case HEADER : {
                 HeaderViewHolder hvh = (HeaderViewHolder) holder;
                 hvh.setData(PropertyManager.getInstance().getUserData());
+                break;
+            }
+            case FOOTER : {
+                FooterViewHolder fvh= (FooterViewHolder) holder;
+                fvh.textFooter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.unregister();
+                    }
+                });
                 break;
             }
             case GROUP : {
@@ -132,10 +149,6 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 }
                                 case 5 : {
                                     listener.Logout();
-                                    break;
-                                }
-                                case 6 : {
-                                    listener.unregister();
                                     break;
                                 }
                             }

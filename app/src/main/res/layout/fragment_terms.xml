@@ -27,7 +27,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginLeft="16dp"
         android:textColor="@color/black"
-        android:textSize="11sp" />
+        android:textSize="12sp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -44,7 +44,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_terms" />
+            android:id="@+id/text_terms"
+            android:textSize="9sp" />
     </ScrollView>
 
     <TextView
@@ -59,8 +60,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:textSize="11sp" />
+        android:textSize="12sp"
+        android:layout_marginTop="5dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -77,7 +78,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_terms2" />
+            android:id="@+id/text_terms2"
+            android:textSize="9sp" />
     </ScrollView>
 
     <TextView
@@ -92,8 +94,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
-        android:textSize="11sp" />
+        android:layout_marginTop="5dp"
+        android:textSize="12sp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -111,13 +113,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_terms3" />
+            android:id="@+id/text_terms3"
+            android:textSize="9sp" />
     </ScrollView>
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:text="@string/btn_next"
         android:textColor="@color/whitefont"
         android:textSize="12sp"
@@ -130,7 +133,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/checkbox"
-        android:textSize="11sp"
+        android:textSize="12sp"
         android:id="@+id/checkBox"
         android:checked="false"
         android:button="@drawable/checkbox_selector"
@@ -146,7 +149,7 @@
         android:text="@string/checkbox2"
         android:id="@+id/checkBox2"
         android:checked="false"
-        android:textSize="11sp"
+        android:textSize="12sp"
         android:button="@drawable/checkbox_selector"
         android:layout_below="@+id/scrollView2"
         android:layout_alignParentRight="true"
@@ -159,7 +162,7 @@
         android:layout_height="wrap_content"
         android:text="@string/checkbox3"
         android:id="@+id/checkBox3"
-        android:textSize="11sp"
+        android:textSize="12sp"
         android:button="@drawable/checkbox_selector"
         android:checked="false"
         android:layout_below="@+id/scrollView3"

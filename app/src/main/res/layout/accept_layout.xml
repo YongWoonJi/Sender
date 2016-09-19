@@ -27,7 +27,7 @@
             android:text="서울대 연구공원 웨딩홀 -> 강남역 1번출구\n16:00 도착 / 서류봉투 / 5200원"
             android:textAlignment="center"
             android:textColor="#757575"
-            android:textSize="10sp"
+            android:textSize="11sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -50,7 +50,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0"
                 android:text="메모"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
 
         </LinearLayout>
 
@@ -84,11 +84,11 @@
             <Button
                 android:id="@+id/btn_accept_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_weight="1"
                 android:background="@color/whitebg"
                 android:text="CANCEL"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
 
             <View
                 android:layout_width="1dp"
@@ -100,12 +100,12 @@
             <Button
                 android:id="@+id/btn_accept_ok"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_weight="1"
                 android:background="@color/fontcolor"
                 android:text="OK"
                 android:textColor="@color/whitefont"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
     </LinearLayout>

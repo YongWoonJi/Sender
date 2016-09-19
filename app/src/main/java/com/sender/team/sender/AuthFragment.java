@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -85,15 +86,13 @@ public class AuthFragment extends Fragment {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_auth, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setView(view);
-//                builder.setMessage("인증되었습니다");
-//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                    }
-//                });
+
                 final AlertDialog dialog = builder.create();
                 dialog.show();
+
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width = 825;
+                dialog.getWindow().setAttributes(params);
 
                 Button btn = (Button) view.findViewById(R.id.btn_auth_ok);
                 btn.setOnClickListener(new View.OnClickListener() {

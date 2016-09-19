@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/faq_child_name"
-        android:textSize="10sp"
+        android:textSize="11sp"
         android:textColor="@color/colorchildfont"
         android:layout_marginBottom="16dp" />
 

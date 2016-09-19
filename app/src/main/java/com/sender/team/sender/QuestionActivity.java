@@ -228,6 +228,7 @@ public class QuestionActivity extends AppCompatActivity {
         }
     }
 
+
     @OnClick(R.id.btn_question)
     public void onClickQuestion() {
         View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_basic, null);
@@ -244,6 +245,10 @@ public class QuestionActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) view.findViewById(R.id.image_dialog);
         imageView.setImageResource(R.drawable.pop_logo04);
         dialog.show();
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = 825;
+        dialog.getWindow().setAttributes(params);
 
 
         Button btn = (Button) view.findViewById(R.id.btn_ok);
@@ -262,7 +267,6 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -275,6 +275,9 @@ public class ReportActivity extends AppCompatActivity {
         imageView.setImageResource(R.drawable.pop_logo04);
         dialog.show();
 
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = 825;
+        dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {

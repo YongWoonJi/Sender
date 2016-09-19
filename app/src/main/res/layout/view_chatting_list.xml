@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/text_time"
-        android:textSize="10sp"
+        android:textSize="11sp"
         android:textColor="@color/font_gray"
         android:layout_alignTop="@+id/text_name"
         android:layout_alignParentRight="true"

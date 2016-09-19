@@ -1,7 +1,6 @@
 package com.sender.team.sender;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,12 +15,15 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -414,11 +416,20 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     AlertDialog dialog;
     String hereAddr, nextAddr, depTime, arrTime;
     private void clickSend() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(DelivererActivity.this);
-        builder.setMessage("입력을 완료하시겠습니까?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_basic, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DelivererActivity.this, R.style.AppTheme_Dialog_Transparent);
+        builder.setView(view);
+
+        TextView textTitle = (TextView)view.findViewById(R.id.text_dialog);
+        textTitle.setText("입력을 완료하시겠습니까?");
+
+        TextView textContents = (TextView)view. findViewById(R.id.text_dialog_two);
+        textContents.setVisibility(View.GONE);
+
+        Button btn = (Button) view.findViewById(R.id.btn_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View view) {
                 depTime = Utils.getCurrentDate() + " " + editStartHour.getText().toString() + ":" + editStartMin.getText().toString() + ":00";
                 arrTime = Utils.getCurrentDate() + " " + editEndHour.getText().toString() + ":" + editEndMin.getText().toString() + ":00";
 
@@ -469,14 +480,21 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
             }
         });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+        btn = (Button) view.findViewById(R.id.btn_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(DelivererActivity.this, "취소되었습니다", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
+
         dialog = builder.create();
         dialog.show();
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = 825;
+        dialog.getWindow().setAttributes(params);
     }
 
 

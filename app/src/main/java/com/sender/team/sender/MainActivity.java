@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.tab3)
     LinearLayout tab3;
 
-
     int index;
     Runnable runnable = new Runnable() {
         @Override
@@ -198,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_menu_before);
-
 
         init();
     }
@@ -265,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onDrawerClosed(View drawerView) {
+            public void onDrawerClosed(final View drawerView) {
 
             }
 
@@ -274,6 +272,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
+
     }
 
     private void initRecyclerView() {
@@ -548,6 +548,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 final AlertDialog dialog = builder.create();
                 dialog.show();
 
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width = 825;
+                dialog.getWindow().setAttributes(params);
+
                 Button btn = (Button) view.findViewById(R.id.btn_version_ok);
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -610,6 +614,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final AlertDialog dialog = builder.create();
         dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.show();
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = 825;
+        dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {

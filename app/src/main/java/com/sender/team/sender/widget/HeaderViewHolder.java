@@ -20,7 +20,8 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.image_profile)
     ImageView imageProfile;
-
+    @BindView(R.id.image_home)
+    public ImageView imageHome;
     @BindView(R.id.text_userName)
     TextView textUserName;
     @BindView(R.id.text_header_email)

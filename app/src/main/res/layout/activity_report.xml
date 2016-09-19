@@ -52,7 +52,7 @@
             android:text="@string/report_title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/fontcolor"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textView38"
@@ -65,7 +65,7 @@
             android:lineSpacingExtra="7dp"
             android:text="@string/report_title_bottom"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/text_rating"
@@ -75,10 +75,10 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/radioGroup"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="배송원 ID"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textView34"
@@ -88,39 +88,32 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/spinner"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="@string/content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
 
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/scrollView"
-            android:layout_below="@+id/textView34"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="11dp">
 
             <EditText
                 android:id="@+id/edit_contents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/scrollview_rectangle"
                 android:maxLength="700"
                 android:singleLine="false"
                 android:hint="칭찬/신고 내용을 작성해주세요."
-                android:textSize="11sp"
-                android:layout_alignBottom="@+id/text_report_count"
-                android:layout_alignLeft="@+id/scrollView"
-                android:layout_alignStart="@+id/scrollView"
-                android:layout_toLeftOf="@+id/text_report_count"
-                android:layout_toStartOf="@+id/text_report_count"
-                android:paddingBottom="10dp" />
-        </ScrollView>
+                android:textSize="12sp"
+                android:layout_below="@+id/textView34"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="16dp"
+                android:gravity="top"
+                android:padding="3dp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -139,46 +132,46 @@
             android:text="@string/image_registration"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="11sp"
-            android:layout_below="@+id/imageView19"
+            android:layout_below="@+id/text_report_count"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp" />
+            android:layout_marginLeft="16dp" />
 
         <ImageView
             android:id="@+id/image_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic03"
             android:layout_below="@+id/textView36"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="11dp" />
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/textView37"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/image_photo"
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/image_photo"
-            android:layout_toRightOf="@+id/image_photo"
             android:text="@string/image_registration_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/holo_red_light"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:layout_alignBottom="@+id/image_photo"
+            android:layout_toRightOf="@+id/textView36"
+            android:layout_toEndOf="@+id/textView36"
+            android:layout_marginLeft="3dp" />
 
         <Button
             android:id="@+id/btn_report"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:background="@color/fontcolor"
             android:text="@string/send"
-            android:textColor="@color/whitefont" />
+            android:textColor="@color/whitefont"
+            android:textSize="12sp" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -194,7 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="5dp"
                 android:checked="true"
                 android:text="칭찬하기"
                 android:textSize="11sp" />
@@ -204,7 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="5dp"
                 android:checked="false"
                 android:text="신고하기"
                 android:textSize="11sp" />
@@ -218,7 +211,8 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/text_rating"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="11dp" />
+            android:layout_marginTop="5dp"
+            />
 
         <ImageView
             android:id="@+id/imageView"
@@ -275,7 +269,7 @@
                 android:text="@string/input_info"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/fontcolor"
-                android:textSize="11sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <TextView
@@ -288,7 +282,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/report_kind"
-            android:textSize="11sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -296,9 +290,9 @@
             android:text="@string/report_count"
             android:id="@+id/text_report_count"
             android:textSize="11sp"
-            android:layout_alignBottom="@+id/scrollView"
-            android:layout_alignRight="@+id/scrollView"
-            android:layout_alignEnd="@+id/scrollView" />
+            android:layout_below="@+id/edit_contents"
+            android:layout_alignRight="@+id/imageView19"
+            android:layout_alignEnd="@+id/imageView19" />
 
     </RelativeLayout>
 </RelativeLayout>

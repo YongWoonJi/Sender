@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,7 +44,6 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     }
 
     AlertDialog dialog;
-
     int deliverId;
 
     @Override
@@ -100,6 +100,10 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
 
         dialog = builder.create();
         dialog.show();
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = 825;
+        dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_cancel);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -183,6 +187,10 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                 });
                 dialog = builder.create();
                 dialog.show();
+
+                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+                params.width = 825;
+                dialog.getWindow().setAttributes(params);
             }
 
             @Override

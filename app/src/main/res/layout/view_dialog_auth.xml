@@ -13,16 +13,16 @@
         android:gravity="center"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="60dp"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:textColor="@color/black" />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="36dp"
         android:text="OK"
         android:id="@+id/btn_auth_ok"
         android:layout_gravity="center_horizontal"
         android:background="@color/fontcolor"
         android:textColor="@color/whitefont"
-        android:textSize="12sp" />
+        android:textSize="13sp" />
 </LinearLayout>

@@ -18,7 +18,6 @@ public class TermsActivity extends AppCompatActivity {
     TextView termsTitle;
     @BindView(R.id.text_terms)
     TextView termsView;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
