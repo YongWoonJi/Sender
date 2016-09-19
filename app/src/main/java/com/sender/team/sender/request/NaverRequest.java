@@ -26,10 +26,12 @@ public class NaverRequest extends AbstractRequest<NetworkResult<Integer>> {
                 .addPathSegment("naver")
                 .addPathSegment("token")
                 .build();
+
         RequestBody body = new FormBody.Builder()
                 .add("access_token", access_token)
                 .add("registration_token", registration_token)
                 .build();
+
         request = new Request.Builder()
                 .url(url)
                 .post(body)

@@ -22,7 +22,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -52,6 +51,7 @@ import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.FacebookRequest;
 import com.sender.team.sender.request.MyPageRequest;
+import com.sender.team.sender.request.NaverRequest;
 
 import java.util.Arrays;
 
@@ -86,11 +86,8 @@ public class SplashActivity extends AppCompatActivity {
 /////////////////////////////////네이버
     private static String OAUTH_CLIENT_ID = "4D9YQ2XzAzTq1hA7B5P9";
     private static String OAUTH_CLIENT_SECRET = "ImY1ls7Vfr";
-    private static String OAUTH_CLIENT_NAME = "sender";
+    private static String OAUTH_CLIENT_NAME = "SENDER";
     private static OAuthLogin mOAuthLoginInstance ;
-
-    private static String TAG = "SplashActivity";
-
 
 
     LoginManager loginManager;
@@ -141,9 +138,6 @@ public class SplashActivity extends AppCompatActivity {
                 //,OAUTH_CALLBACK_INTENT
                 // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
         );
-
-
-
     }
 
 
@@ -300,9 +294,9 @@ public class SplashActivity extends AppCompatActivity {
 
                 @Override
                 public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
-                    if (result.getError().equals("0")) {
+//                    if (result.getError().equals("0")) {
                         loginSharedPreference();
-                    }
+//                    }
                 }
             });
         }
@@ -351,6 +345,8 @@ public class SplashActivity extends AppCompatActivity {
     private void loginSharedPreference() {
         if (isFacebookLogin()) {
             processFacebookLogin();
+        } else if (isNaverLogin()) {
+            processNaverLogin();
         } else {
             setLoginDisplay();
         }
@@ -361,6 +357,51 @@ public class SplashActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private boolean isNaverLogin() {
+        if (!TextUtils.isEmpty(PropertyManager.getInstance().getNaverToken())) {
+            return true;
+        }
+        return false;
+    }
+
+    private void processNaverLogin() {
+        String accessToken = mOAuthLoginInstance.getAccessToken(this);
+        if (accessToken != null) {
+            if (!accessToken.equals(PropertyManager.getInstance().getNaverToken())) {
+                resetNaverAndSetLoginDisplay();
+            }
+            NaverRequest request = new NaverRequest(this, accessToken, PropertyManager.getInstance().getRegistrationId());
+            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
+                @Override
+                public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
+                    if (result.getResult() == 0) {
+                        moveSignUpActivity();
+                    } else if (result.getResult() == 1) {
+                        loginAndMoveMain();
+                    } else {
+                        resetNaverAndSetLoginDisplay();
+                    }
+                }
+
+                @Override
+                public void onFail(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result, String errorMessage, Throwable e) {
+                    mOAuthLoginInstance.logoutAndDeleteToken(SplashActivity.this);
+                    setLoginDisplay();
+                }
+            });
+        } else {
+            setLoginDisplay();
+        }
+
+    }
+
+
+    private void resetNaverAndSetLoginDisplay() {
+        mOAuthLoginInstance.logoutAndDeleteToken(this);
+        PropertyManager.getInstance().setNaverToken("");
+        setLoginDisplay();
     }
 
     private void processFacebookLogin() {
@@ -463,11 +504,10 @@ public class SplashActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 final AccessToken token = AccessToken.getCurrentAccessToken();
                 FacebookRequest request = new FacebookRequest(SplashActivity.this, token.getToken(), PropertyManager.getInstance().getRegistrationId());
-                Log.i("AAAAA", "accessToken : " + token.getToken() + " regId : " + PropertyManager.getInstance().getRegistrationId());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
-                        if (result != null) {
+                        if (result.getResult() != null) {
                             if (result.getResult() == 0) {
                                 moveSignUpActivity();
                             } else if (result.getResult() == 1) {
@@ -505,7 +545,6 @@ public class SplashActivity extends AppCompatActivity {
     //네이버 버튼 클릭하면 핸들러 호출
     @OnClick(R.id.btn_naver)
     public void onClickNaver() {
-//        moveSignUpActivity();
         mOAuthLoginInstance.startOauthLoginActivity(SplashActivity.this, mOAuthLoginHandler);
     }
 
@@ -513,11 +552,36 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void run(boolean success) {
             if (success) {
-                String accessToken = mOAuthLoginInstance.getAccessToken(SplashActivity.this); //로그인 결과로 얻은 접근 토큰(access token)을 반환합니다.
-                String refreshToken = mOAuthLoginInstance.getRefreshToken(SplashActivity.this); //로그인 결과로 얻은 갱신 토큰(refresh token)을 반환합니다.
-                long expiresAt = mOAuthLoginInstance.getExpiresAt(SplashActivity.this); //접근 토큰(access token)의 만료 시간을 반환합니다.
-                String tokenType = mOAuthLoginInstance.getTokenType(SplashActivity.this); //로그인 결과로 얻은 토큰의 타입을 반환합니다.
-                Log.i(TAG,"accessToken" + accessToken);
+//                String accessToken = mOAuthLoginInstance.getAccessToken(SplashActivity.this); //로그인 결과로 얻은 접근 토큰(access token)을 반환합니다.
+//                String refreshToken = mOAuthLoginInstance.getRefreshToken(SplashActivity.this); //로그인 결과로 얻은 갱신 토큰(refresh token)을 반환합니다.
+//                long expiresAt = mOAuthLoginInstance.getExpiresAt(SplashActivity.this); //접근 토큰(access token)의 만료 시간을 반환합니다.
+//                String tokenType = mOAuthLoginInstance.getTokenType(SplashActivity.this); //로그인 결과로 얻은 토큰의 타입을 반환합니다.
+//                Log.i(TAG,"accessToken :  " + accessToken);
+
+                final String accessToken = mOAuthLoginInstance.getAccessToken(SplashActivity.this);
+                NaverRequest request = new NaverRequest(SplashActivity.this, accessToken, PropertyManager.getInstance().getRegistrationId());
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
+                        if (result.getResult() != null) {
+                            if (result.getResult() == 0) {
+                                moveSignUpActivity();
+                            } else if (result.getResult() == 1) {
+                                PropertyManager.getInstance().setNaverToken(accessToken);
+                                loginAndMoveMain();
+                            } else {
+                                Toast.makeText(SplashActivity.this, "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                                mOAuthLoginInstance.logoutAndDeleteToken(SplashActivity.this);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result, String errorMessage, Throwable e) {
+                        Toast.makeText(SplashActivity.this, "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                        mOAuthLoginInstance.logoutAndDeleteToken(SplashActivity.this);
+                    }
+                });
 
             } else {
                 String errorCode = mOAuthLoginInstance.getLastErrorCode(SplashActivity.this).getCode(); //마지막으로 실패한 로그인의 에러 코드를 반환합니다.
@@ -526,12 +590,5 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     };
-
-
-    @OnClick(R.id.btn_logout)
-    public void onClickLogout() {
-        loginManager.logOut();
-        mOAuthLoginInstance .logout(this);
-    }
 
 }

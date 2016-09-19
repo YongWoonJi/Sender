@@ -30,6 +30,7 @@ public class PropertyManager {
 
     private static final String KEY_REGISTRATION_ID = "regid";
     private static final String KEY_FACEBOOK_ID = "facebookid";
+    private static final String KEY_NAVER_TOKEN = "naverid";
     private static final String KEY_MY_DELIVERING_ID = "delivering_id";
     private static final String KEY_RECEIVER_ID = "receiverid";
     private static final String KEY_OTHERDELIVERING_ID = "otherdelivering_id";
@@ -130,6 +131,15 @@ public class PropertyManager {
 
     public String getFacebookId() {
         return mPrefs.getString(KEY_FACEBOOK_ID, "");
+    }
+
+    public void setNaverToken(String naverId) {
+        mEditor.putString(KEY_NAVER_TOKEN, naverId);
+        mEditor.commit();
+    }
+
+    public String getNaverToken() {
+        return mPrefs.getString(KEY_NAVER_TOKEN, "");
     }
 
 }

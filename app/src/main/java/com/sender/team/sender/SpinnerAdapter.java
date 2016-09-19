@@ -47,8 +47,10 @@ public class SpinnerAdapter extends BaseAdapter {
         if (data != null) {
             if (data.getData().get(position).getName().equals("__emptydata")) {
                 view.setText("배송원 목록이 없습니다");
+                view.setTextSize(12);
             } else {
                 view.setText(data.getData().get(position).getName() + "  -  " + data.getData().get(position).getDate());
+                view.setTextSize(12);
             }
         }
         return view;
@@ -65,8 +67,10 @@ public class SpinnerAdapter extends BaseAdapter {
         if (data != null) {
             if (data.getData().get(position).getName().equals("__emptydata")) {
                 view.setText("배송원 목록이 없습니다");
+                view.setTextSize(12);
             } else {
                 view.setText(data.getData().get(position).getName() + "  -  " + data.getData().get(position).getDate());
+                view.setTextSize(12);
             }
         }
         return view;
