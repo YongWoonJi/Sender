@@ -399,8 +399,6 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     if (result != null) {
                         adapter.addAll(result.getSearchPoiInfo().getPois().getPoi());
                         list.setVisibility(View.VISIBLE);
-                    } else {
-                        Toast.makeText(DelivererActivity.this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show();
                     }
                 }
 

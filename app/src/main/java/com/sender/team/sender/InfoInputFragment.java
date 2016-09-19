@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.sender.team.sender.data.ContractIdData;
@@ -160,12 +161,12 @@ public class InfoInputFragment extends Fragment {
                 String phone = receiverPhone.getText().toString();
                 String memo = requestMemo.getText().toString();
 
-//                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
-//
-//                    if (!((SendActivity) getActivity()).isRequestCheck) {
-//                        ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
-//                        ((SendActivity) getActivity()).isRequestCheck = true;
-//                    }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
+                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
+
+                    if (!((SendActivity) getActivity()).isRequestCheck) {
+                        ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
+                        ((SendActivity) getActivity()).isRequestCheck = true;
+                    }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
 
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, new DelivererListFragment())
@@ -176,9 +177,9 @@ public class InfoInputFragment extends Fragment {
                     ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
                     ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
 
-//                } else {
-//                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
-//                }
+                } else {
+                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
 
                 if (callback != null) {
                     callback.onClickButton();

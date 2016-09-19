@@ -122,8 +122,8 @@ public class DBManager extends SQLiteOpenHelper {
             values.clear();
             values.put(ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID, mid);
             values.put(ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID, user.getContractId());
-            String selection = ChatContract.ChatUser._ID + " = ?";
-            String[] args = {"" + uid};
+            String selection = ChatContract.ChatUser._ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
+            String[] args = {"" + uid, user.getContractId()};
             db.update(ChatContract.ChatUser.TABLE, values, selection, args);
             db.setTransactionSuccessful();
             return mid;
@@ -161,8 +161,8 @@ public class DBManager extends SQLiteOpenHelper {
             values.clear();
             values.put(ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID, mid);
             values.put(ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID, user.getContractId());
-            String selection = ChatContract.ChatUser._ID + " = ?";
-            String[] args = {"" + uid};
+            String selection = ChatContract.ChatUser._ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
+            String[] args = {"" + uid, "" + user.getContractId()};
             db.update(ChatContract.ChatUser.TABLE, values, selection, args);
             db.setTransactionSuccessful();
             return mid;

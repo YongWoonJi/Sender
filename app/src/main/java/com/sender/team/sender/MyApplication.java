@@ -1,7 +1,7 @@
 package com.sender.team.sender;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -9,7 +9,7 @@ import com.facebook.appevents.AppEventsLogger;
 /**
  * Created by Administrator on 2016-08-09.
  */
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication{
     static Context context;
 
     @Override
