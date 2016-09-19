@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sender.team.sender.SendActivity"
+    android:background="@color/whitebg"
     android:nestedScrollingEnabled="false"
-    android:background="@color/whitebg" >
+    tools:context="com.sender.team.sender.SendActivity">
 
     <FrameLayout
         android:id="@+id/toolbarLayout"
@@ -31,94 +31,104 @@
             android:id="@+id/line9"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grayline"
-            android:layout_gravity="center_horizontal|bottom" />
-
-
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="@color/grayline" />
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbarLayout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbarLayout">
+
         <EditText
+            android:id="@+id/edit_search_poi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_search_poi"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:layout_toLeftOf="@+id/btn_search"
             android:layout_toStartOf="@+id/btn_search"
+            android:background="@null"
+            android:hint="목적지 지역검색"
             android:imeOptions="actionSearch"
             android:singleLine="true"
-            android:hint="목적지 지역검색"
-            android:layout_marginTop="16dp"
-            android:textSize="12sp"
-            android:background="@null"
-            android:layout_marginLeft="16dp" />
+            android:textSize="12sp" />
 
         <Button
+            android:id="@+id/btn_search"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:id="@+id/btn_search"
-            android:background="@drawable/ic_search"
             android:layout_alignBottom="@+id/edit_search_poi"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="16dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/deliverer_search_header"
-            android:id="@+id/text_deliverer_search_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:visibility="gone"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/ic_search" />
 
-        <ImageView
+        <View
+            android:id="@+id/imageView20"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:id="@+id/imageView20"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/edit_search_poi"
-            android:background="@color/grayline"
-            android:adjustViewBounds="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_marginRight="16dp"
+            android:background="@color/grayline" />
     </RelativeLayout>
-
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp" />
+        android:layout_below="@+id/headerLayout"
+        />
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/map"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listView"
-        android:layout_below="@+id/linearLayout"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="#fff"
+        android:layout_below="@+id/map"
         />
 
+    <ListView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/listView"
+    android:layout_below="@+id/headerLayout"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:background="#fff"
+    />
+
+    <RelativeLayout
+        android:id="@+id/layout_deliverer_search_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarLayout"
+        android:background="#64000000"
+        android:visibility="gone"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_deliverer_search_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/deliverer_search_header"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/whitefont" />
+    </RelativeLayout>
 </RelativeLayout>

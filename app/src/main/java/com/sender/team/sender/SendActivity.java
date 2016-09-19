@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,8 +70,11 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     @BindView(R.id.edit_search_poi)
     EditText searchView;
 
-    @BindView(R.id.text_deliverer_search_content)
-    TextView headerView;
+    @BindView(R.id.headerLayout)
+    RelativeLayout headerlayout;
+
+    @BindView(R.id.layout_deliverer_search_content)
+    RelativeLayout headerView;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -96,11 +100,15 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
     boolean editFlag = false;
 
+    SupportMapFragment mapFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
         ButterKnife.bind(this);
+
         mAdapter = new ArrayAdapter<POI>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(mAdapter);
         listView.setVisibility(View.GONE);
@@ -114,9 +122,10 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                 .replace(R.id.container, new InfoInputFragment())
                 .commit();
         mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -139,7 +148,6 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                 addMarker(poi);
             }
         });
-
 
         searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

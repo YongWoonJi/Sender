@@ -173,9 +173,11 @@ public class InfoInputFragment extends Fragment {
                             .addToBackStack(null)
                             .commit();
 
-                    ((SendActivity) getActivity()).searchView.setVisibility(View.GONE);
-                    ((SendActivity) getActivity()).searchBtn.setVisibility(View.GONE);
+                    ((SendActivity) getActivity()).headerlayout.setVisibility(View.GONE);
                     ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
+                    ViewGroup.LayoutParams layoutParams = ((SendActivity) getActivity()).mapFragment.getView().getLayoutParams();
+                    layoutParams.height = 790;
+                    ((SendActivity) getActivity()).mapFragment.getView().setLayoutParams(layoutParams);
 
                 } else {
                     Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();

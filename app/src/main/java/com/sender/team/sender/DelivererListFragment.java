@@ -200,11 +200,13 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ((SendActivity) getActivity()).searchView.setVisibility(View.VISIBLE);
-        ((SendActivity) getActivity()).searchBtn.setVisibility(View.VISIBLE);
+        ((SendActivity) getActivity()).headerlayout.setVisibility(View.VISIBLE);
         ((SendActivity) getActivity()).headerView.setVisibility(View.GONE);
         ((SendActivity)getActivity()).mMap.clear();
-
         mAdapter.clear();
+
+        ViewGroup.LayoutParams layoutParams = ((SendActivity) getActivity()).mapFragment.getView().getLayoutParams();
+        layoutParams.height = 660;
+        ((SendActivity) getActivity()).mapFragment.getView().setLayoutParams(layoutParams);
     }
 }
