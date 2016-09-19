@@ -69,7 +69,7 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         DelivererViewHolder dvh = (DelivererViewHolder) holder;
-        dvh.setDelivererData(data.get(position));
+        dvh.setDelivererData(data.get(position), position);
         dvh.setChecked(checkedPosition == position);
         dvh.setListener(this);
 

@@ -87,9 +87,9 @@ public class SplashActivity extends AppCompatActivity {
     private static String OAUTH_CLIENT_ID = "4D9YQ2XzAzTq1hA7B5P9";
     private static String OAUTH_CLIENT_SECRET = "ImY1ls7Vfr";
     private static String OAUTH_CLIENT_NAME = "sender";
-    private static OAuthLogin mOAuthLoginModule;
+    private static OAuthLogin mOAuthLoginInstance ;
 
-
+    private static String TAG = "SplashActivity";
 
 
 
@@ -132,8 +132,8 @@ public class SplashActivity extends AppCompatActivity {
         mHandler.postDelayed(runnable, 1500);
 
         ////////////////////////////////// 네이버 ////////////////////////////////
-        mOAuthLoginModule = OAuthLogin.getInstance();
-        mOAuthLoginModule.init(
+        mOAuthLoginInstance  = OAuthLogin.getInstance();
+        mOAuthLoginInstance .init(
                 SplashActivity.this
                 ,OAUTH_CLIENT_ID
                 ,OAUTH_CLIENT_SECRET
@@ -502,41 +502,36 @@ public class SplashActivity extends AppCompatActivity {
         loginManager.logInWithReadPermissions(this, Arrays.asList("email"));
     }
 
+    //네이버 버튼 클릭하면 핸들러 호출
     @OnClick(R.id.btn_naver)
     public void onClickNaver() {
 //        moveSignUpActivity();
-        mOAuthLoginModule.startOauthLoginActivity(SplashActivity.this, mOAuthLoginHandler);
+        mOAuthLoginInstance.startOauthLoginActivity(SplashActivity.this, mOAuthLoginHandler);
     }
 
     private OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
         @Override
         public void run(boolean success) {
             if (success) {
-                String accessToken = mOAuthLoginModule.getAccessToken(SplashActivity.this);
-                String refreshToken = mOAuthLoginModule.getRefreshToken(SplashActivity.this);
-                long expiresAt = mOAuthLoginModule.getExpiresAt(SplashActivity.this);
-                String tokenType = mOAuthLoginModule.getTokenType(SplashActivity.this);
-//                mOauthAT.setText(accessToken);
-//                mOauthRT.setText(refreshToken);
-//                mOauthExpires.setText(String.valueOf(expiresAt));
-//                mOauthTokenType.setText(tokenType);
-//                mOAuthState.setText(mOAuthLoginModule.getState(mContext).toString());
+                String accessToken = mOAuthLoginInstance.getAccessToken(SplashActivity.this); //로그인 결과로 얻은 접근 토큰(access token)을 반환합니다.
+                String refreshToken = mOAuthLoginInstance.getRefreshToken(SplashActivity.this); //로그인 결과로 얻은 갱신 토큰(refresh token)을 반환합니다.
+                long expiresAt = mOAuthLoginInstance.getExpiresAt(SplashActivity.this); //접근 토큰(access token)의 만료 시간을 반환합니다.
+                String tokenType = mOAuthLoginInstance.getTokenType(SplashActivity.this); //로그인 결과로 얻은 토큰의 타입을 반환합니다.
+                Log.i(TAG,"accessToken" + accessToken);
+
             } else {
-                String errorCode = mOAuthLoginModule.getLastErrorCode(SplashActivity.this).getCode();
-                String errorDesc = mOAuthLoginModule.getLastErrorDesc(SplashActivity.this);
-                Toast.makeText(SplashActivity.this, "errorCode:" + errorCode
-                        + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
+                String errorCode = mOAuthLoginInstance.getLastErrorCode(SplashActivity.this).getCode(); //마지막으로 실패한 로그인의 에러 코드를 반환합니다.
+                String errorDesc = mOAuthLoginInstance.getLastErrorDesc(SplashActivity.this); //마지막으로 실패한 로그인의 에러 메시지를 반환합니다.
+                Toast.makeText(SplashActivity.this, "errorCode:" + errorCode + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
             }
         }
     };
 
 
-
     @OnClick(R.id.btn_logout)
     public void onClickLogout() {
         loginManager.logOut();
-        mOAuthLoginModule.logout(this);
+        mOAuthLoginInstance .logout(this);
     }
-
 
 }
