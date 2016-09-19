@@ -50,9 +50,9 @@ public class ChattingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View view) {
                     Intent intent = new Intent(clh.getContext(), ChattingActivity.class);
                     if (clh.getData().getType() == ChattingListData.TYPE_SENDER) {
-                        intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.SEND_HEADER);
+                        intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingListData.TYPE_SENDER);
                     } else if (clh.getData().getType() == ChattingListData.TYPE_DELIVERER) {
-                        intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingActivity.DELIVERER_HEADER);
+                        intent.putExtra(ChattingActivity.HEADER_TYPE, ChattingListData.TYPE_DELIVERER);
                     }
 
                     intent.putExtra(ChattingActivity.EXTRA_CHATTINGLIST_DATA, data.get(position));

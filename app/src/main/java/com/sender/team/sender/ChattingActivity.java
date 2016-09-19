@@ -47,14 +47,15 @@ import butterknife.OnClick;
 public class ChattingActivity extends AppCompatActivity implements ChattingAdapter.ChattingImage{
 
     public static final String HEADER_TYPE = "headertype";
-    public static final int SEND_HEADER = 1;
-    public static final int DELIVERER_HEADER = 2;
     public static final String EXTRA_USER = "user";
     public static final String EXTRA_CHATTINGLIST_DATA = "main_user";
 
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.toolbarTitle)
+    TextView toolbarTitle;
 
     @BindView(R.id.rv_list2)
     RecyclerView listview;
@@ -92,12 +93,14 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             PropertyManager.getInstance().setContractedReceiverId("" + cUser.getId());
             PropertyManager.getInstance().setLastContractId("" + cUser.getContractId());
             mAdapter = new ChattingAdapter(cUser);
+            toolbarTitle.setText(cUser.getName());
             isUserDataEmpty = true;
         } else {
             PropertyManager.getInstance().setLastChatuserPhone(user.getPhone());
             PropertyManager.getInstance().setContractedReceiverId("" + user.getUser_id());
             PropertyManager.getInstance().setLastContractId(user.getContractId());
             mAdapter = new ChattingAdapter(user);
+            toolbarTitle.setText(user.getName());
         }
 
 
@@ -107,14 +110,21 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         mLBM = LocalBroadcastManager.getInstance(this);
 
         Intent intent = getIntent();
-        int i = intent.getIntExtra(HEADER_TYPE, 0);
+        int i = intent.getIntExtra(HEADER_TYPE, -1);
+        if (i == -1) {
+            if (isUserDataEmpty) {
+                i = (int) DBManager.getInstance().getHeaderType(cUser.getId(), "" + cUser.getContractId());
+            } else {
+                i = (int) DBManager.getInstance().getHeaderType(Long.parseLong(user.getUser_id()), user.getContractId());
+            }
+        }
 
         switch (i){
-            case SEND_HEADER :{
+            case ChattingListData.TYPE_SENDER:{
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new SendHeaderFragment()).commit();
                 break;
             }
-            case DELIVERER_HEADER : {
+            case ChattingListData.TYPE_DELIVERER: {
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, new DelivererHeaderFragment()).commit();
                 break;
             }
@@ -200,9 +210,9 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                     if (!TextUtils.isEmpty(result.getResult())){
                         if (isUserDataEmpty) {
-                            DBManager.getInstance().addMessage(cUser, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
+                            DBManager.getInstance().addMessage(cUser, -1, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
                         } else {
-                            DBManager.getInstance().addMessage(user, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
+                            DBManager.getInstance().addMessage(user, -1, path, ChatContract.ChatMessage.TYPE_SEND, message, new Date());
                         }
                         updateMessage();
                     }

@@ -11,8 +11,6 @@ import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.UserData;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Tacademy on 2016-09-02.
@@ -43,6 +41,8 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser.COLUMN_NAME + " TEXT," +
                 ChatContract.ChatUser.COLUMN_PROFILE_IMAGE + " TEXT," +
                 ChatContract.ChatUser.COLUMN_PHONE + " TEXT," +
+                ChatContract.ChatUser.COLUMN_HEADER_TYPE + " TEXT," +
+                ChatContract.ChatUser.COLUMN_ADDRESS + " TEXT," +
                 ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID + " INTEGER," +
                 ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " INTEGER);";
         sqLiteDatabase.execSQL(sql);
@@ -66,7 +66,7 @@ public class DBManager extends SQLiteOpenHelper {
     ContentValues values = new ContentValues();
 
     public long addUser(UserData user) {
-        if (getUserId(Long.parseLong(user.getUser_id())) == -1) {
+        if (getUserId(Long.parseLong(user.getUser_id()), user.getContractId()) == -1) {
             SQLiteDatabase db = getWritableDatabase();
             values.clear();
             values.put(ChatContract.ChatUser.COLUMN_SERVER_ID, user.getUser_id());
@@ -80,7 +80,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     public long addUser(ChattingListData user) {
-        if (getUserId(user.getId()) == -1) {
+        if (getUserId(user.getId(), "" + user.getContractId()) == -1) {
             SQLiteDatabase db = getWritableDatabase();
             values.clear();
             values.put(ChatContract.ChatUser.COLUMN_SERVER_ID, user.getId());
@@ -93,21 +93,16 @@ public class DBManager extends SQLiteOpenHelper {
         throw new IllegalArgumentException("aleady user added");
     }
 
-    Map<Long, Long> resolveUserId = new HashMap<>();
 
-    public long addMessage(UserData user, String image, int type, String message, Date date) {
-        Long uid = resolveUserId.get(Long.parseLong(user.getUser_id()));
-        if (uid == null) {
-            long id = getUserId(Long.parseLong(user.getUser_id()));
-            if (id == -1) {
-                id = addUser(user);
-            }
-            resolveUserId.put(Long.parseLong(user.getUser_id()), id);
-            uid = id;
+    public long addMessage(UserData user, int headerType, String image, int type, String message, Date date) {
+        long id = getUserId(Long.parseLong(user.getUser_id()), user.getContractId());
+        if (id == -1) {
+            id = addUser(user);
         }
+
         SQLiteDatabase db = getWritableDatabase();
         values.clear();
-        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, (long) uid);
+        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, id);
         values.put(ChatContract.ChatMessage.COLUMN_CONTRACT_ID, user.getContractId());
         values.put(ChatContract.ChatMessage.COLUMN_TYPE, type);
         values.put(ChatContract.ChatMessage.COLUMN_MESSAGE, message);
@@ -122,8 +117,11 @@ public class DBManager extends SQLiteOpenHelper {
             values.clear();
             values.put(ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID, mid);
             values.put(ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID, user.getContractId());
+            if (headerType != -1) {
+                values.put(ChatContract.ChatUser.COLUMN_HEADER_TYPE, headerType);
+            }
             String selection = ChatContract.ChatUser._ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
-            String[] args = {"" + uid, user.getContractId()};
+            String[] args = {"" + id, user.getContractId()};
             db.update(ChatContract.ChatUser.TABLE, values, selection, args);
             db.setTransactionSuccessful();
             return mid;
@@ -134,19 +132,15 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
 
-    public long addMessage(ChattingListData user, String image, int type, String message, Date date) {
-        Long uid = resolveUserId.get(user.getId());
-        if (uid == null) {
-            long id = getUserId(user.getId());
-            if (id == -1) {
-                id = addUser(user);
-            }
-            resolveUserId.put(user.getId(), id);
-            uid = id;
+    public long addMessage(ChattingListData user, int headerType, String image, int type, String message, Date date) {
+        long id = getUserId(user.getId(), "" + user.getContractId());
+        if (id == -1) {
+            id = addUser(user);
         }
+
         SQLiteDatabase db = getWritableDatabase();
         values.clear();
-        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, (long) uid);
+        values.put(ChatContract.ChatMessage.COLUMN_USER_ID, id);
         values.put(ChatContract.ChatMessage.COLUMN_CONTRACT_ID, user.getContractId());
         values.put(ChatContract.ChatMessage.COLUMN_TYPE, type);
         values.put(ChatContract.ChatMessage.COLUMN_MESSAGE, message);
@@ -161,8 +155,11 @@ public class DBManager extends SQLiteOpenHelper {
             values.clear();
             values.put(ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID, mid);
             values.put(ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID, user.getContractId());
+            if (headerType != -1) {
+                values.put(ChatContract.ChatUser.COLUMN_HEADER_TYPE, headerType);
+            }
             String selection = ChatContract.ChatUser._ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
-            String[] args = {"" + uid, "" + user.getContractId()};
+            String[] args = {"" + id, "" + user.getContractId()};
             db.update(ChatContract.ChatUser.TABLE, values, selection, args);
             db.setTransactionSuccessful();
             return mid;
@@ -174,9 +171,9 @@ public class DBManager extends SQLiteOpenHelper {
 
 
 
-    public long getUserId(long serverId) {
-        String selection = ChatContract.ChatUser.COLUMN_SERVER_ID + " = ?";
-        String[] args = {"" + serverId};
+    public long getUserId(long serverId, String contractId) {
+        String selection = ChatContract.ChatUser.COLUMN_SERVER_ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
+        String[] args = {"" + serverId, contractId};
         String[] columns = {ChatContract.ChatUser._ID};
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query(ChatContract.ChatUser.TABLE, columns, selection, args, null, null, null);
@@ -184,6 +181,24 @@ public class DBManager extends SQLiteOpenHelper {
             if (c.moveToNext()) {
                 long id = c.getLong(c.getColumnIndex(ChatContract.ChatUser._ID));
                 return id;
+            }
+        } finally {
+            c.close();
+        }
+        return -1;
+    }
+
+
+    public long getHeaderType(long serverId, String contractId) {
+        String selection = ChatContract.ChatUser.COLUMN_SERVER_ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
+        String[] args = {"" + serverId, contractId};
+        String[] columns = {ChatContract.ChatUser.COLUMN_HEADER_TYPE};
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(ChatContract.ChatUser.TABLE, columns, selection, args, null, null, null);
+        try {
+            if (c.moveToNext()) {
+                long type = c.getInt(c.getColumnIndex(ChatContract.ChatUser.COLUMN_HEADER_TYPE));
+                return type;
             }
         } finally {
             c.close();
@@ -205,26 +220,22 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser.COLUMN_NAME,
                 ChatContract.ChatUser.COLUMN_PROFILE_IMAGE,
                 ChatContract.ChatUser.COLUMN_PHONE,
+                ChatContract.ChatUser.COLUMN_HEADER_TYPE,
+                ChatContract.ChatUser.COLUMN_ADDRESS,
                 ChatContract.ChatMessage.COLUMN_CONTRACT_ID,
                 ChatContract.ChatMessage.COLUMN_MESSAGE,
                 ChatContract.ChatMessage.COLUMN_CREATED};
 
-        String sort = ChatContract.ChatUser.COLUMN_NAME + " COLLATE LOCALIZED ASC";
+        String sort = ChatContract.ChatMessage.COLUMN_CREATED + " DESC";
         SQLiteDatabase db = getReadableDatabase();
         return db.query(table, columns, null, null, null, null, sort);
     }
 
     public Cursor getChatMessage(UserData user) {
         long userid = -1;
-        Long uid = resolveUserId.get(Long.parseLong(user.getUser_id()));
-        if (uid == null) {
-            long id = getUserId(Long.parseLong(user.getUser_id()));
-            if (id != -1) {
-                resolveUserId.put(Long.parseLong(user.getUser_id()), id);
-                userid = id;
-            }
-        } else {
-            userid = uid;
+        long id = getUserId(Long.parseLong(user.getUser_id()), user.getContractId());
+        if (id != -1) {
+            userid = id;
         }
 
         String[] columns = {ChatContract.ChatMessage._ID,
@@ -241,15 +252,9 @@ public class DBManager extends SQLiteOpenHelper {
 
     public Cursor getChatMessage(ChattingListData user) {
         long userid = -1;
-        Long uid = resolveUserId.get(user.getId());
-        if (uid == null) {
-            long id = getUserId(user.getId());
-            if (id != -1) {
-                resolveUserId.put(user.getId(), id);
-                userid = id;
-            }
-        } else {
-            userid = uid;
+        long id = getUserId(user.getId(), "" + user.getContractId());
+        if (id != -1) {
+            userid = id;
         }
 
         String[] columns = {ChatContract.ChatMessage._ID,

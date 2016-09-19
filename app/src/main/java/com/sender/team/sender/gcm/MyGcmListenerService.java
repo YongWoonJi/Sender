@@ -35,6 +35,7 @@ import com.sender.team.sender.R;
 import com.sender.team.sender.SplashActivity;
 import com.sender.team.sender.Utils;
 import com.sender.team.sender.data.ChatContract;
+import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.ChattingReceiveData;
 import com.sender.team.sender.data.ChattingReceiveMessage;
 import com.sender.team.sender.data.NetworkResult;
@@ -106,7 +107,7 @@ public class MyGcmListenerService extends GcmListenerService {
             NetworkResult<ChattingReceiveData> result = NetworkManager.getInstance().getNetworkDataSync(NetworkManager.CLIENT_STANDARD, request);
             ChattingReceiveData cData = result.getResult();
             for (ChattingReceiveMessage c : cData.getData()) {
-                DBManager.getInstance().addMessage(cData.getSender(), c.getUrl(), ChatContract.ChatMessage.TYPE_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
+                DBManager.getInstance().addMessage(cData.getSender(), -1, c.getUrl(), ChatContract.ChatMessage.TYPE_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
                 Intent i = new Intent(ACTION_CHAT);
                 i.putExtra(EXTRA_CHAT_USER, cData.getSender());
                 mLBM.sendBroadcastSync(i);
@@ -169,7 +170,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 UserData data;
                 data = result.getResult();
                 data.setContractId(PropertyManager.getInstance().getLastContractId());
-                DBManager.getInstance().addMessage(data, null, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                DBManager.getInstance().addMessage(data, ChattingListData.TYPE_SENDER, null, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
 
                 Intent i = new Intent(ACTION_CONFIRM);
                 mLBM.sendBroadcastSync(i);

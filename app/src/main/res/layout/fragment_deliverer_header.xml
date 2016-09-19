@@ -6,121 +6,100 @@
     android:background="@color/whitebg"
     tools:context=".DelivererHeaderFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <ImageView
-        android:layout_width="146dp"
-        android:layout_height="3dp"
-        android:id="@+id/image_status_one"
-        android:background="@color/colorstatusgreen"
-        android:layout_above="@+id/imageView41"
-        android:layout_toLeftOf="@+id/imageView41"
-        android:layout_toStartOf="@+id/imageView41" />
-
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="292dp"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView41"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/viewLine"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_weight="1"
+            android:id="@+id/image_status_one"
+            android:background="@color/colorstatusgreen" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_weight="1"
+            android:id="@+id/image_status_two"
+            android:background="@color/colorstatusgreen" />
+
+    </LinearLayout>
 
     <ImageView
-        android:layout_width="146dp"
-        android:layout_height="3dp"
-        android:id="@+id/image_status_two"
-        android:layout_alignBottom="@+id/imageView41"
-        android:layout_toRightOf="@+id/imageView41"
-        android:layout_toEndOf="@+id/imageView41"
-        android:background="@color/colorstatusgreen" />
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:id="@+id/imageView43"
         android:src="@drawable/ic_point"
-        android:layout_above="@+id/image_status_one"
-        android:layout_alignLeft="@+id/imageView44"
-        android:layout_alignStart="@+id/imageView44" />
+        android:layout_above="@+id/viewLine"
+        android:layout_toLeftOf="@+id/imageView45"
+        android:layout_toStartOf="@+id/imageView45" />
 
     <ImageView
-        android:layout_width="10dp"
-        android:layout_height="3dp"
-        android:id="@+id/imageView44"
-        android:layout_below="@+id/imageView43"
-        android:layout_toLeftOf="@+id/image_status_one"
-        android:layout_toStartOf="@+id/image_status_one" />
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:id="@+id/imageView45"
         android:src="@drawable/ic_point"
-        android:layout_above="@+id/image_status_one"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/textView8"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="131dp"
+        android:layout_marginLeft="131dp" />
 
     <ImageView
-        android:layout_width="10dp"
-        android:layout_height="3dp"
-        android:id="@+id/imageView46"
-        android:layout_alignTop="@+id/image_status_two"
-        android:layout_toRightOf="@+id/image_status_two"
-        android:layout_toEndOf="@+id/image_status_two" />
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:id="@+id/imageView47"
         android:src="@drawable/ic_point"
-        android:layout_above="@+id/image_status_two"
-        android:layout_alignRight="@+id/imageView46"
-        android:layout_alignEnd="@+id/imageView46" />
+        android:layout_alignTop="@+id/imageView45"
+        android:layout_toRightOf="@+id/imageView45"
+        android:layout_toEndOf="@+id/imageView45" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배송중"
         android:id="@+id/textView8"
-        android:layout_above="@+id/imageView45"
+        android:textSize="11sp"
         android:layout_centerHorizontal="true"
-        android:textSize="11sp" />
-
-    <ImageView
-        android:layout_width="10dp"
-        android:layout_height="3dp"
-        android:id="@+id/imageView48"
-        android:layout_alignTop="@+id/imageView43"
-        android:layout_toLeftOf="@+id/imageView43"
-        android:layout_toStartOf="@+id/imageView43" />
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="109dp"
+        android:layout_marginLeft="109dp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배송시작"
         android:id="@+id/textView9"
-        android:layout_alignBottom="@+id/textView8"
-        android:layout_alignLeft="@+id/imageView48"
-        android:layout_alignStart="@+id/imageView48"
-        android:textSize="11sp" />
-
-    <ImageView
-        android:layout_width="10dp"
-        android:layout_height="3dp"
-        android:id="@+id/imageView49"
-        android:layout_alignTop="@+id/imageView47"
-        android:layout_toRightOf="@+id/imageView47"
-        android:layout_toEndOf="@+id/imageView47" />
+        android:textSize="11sp"
+        android:layout_alignTop="@+id/textView8"
+        android:layout_toLeftOf="@+id/textView8"
+        android:layout_toStartOf="@+id/textView8"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="배송완료"
         android:id="@+id/textView11"
-        android:layout_alignBottom="@+id/imageView49"
-        android:layout_alignRight="@+id/imageView49"
-        android:layout_alignEnd="@+id/imageView49"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:layout_alignTop="@+id/textView8"
+        android:layout_toRightOf="@+id/textView8"
+        android:layout_toEndOf="@+id/textView8"
+        android:textStyle="bold" />
 
+    <View
+        android:layout_width="292dp"
+        android:layout_height="1dp"
+        android:id="@+id/viewLine"
+        android:background="@color/grayline"
+        android:layout_below="@+id/imageView45"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

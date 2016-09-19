@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,6 +131,12 @@ public class InfoInputFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_info_input, container, false);
         ButterKnife.bind(this, view);
 
+        ViewGroup.LayoutParams layoutParams = ((SendActivity) getActivity()).mapFragment.getView().getLayoutParams();
+        float dp = 220;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        layoutParams.height = pixel;
+        ((SendActivity) getActivity()).mapFragment.getView().setLayoutParams(layoutParams);
+
         requestHour.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -176,7 +183,9 @@ public class InfoInputFragment extends Fragment {
                     ((SendActivity) getActivity()).headerlayout.setVisibility(View.GONE);
                     ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
                     ViewGroup.LayoutParams layoutParams = ((SendActivity) getActivity()).mapFragment.getView().getLayoutParams();
-                    layoutParams.height = 790;
+                    float dp = 268;
+                    int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                    layoutParams.height = pixel;
                     ((SendActivity) getActivity()).mapFragment.getView().setLayoutParams(layoutParams);
 
                 } else {

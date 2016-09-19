@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.sender.team.sender.data.ChatContract;
+import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.ContractIdData;
 import com.sender.team.sender.data.ContractsData;
 import com.sender.team.sender.data.NetworkResult;
@@ -110,7 +111,7 @@ public class AcceptActivity extends Activity {
                                                         UserData user = result.getResult();
                                                         user.setAddress(start + " -> " + end);
                                                         user.setContractId(data.getContract_id());
-                                                        DBManager.getInstance().addMessage(user, null, ChatContract.ChatMessage.TYPE_RECEIVE, null, new Date());
+                                                        DBManager.getInstance().addMessage(user, ChattingListData.TYPE_DELIVERER, null, ChatContract.ChatMessage.TYPE_RECEIVE, null, new Date());
                                                         Intent intent = new Intent(AcceptActivity.this, SplashActivity.class);
                                                         intent.putExtra(ChattingActivity.EXTRA_USER, user);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

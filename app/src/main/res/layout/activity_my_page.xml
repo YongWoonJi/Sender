@@ -27,7 +27,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/fontcolor" />
+            android:textColor="@color/black" />
 
     </FrameLayout>
 

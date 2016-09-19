@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sender.team.sender.R;
 import com.sender.team.sender.data.UserData;
 
@@ -39,7 +40,9 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
     Context context;
     public void setData(UserData data) {
         this.item = data;
-//        Glide.with(context).load(data.getFileUrl()).into(imageProfile);
+        if (!TextUtils.isEmpty(data.getFileUrl())) {
+            Glide.with(context).load(data.getFileUrl()).into(imageProfile);
+        }
         if (!TextUtils.isEmpty(data.getName())) {
             textUserName.setText(data.getName());
         }

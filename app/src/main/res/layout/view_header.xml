@@ -28,13 +28,13 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/image_profile"
-        android:layout_width="67dp"
-        android:layout_height="67dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:scaleType="centerCrop"
         app:riv_corner_radius="@dimen/mypage_image_radius"
         android:src="@drawable/default_profile"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp" />
+        android:layout_marginTop="80dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -62,9 +62,10 @@
         android:layout_height="wrap_content"
         android:text="정현맨"
         android:id="@+id/text_userName"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:layout_below="@+id/image_profile"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"
+        android:textStyle="bold" />
 
     <ImageView
         android:layout_width="17dp"

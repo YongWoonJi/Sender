@@ -30,6 +30,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -280,7 +281,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter = new ChattingListAdapter();
         listView.setAdapter(mAdapter);
         listView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(1).margin(220, 0).build());
+        float dp = 76;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(1).margin(pixel, 0).build());
     }
 
     private void initViewPager() {
@@ -443,6 +446,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 data.setMessage(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE)));
                 data.setPhone(cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_PHONE)));
                 data.setTime(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED)));
+                data.setType(cursor.getInt(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_HEADER_TYPE)));
                 list.add(data);
             }
 
