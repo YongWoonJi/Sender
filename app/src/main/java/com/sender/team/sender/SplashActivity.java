@@ -42,6 +42,8 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.nhn.android.naverlogin.OAuthLogin;
+import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.gcm.RegistrationIntentService;
@@ -81,6 +83,16 @@ public class SplashActivity extends AppCompatActivity {
     private boolean isPermissionGranted;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
+/////////////////////////////////네이버
+    private static String OAUTH_CLIENT_ID = "4D9YQ2XzAzTq1hA7B5P9";
+    private static String OAUTH_CLIENT_SECRET = "ImY1ls7Vfr";
+    private static String OAUTH_CLIENT_NAME = "sender";
+    private static OAuthLogin mOAuthLoginModule;
+
+
+
+
+
     LoginManager loginManager;
     CallbackManager callbackManager;
 
@@ -118,6 +130,20 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         mHandler.postDelayed(runnable, 1500);
+
+        ////////////////////////////////// 네이버 ////////////////////////////////
+        mOAuthLoginModule = OAuthLogin.getInstance();
+        mOAuthLoginModule.init(
+                SplashActivity.this
+                ,OAUTH_CLIENT_ID
+                ,OAUTH_CLIENT_SECRET
+                ,OAUTH_CLIENT_NAME
+                //,OAUTH_CALLBACK_INTENT
+                // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
+        );
+
+
+
     }
 
 
@@ -478,16 +504,39 @@ public class SplashActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_naver)
     public void onClickNaver() {
-        moveSignUpActivity();
+//        moveSignUpActivity();
+        mOAuthLoginModule.startOauthLoginActivity(SplashActivity.this, mOAuthLoginHandler);
     }
+
+    private OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
+        @Override
+        public void run(boolean success) {
+            if (success) {
+                String accessToken = mOAuthLoginModule.getAccessToken(SplashActivity.this);
+                String refreshToken = mOAuthLoginModule.getRefreshToken(SplashActivity.this);
+                long expiresAt = mOAuthLoginModule.getExpiresAt(SplashActivity.this);
+                String tokenType = mOAuthLoginModule.getTokenType(SplashActivity.this);
+//                mOauthAT.setText(accessToken);
+//                mOauthRT.setText(refreshToken);
+//                mOauthExpires.setText(String.valueOf(expiresAt));
+//                mOauthTokenType.setText(tokenType);
+//                mOAuthState.setText(mOAuthLoginModule.getState(mContext).toString());
+            } else {
+                String errorCode = mOAuthLoginModule.getLastErrorCode(SplashActivity.this).getCode();
+                String errorDesc = mOAuthLoginModule.getLastErrorDesc(SplashActivity.this);
+                Toast.makeText(SplashActivity.this, "errorCode:" + errorCode
+                        + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+
 
     @OnClick(R.id.btn_logout)
     public void onClickLogout() {
         loginManager.logOut();
+        mOAuthLoginModule.logout(this);
     }
 
-    private void setFacebookId() {
-
-    }
 
 }

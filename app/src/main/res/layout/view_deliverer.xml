@@ -67,10 +67,10 @@
         android:layout_height="wrap_content"
         android:text="서울대 후문 > 강남역 12번 출구"
         android:id="@+id/text_deliverer_location"
-        android:layout_alignRight="@+id/btn_send"
-        android:layout_alignEnd="@+id/btn_send"
-        android:layout_above="@+id/imageView32"
-        android:layout_marginBottom="16dp" />
+        android:layout_alignBottom="@+id/image_deliverer"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -86,22 +86,34 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="16dp" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:id="@+id/imageView32"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:background="@color/grayline" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/image_deliverer_select"
-        android:src="@drawable/ic"
-        android:layout_above="@+id/imageView6"
+    <RelativeLayout
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@+id/image_deliverer"
         android:layout_alignLeft="@+id/image_deliverer"
-        android:layout_alignStart="@+id/image_deliverer" />
+        android:layout_alignStart="@+id/image_deliverer"
+        android:id="@+id/deliverer_select"
+        android:background="@drawable/selector_deliverer">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="1"
+            android:id="@+id/deliverer_select_number"
+            android:textColor="@color/whitefont"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/image_deliverer_select"-->
+        <!--android:src="@drawable/ic"-->
+        <!--android:layout_above="@+id/imageView6"-->
+        <!--android:layout_alignLeft="@+id/image_deliverer"-->
+        <!--android:layout_alignStart="@+id/image_deliverer" />-->
 
 
 </RelativeLayout>

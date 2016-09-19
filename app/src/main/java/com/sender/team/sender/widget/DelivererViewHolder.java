@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Tacademy on 2016-08-25.
  */
-public class DelivererViewHolder extends RecyclerView.ViewHolder implements Checkable{
+public class DelivererViewHolder extends RecyclerView.ViewHolder implements Checkable {
     @BindView(R.id.text_deliverer_rating)
     TextView rating;
     @BindView(R.id.text_deliverer_nickname)
@@ -27,12 +28,15 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder implements Chec
     TextView location;
     @BindView(R.id.image_deliverer)
     ImageView delivererImage;
-    @BindView(R.id.image_deliverer_select)
-    ImageView delivererSelect;
+    @BindView(R.id.deliverer_select)
+    RelativeLayout delivererSelect;
+    @BindView(R.id.deliverer_select_number)
+    TextView delivererNumber;
 
     OnSendListener listener;
 
     boolean isChecked;
+
     @Override
     public void setChecked(boolean checked) {
         if (isChecked != checked) {
@@ -43,9 +47,9 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder implements Chec
 
     private void drawCheck() {
         if (isChecked) {
-            delivererSelect.setImageResource(R.drawable.ic_after);
+            delivererSelect.setSelected(true);
         } else {
-            delivererSelect.setImageResource(R.drawable.ic);
+            delivererSelect.setSelected(false);
         }
     }
 
@@ -61,6 +65,7 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder implements Chec
 
     public interface OnSendListener {
         void onClickSend(int position);
+
         void onClickDeliverer(int position, View view);
     }
 
@@ -70,7 +75,7 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder implements Chec
 
     public DelivererViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this,itemView);
+        ButterKnife.bind(this, itemView);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +96,13 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder implements Chec
     }
 
     DelivererData data;
-    public void setDelivererData(DelivererData data){
+
+    public void setDelivererData(DelivererData data) {
         this.data = data;
         Glide.with(MyApplication.getContext()).load(data.getFileUrl()).into(delivererImage);
         name.setText(data.getName());
-        rating.setText(""+data.getStar());
-        location.setText(data.getHere_unit() + " > "+ data.getNext_unit());
+        rating.setText("" + data.getStar());
+        location.setText(data.getHere_unit() + " > " + data.getNext_unit());
 
     }
 }

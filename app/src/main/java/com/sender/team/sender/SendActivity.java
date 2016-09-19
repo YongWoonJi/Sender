@@ -10,7 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -92,6 +94,8 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
     Marker marker;
 
+    boolean editFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,17 +126,20 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
                     @Override
                     public void run() {
-                        listView.setVisibility(View.GONE);
                         selectPoi = poi;
                         Marker m = markerResolver.get(poi);
                         m.showInfoWindow();
+                        editFlag = true;
                         searchView.setText(poi.getName());
+                        editFlag = false;
+                        listView.setVisibility(View.GONE);
                     }
                 });
                 mMap.clear();
                 addMarker(poi);
             }
         });
+
 
         searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -145,6 +152,31 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                         return false;
                 }
                 return true;
+            }
+        });
+
+
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!editFlag) {
+                    try {
+                        poiSearch(charSequence.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(SendActivity.this, "검색실패", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
@@ -185,36 +217,43 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         }
     }
 
-    @OnClick(R.id.btn_search)
-    public void onClickSearch() {
-        String keyword = searchView.getText().toString();
+    private void poiSearch(String keyword) throws Exception {
         if (!TextUtils.isEmpty(keyword)) {
             POISearchRequest request = new POISearchRequest(SendActivity.this, keyword);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<POIResult>() {
                 @Override
                 public void onSuccess(NetworkRequest<POIResult> request, POIResult result) {
                     listView.setVisibility(View.VISIBLE);
-                    clear();
-
-                    mAdapter.addAll(result.getSearchPoiInfo().getPois().getPoi());
-                    for (POI poi : result.getSearchPoiInfo().getPois().getPoi()) {
-                        addMarker(poi);
+                    mAdapter.clear();
+                    if (result != null) {
+                        mAdapter.addAll(result.getSearchPoiInfo().getPois().getPoi());
+                        if (result.getSearchPoiInfo().getPois().getPoi().length > 0) {
+                            POI poi = result.getSearchPoiInfo().getPois().getPoi()[0];
+                            moveMap(poi.getLatitude(), poi.getLongitude());
+                        }
                     }
-                    if (result.getSearchPoiInfo().getPois().getPoi().length > 0) {
-                        POI poi = result.getSearchPoiInfo().getPois().getPoi()[0];
-                        moveMap(poi.getLatitude(), poi.getLongitude());
-                    }
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                 }
 
                 @Override
                 public void onFail(NetworkRequest<POIResult> request, POIResult result, String errorMessage, Throwable e) {
-                    Toast.makeText(SendActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SendActivity.this, "검색을 실패했습니다. : " + errorMessage, Toast.LENGTH_SHORT).show();
                     Log.i("Send", errorMessage);
                 }
             });
         }
+
+    }
+
+    @OnClick(R.id.btn_search)
+    public void onClickSearch() {
+        String text = searchView.getText().toString();
+        try {
+            poiSearch(text);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
     }
 
     @Override
@@ -369,6 +408,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         }
         mLM.removeUpdates(mListener);
         isRequestCheck = false;
+        mAdapter.clear();
     }
 
     LocationListener mListener = new LocationListener() {

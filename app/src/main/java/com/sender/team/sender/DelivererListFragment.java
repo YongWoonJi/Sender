@@ -25,6 +25,7 @@ import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ContractsRequest;
 import com.sender.team.sender.request.DelivererListRequest;
 import com.sender.team.sender.request.ReviewListRequest;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +55,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         mAdapter = new DelivererAdapter(getContext());
         mAdapter.setOnDialogListener(this);
         rv_view.setAdapter(mAdapter);
+        rv_view.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).size(1).build());
         DelivererListRequest request = new DelivererListRequest(getContext(), "1", "100");
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<DelivererListData>>() {
 

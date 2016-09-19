@@ -93,6 +93,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
     POI poiStart, poiEnd;
 
+    boolean editFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +169,9 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     @Override
                     public void run() {
                         listStartSearch.setVisibility(View.GONE);
+                        editFlag = true;
                         editStart.setText(poiStart.getName());
+                        editFlag = false;
                     }
                 });
                 if (startMarker != null) {
@@ -185,7 +189,9 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                     @Override
                     public void run() {
                         listEndSearch.setVisibility(View.GONE);
+                        editFlag = true;
                         editEnd.setText(poiEnd.getName());
+                        editFlag = false;
                     }
                 });
                 if (endMarker != null) {
@@ -222,6 +228,52 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 return true;
             }
         });
+
+        editStart.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    if (!editFlag) {
+                        poiSearch(charSequence.toString(), mStartAdapter, listStartSearch);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        editEnd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    if (!editFlag) {
+                        poiSearch(charSequence.toString(), mEndAdapter, listEndSearch);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
@@ -245,6 +297,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
             return;
         }
         mLM.removeUpdates(mListener);
+        mEndAdapter.clear();
+        mStartAdapter.clear();
     }
 
     private void animateMap(double lat, double lng, final Runnable callback) {
@@ -313,40 +367,41 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     @OnClick(R.id.btn_search_start)
     public void onClickSearchStart() {
         String keyword = editStart.getText().toString();
-        if (!TextUtils.isEmpty(keyword)) {
-            POISearchRequest request = new POISearchRequest(DelivererActivity.this, keyword);
-            NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<POIResult>() {
-                @Override
-                public void onSuccess(NetworkRequest<POIResult> request, POIResult result) {
-                    mStartAdapter.clear();
-                    mStartAdapter.addAll(result.getSearchPoiInfo().getPois().getPoi());
-                    listStartSearch.setVisibility(View.VISIBLE);
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(editStart.getWindowToken(), 0);
-
-                }
-
-                @Override
-                public void onFail(NetworkRequest<POIResult> request, POIResult result, String errorMessage, Throwable e) {
-
-                }
-            });
+        try {
+            poiSearch(keyword, mStartAdapter, listStartSearch);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editStart.getWindowToken(), 0);
     }
+
 
     @OnClick(R.id.btn_search_end)
     public void onClickSearchEnd() {
         String keyword = editEnd.getText().toString();
+        try {
+            poiSearch(keyword, mEndAdapter, listEndSearch);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editEnd.getWindowToken(), 0);
+    }
+
+    private void poiSearch(String keyword, final ArrayAdapter<POI> adapter, final ListView list) throws Exception{
         if (!TextUtils.isEmpty(keyword)) {
             POISearchRequest request = new POISearchRequest(DelivererActivity.this, keyword);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, request, new NetworkManager.OnResultListener<POIResult>() {
                 @Override
                 public void onSuccess(NetworkRequest<POIResult> request, POIResult result) {
-                    mEndAdapter.clear();
-                    mEndAdapter.addAll(result.getSearchPoiInfo().getPois().getPoi());
-                    listEndSearch.setVisibility(View.VISIBLE);
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(editEnd.getWindowToken(), 0);
+                    adapter.clear();
+                    if (result != null) {
+                        adapter.addAll(result.getSearchPoiInfo().getPois().getPoi());
+                        list.setVisibility(View.VISIBLE);
+                    } else {
+                        Toast.makeText(DelivererActivity.this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
@@ -356,8 +411,6 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
             });
         }
     }
-
-
 
 
     AlertDialog dialog;
