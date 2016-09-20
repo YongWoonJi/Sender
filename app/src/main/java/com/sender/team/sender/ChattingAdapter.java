@@ -44,7 +44,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        cursor.moveToPosition(position);
+        cursor.moveToPosition(position + 1);
         int type = cursor.getInt(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_TYPE));
         switch (type) {
             case ChatContract.ChatMessage.TYPE_SEND :
@@ -75,7 +75,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        cursor.moveToPosition(position);
+        cursor.moveToPosition(position + 1);
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_SEND: {
                 ChattingSenderViewHolder svh = (ChattingSenderViewHolder) holder;
@@ -105,7 +105,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         if (cursor == null) return 0;
-        return cursor.getCount();
+        return cursor.getCount() - 1;
     }
 
     // 채팅 이미지를 누르면 ChattingProfileActivity로 이동하기 위한 옵저버 패턴

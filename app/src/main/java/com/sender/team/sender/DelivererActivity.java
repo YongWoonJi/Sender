@@ -95,6 +95,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     ArrayAdapter<POI> mEndAdapter;
 
     POI poiStart, poiEnd;
+    InputMethodManager mInputMethodManager;
 
     boolean editFlag = false;
 
@@ -109,6 +110,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
+        mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         editStartHour.addTextChangedListener(new TextWatcher() {
             @Override
@@ -167,6 +169,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         listStartSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                downKeyboard(editStart);
                 poiStart = (POI) listStartSearch.getItemAtPosition(position);
                 animateMap(poiStart.getLatitude(), poiStart.getLongitude(), new Runnable() {
                     @Override
@@ -187,6 +190,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         listEndSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                downKeyboard(editEnd);
                 poiEnd = (POI) listEndSearch.getItemAtPosition(position);
                 animateMap(poiEnd.getLatitude(), poiEnd.getLongitude(), new Runnable() {
                     @Override
@@ -277,6 +281,10 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
             }
         });
+    }
+
+    public void downKeyboard(EditText editText) {
+        mInputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     @Override
