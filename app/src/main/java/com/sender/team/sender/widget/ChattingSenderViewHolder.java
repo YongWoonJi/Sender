@@ -35,9 +35,13 @@ public class ChattingSenderViewHolder extends RecyclerView.ViewHolder {
 
     public void setChatSenderData(String image, String content, long time){
         if (!TextUtils.isEmpty(image)) {
+            senderImage.setVisibility(View.VISIBLE);
             Glide.with(MyApplication.getContext()).load(image).into(senderImage);
+        } else {
+            senderImage.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(content)) {
+            sendContent.setVisibility(View.VISIBLE);
             sendContent.setText(content);
         } else {
             sendContent.setVisibility(View.GONE);

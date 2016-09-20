@@ -213,7 +213,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 contractId = user.getContractId();
                 receiverId = user.getUser_id();
             }
-            ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId ,message, uploadFile);
+            ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId , message, null);
             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                 @Override
                 public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -382,7 +382,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                         contractId = user.getContractId();
                         receiverId = user.getUser_id();
                     }
-                    ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId, null, uploadFile);
+                    ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId, "", uploadFile);
                     NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -417,7 +417,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                     contractId = user.getContractId();
                     receiverId = user.getUser_id();
                 }
-                ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId, null, uploadFile);
+                ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId, "", uploadFile);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {

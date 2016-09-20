@@ -55,6 +55,7 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
             receiverName.setText(user.getName());
         }
         if (!TextUtils.isEmpty(message)) {
+            receiverContent.setVisibility(View.VISIBLE);
             receiverContent.setText(message);
         } else {
             receiverContent.setVisibility(View.GONE);
@@ -63,7 +64,10 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
             receiverTime.setText(Utils.getCurrentTime(time));
         }
         if (!TextUtils.isEmpty(image)){
+            receiverImageContentImage.setVisibility(View.VISIBLE);
             Glide.with(MyApplication.getContext()).load(image).into(receiverImageContentImage);
+        } else {
+            receiverImageContentImage.setVisibility(View.GONE);
         }
     }
 
@@ -76,6 +80,7 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
             receiverName.setText(user.getName());
         }
         if (!TextUtils.isEmpty(message)) {
+            receiverContent.setVisibility(View.VISIBLE);
             receiverContent.setText(message);
         } else {
             receiverContent.setVisibility(View.GONE);
@@ -84,7 +89,10 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
             receiverTime.setText(Utils.getCurrentTime(time));
         }
         if (!TextUtils.isEmpty(image)){
+            receiverImageContentImage.setVisibility(View.VISIBLE);
             Glide.with(MyApplication.getContext()).load(image).into(receiverImageContentImage);
+        } else {
+            receiverImageContentImage.setVisibility(View.GONE);
         }
     }
 
