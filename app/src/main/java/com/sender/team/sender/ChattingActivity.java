@@ -103,6 +103,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
 
         mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
+        String userId = null, contractId = null;
         user = (UserData) getIntent().getSerializableExtra(EXTRA_USER);
         if (user == null) {
             cUser = (ChattingListData) getIntent().getSerializableExtra(EXTRA_CHATTINGLIST_DATA);
@@ -111,6 +112,8 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             PropertyManager.getInstance().setLastContractId("" + cUser.getContractId());
             mAdapter = new ChattingAdapter(cUser);
             toolbarTitle.setText(cUser.getName());
+            userId = "" + cUser.getId();
+            contractId = "" + cUser.getContractId();
             isUserDataEmpty = true;
         } else {
             PropertyManager.getInstance().setLastChatuserPhone(user.getPhone());
@@ -118,6 +121,8 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             PropertyManager.getInstance().setLastContractId(user.getContractId());
             mAdapter = new ChattingAdapter(user);
             toolbarTitle.setText(user.getName());
+            userId = user.getUser_id();
+            contractId = user.getContractId();
         }
 
 
@@ -127,17 +132,12 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         mLBM = LocalBroadcastManager.getInstance(this);
 
         Intent intent = getIntent();
-        String userId = null, contractId = null;
         int i = intent.getIntExtra(HEADER_TYPE, -1);
         if (i == -1) {
             if (isUserDataEmpty) {
                 i = (int) DBManager.getInstance().getHeaderType(cUser.getId(), "" + cUser.getContractId());
-                userId = "" + cUser.getId();
-                contractId = "" + cUser.getContractId();
             } else {
                 i = (int) DBManager.getInstance().getHeaderType(Long.parseLong(user.getUser_id()), user.getContractId());
-                userId = user.getUser_id();
-                contractId = user.getContractId();
             }
         }
 

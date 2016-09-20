@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,25 +73,27 @@ public class DelivererHeaderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String state = DBManager.getInstance().getState(Long.parseLong(userId), contractId);
-                if (state.equals(ChattingActivity.STATE_PRODUCT_DELIVER)) {
-                    //15. 배송 상태 변경하기
-                    ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + START_DELIVERY);
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
-                        @Override
-                        public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                            imageStatusOne.setImageResource(R.color.colorstatusblue);
-                            btnStart.setBackgroundResource(R.color.chatting_background);
-                            btnEnd.setBackgroundResource(R.color.fontcolor);
-                            btnEnd.setEnabled(true);
-                            btnStart.setEnabled(false);
-                            Toast.makeText(getContext(), "배송 시작", Toast.LENGTH_SHORT).show();
-                        }
+                if (!TextUtils.isEmpty(state)) {
+                    if (state.equals(ChattingActivity.STATE_PRODUCT_DELIVER)) {
+                        //15. 배송 상태 변경하기
+                        ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + START_DELIVERY);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                                imageStatusOne.setImageResource(R.color.colorstatusblue);
+                                btnStart.setBackgroundResource(R.color.chatting_background);
+                                btnEnd.setBackgroundResource(R.color.fontcolor);
+                                btnEnd.setEnabled(true);
+                                btnStart.setEnabled(false);
+                                Toast.makeText(getContext(), "배송 시작", Toast.LENGTH_SHORT).show();
+                            }
 
-                        @Override
-                        public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-                            Toast.makeText(getContext(), "배송 시작 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+                                Toast.makeText(getContext(), "배송 시작 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 } else {
                     Toast.makeText(getContext(), "아직 물건 전달 완료가 되지 않았습니다", Toast.LENGTH_SHORT).show();
                 }
