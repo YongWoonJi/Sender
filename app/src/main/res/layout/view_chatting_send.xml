@@ -42,10 +42,11 @@
             android:gravity="center_vertical" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:id="@+id/image_chatting_sender_img"
-            android:maxWidth="230dp" />
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"/>
     </LinearLayout>
 
 </RelativeLayout>
