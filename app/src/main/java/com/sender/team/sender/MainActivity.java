@@ -31,6 +31,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -160,6 +161,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.tab3)
     LinearLayout tab3;
 
+    GestureDetector mDetector;
+
     int index;
     Runnable runnable = new Runnable() {
         @Override
@@ -200,7 +203,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_menu_before);
 
         init();
+
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
+
+
 
     @Override
     protected void onStart() {
