@@ -37,6 +37,7 @@ public class PropertyManager {
     private static final String KEY_LAST_CHATUSER_PHONE = "lastchatphone";
     private static final String KEY_LAST_CONTRACT_ID = "lastcontractid";
     private static final String KEY_CONTRACTED_RECEIVER_ID = "contractedreceiverid";
+    private static final String KEY_ALARM = "alarm";
 
     private PropertyManager() {
         Context context = MyApplication.getContext();
@@ -44,6 +45,30 @@ public class PropertyManager {
         mEditor = mPrefs.edit();
     }
 
+    public interface OnUserDataChangeListener {
+        void OnUserDataChange();
+    }
+
+    OnUserDataChangeListener listener;
+    public void setOnUserDataChangeListener(OnUserDataChangeListener listener) {
+        this.listener = listener;
+    }
+
+    public void notifyUserDataChanged() {
+        if (listener != null) {
+            listener.OnUserDataChange();
+        }
+    }
+
+
+    public boolean getAlarmSetting() {
+        return mPrefs.getBoolean(KEY_ALARM, true);
+    }
+
+    public void setAlarmSetting(boolean setting) {
+        mEditor.putBoolean(KEY_ALARM, setting);
+        mEditor.commit();
+    }
 
     public String getContractedReceiverId() {
         return mPrefs.getString(KEY_CONTRACTED_RECEIVER_ID, "");
@@ -101,6 +126,7 @@ public class PropertyManager {
 
     public void setUserData(UserData data) {
         userData = data;
+        notifyUserDataChanged();
     }
 
     public UserData getUserData() {

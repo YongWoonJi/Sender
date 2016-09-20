@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.sender.team.sender.data.MenuChild;
 import com.sender.team.sender.data.MenuGroup;
 import com.sender.team.sender.data.NaviItem;
+import com.sender.team.sender.manager.PropertyManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,12 @@ public class NaviFragment extends Fragment {
 
     public NaviFragment() {
         // Required empty public constructor
+        PropertyManager.getInstance().setOnUserDataChangeListener(new PropertyManager.OnUserDataChangeListener() {
+            @Override
+            public void OnUserDataChange() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 
@@ -50,7 +57,7 @@ public class NaviFragment extends Fragment {
         data.add(new MenuGroup(MenuAdapter.HEADER, null, 0, false, 0));
         data.add(new MenuGroup(MenuAdapter.GROUP, "마이페이지", R.drawable.ic_mypage, false, 0));
         data.add(new MenuGroup(MenuAdapter.GROUP, "공지사항", R.drawable.ic_notice, false, 0));
-        data.add(new MenuGroup(MenuAdapter.GROUP, "알림설정", R.drawable.ic_alarm, false, R.drawable.btn_alarm_selector));
+        data.add(new MenuGroup(MenuAdapter.GROUP, "알림설정", R.drawable.ic_alarm, false, 1));
         data.add(new MenuGroup(MenuAdapter.GROUP, "약관동의", R.drawable.ic_check, true, 0));
         data.add(new MenuGroup(MenuAdapter.GROUP, "로그아웃", R.drawable.ic_lock, false, 0));
         data.add(new MenuGroup(MenuAdapter.FOOTER, null, 0, false , 0));

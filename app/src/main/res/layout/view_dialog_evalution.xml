@@ -110,7 +110,7 @@
         android:layout_marginLeft="16dp">
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/edit_comment"
         android:background="@null"
         android:textSize="11sp"

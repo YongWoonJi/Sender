@@ -25,6 +25,7 @@
             android:text="배송시작"
             android:textSize="12sp"
             android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@color/fontcolor"
             android:textColor="@color/whitefont" />
 
@@ -38,6 +39,7 @@
             android:text="배송완료"
             android:textSize="12sp"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:background="@color/chatting_background"
             android:textColor="@color/whitefont" />
     </LinearLayout>
@@ -83,7 +85,9 @@
         android:layout_below="@+id/textView8"
         android:layout_centerHorizontal="true"
         android:layout_marginRight="131dp"
-        android:layout_marginLeft="131dp" />
+        android:layout_marginEnd="131dp"
+        android:layout_marginLeft="131dp"
+        android:layout_marginStart="131dp"/>
 
     <ImageView
         android:layout_width="15dp"
@@ -103,7 +107,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:layout_marginRight="109dp"
+        android:layout_marginEnd="109dp"
         android:layout_marginLeft="109dp"
+        android:layout_marginStart="109dp"
         android:textStyle="bold" />
 
     <TextView

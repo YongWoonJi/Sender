@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +60,8 @@ public class SendHeaderFragment extends Fragment {
                         @Override
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                             imageStatusTwo.setImageResource(R.color.colorstatusblue);
-//                            btnEnd.setBackgroundResource(R.color.chatting_background);
                             statusFlag = true;
+                            clickSend();
                         }
 
                         @Override
@@ -68,7 +69,6 @@ public class SendHeaderFragment extends Fragment {
 
                         }
                     });
-                    clickSend();
                 }
             });
         btnEnd.setEnabled(false);
@@ -141,23 +141,8 @@ public class SendHeaderFragment extends Fragment {
                 if (star <= 0 && TextUtils.isEmpty(comment)) {
                     Toast.makeText(getActivity(), "리뷰를 입력해 주세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    // ReviewRequest 추가해야함
-                    String userId = PropertyManager.getInstance().getUserData().getUser_id();
-                    ReviewRequest request = new ReviewRequest(getContext(), PropertyManager.getInstance().getLastContractId(), comment, "" + (int) star);
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
-                        @Override
-                        public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                            Toast.makeText(getContext(), result.getResult().toString(), Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-                            Toast.makeText(getContext(), "리뷰 등록 실패:" + errorMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    popupDialog(star, comment);
                 }
-                Toast.makeText(getContext(), "배송이 완료되었습니다", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
             }
         });
 
@@ -172,4 +157,55 @@ public class SendHeaderFragment extends Fragment {
 
     }
 
+    private void popupDialog(final float star, final String comment) {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_basic, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog_Transparent);
+        builder.setView(view);
+
+        TextView textTitle = (TextView)view.findViewById(R.id.text_dialog);
+        textTitle.setText("배송완료 하시겠습니까?");
+
+        TextView textContents = (TextView)view. findViewById(R.id.text_dialog_two);
+        textContents.setText("배송 완료하시면 채팅창이 비활성화 되고\n채팅창은 일주일뒤에 자동 삭제됩니다");
+
+        Button btn = (Button) view.findViewById(R.id.btn_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReviewRequest request = new ReviewRequest(getContext(), PropertyManager.getInstance().getLastContractId(), comment, "" + (int) star);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        Toast.makeText(getContext(), "배송이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
+                        // 채팅창 비활성화 & DB 일주일뒤 삭제
+                        
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+                        Toast.makeText(getContext(), "리뷰 등록 실패", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        btn = (Button) view.findViewById(R.id.btn_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog = builder.create();
+        dialog.show();
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        float dp = 300;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        params.width = pixel;
+        dialog.getWindow().setAttributes(params);
+
+    }
 }

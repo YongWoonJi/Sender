@@ -2,7 +2,6 @@ package com.sender.team.sender;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,31 +76,30 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         cursor.moveToPosition(position);
-        if (!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE)))) {
-            switch (holder.getItemViewType()) {
-                case VIEW_TYPE_SEND: {
-                    ChattingSenderViewHolder svh = (ChattingSenderViewHolder) holder;
-                    String image = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_IMAGE));
-                    String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
-                    long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
-                    svh.setChatSenderData(image, message, time);
-                    break;
-                }
+        switch (holder.getItemViewType()) {
+            case VIEW_TYPE_SEND: {
+                ChattingSenderViewHolder svh = (ChattingSenderViewHolder) holder;
+                String image = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_IMAGE));
+                String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
+                long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
+                svh.setChatSenderData(image, message, time);
+                break;
+            }
 
-                case VIEW_TYPE_RECEIVE: {
-                    ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder) holder;
-                    String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
-                    long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
-                    String image = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_IMAGE));
-                    if (user != null) {
-                        rvh.setChatReceiverData(user, message, time, image);
-                    } else if (user == null) {
-                        rvh.setChatReceiverData(cUser, message, time, image);
-                    }
-                    break;
+            case VIEW_TYPE_RECEIVE: {
+                ChattingReceiverViewHolder rvh = (ChattingReceiverViewHolder) holder;
+                String message = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_MESSAGE));
+                long time = cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED));
+                String image = cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_IMAGE));
+                if (user != null) {
+                    rvh.setChatReceiverData(user, message, time, image);
+                } else if (user == null) {
+                    rvh.setChatReceiverData(cUser, message, time, image);
                 }
+                break;
             }
         }
+
     }
 
     @Override

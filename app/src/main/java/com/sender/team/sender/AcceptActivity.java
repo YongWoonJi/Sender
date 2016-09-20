@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -168,7 +169,9 @@ public class AcceptActivity extends Activity {
                                 dialog.show();
 
                                 WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                                params.width = 825;
+                                float dp = 300;
+                                int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                                params.width = pixel;
                                 dialog.getWindow().setAttributes(params);
                             }
 

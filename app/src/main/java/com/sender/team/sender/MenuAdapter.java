@@ -40,6 +40,7 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnNaviMenuSelectedListener {
         void Logout();
         void unregister();
+        void closeNavi();
     }
 
     public void setOnFinishListener(OnNaviMenuSelectedListener listener) {
@@ -95,6 +96,12 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             case HEADER : {
                 HeaderViewHolder hvh = (HeaderViewHolder) holder;
                 hvh.setData(PropertyManager.getInstance().getUserData());
+                hvh.homeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.closeNavi();
+                    }
+                });
                 break;
             }
             case FOOTER : {
@@ -145,6 +152,16 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                 case 2 : {
                                     Intent intent = new Intent(context, NoticeActivity.class);
                                     context.startActivity(intent);
+                                    break;
+                                }
+                                case 3 : {
+                                    if (PropertyManager.getInstance().getAlarmSetting()) {
+                                        PropertyManager.getInstance().setAlarmSetting(false);
+                                        groupViewHolder.imageSwitch.setImageResource(R.drawable.btn_alarm_off);
+                                    } else {
+                                        PropertyManager.getInstance().setAlarmSetting(true);
+                                        groupViewHolder.imageSwitch.setImageResource(R.drawable.btn_alarm_on);
+                                    }
                                     break;
                                 }
                                 case 5 : {

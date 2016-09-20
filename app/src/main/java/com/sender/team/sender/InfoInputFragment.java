@@ -291,18 +291,15 @@ public class InfoInputFragment extends Fragment {
         return Uri.fromFile(savedFile);
     }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedFile != null) {
-            savedInstanceState.putString(FIELD_SAVE_FILE, savedFile.getAbsolutePath());
-        }
-        try {
-            if (uploadFile != null) {
-                savedInstanceState.putString(FIELD_UPLOAD_FILE, uploadFile.getAbsolutePath());
-            }
-        }catch (Exception e){
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (savedFile != null) {
+            outState.putString(FIELD_SAVE_FILE, savedFile.getAbsolutePath());
+        }
+        if (uploadFile != null) {
+            outState.putString(FIELD_UPLOAD_FILE, uploadFile.getAbsolutePath());
         }
     }
 

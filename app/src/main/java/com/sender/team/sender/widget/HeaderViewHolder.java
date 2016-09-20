@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,8 +22,8 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.image_profile)
     ImageView imageProfile;
-    @BindView(R.id.image_home)
-    public ImageView imageHome;
+    @BindView(R.id.homeLayout)
+    public LinearLayout homeLayout;
     @BindView(R.id.text_userName)
     TextView textUserName;
     @BindView(R.id.text_header_email)

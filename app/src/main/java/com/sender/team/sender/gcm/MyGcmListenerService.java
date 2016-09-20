@@ -21,16 +21,27 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.sender.team.sender.AcceptActivity;
 import com.sender.team.sender.ChattingActivity;
-import com.sender.team.sender.MainActivity;
 import com.sender.team.sender.R;
 import com.sender.team.sender.SplashActivity;
 import com.sender.team.sender.Utils;
@@ -50,6 +61,7 @@ import com.sender.team.sender.request.OtherUserRequest;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -70,6 +82,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
 
     LocalBroadcastManager mLBM;
+    Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public void onCreate() {
@@ -83,20 +96,22 @@ public class MyGcmListenerService extends GcmListenerService {
             // message received from some topic.
         } else {
             // normal downstream message.
-            String type = data.getString(EXTRA_TYPE);
-            switch (type) {
-                case TYPE_DELIVERY :
-                    popupDeliveryRequest(data);
-                    break;
-                case TYPE_CHATTING :
-                    chattingReceive(data);
-                    break;
-                case TYPE_CONFIRM :
-                    confirmNotification(data.getString(EXTRA_TYPE));
-                    break;
-                case TYPE_REJECT :
-                    deliveryReject(data);
-                    break;
+            if (PropertyManager.getInstance().getAlarmSetting()) {
+                String type = data.getString(EXTRA_TYPE);
+                switch (type) {
+                    case TYPE_DELIVERY:
+                        popupDeliveryRequest(data);
+                        break;
+                    case TYPE_CHATTING:
+                        chattingReceive(data);
+                        break;
+                    case TYPE_CONFIRM:
+                        confirmNotification(data.getString(EXTRA_TYPE));
+                        break;
+                    case TYPE_REJECT:
+                        deliveryReject(data);
+                        break;
+                }
             }
         }
     }
@@ -113,7 +128,8 @@ public class MyGcmListenerService extends GcmListenerService {
                 mLBM.sendBroadcastSync(i);
                 boolean processed = i.getBooleanExtra(EXTRA_RESULT, false);
                 if (!processed) {
-                    sendNotification(cData);
+                    sendChatNotification(cData);
+                    sendToast(cData, c);
                 }
             }
         } catch (IOException e) {
@@ -123,16 +139,32 @@ public class MyGcmListenerService extends GcmListenerService {
         }
     }
 
-    private void sendNotification(ChattingReceiveData m) {
+    private void sendChatNotification(ChattingReceiveData m) {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.putExtra(ChattingActivity.EXTRA_USER, m.getSender());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
+                if (!TextUtils.isEmpty(m.getSender().getFileUrl())) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = Glide.with(getApplicationContext()).load(m.getSender().getFileUrl()).asBitmap().into(-1, -1).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    if (bitmap != null) {
+                        notificationBuilder.setLargeIcon(bitmap);
+                    }
+                } else {
+                    notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.default_profile));
+                }
+        notificationBuilder
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker("SENDER")
                 .setContentTitle(m.getSender().getName())
                 .setContentText(m.getData().get(m.getData().size() - 1).getMessage())
+                .setNumber(m.getData().size())
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setContentIntent(pendingIntent);
@@ -141,6 +173,33 @@ public class MyGcmListenerService extends GcmListenerService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendToast(final ChattingReceiveData data, final ChattingReceiveMessage c) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.toast_notify, null);
+                ImageView imageProfile = (ImageView) view.findViewById(R.id.imageProfile);
+                TextView textName = (TextView) view.findViewById(R.id.textName);
+                TextView textMessage = (TextView) view.findViewById(R.id.textMessage);
+                Glide.with(getApplicationContext()).load(data.getSender().getFileUrl()).into(imageProfile);
+                if (!TextUtils.isEmpty(data.getSender().getName())) {
+                    textName.setText(data.getSender().getName());
+                }
+                if (!TextUtils.isEmpty(c.getMessage())) {
+                    textMessage.setText(c.getMessage());
+                } else {
+                    textMessage.setText("사진");
+                }
+
+                Toast toast = new Toast(getApplicationContext());
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(view);
+                toast.show();
+            }
+        });
     }
 
     private void sendNotificationConfirm() {
@@ -189,8 +248,8 @@ public class MyGcmListenerService extends GcmListenerService {
 
 
     private void sendNotification(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = new Intent(this, AcceptActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

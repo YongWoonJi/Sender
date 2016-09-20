@@ -2,7 +2,6 @@ package com.sender.team.sender.widget;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.sender.team.sender.MyApplication;
 import com.sender.team.sender.R;
 import com.sender.team.sender.data.MenuGroup;
+import com.sender.team.sender.manager.PropertyManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +28,7 @@ public class GroupViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.image_group_icon)
     ImageView imageView;
     @BindView(R.id.image_switch)
-    ImageView imageSwitch;
+    public ImageView imageSwitch;
 
     @BindView(R.id.layout)
     public LinearLayout layout;
@@ -42,27 +42,20 @@ public class GroupViewHolder extends RecyclerView.ViewHolder {
         context = itemView.getContext();
     }
 
-    boolean oldSelected;
-    boolean selected;
+
     public void setData(MenuGroup data) {
         this.item = data;
         textTitle.setText(data.groupName);
         Glide.with(MyApplication.getContext())
                 .load(data.icon)
                 .into(imageView);
-        if (data.alarm != 0) {
-            imageSwitch.setImageResource(R.drawable.btn_alarm_selector);
+        if (data.alarm == 1) {
             imageSwitch.setVisibility(View.VISIBLE);
-            imageSwitch.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (oldSelected != selected) {
-                        Log.i("AAAAA", "onClick : " + oldSelected);
-                        oldSelected = selected;
-                        imageSwitch.setSelected(oldSelected);
-                    }
-                }
-            });
+            if (PropertyManager.getInstance().getAlarmSetting()) {
+                imageSwitch.setImageResource(R.drawable.btn_alarm_on);
+            } else {
+                imageSwitch.setImageResource(R.drawable.btn_alarm_off);
+            }
         }
     }
 }

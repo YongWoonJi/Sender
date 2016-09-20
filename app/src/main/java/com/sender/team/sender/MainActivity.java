@@ -553,7 +553,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.show();
 
                 WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                params.width = 825;
+                float dp = 300;
+                int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                params.width = pixel;
                 dialog.getWindow().setAttributes(params);
 
                 Button btn = (Button) view.findViewById(R.id.btn_version_ok);
@@ -658,5 +660,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void closeNavi() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
     }
 }

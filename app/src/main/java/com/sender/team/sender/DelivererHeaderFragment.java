@@ -45,7 +45,7 @@ public class DelivererHeaderFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //15. 배송 상태 변경하기
-                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + START_DELIVERY);
+                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + START_DELIVERY);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -70,7 +70,7 @@ public class DelivererHeaderFragment extends Fragment {
             public void onClick(View view) {
                 //15. 배송 상태 변경하기
                 final ImageView imageStatusTwo = (ImageView) view.findViewById(R.id.image_status_two);
-                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), "1", "" + END_DELIVERY);
+                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + END_DELIVERY);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {

@@ -39,6 +39,8 @@ public class ChattingSenderViewHolder extends RecyclerView.ViewHolder {
         }
         if (!TextUtils.isEmpty(content)) {
             sendContent.setText(content);
+        } else {
+            sendContent.setVisibility(View.GONE);
         }
         if (time != 0) {
             sendTime.setText(Utils.getCurrentTime(time));

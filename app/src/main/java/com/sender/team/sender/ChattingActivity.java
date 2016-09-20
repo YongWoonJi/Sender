@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,6 +75,8 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
 
     LocalBroadcastManager mLBM;
 
+    InputMethodManager mInputMethodManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
+        mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         user = (UserData) getIntent().getSerializableExtra(EXTRA_USER);
         if (user == null) {
@@ -189,6 +193,11 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     }
 
 
+    public void downKeyboard(EditText editText) {
+        mInputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
+
     @OnClick(R.id.btn_message_send)
     public void onClickSendMessage(){
         final String message = editMessage.getText().toString();
@@ -225,9 +234,7 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             });
 
             editMessage.setText("");
-            if (mAdapter.getItemCount() > 0) {
-                listview.smoothScrollToPosition(mAdapter.getItemCount() - 1);
-            }
+            downKeyboard(editMessage);
         } else {
             Toast.makeText(ChattingActivity.this, "내용을 입력하세요.", Toast.LENGTH_SHORT).show();
         }
@@ -293,11 +300,20 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             c = DBManager.getInstance().getChatMessage(cUser);
         }
         mAdapter.changeCursor(c);
+
+        if (mAdapter.getItemCount() > 0) {
+            listview.smoothScrollToPosition(mAdapter.getItemCount());
+        }
     }
 
     @Override
     public void onClickChatImage(View view, int position) {
         Intent intent = new Intent(this, ChattingProfileActivity.class);
+        if (isUserDataEmpty) {
+            intent.putExtra(ChattingProfileActivity.EXTRA_CUSER, cUser);
+        } else {
+            intent.putExtra(ChattingProfileActivity.EXTRA_USER, user);
+        }
         startActivity(intent);
     }
 
@@ -356,18 +372,70 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 if (c.moveToNext()) {
                     path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
                     uploadFile = new File(path);
-//                    Glide.with(this)
-//                            .load(uploadFile)
-//                            .into(profileImage);
+
+                    String contractId;
+                    String receiverId;
+                    if (isUserDataEmpty) {
+                        contractId = String.valueOf(cUser.getContractId());
+                        receiverId = String.valueOf(cUser.getId());
+                    } else {
+                        contractId = user.getContractId();
+                        receiverId = user.getUser_id();
+                    }
+                    ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId, null, uploadFile);
+                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                        @Override
+                        public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                            if (!TextUtils.isEmpty(result.getResult())){
+                                if (isUserDataEmpty) {
+                                    DBManager.getInstance().addMessage(cUser, -1, path, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                                } else {
+                                    DBManager.getInstance().addMessage(user, -1, path, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                                }
+                                updateMessage();
+                            }
+                        }
+
+                        @Override
+                        public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+                            Toast.makeText(ChattingActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         } else if (requestCode == RC_CATPURE_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 path = savedFile.getAbsolutePath();
                 uploadFile = savedFile;
-//                Glide.with(this)
-//                        .load(uploadFile)
-//                        .into(profileImage);
+
+                String contractId;
+                String receiverId;
+                if (isUserDataEmpty) {
+                    contractId = String.valueOf(cUser.getContractId());
+                    receiverId = String.valueOf(cUser.getId());
+                } else {
+                    contractId = user.getContractId();
+                    receiverId = user.getUser_id();
+                }
+                ChattingSendRequest request = new ChattingSendRequest(this, contractId, receiverId, null, uploadFile);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                        if (!TextUtils.isEmpty(result.getResult())){
+                            if (isUserDataEmpty) {
+                                DBManager.getInstance().addMessage(cUser, -1, path, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                            } else {
+                                DBManager.getInstance().addMessage(user, -1, path, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                            }
+                            updateMessage();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+                        Toast.makeText(ChattingActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
     }

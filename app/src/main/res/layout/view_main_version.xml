@@ -4,12 +4,12 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
         android:id="@+id/imageView52"
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="20dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
         android:text="현재 최신 버전입니다."
         android:id="@+id/textView16"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/scrollview_rectangle"
         android:textColor="@color/black"
         android:gravity="center"
@@ -38,7 +38,7 @@
         android:text="OK"
         android:id="@+id/btn_version_ok"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@color/fontcolor"
         android:textColor="@color/whitefont"
         android:textSize="13sp" />

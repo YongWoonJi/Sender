@@ -56,6 +56,8 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
         }
         if (!TextUtils.isEmpty(message)) {
             receiverContent.setText(message);
+        } else {
+            receiverContent.setVisibility(View.GONE);
         }
         if (time != 0) {
             receiverTime.setText(Utils.getCurrentTime(time));
@@ -75,6 +77,8 @@ public class ChattingReceiverViewHolder extends RecyclerView.ViewHolder {
         }
         if (!TextUtils.isEmpty(message)) {
             receiverContent.setText(message);
+        } else {
+            receiverContent.setVisibility(View.GONE);
         }
         if (time != 0) {
             receiverTime.setText(Utils.getCurrentTime(time));
