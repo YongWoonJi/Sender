@@ -31,6 +31,7 @@ import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -194,7 +195,9 @@ public class MyGcmListenerService extends GcmListenerService {
                 }
 
                 Toast toast = new Toast(getApplicationContext());
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                float dp = 65;
+                int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, pixel);
                 toast.setDuration(Toast.LENGTH_LONG);
                 toast.setView(view);
                 toast.show();
@@ -205,10 +208,9 @@ public class MyGcmListenerService extends GcmListenerService {
     private void sendNotificationConfirm() {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker("SENDER")
                 .setContentTitle("SENDER")
                 .setContentText("배송요청이 수락 되었습니다")
                 .setAutoCancel(true)
@@ -249,14 +251,13 @@ public class MyGcmListenerService extends GcmListenerService {
 
     private void sendNotification(String message) {
         Intent intent = new Intent(this, AcceptActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker("SENDER")
                 .setContentTitle("SENDER")
                 .setContentText("배송요청이 왔습니다")
                 .setAutoCancel(true)
@@ -280,8 +281,29 @@ public class MyGcmListenerService extends GcmListenerService {
         }
     }
 
-    private void deliveryReject(Bundle data){
-            sendNotification(data.getString("type"));
+    private void deliveryReject(Bundle data) {
+            sendRejectNotification();
+    }
+
+    private void sendRejectNotification() {
+        Intent intent = new Intent(this, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("SENDER")
+                .setContentText("배송요청이 왔습니다")
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 
 }
