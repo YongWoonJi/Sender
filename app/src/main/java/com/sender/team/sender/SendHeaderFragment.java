@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.sender.team.sender.data.NetworkResult;
 import com.sender.team.sender.data.UserData;
+import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
@@ -76,7 +77,14 @@ public class SendHeaderFragment extends Fragment {
             btnEnd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    clickSend();
+                    String state = DBManager.getInstance().getState(Long.parseLong(userId), contractId);
+                    if (!TextUtils.isEmpty(state)) {
+                        if (state.equals(ChattingActivity.STATE_DELIVERY_COMPLETE)) {
+                            clickSend();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "아직 배송원이 배송을 완료하지 않았습니다", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         btnEnd.setEnabled(false);
