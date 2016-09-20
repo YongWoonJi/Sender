@@ -68,7 +68,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MenuAdapter.OnNaviMenuSelectedListener {
 
     private static final int MESSAGE_BACK_KEY_TIMEOUT = 1;
-    public static final int VIEWPAGER_COUNT = 4;
+    public static final int VIEWPAGER_COUNT = 5;
     private static final String TAB1 = "tab1";
     private static final String TAB2 = "tab2";
     private static final String TAB3 = "tab3";
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         circleAnimIndicator.setItemMargin(15);
         circleAnimIndicator.setAnimDuration(300);
-        circleAnimIndicator.createDotPanel(4, R.drawable.non_indicator, R.drawable.sel_indicator);
+        circleAnimIndicator.createDotPanel(5, R.drawable.non_indicator, R.drawable.sel_indicator);
 
         handler.postDelayed(runnable, 5000);
     }

@@ -57,6 +57,9 @@ public class ViewPagerFragment extends Fragment {
             case 3:
                 iv.setImageResource(R.drawable.sender_main3);
                 break;
+            case 4:
+                iv.setImageResource(R.drawable.sender_main4);
+                break;
             default:
                 iv.setImageResource(R.drawable.sender_main);
         }

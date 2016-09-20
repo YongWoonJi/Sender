@@ -16,6 +16,15 @@ public class DelivererData {
     private String fileUrl;
     private String here_unit;
     private String next_unit;
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public String getPhone() {
         return phone;

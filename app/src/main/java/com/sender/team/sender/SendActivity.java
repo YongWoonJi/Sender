@@ -1,7 +1,11 @@
 package com.sender.team.sender;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,10 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -59,8 +66,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         , OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnInfoWindowClickListener,
-        GoogleMap.OnMarkerDragListener {
+        GoogleMap.OnInfoWindowClickListener{
 
     boolean isInfoOpen = false;
     GoogleMap mMap;
@@ -89,6 +95,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     Map<Marker, DelivererData> deliverDelivererDataResolver = new HashMap<>();
 
     Map<Integer, DelivererData> deliverSelect = new HashMap<>();
+    Map<DelivererData, Integer> deliverNumber = new HashMap<>();
 
     @BindView(R.id.listView)
     ListView listView;
@@ -96,12 +103,15 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     @BindView(R.id.btn_search)
     Button searchBtn;
 
-    Marker marker;
+    //    @BindView(R.id.map_marker)
+    TextView mapMarker;
 
+    Marker marker;
     boolean editFlag = false;
 
     SupportMapFragment mapFragment;
 
+    View markerView, markerSelectView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +162,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                switch (actionId){
+                switch (actionId) {
                     case EditorInfo.IME_ACTION_SEARCH:
                         onClickSearch();
                         break;
@@ -187,6 +197,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
             }
         });
+
     }
 
     private void animateMap(DelivererData data, final Runnable callback) {
@@ -249,7 +260,6 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                 }
             });
         }
-
     }
 
     @OnClick(R.id.btn_search)
@@ -260,7 +270,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         } catch (Exception e) {
             e.printStackTrace();
         }
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
     }
 
@@ -306,10 +316,12 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
-        mMap.setOnMarkerDragListener(this);
 
         Location location = mLM.getLastKnownLocation(mProvider);
         moveMap(location.getLatitude(), location.getLongitude());
+        markerView = LayoutInflater.from(this).inflate(R.layout.view_custom_marker, null);
+//        markerSelectView = LayoutInflater.from(this).inflate(R.layout.view_custom_marker_select, null);
+        mapMarker = (TextView) markerView.findViewById(R.id.text_map_marker);
     }
 
     private void clear() {
@@ -326,22 +338,22 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     double addrLat;
     double addrLng;
 
-    private void addMarker(double lat, double lng, String title) {
-        if (marker != null) {
-            marker.remove();
-            marker = null;
-        }
-
-        MarkerOptions options = new MarkerOptions();
-        options.position(new LatLng(lat, lng));
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-        options.anchor(0.5f, 1);
-        options.title(title);
-        options.snippet("snippet - " + title);
-        options.draggable(true);
-
-        marker = mMap.addMarker(options);
-    }
+//    private void addMarker(double lat, double lng, String title) {
+//        if (marker != null) {
+//            marker.remove();
+//            marker = null;
+//        }
+//
+//        MarkerOptions options = new MarkerOptions();
+//        options.position(new LatLng(lat, lng));
+//        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+//        options.anchor(0.5f, 1);
+//        options.title(title);
+//        options.snippet("snippet - " + title);
+//        options.draggable(true);
+//
+//        marker = mMap.addMarker(options);
+//    }
 
 
     private void addMarker(POI poi) {
@@ -359,22 +371,47 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         addrLat = poi.getLatitude();
         addrLng = poi.getLongitude();
     }
-
-    protected void addMarker(DelivererData data, int i) {
+    protected void mapSet(DelivererData data){
+        deliverMarkerResolver.put(data, marker);
+        deliverDelivererDataResolver.put(marker, data);
+        deliverSelect.put(data.getPosition(), data);
+        deliverNumber.put(data, data.getPosition());
+    }
+    protected Marker addMarker(DelivererData data, boolean isSelectedMarker) {
 
         MarkerOptions options = new MarkerOptions();
         double lat = Double.parseDouble(data.getHere_lat());
         double lon = Double.parseDouble(data.getHere_lon());
-        options.position(new LatLng(lat,lon));
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        options.position(new LatLng(lat, lon));
+//        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        if (isSelectedMarker) {
+            mapMarker.setBackgroundResource(R.drawable.marker_select);
+            mapMarker.setTextColor(Color.BLACK);
+        } else {
+            mapMarker.setBackgroundResource(R.drawable.marker);
+            mapMarker.setTextColor(Color.WHITE);
+        }
+        options.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, markerView)));
         options.anchor(0.5f, 1);
         options.title(data.getName());
+        int position = data.getPosition();
+        mapMarker.setText("" + position);
+        return mMap.addMarker(options);
+    }
 
-        Marker marker = mMap.addMarker(options);
-        deliverMarkerResolver.put(data, marker);
-        deliverDelivererDataResolver.put(marker, data);
-        deliverSelect.put(i,data);
+    // 마커 비트맵 변환
+    private Bitmap createDrawableFromView(Context context, View markerView) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        markerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        markerView.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        markerView.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        markerView.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(markerView.getMeasuredWidth(), markerView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        markerView.draw(canvas);
 
+        return bitmap;
     }
 
     private void moveMap(double lat, double lng) {
@@ -456,7 +493,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     public void receiveData(String obName, String phone, String price, String time, File uploadFile, String memo) {
         Fragment f = new InfoInputFragment();
         if (f != null) {
-            ((InfoInputFragment) f).setSenderData(getApplicationContext(),hereLat, hereLng, addrLat, addrLng, obName, phone, price, time,uploadFile, memo);
+            ((InfoInputFragment) f).setSenderData(getApplicationContext(), hereLat, hereLng, addrLat, addrLng, obName, phone, price, time, uploadFile, memo);
         }
     }
 
@@ -477,49 +514,52 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         return false;
     }
 
-    @Override
-    public void onMarkerDragStart(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDrag(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDragEnd(Marker marker) {
-        LatLng latLng = marker.getPosition();
-        Log.i("GoogleMapActivity", "lat : " + latLng.latitude + ", lng : " + latLng.longitude);
-    }
     //back key를 눌렀을 때 선택했었던 장소 마커 다시 찍음
-    public void backMarker(){
-        if(selectPoi != null){
+    public void backMarker() {
+        if (selectPoi != null) {
             mMap.clear();
             addMarker(selectPoi);
         }
     }
 
-    public void showMarkerInfo(DelivererData data){
-        reDrawMarker();
-        MarkerOptions options = new MarkerOptions();
+
+    Marker selectedMarker = null;
+    public void showMarkerInfo(DelivererData data, int position) {
+//        changeSelectedMarker(deliverMarkerResolver.get(data), data);
+        if (selectedMarker == null) {
+            selectedMarker = addMarker(data, true);
+            selectedMarker.showInfoWindow();
+            selectedMarker.setZIndex(8.0f);
+        } else {
+            selectedMarker.remove();
+            selectedMarker = addMarker(data, true);
+            selectedMarker.showInfoWindow();
+            selectedMarker.setZIndex(8.0f);
+        }
+
+
         double lat = Double.parseDouble(data.getHere_lat());
         double lng = Double.parseDouble(data.getHere_lon());
-        options.position(new LatLng(lat,lng));
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-        options.anchor(0.5f, 1);
-        options.title(data.getName());
-        Marker m = mMap.addMarker(options);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),11));
-        m.showInfoWindow();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 9));
     }
 
-    public void reDrawMarker(){
-        mMap.clear();
-        for (int i = 0; i<deliverSelect.size(); i++){
-            addMarker(deliverSelect.get(i), i);
-        }
-    }
 
+//    private void changeSelectedMarker(Marker marker, DelivererData data) {
+//        // 선택했던 마커 되돌리기
+//        if (selectedMarker != null) {
+//            addMarker(deliverDelivererDataResolver.get(selectedMarker), false);
+//            selectedMarker.remove();
+//        }
+//
+//        // 선택한 마커 표시
+//        if (marker != null) {
+//            selectedMarker = addMarker(data, true);
+//            selectedMarker.showInfoWindow();
+//            selectedMarker.setZIndex(1.0f);
+//            marker.remove();
+//        }
+//        double lat = Double.parseDouble(data.getHere_lat());
+//        double lng = Double.parseDouble(data.getHere_lon());
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 11));
+//    }
 }

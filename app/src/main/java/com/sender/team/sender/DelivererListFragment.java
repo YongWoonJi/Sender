@@ -28,6 +28,9 @@ import com.sender.team.sender.request.DelivererListRequest;
 import com.sender.team.sender.request.ReviewListRequest;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -61,12 +64,16 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
 
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<DelivererListData>> request, NetworkResult<DelivererListData> result) {
+                List<DelivererData> list = new ArrayList<DelivererData>();
+                DelivererData data;
                 for (int i = 0; i < result.getResult().getData().size(); i++) {
-                    ((SendActivity) getActivity()).addMarker(result.getResult().getData().get(i), i);
-                    Log.i("delivery_id", String.valueOf(result.getResult().getData().get(i).getDeilver_id()));
-                    Log.i("DelivererListFragment", String.valueOf(result.getResult().getData().get(i).getNext_lat()) + " , " + String.valueOf(result.getResult().getData().get(i).getNext_lon()));
+                    data = result.getResult().getData().get(i);
+                    data.setPosition(i+1);
+                    ((SendActivity) getActivity()).addMarker(data, false);
+                    ((SendActivity) getActivity()).mapSet(data);
+                    list.add(data);
                 }
-                mAdapter.setDelivererData(result.getResult().getData());
+                mAdapter.setDelivererData(list);
             }
 
             @Override
@@ -202,7 +209,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
 
     @Override
     public void delivererShow(int position, View view, DelivererData data) {
-        ((SendActivity) getActivity()).showMarkerInfo(data);
+        ((SendActivity) getActivity()).showMarkerInfo(data, position);
     }
 
     @Override
