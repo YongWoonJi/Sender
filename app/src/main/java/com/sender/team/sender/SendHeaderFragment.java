@@ -2,6 +2,7 @@ package com.sender.team.sender;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
+import com.sender.team.sender.request.ChattingSendRequest;
 import com.sender.team.sender.request.ContractsUpdateRequest;
 import com.sender.team.sender.request.OtherUserRequest;
 import com.sender.team.sender.request.ReviewRequest;
@@ -33,7 +35,9 @@ import com.sender.team.sender.request.ReviewRequest;
  */
 public class SendHeaderFragment extends Fragment {
 
-    public static boolean statusFlag = false;
+    private static final String EXTRA_USER_ID = "userid";
+    private static final String EXTRA_CONTRACT_ID = "contractid";
+
     public static final int START_DELIVERY = 3;
     public static final int END_DELIVERY = 4;
 
@@ -41,6 +45,24 @@ public class SendHeaderFragment extends Fragment {
         // Required empty public constructor
     }
 
+    String userId, contractId;
+    public static SendHeaderFragment newInstance(String userId, String contractId) {
+        SendHeaderFragment fragment = new SendHeaderFragment();
+        Bundle args = new Bundle();
+        args.putString(EXTRA_USER_ID, userId);
+        args.putString(EXTRA_CONTRACT_ID, contractId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            userId = getArguments().getString(EXTRA_USER_ID);
+            contractId = getArguments().getString(EXTRA_CONTRACT_ID);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,21 +76,7 @@ public class SendHeaderFragment extends Fragment {
             btnEnd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //15. 배송 상태 변경하기
-                    ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + END_DELIVERY);
-                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
-                        @Override
-                        public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                            imageStatusTwo.setImageResource(R.color.colorstatusblue);
-                            statusFlag = true;
-                            clickSend();
-                        }
-
-                        @Override
-                        public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-
-                        }
-                    });
+                    clickSend();
                 }
             });
         btnEnd.setEnabled(false);
@@ -79,8 +87,8 @@ public class SendHeaderFragment extends Fragment {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //15. 배송 상태 변경하기
-                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + START_DELIVERY);
+                // 물건 전달 완료 GCM 보냄
+                ChattingSendRequest request = new ChattingSendRequest(getContext(), contractId, userId, ChattingActivity.STATE_PRODUCT_DELIVER, null);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -93,6 +101,7 @@ public class SendHeaderFragment extends Fragment {
 
                     @Override
                     public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+
                     }
                 });
             }
@@ -176,10 +185,22 @@ public class SendHeaderFragment extends Fragment {
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-                        Toast.makeText(getContext(), "배송이 완료되었습니다", Toast.LENGTH_SHORT).show();
-                        getActivity().finish();
-                        // 채팅창 비활성화 & DB 일주일뒤 삭제
-                        
+                        //15. 배송 상태 변경하기
+                        ContractsUpdateRequest req = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + END_DELIVERY);
+                        NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, req, new NetworkManager.OnResultListener<NetworkResult<String>>() {
+                            @Override
+                            public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
+                                Toast.makeText(getContext(), "배송이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                                getActivity().finish();
+                                // 채팅창 비활성화 & DB 일주일뒤 삭제
+
+                            }
+
+                            @Override
+                            public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
+
+                            }
+                        });
                     }
 
                     @Override

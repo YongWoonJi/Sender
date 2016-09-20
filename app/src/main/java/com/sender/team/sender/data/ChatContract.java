@@ -16,6 +16,7 @@ public class ChatContract {
         public static final String COLUMN_CHAT_CONTRACT_ID = "chatcontractid";
         public static final String COLUMN_HEADER_TYPE = "headertype";
         public static final String COLUMN_ADDRESS = "address";
+        public static final String COLUMN_STATE = "state";
     }
 
     public interface ChatMessage extends BaseColumns {

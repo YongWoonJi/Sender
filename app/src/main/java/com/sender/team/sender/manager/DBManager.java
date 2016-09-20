@@ -43,6 +43,7 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser.COLUMN_PHONE + " TEXT," +
                 ChatContract.ChatUser.COLUMN_HEADER_TYPE + " TEXT," +
                 ChatContract.ChatUser.COLUMN_ADDRESS + " TEXT," +
+                ChatContract.ChatUser.COLUMN_STATE + " TEXT," +
                 ChatContract.ChatUser.COLUMN_LAST_MESSAGE_ID + " INTEGER," +
                 ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " INTEGER);";
         sqLiteDatabase.execSQL(sql);
@@ -267,6 +268,45 @@ public class DBManager extends SQLiteOpenHelper {
         String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
         SQLiteDatabase db = getReadableDatabase();
         return db.query(ChatContract.ChatMessage.TABLE, columns, selection, args, null, null, sort);
+    }
+
+    public void updateState(UserData user, String state, Date date) {
+        long id = getUserId(Long.parseLong(user.getUser_id()), user.getContractId());
+        if (id == -1) {
+            id = addUser(user);
+        }
+
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            db.beginTransaction();
+
+            values.clear();
+            values.put(ChatContract.ChatUser.COLUMN_STATE, state);
+
+            String selection = ChatContract.ChatUser._ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
+            String[] args = {"" + id, user.getContractId()};
+            db.update(ChatContract.ChatUser.TABLE, values, selection, args);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public String getState(long serverId, String contractId) {
+        String selection = ChatContract.ChatUser.COLUMN_SERVER_ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
+        String[] args = {"" + serverId, contractId};
+        String[] columns = {ChatContract.ChatUser.COLUMN_STATE};
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(ChatContract.ChatUser.TABLE, columns, selection, args, null, null, null);
+        try {
+            if (c.moveToNext()) {
+                String state = c.getString(c.getColumnIndex(ChatContract.ChatUser.COLUMN_STATE));
+                return state;
+            }
+        } finally {
+            c.close();
+        }
+        return null;
     }
 
 }

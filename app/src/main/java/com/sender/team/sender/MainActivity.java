@@ -29,9 +29,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -161,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.tab3)
     LinearLayout tab3;
 
-    GestureDetector mDetector;
 
     int index;
     Runnable runnable = new Runnable() {
@@ -172,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             handler.postDelayed(this, 3000);
         }
     };
+
 
     LocalBroadcastManager mLBM;
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -197,20 +195,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_menu_before);
 
         init();
-
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
-    }
-
 
 
     @Override
@@ -225,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStop();
         mLBM.unregisterReceiver(mReceiver);
     }
+
+
 
     private void init() {
         mLBM = LocalBroadcastManager.getInstance(this);
@@ -254,10 +248,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (offset < -1) {
                     offset = -1;
                 }
-                Log.i("AAA", "offset : " + offset);
                 toolbarColor.setAlpha((int)((offset * -1) * 255));
                 getSupportActionBar().setBackgroundDrawable(toolbarColor);
                 changeToolbarIconsColor(offset);
+
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable, 5000);
             }
         });
 

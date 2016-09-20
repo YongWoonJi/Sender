@@ -123,14 +123,20 @@ public class MyGcmListenerService extends GcmListenerService {
             NetworkResult<ChattingReceiveData> result = NetworkManager.getInstance().getNetworkDataSync(NetworkManager.CLIENT_STANDARD, request);
             ChattingReceiveData cData = result.getResult();
             for (ChattingReceiveMessage c : cData.getData()) {
-                DBManager.getInstance().addMessage(cData.getSender(), -1, c.getUrl(), ChatContract.ChatMessage.TYPE_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
-                Intent i = new Intent(ACTION_CHAT);
-                i.putExtra(EXTRA_CHAT_USER, cData.getSender());
-                mLBM.sendBroadcastSync(i);
-                boolean processed = i.getBooleanExtra(EXTRA_RESULT, false);
-                if (!processed) {
-                    sendChatNotification(cData);
-                    sendToast(cData, c);
+                if (c.getMessage().equals(ChattingActivity.STATE_PRODUCT_DELIVER)) {
+                    DBManager.getInstance().updateState(cData.getSender(), ChattingActivity.STATE_PRODUCT_DELIVER, Utils.convertStringToTime(c.getDate()));
+                } else if (c.getMessage().equals(ChattingActivity.STATE_DELIVERY_COMPLETE)) {
+                    DBManager.getInstance().updateState(cData.getSender(), ChattingActivity.STATE_DELIVERY_COMPLETE, Utils.convertStringToTime(c.getDate()));
+                } else {
+                    DBManager.getInstance().addMessage(cData.getSender(), -1, c.getUrl(), ChatContract.ChatMessage.TYPE_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
+                    Intent i = new Intent(ACTION_CHAT);
+                    i.putExtra(EXTRA_CHAT_USER, cData.getSender());
+                    mLBM.sendBroadcastSync(i);
+                    boolean processed = i.getBooleanExtra(EXTRA_RESULT, false);
+                    if (!processed) {
+                        sendChatNotification(cData);
+                        sendToast(cData, c);
+                    }
                 }
             }
         } catch (IOException e) {

@@ -22,7 +22,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center|bottom"
-            android:text="배송시작"
+            android:text="물건 전달 완료"
             android:textSize="12sp"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"

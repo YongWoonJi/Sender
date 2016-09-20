@@ -61,6 +61,9 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     public static final String EXTRA_USER = "user";
     public static final String EXTRA_CHATTINGLIST_DATA = "main_user";
 
+    public static final String STATE_PRODUCT_DELIVER = "__state_product_deliver__sender";
+    public static final String STATE_DELIVERY_COMPLETE = "__state_delivery_commplete__sender";
+
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -124,22 +127,27 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         mLBM = LocalBroadcastManager.getInstance(this);
 
         Intent intent = getIntent();
+        String userId = null, contractId = null;
         int i = intent.getIntExtra(HEADER_TYPE, -1);
         if (i == -1) {
             if (isUserDataEmpty) {
                 i = (int) DBManager.getInstance().getHeaderType(cUser.getId(), "" + cUser.getContractId());
+                userId = "" + cUser.getId();
+                contractId = "" + cUser.getContractId();
             } else {
                 i = (int) DBManager.getInstance().getHeaderType(Long.parseLong(user.getUser_id()), user.getContractId());
+                userId = user.getUser_id();
+                contractId = user.getContractId();
             }
         }
 
         switch (i){
             case ChattingListData.TYPE_SENDER:{
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new SendHeaderFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, SendHeaderFragment.newInstance(userId, contractId)).commit();
                 break;
             }
             case ChattingListData.TYPE_DELIVERER: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, new DelivererHeaderFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, DelivererHeaderFragment.newInstance(userId, contractId)).commit();
                 break;
             }
                 default:
