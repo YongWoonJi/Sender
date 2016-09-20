@@ -243,7 +243,8 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatMessage.COLUMN_MESSAGE,
                 ChatContract.ChatMessage.COLUMN_IMAGE,
                 ChatContract.ChatMessage.COLUMN_CREATED};
-        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ? AND " + ChatContract.ChatMessage.COLUMN_CONTRACT_ID + " = ?";
+        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ? AND " + ChatContract.ChatMessage.COLUMN_CONTRACT_ID + " = ? AND "
+                + ChatContract.ChatMessage.COLUMN_MESSAGE + " NOT NULL OR " + ChatContract.ChatMessage.COLUMN_IMAGE + " NOT NULL";
         String[] args = {"" + userid, user.getContractId()};
         String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
         SQLiteDatabase db = getReadableDatabase();
@@ -262,7 +263,8 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatMessage.COLUMN_MESSAGE,
                 ChatContract.ChatMessage.COLUMN_IMAGE,
                 ChatContract.ChatMessage.COLUMN_CREATED};
-        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ? AND " + ChatContract.ChatMessage.COLUMN_CONTRACT_ID + " = ?";
+        String selection = ChatContract.ChatMessage.COLUMN_USER_ID + " = ? AND " + ChatContract.ChatMessage.COLUMN_CONTRACT_ID + " = ? AND "
+                + ChatContract.ChatMessage.COLUMN_MESSAGE + " NOT NULL OR " + ChatContract.ChatMessage.COLUMN_IMAGE + " NOT NULL";
         String[] args = {"" + userid, String.valueOf(user.getContractId())};
         String sort = ChatContract.ChatMessage.COLUMN_CREATED + " ASC";
         SQLiteDatabase db = getReadableDatabase();

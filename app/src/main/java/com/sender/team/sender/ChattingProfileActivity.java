@@ -50,6 +50,7 @@ public class ChattingProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         initData();
     }
 
@@ -81,8 +82,5 @@ public class ChattingProfileActivity extends AppCompatActivity {
                 Glide.with(this).load(cUser.getImageUrl()).into(imageProfile);
             }
         }
-
     }
-
-
 }
