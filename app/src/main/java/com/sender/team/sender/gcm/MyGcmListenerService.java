@@ -68,13 +68,15 @@ public class MyGcmListenerService extends GcmListenerService {
 
     public static final String ACTION_CHAT = "com.sender.team.sender.action.chatmessage";
     public static final String ACTION_CONFIRM = "com.sender.team.sender.action.confirm";
+    public static final String ACTION_REJECT = "com.sender.team.sender.action.reject";
+
     public static final String EXTRA_CHAT_USER = "chatuser";
     public static final String EXTRA_RESULT = "result";
     public static final String EXTRA_RESULT_CONFIRM = "result_confirm";
     public static final String EXTRA_TYPE = "type";
     public static final String EXTRA_SENDER_ID = "sender_id";
     public static final String EXTRA_CONTRACT_ID = "contract_id";
-    public static final String EXTRA_REJECT = "reject";
+
 
     public static final String TYPE_DELIVERY = "delivery";
     public static final String TYPE_CHATTING = "chat";
@@ -307,6 +309,7 @@ public class MyGcmListenerService extends GcmListenerService {
     private void sendRejectNotification() {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ACTION_REJECT,"reject");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 

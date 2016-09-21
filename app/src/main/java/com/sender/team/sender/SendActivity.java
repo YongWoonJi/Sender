@@ -2,6 +2,7 @@ package com.sender.team.sender;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -68,6 +69,8 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnInfoWindowClickListener{
 
+    public static final String ACTION_SEND = "send";
+
     boolean isInfoOpen = false;
     GoogleMap mMap;
     LocationManager mLM;
@@ -129,11 +132,21 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
+        Intent intent = getIntent();
         mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new InfoInputFragment())
+                .replace(R.id.container, InfoInputFragment.newInstance(intent.getStringExtra(ACTION_SEND)))
                 .commit();
+
+
+        if (!TextUtils.isEmpty(intent.getStringExtra(ACTION_SEND))) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, new DelivererListFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }
+
         mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -328,7 +341,6 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         Location location = mLM.getLastKnownLocation(mProvider);
         moveMap(location.getLatitude(), location.getLongitude());
         markerView = LayoutInflater.from(this).inflate(R.layout.view_custom_marker, null);
-//        markerSelectView = LayoutInflater.from(this).inflate(R.layout.view_custom_marker_select, null);
         mapMarker = (TextView) markerView.findViewById(R.id.text_map_marker);
     }
 
@@ -386,24 +398,23 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         deliverNumber.put(data, data.getPosition());
     }
     protected Marker addMarker(DelivererData data, boolean isSelectedMarker) {
-
+        int position = data.getPosition();
+        mapMarker.setText("" + position);
         MarkerOptions options = new MarkerOptions();
         double lat = Double.parseDouble(data.getHere_lat());
         double lon = Double.parseDouble(data.getHere_lon());
         options.position(new LatLng(lat, lon));
-//        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         if (isSelectedMarker) {
-            mapMarker.setBackgroundResource(R.drawable.marker_select);
-            mapMarker.setTextColor(Color.BLACK);
-        } else {
-            mapMarker.setBackgroundResource(R.drawable.marker);
+            mapMarker.setBackgroundResource(R.drawable.bt_01);
             mapMarker.setTextColor(Color.WHITE);
+        } else {
+            mapMarker.setBackgroundResource(R.drawable.bt_02);
+            mapMarker.setTextColor(getResources().getColor(R.color.marker));
         }
         options.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(this, markerView)));
         options.anchor(0.5f, 1);
         options.title(data.getName());
-        int position = data.getPosition();
-        mapMarker.setText("" + position);
+
         return mMap.addMarker(options);
     }
 
@@ -548,7 +559,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
         double lat = Double.parseDouble(data.getHere_lat());
         double lng = Double.parseDouble(data.getHere_lon());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 9));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
     }
 
 

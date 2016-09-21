@@ -59,10 +59,18 @@ public class InfoInputFragment extends Fragment {
 
     private static final int RC_PERMISSION_GET_IMAGE = 101;
     private static final int RC_PERMISSION_GET_CAPTURE_IMAGE = 102;
-
+    private static final String EXTRA_SEND_ID = "sendstring";
 
     public InfoInputFragment() {
         // Required empty public constructor
+    }
+
+    public static InfoInputFragment newInstance(String send) {
+        InfoInputFragment fragment = new InfoInputFragment();
+        Bundle args = new Bundle();
+        args.putString(EXTRA_SEND_ID, send);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     OnMessageCallback callback;
@@ -111,6 +119,8 @@ public class InfoInputFragment extends Fragment {
     File savedFile = null;
     File uploadFile = null;
 
+    String rejectSend;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +137,10 @@ public class InfoInputFragment extends Fragment {
                         .load(uploadFile)
                         .into(objectImage);
             }
+        }
+
+        if (getArguments() != null) {
+            rejectSend = getArguments().getString(EXTRA_SEND_ID);
         }
     }
 
@@ -174,28 +188,38 @@ public class InfoInputFragment extends Fragment {
                 String phone = receiverPhone.getText().toString();
                 String memo = requestMemo.getText().toString();
 
-                if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
-
-                    if (!((SendActivity) getActivity()).isRequestCheck) {
-                        ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
-                        ((SendActivity) getActivity()).isRequestCheck = true;
-                    }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
-
+                if (rejectSend != null) {
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, new DelivererListFragment())
                             .addToBackStack(null)
                             .commit();
-
                     ((SendActivity) getActivity()).headerlayout.setVisibility(View.GONE);
                     ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
-                    ViewGroup.LayoutParams layoutParams = ((SendActivity) getActivity()).mapFragment.getView().getLayoutParams();
-                    float dp = 268;
-                    int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
-                    layoutParams.height = pixel;
-                    ((SendActivity) getActivity()).mapFragment.getView().setLayoutParams(layoutParams);
 
                 } else {
-                    Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
+
+                        if (!((SendActivity) getActivity()).isRequestCheck) {
+                            ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
+                            ((SendActivity) getActivity()).isRequestCheck = true;
+                        }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
+
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, new DelivererListFragment())
+                                .addToBackStack(null)
+                                .commit();
+
+                        ((SendActivity) getActivity()).headerlayout.setVisibility(View.GONE);
+                        ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
+
+                        ViewGroup.LayoutParams layoutParams = ((SendActivity) getActivity()).mapFragment.getView().getLayoutParams();
+                        float dp = 268;
+                        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                        layoutParams.height = pixel;
+                        ((SendActivity) getActivity()).mapFragment.getView().setLayoutParams(layoutParams);
+                    } else {
+                        Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 if (callback != null) {
@@ -395,14 +419,14 @@ public class InfoInputFragment extends Fragment {
         final String aLat = String.valueOf(addrLat);
         final String aLng = String.valueOf(addrLng);
         //SendAcitivty의 현위치와 선택한 위치의 위도 경도값을 받아온다.
-        Log.i("InfoInputFragment",hLat+" , "+hLng+" , "+aLat+" , "+aLng);
+        Log.i("InfoInputFragment", hLat + " , " + hLng + " , " + aLat + " , " + aLng);
 
         SenderRequest request = new SenderRequest(context, hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, memo);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
 
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
-                PropertyManager.getInstance().setLastContractId("" + result.getResult().getContract_id());
+                    PropertyManager.getInstance().setLastContractId("" + result.getResult().getContract_id());
             }
 
             @Override

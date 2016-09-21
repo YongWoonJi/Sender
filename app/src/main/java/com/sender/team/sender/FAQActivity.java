@@ -11,6 +11,7 @@ import butterknife.ButterKnife;
 
 public class FAQActivity extends AppCompatActivity {
 
+    @BindView(R.id.expandableListView)
     ExpandableListView listView;
     FAQAdapter mAdapter;
 
@@ -30,10 +31,8 @@ public class FAQActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
-        listView = (ExpandableListView) findViewById(R.id.expandableListView);
         mAdapter = new FAQAdapter();
         listView.setAdapter(mAdapter);
-
 
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
@@ -55,10 +54,6 @@ public class FAQActivity extends AppCompatActivity {
             }
         });
         initData();
-
-        for (int i = 0; i < mAdapter.getGroupCount(); i++) {
-            listView.expandGroup(i);
-        }
     }
 
     private void initData() {

@@ -80,22 +80,28 @@ public class FAQAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        View textGroup;
         if(convertView == null){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_group, parent,false);
+            textGroup = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_group, parent,false);
+        } else {
+            textGroup = convertView;
         }
-        TextView textGroup=(TextView) convertView.findViewById(R.id.faq_group_name);
-        textGroup.setText(items.get(groupPosition).groupName);
-        return convertView;
+        TextView groupContent = (TextView) textGroup.findViewById(R.id.faq_group_name);
+        groupContent.setText(items.get(groupPosition).groupName);
+        return textGroup;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        View textChild;
         if(convertView == null){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_child, parent,false);
+            textChild = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_child, parent,false);
+        } else {
+            textChild = convertView;
         }
-        TextView textGroup=(TextView) convertView.findViewById(R.id.faq_child_name);
-        textGroup.setText(items.get(groupPosition).children.get(childPosition).contents);
-        return convertView;
+        TextView childContent = (TextView) textChild.findViewById(R.id.faq_child_name);
+        childContent.setText(items.get(groupPosition).children.get(childPosition).contents);
+        return textChild;
     }
 
     @Override

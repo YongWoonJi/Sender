@@ -15,13 +15,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,9 @@ public class AuthFragment extends Fragment {
     @BindView(R.id.text_time)
     TextView textTime;
 
+    @BindView(R.id.word_close)
+    ImageView closeView;
+
 
     public AuthFragment() {
         // Required empty public constructor
@@ -66,50 +71,84 @@ public class AuthFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         checkPermission();
+        editPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() > 0) {
+                    closeView.setVisibility(View.VISIBLE);
+
+                }
+            }
+        });
+
+        closeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editPhone.setText("");
+                closeView.setVisibility(View.GONE);
+            }
+        });
 
         Button btn = (Button) view.findViewById(R.id.btn_getNum);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Random random = new Random();
-                int num = random.nextInt(9000) + 1000;
-                editAuth.setText("" + num);
+                String phone = editPhone.getText().toString();
+                if (!TextUtils.isEmpty(phone)) {
+                    Random random = new Random();
+                    int num = random.nextInt(9000) + 1000;
+                    editAuth.setText("" + num);
 
-                mHandler.post(runnable);
+                    mHandler.post(runnable);
+                } else {
+                    Toast.makeText(getActivity(), "휴대폰 번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
-        btn = (Button) view.findViewById(R.id.btn_ok);
+//        btn = (Button) view.findViewById(R.id.btn_ok);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_auth, null);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//                builder.setView(view);
+//
+//                final AlertDialog dialog = builder.create();
+//                dialog.show();
+//
+//                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+//                params.width = 825;
+//                dialog.getWindow().setAttributes(params);
+//
+//                Button btn = (Button) view.findViewById(R.id.btn_auth_ok);
+//                btn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//            }
+//        });
+
+
+        btn = (Button) view.findViewById(R.id.btn_signup_finish);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_auth, null);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setView(view);
-
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-
-                WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                params.width = 825;
-                dialog.getWindow().setAttributes(params);
-
-                Button btn = (Button) view.findViewById(R.id.btn_auth_ok);
-                btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-            }
-        });
-
-
-        btn = (Button) view.findViewById(R.id.btn_finish);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!TextUtils.isEmpty(editPhone.getText().toString())) {
+                String text = editPhone.getText().toString();
+                if (!TextUtils.isEmpty(text)) {
                     AddPhoneRequest request = new AddPhoneRequest(getContext(), editPhone.getText().toString());
                     NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                         @Override
@@ -180,7 +219,6 @@ public class AuthFragment extends Fragment {
             editPhone.setText(phoneNum);
         }
     }
-
 
     private static final int RC_PERMISSION = 100;
     private void requestPermission() {

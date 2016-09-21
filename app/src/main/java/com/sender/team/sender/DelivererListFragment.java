@@ -55,6 +55,10 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_deliverer_list, container, false);
         ButterKnife.bind(this, view);
+
+        ((SendActivity) getActivity()).headerlayout.setVisibility(View.GONE);
+        ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
+
         mAdapter = new DelivererAdapter(getContext());
         mAdapter.setOnDialogListener(this);
         rv_view.setAdapter(mAdapter);
@@ -85,6 +89,8 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rv_view.setLayoutManager(manager);
+
+
 
         return view;
     }
@@ -121,7 +127,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             }
         });
 
-        btn= (Button) view.findViewById(R.id.btn_ok);
+        btn = (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,7 +223,6 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         super.onDestroyView();
         ((SendActivity) getActivity()).headerlayout.setVisibility(View.VISIBLE);
         ((SendActivity) getActivity()).headerView.setVisibility(View.GONE);
-        ((SendActivity)getActivity()).mMap.clear();
         mAdapter.clear();
     }
 }

@@ -62,7 +62,6 @@ public class AcceptActivity extends Activity {
         final TextView textDetail = (TextView) dialogView.findViewById(R.id.text_details);
         final TextView textMemo = (TextView) dialogView.findViewById(R.id.text_accept_memo);
 
-
         SenderInfoRequest request = new SenderInfoRequest(this, PropertyManager.getInstance().getMyDeliveringId());
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractsData>>() {
             @Override

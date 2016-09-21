@@ -59,6 +59,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.sender.team.sender.SendActivity.ACTION_SEND;
+import static com.sender.team.sender.gcm.MyGcmListenerService.ACTION_REJECT;
+
 public class SplashActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_facebook)
@@ -315,7 +318,17 @@ public class SplashActivity extends AppCompatActivity {
     private void moveMainActivity() {
         UserData user = (UserData) getIntent().getSerializableExtra(ChattingActivity.EXTRA_USER);
         if (user == null) {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            Intent intent = getIntent();
+            String reject = intent.getStringExtra(ACTION_REJECT);
+            if (!TextUtils.isEmpty(reject)) {
+                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent sendIntent = new Intent(SplashActivity.this, SendActivity.class);
+                sendIntent.putExtra(ACTION_SEND, "send");
+                Intent[] intents = {mainIntent, sendIntent};
+                startActivities(intents);
+            } else {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            }
         } else {
             Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
             Intent chatIntent = new Intent(SplashActivity.this, ChattingActivity.class);
@@ -587,6 +600,11 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+            else {
+                String errorCode = mOAuthLoginInstance.getLastErrorCode(SplashActivity.this).getCode(); //마지막으로 실패한 로그인의 에러 코드를 반환합니다.
+                String errorDesc = mOAuthLoginInstance.getLastErrorDesc(SplashActivity.this); //마지막으로 실패한 로그인의 에러 메시지를 반환합니다.
+                Toast.makeText(SplashActivity.this, "errorCode:" + errorCode + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
             }
         }
     };
