@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,6 +42,10 @@ import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.SenderRequest;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -312,7 +318,30 @@ public class InfoInputFragment extends Fragment {
                 Cursor c = getActivity().getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
                 if (c.moveToNext()) {
                     String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-                    uploadFile = new File(path);
+                    float dp = 400;
+                    int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                    Bitmap bitmap = BitmapFactory.decodeFile(path);
+                    float width = bitmap.getWidth();
+                    float height = bitmap.getHeight();
+
+                    if (height > viewHeight) {
+                        float percente = height / 100;
+                        float scale = viewHeight / percente;
+                        width *= (scale / 100);
+                        height *= (scale / 100);
+                    }
+                    Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+                    File out = new File(getContext().getExternalCacheDir(), System.currentTimeMillis() + " temp.jpg");
+                    try {
+                        FileOutputStream fos = new FileOutputStream(out);
+                        resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    uploadFile = out;
                     Glide.with(this)
                             .load(uploadFile)
                             .into(objectImage);
@@ -320,7 +349,36 @@ public class InfoInputFragment extends Fragment {
             }
         } else if (requestCode == RC_CATPURE_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
-                uploadFile = savedFile;
+                float dp = 400;
+                int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(savedFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Bitmap bitmap = BitmapFactory.decodeStream(fis);
+                float width = bitmap.getWidth();
+                float height = bitmap.getHeight();
+
+                if (height > viewHeight) {
+                    float percente = height / 100;
+                    float scale = viewHeight / percente;
+                    width *= (scale / 100);
+                    height *= (scale / 100);
+                }
+                Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+                File out = new File(getContext().getExternalCacheDir(), System.currentTimeMillis() + "_temp.jpg");
+                try {
+                    FileOutputStream fos = new FileOutputStream(out);
+                    resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                uploadFile = out;
                 Glide.with(this)
                         .load(uploadFile)
                         .into(objectImage);

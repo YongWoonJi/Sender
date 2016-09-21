@@ -22,13 +22,17 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Cache;
 import okhttp3.Call;
@@ -194,33 +198,46 @@ public class NetworkManager {
             Certificate ca;
             try {
                 ca = cf.generateCertificate(caInput);
-            }finally {
+            } finally {
                 caInput.close();
             }
             String keyStoreType = KeyStore.getDefaultType();
             KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-            keyStore.load(null,null);
-            keyStore.setCertificateEntry("ca",ca);
+            keyStore.load(null, null);
+            keyStore.setCertificateEntry("ca", ca);
+
+            KeyStore defaultStore = KeyStore.getInstance("AndroidCAStore");
+            defaultStore.load(null, null);
+            for (Enumeration<String> en = defaultStore.aliases(); en.hasMoreElements();) {
+                final String alias = en.nextElement();
+                final X509Certificate cert = (X509Certificate) defaultStore.getCertificate(alias);
+                if (cert != null) {
+                    keyStore.setCertificateEntry(alias, cert);
+                }
+            }
+
             String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
             tmf.init(keyStore);
 
+            X509TrustManager tm = (X509TrustManager)tmf.getTrustManagers()[0];
+
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, tmf.getTrustManagers(), null);
             HostnameVerifier hv = new HostnameVerifier() {
-                @Override
-                public boolean verify(String s, SSLSession sslSession) {
+                public boolean verify(String hostname, SSLSession session) {
                     return true;
                 }
             };
-            sc.init(null, tmf.getTrustManagers(),null);
-            builder.sslSocketFactory(sc.getSocketFactory());
+//            sc.init(null, tmf.getTrustManagers(), null);
+            sc.init(null, new TrustManager[]{tm}, null);
+            builder.sslSocketFactory(sc.getSocketFactory(), tm);
             builder.hostnameVerifier(hv);
         } catch (CertificateException e) {
             e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
             e.printStackTrace();
         } catch (KeyManagementException e) {
             e.printStackTrace();

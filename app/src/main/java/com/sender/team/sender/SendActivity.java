@@ -112,6 +112,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     SupportMapFragment mapFragment;
 
     View markerView, markerSelectView;
+    InputMethodManager mInputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +129,8 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_back);
 
+        mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, new InfoInputFragment())
                 .commit();
@@ -140,6 +143,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                downKeyboard(searchView);
                 final POI poi = (POI) listView.getItemAtPosition(position);
                 animateMap(poi.getLatitude(), poi.getLongitude(), new Runnable() {
 
@@ -198,6 +202,10 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
             }
         });
 
+    }
+
+    public void downKeyboard(EditText editText) {
+        mInputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     private void animateMap(DelivererData data, final Runnable callback) {

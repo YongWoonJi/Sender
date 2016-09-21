@@ -53,16 +53,15 @@
             android:singleLine="true"
             android:textSize="13sp" />
 
-        <Button
+        <ImageView
             android:id="@+id/btn_search_start"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignBottom="@+id/edit_start"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            android:background="@drawable/ic_search" />
+            android:src="@drawable/ic_search" />
 
         <EditText
             android:id="@+id/edit_end"
@@ -81,16 +80,15 @@
             android:singleLine="true"
             android:textSize="13sp" />
 
-        <Button
+        <ImageView
             android:id="@+id/btn_search_end"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignBottom="@+id/edit_end"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            android:background="@drawable/ic_search" />
+            android:src="@drawable/ic_search" />
 
         <fragment
             android:id="@+id/map_fragment"
@@ -240,27 +238,6 @@
             android:textIsSelectable="false" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/list_startSearch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/edit_start"
-            android:background="#fff"
-            android:visibility="gone"
-            android:elevation="10dp" />
-
-        <ListView
-            android:id="@+id/list_endSearch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/map_fragment"
-            android:background="#fff"
-            android:visibility="gone"
-            android:elevation="10dp" />
 
         <ImageView
             android:id="@+id/imageView33"
@@ -323,6 +300,36 @@
             android:layout_alignParentStart="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp" />
+
+        <ListView
+            android:id="@+id/list_startSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/imageView33"
+            android:background="#fff"
+            android:visibility="gone"
+            android:fadingEdgeLength="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp" />
+
+        <ListView
+            android:id="@+id/list_endSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/imageView34"
+            android:background="#fff"
+            android:visibility="gone"
+            android:fadingEdgeLength="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp" />
 
     </RelativeLayout>
 

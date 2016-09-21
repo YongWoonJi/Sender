@@ -64,6 +64,9 @@ public class CircleAnimIndicator extends LinearLayout{
 
             imageDot[i].setLayoutParams(params);
             imageDot[i].setImageResource(defaultCircle);
+            if (i > 0) {
+                imageDot[i].setAlpha(0.6f);
+            }
             imageDot[i].setTag(imageDot[i].getId(), false);
             this.addView(imageDot[i]);
         }
@@ -76,11 +79,13 @@ public class CircleAnimIndicator extends LinearLayout{
         for (int i = 0; i < imageDot.length; i++) {
             if (i == position) {
                 imageDot[i].setImageResource(mSelectCircle);
-                selectScaleAnim(imageDot[i], 1.0f, 1.2f);
+                selectScaleAnim(imageDot[i], 1.0f, 1.3f);
+                imageDot[i].setAlpha(1.0f);
             } else {
                 if ((boolean) imageDot[i].getTag(imageDot[i].getId()) == true) {
                     imageDot[i].setImageResource(mDefaultCircle);
-                    defaultScaleAnim(imageDot[i], 1.2f, 1.0f);
+                    defaultScaleAnim(imageDot[i], 1.3f, 1.0f);
+                    imageDot[i].setAlpha(0.6f);
                 }
             }
         }

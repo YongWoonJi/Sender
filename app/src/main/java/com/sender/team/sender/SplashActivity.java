@@ -78,6 +78,9 @@ public class SplashActivity extends AppCompatActivity {
 
 
     public static final String FACEBOOK_LOGOUT = "facebooklogout";
+    public static final String NAVER_LOGOUT = "naverlogout";
+    public static final String FACEBOOK_LEAVE = "facebookleave";
+    public static final String NAVER_LEAVE = "naverleave";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int RC_PERMISSION = 100;
     private boolean isPermissionGranted;
@@ -117,6 +120,13 @@ public class SplashActivity extends AppCompatActivity {
         if (code != null) {
             if (code.equals(FACEBOOK_LOGOUT)) {
                 loginManager.logOut();
+            }
+        } else {
+            code = getIntent().getStringExtra(NAVER_LOGOUT);
+            if (code != null) {
+                if (code.equals(NAVER_LOGOUT)) {
+                    mOAuthLoginInstance.logoutAndDeleteToken(this);
+                }
             }
         }
 
@@ -552,12 +562,6 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         public void run(boolean success) {
             if (success) {
-//                String accessToken = mOAuthLoginInstance.getAccessToken(SplashActivity.this); //로그인 결과로 얻은 접근 토큰(access token)을 반환합니다.
-//                String refreshToken = mOAuthLoginInstance.getRefreshToken(SplashActivity.this); //로그인 결과로 얻은 갱신 토큰(refresh token)을 반환합니다.
-//                long expiresAt = mOAuthLoginInstance.getExpiresAt(SplashActivity.this); //접근 토큰(access token)의 만료 시간을 반환합니다.
-//                String tokenType = mOAuthLoginInstance.getTokenType(SplashActivity.this); //로그인 결과로 얻은 토큰의 타입을 반환합니다.
-//                Log.i(TAG,"accessToken :  " + accessToken);
-
                 final String accessToken = mOAuthLoginInstance.getAccessToken(SplashActivity.this);
                 NaverRequest request = new NaverRequest(SplashActivity.this, accessToken, PropertyManager.getInstance().getRegistrationId());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<Integer>>() {
@@ -583,10 +587,6 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
 
-            } else {
-                String errorCode = mOAuthLoginInstance.getLastErrorCode(SplashActivity.this).getCode(); //마지막으로 실패한 로그인의 에러 코드를 반환합니다.
-                String errorDesc = mOAuthLoginInstance.getLastErrorDesc(SplashActivity.this); //마지막으로 실패한 로그인의 에러 메시지를 반환합니다.
-                Toast.makeText(SplashActivity.this, "errorCode:" + errorCode + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
             }
         }
     };

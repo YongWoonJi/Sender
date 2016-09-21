@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -14,9 +15,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -64,8 +67,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.sender.team.sender.MyApplication.getContext;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MenuAdapter.OnNaviMenuSelectedListener {
 
+    public static final int RC_PERMISSION_EXTERNAL_STORAGE = 100;
     private static final int MESSAGE_BACK_KEY_TIMEOUT = 1;
     public static final int VIEWPAGER_COUNT = 5;
     private static final String TAB1 = "tab1";
@@ -202,6 +208,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.btn_menu_before);
 
         init();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                        ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                }
+                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_EXTERNAL_STORAGE);
+            }
+        }
     }
 
 
@@ -210,6 +227,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         initData();
         mLBM.registerReceiver(mReceiver, new IntentFilter(MyGcmListenerService.ACTION_CONFIRM));
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -319,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         circleAnimIndicator.setItemMargin(15);
         circleAnimIndicator.setAnimDuration(300);
-        circleAnimIndicator.createDotPanel(5, R.drawable.non_indicator, R.drawable.sel_indicator);
+        circleAnimIndicator.createDotPanel(5, R.drawable.non_indicator, R.drawable.non_indicator);
 
         handler.postDelayed(runnable, 5000);
     }
@@ -600,11 +624,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                 if (!TextUtils.isEmpty(result.getResult())) {
-                    PropertyManager.getInstance().setFacebookId("");
+                    Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+                    if (!TextUtils.isEmpty(PropertyManager.getInstance().getFacebookId())) {
+                        PropertyManager.getInstance().setFacebookId("");
+                        intent.putExtra(SplashActivity.FACEBOOK_LOGOUT, "facebooklogout");
+                    } else if (!TextUtils.isEmpty(PropertyManager.getInstance().getNaverToken())){
+                        PropertyManager.getInstance().setNaverToken("");
+                        intent.putExtra(SplashActivity.NAVER_LOGOUT, "naverlogout");
+                    }
+
                     PropertyManager.getInstance().setUserData(null);
                     Toast.makeText(MainActivity.this, "로그아웃 되었습니다", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, SplashActivity.class);
-                    intent.putExtra(SplashActivity.FACEBOOK_LOGOUT, "facebooklogout");
                     startActivity(intent);
                     finish();
                 } else {
@@ -641,10 +671,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         if (!TextUtils.isEmpty(result.getResult())) {
-                            PropertyManager.getInstance().setFacebookId("");
+                            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+                            if (!TextUtils.isEmpty(PropertyManager.getInstance().getFacebookId())) {
+                                PropertyManager.getInstance().setFacebookId("");
+                                intent.putExtra(SplashActivity.FACEBOOK_LEAVE, "facebookleave");
+                            } else if (!TextUtils.isEmpty(PropertyManager.getInstance().getNaverToken())){
+                                PropertyManager.getInstance().setNaverToken("");
+                                intent.putExtra(SplashActivity.NAVER_LEAVE, "naverleave");
+                            }
+
                             PropertyManager.getInstance().setUserData(null);
                             Toast.makeText(MainActivity.this, "정상적으로 탈퇴되었습니다", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                             startActivity(intent);
                             finish();
                         } else {

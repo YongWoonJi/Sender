@@ -251,6 +251,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                listEndSearch.setVisibility(View.GONE);
             }
 
             @Override
@@ -274,6 +275,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                listStartSearch.setVisibility(View.GONE);
             }
 
             @Override

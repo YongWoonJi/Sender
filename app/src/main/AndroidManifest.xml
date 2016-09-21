@@ -36,6 +36,10 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
+        <meta-data
+            android:name="com.sender.team.sender.MyGlideModule"
+            android:value="GlideModule" />
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -57,11 +61,12 @@
         <activity android:name=".SendActivity"
             android:screenOrientation="portrait"
             android:exported="true"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
         <activity android:name=".DelivererActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".MyPageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
@@ -85,10 +90,12 @@
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
         <activity android:name=".QuestionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ReportActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".AcceptActivity"
             android:exported="true"

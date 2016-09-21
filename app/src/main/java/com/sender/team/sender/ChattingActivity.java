@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +47,9 @@ import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.ChattingSendRequest;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -437,7 +443,30 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                 Cursor c = getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
                 if (c.moveToNext()) {
                     path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-                    uploadFile = new File(path);
+                    float dp = 400;
+                    int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                    Bitmap bitmap = BitmapFactory.decodeFile(path);
+                    float width = bitmap.getWidth();
+                    float height = bitmap.getHeight();
+
+                    if (height > viewHeight) {
+                        float percente = height / 100;
+                        float scale = viewHeight / percente;
+                        width *= (scale / 100);
+                        height *= (scale / 100);
+                    }
+                    Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+                    File out = new File(getExternalCacheDir(), System.currentTimeMillis() + " temp.jpg");
+                    try {
+                        FileOutputStream fos = new FileOutputStream(out);
+                        resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    uploadFile = out;
 
                     String contractId;
                     String receiverId;
@@ -472,7 +501,31 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         } else if (requestCode == RC_CATPURE_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 path = savedFile.getAbsolutePath();
-                uploadFile = savedFile;
+                float dp = 400;
+                int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                float width = bitmap.getWidth();
+                float height = bitmap.getHeight();
+
+                if (height > viewHeight) {
+                    float percente = height / 100;
+                    float scale = viewHeight / percente;
+                    width *= (scale / 100);
+                    height *= (scale / 100);
+                }
+                Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+                File out = new File(getExternalCacheDir(), System.currentTimeMillis() + " temp.jpg");
+                try {
+                    FileOutputStream fos = new FileOutputStream(out);
+                    resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                uploadFile = out;
+                path = out.getAbsolutePath();
 
                 String contractId;
                 String receiverId;

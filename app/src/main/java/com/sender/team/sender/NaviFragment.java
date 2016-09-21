@@ -36,7 +36,9 @@ public class NaviFragment extends Fragment {
         PropertyManager.getInstance().setOnUserDataChangeListener(new PropertyManager.OnUserDataChangeListener() {
             @Override
             public void OnUserDataChange() {
-                mAdapter.notifyDataSetChanged();
+                if (PropertyManager.getInstance().getUserData() != null) {
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
     }

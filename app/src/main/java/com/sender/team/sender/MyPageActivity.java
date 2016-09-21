@@ -6,6 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +39,10 @@ import com.sender.team.sender.request.ProfilePictureUploadRequest;
 import com.sender.team.sender.request.ReviewListRequest;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -117,7 +125,9 @@ public class MyPageActivity extends AppCompatActivity {
     private void initData(Bundle savedInstanceState) {
         UserData user = PropertyManager.getInstance().getUserData();
         if (savedInstanceState == null) {
-            Glide.with(MyPageActivity.this).load(user.getFileUrl()).into(profileImage);
+            if (!TextUtils.isEmpty(user.getFileUrl())) {
+                Glide.with(MyPageActivity.this).load(user.getFileUrl()).into(profileImage);
+            }
         } else {
             String path = savedInstanceState.getString(FIELD_SAVE_FILE);
             if (!TextUtils.isEmpty(path)) {
@@ -252,6 +262,34 @@ public class MyPageActivity extends AppCompatActivity {
         }
     }
 
+    public int exifOrientationToDegrees(int exifOrientation) {
+        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } return 0;
+    }
+
+    public Bitmap rotate(Bitmap bitmap, int degrees) {
+        if(degrees != 0 && bitmap != null) {
+            Matrix m = new Matrix();
+            m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
+            try {
+                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), m, true);
+                if(bitmap != converted) {
+                    bitmap.recycle();
+                    bitmap = converted;
+                }
+            } catch(OutOfMemoryError ex) {
+                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+            }
+        }
+        return bitmap;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -261,7 +299,30 @@ public class MyPageActivity extends AppCompatActivity {
                 Cursor c = getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
                 if (c.moveToNext()) {
                     String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-                    uploadFile = new File(path);
+                    int viewHeight = 1600;
+                    Bitmap bitmap = BitmapFactory.decodeFile(path);
+                    float width = bitmap.getWidth();
+                    float height = bitmap.getHeight();
+
+                    if (height > viewHeight) {
+                        float percente = height / 100;
+                        float scale = viewHeight / percente;
+                        width *= (scale / 100);
+                        height *= (scale / 100);
+                    }
+                    Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+                    File out = new File(getExternalCacheDir(), System.currentTimeMillis() + " temp.jpg");
+                    try {
+                        FileOutputStream fos = new FileOutputStream(out);
+                        resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    uploadFile = out;
                     Glide.with(this)
                             .load(uploadFile)
                             .into(profileImage);
@@ -269,7 +330,44 @@ public class MyPageActivity extends AppCompatActivity {
             }
         } else if (requestCode == RC_CATPURE_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
-                uploadFile = savedFile;
+                int viewHeight = 1600;
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(savedFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Bitmap bitmap = BitmapFactory.decodeStream(fis);
+                ExifInterface exif = null;
+                try {
+                    exif = new ExifInterface(savedFile.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int exifDegree = exifOrientationToDegrees(exifOrientation);
+                bitmap = rotate(bitmap, exifDegree);
+                float width = bitmap.getWidth();
+                float height = bitmap.getHeight();
+
+                if (height > viewHeight) {
+                    float percente = height / 100;
+                    float scale = viewHeight / percente;
+                    width *= (scale / 100);
+                    height *= (scale / 100);
+                }
+                Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+                File out = new File(getExternalCacheDir(), System.currentTimeMillis() + "_temp.jpg");
+                try {
+                    FileOutputStream fos = new FileOutputStream(out);
+                    resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                uploadFile = out;
                 Glide.with(this)
                         .load(uploadFile)
                         .into(profileImage);
