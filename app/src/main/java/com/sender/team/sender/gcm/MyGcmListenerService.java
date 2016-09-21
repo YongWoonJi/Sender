@@ -99,22 +99,22 @@ public class MyGcmListenerService extends GcmListenerService {
             // message received from some topic.
         } else {
             // normal downstream message.
-            if (PropertyManager.getInstance().getAlarmSetting()) {
-                String type = data.getString(EXTRA_TYPE);
-                switch (type) {
-                    case TYPE_DELIVERY:
-                        popupDeliveryRequest(data);
-                        break;
-                    case TYPE_CHATTING:
+            String type = data.getString(EXTRA_TYPE);
+            switch (type) {
+                case TYPE_DELIVERY:
+                    popupDeliveryRequest(data);
+                    break;
+                case TYPE_CHATTING:
+                    if (PropertyManager.getInstance().getAlarmSetting()) {
                         chattingReceive(data);
-                        break;
-                    case TYPE_CONFIRM:
-                        confirmNotification(data.getString(EXTRA_TYPE));
-                        break;
-                    case TYPE_REJECT:
-                        deliveryReject(data);
-                        break;
-                }
+                    }
+                    break;
+                case TYPE_CONFIRM:
+                    confirmNotification(data.getString(EXTRA_TYPE));
+                    break;
+                case TYPE_REJECT:
+                    deliveryReject(data);
+                    break;
             }
         }
     }

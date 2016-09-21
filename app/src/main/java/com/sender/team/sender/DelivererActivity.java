@@ -694,19 +694,35 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
                 StringBuffer sb = new StringBuffer(editStartHour.getText().toString());
                 if (sb.substring(0, 2).toString().equals("오후")) {
                     startHour = sb.delete(0, 4).toString();
-                    inputStartHour = Integer.parseInt(startHour.toString()) + 12;
+                    if (startHour.equals("12")) {
+                        inputStartHour = Integer.parseInt(startHour.toString());
+                    } else {
+                        inputStartHour = Integer.parseInt(startHour.toString()) + 12;
+                    }
                 } else {
                     startHour = sb.delete(0, 4).toString();
-                    inputStartHour = Integer.parseInt(startHour.toString());
+                    if (startHour.equals("12")) {
+                        inputStartHour = 0;
+                    } else {
+                        inputStartHour = Integer.parseInt(startHour.toString());
+                    }
                 }
 
                 sb = new StringBuffer(editEndHour.getText().toString());
                 if (sb.substring(0, 2).toString().equals("오후")) {
                     endHour = sb.delete(0, 4).toString();
-                    inputEndHour = Integer.parseInt(endHour.toString()) + 12;
+                    if (endHour.equals("12")) {
+                        inputEndHour = Integer.parseInt(endHour.toString());
+                    } else {
+                        inputEndHour = Integer.parseInt(endHour.toString()) + 12;
+                    }
                 } else {
                     endHour = sb.delete(0, 4).toString();
-                    inputEndHour = Integer.parseInt(endHour.toString());
+                    if (endHour.equals("12")) {
+                        inputEndHour = 0;
+                    } else {
+                        inputEndHour = Integer.parseInt(endHour.toString());
+                    }
                 }
 
                 String shh = String.format("%02d", inputStartHour);

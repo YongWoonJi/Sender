@@ -3,7 +3,6 @@ package com.sender.team.sender;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -105,10 +103,13 @@ public class AuthFragment extends Fragment {
             public void onClick(View view) {
                 String phone = editPhone.getText().toString();
                 if (!TextUtils.isEmpty(phone)) {
+                    minute = 3;
+                    second = 0;
+                    startTime = -1;
                     Random random = new Random();
                     int num = random.nextInt(9000) + 1000;
                     editAuth.setText("" + num);
-
+                    mHandler.removeCallbacks(runnable);
                     mHandler.post(runnable);
                 } else {
                     Toast.makeText(getActivity(), "휴대폰 번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -162,7 +163,7 @@ public class AuthFragment extends Fragment {
                                         Intent intent = new Intent(getContext(), MainActivity.class);
                                         startActivity(intent);
                                         getActivity().finish();
-                                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                                        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                     }
 
                                     @Override
@@ -193,23 +194,7 @@ public class AuthFragment extends Fragment {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Permission");
-                builder.setMessage("전화번호를 얻어옵니다");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        requestPermission();
-                    }
-                });
-                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
 
-                    }
-                });
-                builder.create().show();
-                return;
             }
             requestPermission();
         } else {
@@ -239,6 +224,7 @@ public class AuthFragment extends Fragment {
     }
 
     int minute = 3;
+    int second = 0;
     long startTime = -1;
     Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -250,34 +236,25 @@ public class AuthFragment extends Fragment {
                 startTime = time;
             }
             int gap = (int) (time - startTime);
-            int second = 60 - gap / 1000;
             int rest = 1000 - (gap % 1000);
-            if (second >= 0) {
-                if (second == 60) {
-                    textTime.setText(minute + " : 00");
-                    minute--;
+            if (second == 0) {
+                minute--;
+                if (minute >= 0) {
+                    second = 59;
+                    textTime.setText(minute + " : " + String.format("%02d", second));
                 } else {
-                    if (second < 10) {
-                        textTime.setText(minute + " : 0" + second);
-                        if (second == 0) {
-                            startTime = -1;
-                            minute--;
-                        }
-                    } else {
-                        textTime.setText(minute + " : " + second);
-                    }
+                    return;
                 }
-                mHandler.postDelayed(this, rest);
             } else {
-//                if (minute == 0) {
-//                    return;
-//                }
-//                startTime = -1;
-//                minute--;
-//                second = 59;
-//                textTime.setText(minute + " : " + second);
-//                mHandler.postDelayed(this, rest);
+                second--;
+                textTime.setText(minute + " : " + String.format("%02d", second));
             }
+            if (minute >= 0) {
+                mHandler.postDelayed(this, rest);
+            }
+
+
+
         }
     };
 

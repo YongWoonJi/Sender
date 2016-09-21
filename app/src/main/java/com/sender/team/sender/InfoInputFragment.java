@@ -199,10 +199,18 @@ public class InfoInputFragment extends Fragment {
                     StringBuffer sb = new StringBuffer(requestHour.getText().toString());
                     if (sb.substring(0, 2).toString().equals("오후")) {
                         hour = sb.delete(0, 4).toString();
-                        inputHour = Integer.parseInt(hour.toString()) + 12;
+                        if (hour.equals("12")) {
+                            inputHour = Integer.parseInt(hour.toString());
+                        } else {
+                            inputHour = Integer.parseInt(hour.toString()) + 12;
+                        }
                     } else {
                         hour = sb.delete(0, 4).toString();
-                        inputHour = Integer.parseInt(hour.toString());
+                        if (hour.equals("12")) {
+                            inputHour = 0;
+                        } else {
+                            inputHour = Integer.parseInt(hour.toString());
+                        }
                     }
 
                     String hh = String.format("%02d", inputHour);

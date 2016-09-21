@@ -117,6 +117,17 @@ public class SplashActivity extends AppCompatActivity {
 
         loginManager = LoginManager.getInstance();
         callbackManager = CallbackManager.Factory.create();
+
+        mOAuthLoginInstance = OAuthLogin.getInstance();
+        mOAuthLoginInstance.init(
+                SplashActivity.this
+                ,OAUTH_CLIENT_ID
+                ,OAUTH_CLIENT_SECRET
+                ,OAUTH_CLIENT_NAME
+                //,OAUTH_CALLBACK_INTENT
+                // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
+        );
+
         mHandler = new Handler(Looper.getMainLooper());
 
         String code = getIntent().getStringExtra(FACEBOOK_LOGOUT);
@@ -124,12 +135,17 @@ public class SplashActivity extends AppCompatActivity {
             if (code.equals(FACEBOOK_LOGOUT)) {
                 loginManager.logOut();
             }
-        } else {
-            code = getIntent().getStringExtra(NAVER_LOGOUT);
-            if (code != null) {
-                if (code.equals(NAVER_LOGOUT)) {
-                    mOAuthLoginInstance.logoutAndDeleteToken(this);
-                }
+        } else if ((code = getIntent().getStringExtra(NAVER_LOGOUT)) != null) {
+            if (code.equals(NAVER_LOGOUT)) {
+                mOAuthLoginInstance.logoutAndDeleteToken(this);
+            }
+        } else if ((code = getIntent().getStringExtra(FACEBOOK_LEAVE)) != null) {
+            if (code.equals(FACEBOOK_LEAVE)) {
+                loginManager.logOut();
+            }
+        } else if ((code = getIntent().getStringExtra(NAVER_LEAVE)) != null) {
+            if (code.equals(NAVER_LEAVE)) {
+                mOAuthLoginInstance.logoutAndDeleteToken(this);
             }
         }
 
@@ -140,17 +156,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
         mHandler.postDelayed(runnable, 1500);
-
-        ////////////////////////////////// 네이버 ////////////////////////////////
-        mOAuthLoginInstance  = OAuthLogin.getInstance();
-        mOAuthLoginInstance .init(
-                SplashActivity.this
-                ,OAUTH_CLIENT_ID
-                ,OAUTH_CLIENT_SECRET
-                ,OAUTH_CLIENT_NAME
-                //,OAUTH_CALLBACK_INTENT
-                // SDK 4.1.4 버전부터는 OAUTH_CALLBACK_INTENT변수를 사용하지 않습니다.
-        );
     }
 
 
@@ -600,11 +605,6 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
 
-            }
-            else {
-                String errorCode = mOAuthLoginInstance.getLastErrorCode(SplashActivity.this).getCode(); //마지막으로 실패한 로그인의 에러 코드를 반환합니다.
-                String errorDesc = mOAuthLoginInstance.getLastErrorDesc(SplashActivity.this); //마지막으로 실패한 로그인의 에러 메시지를 반환합니다.
-                Toast.makeText(SplashActivity.this, "errorCode:" + errorCode + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
             }
         }
     };

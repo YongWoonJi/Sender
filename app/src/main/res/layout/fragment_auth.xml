@@ -117,7 +117,6 @@
         android:layout_marginLeft="@dimen/icon_right_margin"/>
 
     <Button
-        android:layout_width="@dimen/auth_btn_width"
         android:layout_height="@dimen/auth_edit_height"
         android:text="@string/auth_signup"
         android:id="@+id/btn_signup_finish"
@@ -126,7 +125,8 @@
         android:layout_marginTop="@dimen/auth_edit_height"
         android:textSize="12sp"
         android:layout_below="@+id/edit_authNum"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_width="120dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -139,7 +139,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/auth_waiting_time"
             android:layout_below="@+id/relativeLayout3"
             android:id="@+id/textView4"
@@ -149,7 +148,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="3 : 00"
             android:id="@+id/text_time"
             android:layout_centerHorizontal="true"

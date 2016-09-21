@@ -14,7 +14,8 @@
         android:scaleType="centerCrop"
         app:riv_corner_radius="@dimen/mypage_image_radius"
         android:layout_marginRight="16dp"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:src="@drawable/default_profile" />
 
     <TextView
         android:layout_width="wrap_content"

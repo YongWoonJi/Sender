@@ -2,6 +2,7 @@ package com.sender.team.sender.widget;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -60,10 +61,18 @@ public class ChattingListViewHolder extends RecyclerView.ViewHolder {
             textMessage.setVisibility(View.VISIBLE);
             textTime.setVisibility(View.VISIBLE);
             textEmpty.setVisibility(View.GONE);
-            Glide.with(context).load(data.getImageUrl()).into(imageProfile);
-            textName.setText(data.getName());
-            textMessage.setText(data.getMessage());
-            textTime.setText(Utils.getCurrentTime(Long.parseLong(data.getTime())));
+            if (!TextUtils.isEmpty(data.getImageUrl())) {
+                Glide.with(context).load(data.getImageUrl()).into(imageProfile);
+            }
+            if (!TextUtils.isEmpty(data.getName())) {
+                textName.setText(data.getName());
+            }
+            if (!TextUtils.isEmpty(data.getMessage())) {
+                textMessage.setText(data.getMessage());
+            }
+            if (!TextUtils.isEmpty(data.getTime())) {
+                textTime.setText(Utils.getCurrentTime(Long.parseLong(data.getTime())));
+            }
         }
     }
 
