@@ -14,11 +14,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -267,6 +269,40 @@ public class InfoInputFragment extends Fragment {
         return view;
     }
 
+    private static final int RC_CONTACTS = 300;
+    @OnClick(R.id.btn_contacts)
+    public void onClickContacts() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setData(ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+            startActivityForResult(intent, RC_CONTACTS);
+        } else {
+            if (checkPermission()) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setData(ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(intent, RC_CONTACTS);
+            }
+        }
+    }
+
+    private static final int RC_PERMISSION = 100;
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_CONTACTS)) {
+                // dialog...
+                requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, RC_PERMISSION);
+                return false;
+            }
+            requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, RC_PERMISSION);
+            return false;
+        }
+        return true;
+    }
+
+
+
+
     @OnClick(R.id.linearLayout5)
     public void onClick(){
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_timepicker, null);
@@ -469,6 +505,12 @@ public class InfoInputFragment extends Fragment {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
                 startActivityForResult(intent, RC_CATPURE_IMAGE);
             }
+        } else if (requestCode == RC_CONTACTS) {
+            if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setData(ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(intent, RC_CONTACTS);
+            }
         }
     }
 
@@ -493,6 +535,7 @@ public class InfoInputFragment extends Fragment {
         }
     }
 
+    String number;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -567,8 +610,19 @@ public class InfoInputFragment extends Fragment {
                         .load(uploadFile)
                         .into(objectImage);
             }
+        } else if (requestCode == RC_CONTACTS) {
+            if (resultCode == Activity.RESULT_OK) {
+                Cursor cursor = getContext().getContentResolver().query(data.getData(),
+                        new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                                ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
+                cursor.moveToFirst();
+                number = cursor.getString(1);
+                receiverPhone.setText(number.replace("-", ""));
+                cursor.close();
+            }
         }
     }
+
 
 
     public void setSenderData(final Context context, double hereLat, double hereLng, double addrLat, double addrLng,

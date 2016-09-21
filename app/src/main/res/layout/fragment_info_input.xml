@@ -174,7 +174,7 @@
         <EditText
             android:id="@+id/edit_memo"
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_height="65dp"
             android:layout_alignBottom="@+id/imageView25"
             android:layout_alignEnd="@+id/object_image"
             android:layout_alignRight="@+id/object_image"
@@ -196,9 +196,9 @@
             android:layout_alignEnd="@+id/imageView31"
             android:layout_alignRight="@+id/imageView31"
             android:layout_below="@+id/edit_memo"
-            android:layout_gravity="bottom"
             android:background="#e6e6e6"
-            android:src="@drawable/ic_photo" />
+            android:src="@drawable/ic_photo"
+            android:layout_marginTop="16dp" />
     </LinearLayout>
 
     <ImageView
@@ -250,6 +250,22 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="@color/grayline" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:text="주소록"
+        android:id="@+id/btn_contacts"
+        android:textSize="11sp"
+        android:textColor="@color/whitefont"
+        android:gravity="center"
+        android:background="@color/fontcolor"
+        android:layout_above="@+id/linearLayout4"
+        android:layout_alignRight="@+id/linearLayout4"
+        android:layout_alignEnd="@+id/linearLayout4"
+        android:elevation="0dp"
+        android:translationZ="0dp"
+        android:layout_marginBottom="4dp"/>
 
 
 </RelativeLayout>

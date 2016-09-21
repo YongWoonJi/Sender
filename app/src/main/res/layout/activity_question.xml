@@ -38,8 +38,7 @@
             android:id="@+id/line4"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grayline"
-            />
+            android:background="@color/grayline" />
 
         <TextView
             android:id="@+id/textView22"
@@ -216,8 +215,8 @@
 
         <ImageView
             android:id="@+id/image_picture"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic03"
             android:layout_below="@+id/textView36"
             android:layout_alignLeft="@+id/textView36"
@@ -231,11 +230,13 @@
             android:text="@string/image_registration_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/holo_red_light"
-            android:textSize="11sp"
+            android:textSize="12sp"
+            android:layout_marginBottom="13dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:layout_alignBottom="@+id/image_picture"
             android:layout_toRightOf="@+id/image_picture"
-            android:layout_toEndOf="@+id/image_picture"
-            android:layout_marginLeft="5dp" />
+            android:layout_toEndOf="@+id/image_picture" />
 
         <ImageView
             android:id="@+id/imageView4"

@@ -435,7 +435,7 @@ c.	다만, 쿠키의 저장을 거부할 경우에는 이용에 어려움이 있
     <string name="sms">SMS</string>
     <string name="input_info">입력정보</string>
     <string name="image_registration">이미지등록</string>
-    <string name="image_registration_content">*이미지는 용량 2MB이하 jpg, png, gif 파일만 등록 가능합니다.</string>
+    <string name="image_registration_content">*용량 2MB이하 jpg, png, gif 파일만 등록 가능합니다.</string>
     <string name="deliverer_id">배송원ID</string>
     <string name="content">내용</string>
     <string name="report_title">칭찬 / 신고합니다</string>
