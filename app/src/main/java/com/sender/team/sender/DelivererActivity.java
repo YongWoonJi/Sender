@@ -50,6 +50,13 @@ import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.DelivererRegisterRequest;
 import com.sender.team.sender.request.POISearchRequest;
 import com.sender.team.sender.request.ReverseGeocodingRequest;
+import com.sender.team.sender.widget.ArrayWheelAdapter;
+import com.sender.team.sender.widget.NumericWheelAdapter;
+import com.sender.team.sender.widget.OnWheelChangedListener;
+import com.sender.team.sender.widget.OnWheelScrollListener;
+import com.sender.team.sender.widget.WheelView;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,16 +71,16 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     EditText editEnd;
 
     @BindView(R.id.edit_start_hour)
-    EditText editStartHour;
+    TextView editStartHour;
 
     @BindView(R.id.edit_start_min)
-    EditText editStartMin;
+    TextView editStartMin;
 
     @BindView(R.id.edit_end_hour)
-    EditText editEndHour;
+    TextView editEndHour;
 
     @BindView(R.id.edit_end_min)
-    EditText editEndMin;
+    TextView editEndMin;
 
     @BindView(R.id.list_startSearch)
     ListView listStartSearch;
@@ -99,6 +106,10 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
     boolean editFlag = false;
 
+    // Time changed flag
+    private boolean timeChanged = false;
+    private boolean timeScrolled = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,9 +131,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (editStartHour.isFocusable()) {
                     editStartHour.setGravity(Gravity.RIGHT);
-                }
             }
 
             @Override
@@ -141,9 +150,7 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (editEndHour.isFocusable()) {
                     editEndHour.setGravity(Gravity.RIGHT);
-                }
             }
 
             @Override
@@ -289,6 +296,244 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         mInputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
+////////////////////////////////////////다이얼로그 타임피커/////////////////////////////////////////////////////////////////////
+    @OnClick(R.id.linearLayout2)
+    public void onClickOne(){
+        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_timepicker, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog_Transparent);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+
+        //TimePicker
+        String[] list = new String[] {"오전","오후"};
+        final WheelView ampm = (WheelView) view.findViewById(R.id.ampm);
+        ampm.setAdapter(new ArrayWheelAdapter<>(list));
+
+        final WheelView hours = (WheelView) view.findViewById(R.id.hour);
+        hours.setAdapter(new NumericWheelAdapter(1, 12));
+        hours.setCyclic(true);
+//		hours.setLabel(" 시");
+
+        final WheelView mins = (WheelView) view.findViewById(R.id.mins);
+        mins.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
+//		mins.setLabel(" 분");
+        mins.setCyclic(true);
+
+        // set current time
+        Calendar c = Calendar.getInstance();
+        int curHours = c.get(Calendar.HOUR);
+        int curMinutes = c.get(Calendar.MINUTE);
+        int curAmPm = c.get(Calendar.AM_PM);
+
+        hours.setCurrentItem(curHours-1);
+        mins.setCurrentItem(curMinutes);
+        ampm.setCurrentItem(curAmPm);
+
+        // add listeners
+        addChangingListener(ampm, "");
+        addChangingListener(mins, "");
+        addChangingListener(hours, "");
+
+        OnWheelChangedListener wheelListener = new OnWheelChangedListener() {
+            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+                if (!timeScrolled) {
+                    timeChanged = true;
+//                    picker.setCurrentHour(hours.getCurrentItem());
+//                    picker.setCurrentMinute(mins.getCurrentItem());
+                    timeChanged = false;
+                }
+            }
+        };
+
+        ampm.addChangingListener(wheelListener);
+        hours.addChangingListener(wheelListener);
+        mins.addChangingListener(wheelListener);
+
+        OnWheelScrollListener scrollListener = new OnWheelScrollListener() {
+            public void onScrollingStarted(WheelView wheel) {
+                timeScrolled = true;
+            }
+            public void onScrollingFinished(WheelView wheel) {
+                timeScrolled = false;
+                timeChanged = true;
+//                picker.setCurrentHour(hours.getCurrentItem()+1);
+//                picker.setCurrentMinute(mins.getCurrentItem());
+                timeChanged = false;
+            }
+        };
+
+        ampm.addScrollingListener(scrollListener);
+        hours.addScrollingListener(scrollListener);
+        mins.addScrollingListener(scrollListener);
+
+//        picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//            public void onTimeChanged(TimePicker  view, int hourOfDay, int minute) {
+//                if (!timeChanged) {
+//                    hours.setCurrentItem(hourOfDay, true);
+//                    mins.setCurrentItem(minute, true);
+//                }
+//            }
+//        });
+        ///////////////////////////////////////////////TimePicker
+
+
+        dialog.show();
+
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = 825;
+        dialog.getWindow().setAttributes(params);
+
+        Button btn = (Button) view.findViewById(R.id.btn_timepicker_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        btn = (Button) view.findViewById(R.id.btn_timepicker_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int hour = hours.getCurrentItem()+1;
+                if(ampm.getCurrentItem() == 0) {
+                    editStartHour.setText("오전  " + hour );
+                    editStartMin.setText("" + mins.getCurrentItem());
+
+                } else{
+                    editStartHour.setText("오후  " + hour);
+                    editStartMin.setText("" + mins.getCurrentItem());
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+
+    @OnClick(R.id.linearLayout3)
+    public void onClickTwo(){
+        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_timepicker, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog_Transparent);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+
+        //TimePicker
+        String[] list = new String[] {"오전","오후"};
+        final WheelView ampm = (WheelView) view.findViewById(R.id.ampm);
+        ampm.setAdapter(new ArrayWheelAdapter<>(list));
+
+        final WheelView hours = (WheelView) view.findViewById(R.id.hour);
+        hours.setAdapter(new NumericWheelAdapter(1, 12));
+        hours.setCyclic(true);
+//		hours.setLabel(" 시");
+
+        final WheelView mins = (WheelView) view.findViewById(R.id.mins);
+        mins.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
+//		mins.setLabel(" 분");
+        mins.setCyclic(true);
+
+        // set current time
+        Calendar c = Calendar.getInstance();
+        int curHours = c.get(Calendar.HOUR);
+        int curMinutes = c.get(Calendar.MINUTE);
+        int curAmPm = c.get(Calendar.AM_PM);
+
+        hours.setCurrentItem(curHours-1);
+        mins.setCurrentItem(curMinutes);
+        ampm.setCurrentItem(curAmPm);
+
+        // add listeners
+        addChangingListener(ampm, "");
+        addChangingListener(mins, "");
+        addChangingListener(hours, "");
+
+        OnWheelChangedListener wheelListener = new OnWheelChangedListener() {
+            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+                if (!timeScrolled) {
+                    timeChanged = true;
+//                    picker.setCurrentHour(hours.getCurrentItem());
+//                    picker.setCurrentMinute(mins.getCurrentItem());
+                    timeChanged = false;
+                }
+            }
+        };
+
+        ampm.addChangingListener(wheelListener);
+        hours.addChangingListener(wheelListener);
+        mins.addChangingListener(wheelListener);
+
+        OnWheelScrollListener scrollListener = new OnWheelScrollListener() {
+            public void onScrollingStarted(WheelView wheel) {
+                timeScrolled = true;
+            }
+            public void onScrollingFinished(WheelView wheel) {
+                timeScrolled = false;
+                timeChanged = true;
+//                picker.setCurrentHour(hours.getCurrentItem()+1);
+//                picker.setCurrentMinute(mins.getCurrentItem());
+                timeChanged = false;
+            }
+        };
+
+        ampm.addScrollingListener(scrollListener);
+        hours.addScrollingListener(scrollListener);
+        mins.addScrollingListener(scrollListener);
+
+//        picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//            public void onTimeChanged(TimePicker  view, int hourOfDay, int minute) {
+//                if (!timeChanged) {
+//                    hours.setCurrentItem(hourOfDay, true);
+//                    mins.setCurrentItem(minute, true);
+//                }
+//            }
+//        });
+        ///////////////////////////////////////////////TimePicker
+
+
+        dialog.show();
+
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = 825;
+        dialog.getWindow().setAttributes(params);
+
+        Button btn = (Button) view.findViewById(R.id.btn_timepicker_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        btn = (Button) view.findViewById(R.id.btn_timepicker_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int hour = hours.getCurrentItem() + 1;
+                if(ampm.getCurrentItem() == 0) {
+                    editEndHour.setText("오전  " + hour);
+                    editEndMin.setText("" + mins.getCurrentItem());
+
+                } else{
+                    editEndHour.setText("오후  " + hour);
+                    editEndMin.setText("" + mins.getCurrentItem());
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+    /**
+     * Adds changing listener for wheel that updates the wheel label
+     * @param wheel the wheel
+     * @param label the wheel label
+     */
+    private void addChangingListener(final WheelView wheel, final String label) {
+        wheel.addChangingListener(new OnWheelChangedListener() {
+            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+                wheel.setLabel(newValue != 1 ? label : label);
+            }
+        });
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -369,10 +614,10 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
     @OnClick(R.id.btn_input)
     public void onClickButton() {
-        if (!TextUtils.isEmpty(editStartHour.getText()) && !TextUtils.isEmpty(editStartMin.getText()) && !TextUtils.isEmpty(editEndHour.getText()) && !TextUtils.isEmpty(editEndMin.getText())) {
+        if (poiStart != null && poiEnd != null && !TextUtils.isEmpty(editStartHour.getText()) && !TextUtils.isEmpty(editStartMin.getText()) && !TextUtils.isEmpty(editEndHour.getText()) && !TextUtils.isEmpty(editEndMin.getText())) {
             clickSend();
         } else {
-            Toast.makeText(DelivererActivity.this, "시간을 입력해 주세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DelivererActivity.this, "정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -441,16 +686,43 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                depTime = Utils.getCurrentDate() + " " + editStartHour.getText().toString() + ":" + editStartMin.getText().toString() + ":00";
-                arrTime = Utils.getCurrentDate() + " " + editEndHour.getText().toString() + ":" + editEndMin.getText().toString() + ":00";
+                String startHour;
+                String endHour;
+                int inputStartHour;
+                int inputEndHour;
 
-                ReverseGeocodingRequest geoRequest = new ReverseGeocodingRequest(DelivererActivity.this,  "" + poiStart.getLatitude(), "" + poiStart.getLongitude());
+                StringBuffer sb = new StringBuffer(editStartHour.getText().toString());
+                if (sb.substring(0, 2).toString().equals("오후")) {
+                    startHour = sb.delete(0, 4).toString();
+                    inputStartHour = Integer.parseInt(startHour.toString()) + 12;
+                } else {
+                    startHour = sb.delete(0, 4).toString();
+                    inputStartHour = Integer.parseInt(startHour.toString());
+                }
+
+                sb = new StringBuffer(editEndHour.getText().toString());
+                if (sb.substring(0, 2).toString().equals("오후")) {
+                    endHour = sb.delete(0, 4).toString();
+                    inputEndHour = Integer.parseInt(endHour.toString()) + 12;
+                } else {
+                    endHour = sb.delete(0, 4).toString();
+                    inputEndHour = Integer.parseInt(endHour.toString());
+                }
+
+                String shh = String.format("%02d", inputStartHour);
+                String ehh = String.format("%02d", inputEndHour);
+                String smm = String.format("%02d", Integer.parseInt(editStartMin.getText().toString()));
+                String emm = String.format("%02d", Integer.parseInt(editEndMin.getText().toString()));
+                depTime = Utils.getCurrentDate() + " " + shh + ":" + smm + ":00";
+                arrTime = Utils.getCurrentDate() + " " + ehh + ":" + emm + ":00";
+
+                ReverseGeocodingRequest geoRequest = new ReverseGeocodingRequest(DelivererActivity.this, "" + poiStart.getLatitude(), "" + poiStart.getLongitude());
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, geoRequest, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
                     @Override
                     public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
                         if (result != null) {
                             hereAddr = result.getAddressInfo().getLegalDong();
-                            ReverseGeocodingRequest geoRequest2 = new ReverseGeocodingRequest(DelivererActivity.this,  "" + poiEnd.getLatitude(), "" + poiEnd.getLongitude());
+                            ReverseGeocodingRequest geoRequest2 = new ReverseGeocodingRequest(DelivererActivity.this, "" + poiEnd.getLatitude(), "" + poiEnd.getLongitude());
                             NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_TMAP, geoRequest2, new NetworkManager.OnResultListener<ReverseGeocodingData>() {
                                 @Override
                                 public void onSuccess(NetworkRequest<ReverseGeocodingData> request, ReverseGeocodingData result) {
@@ -488,7 +760,6 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
                     }
                 });
-
             }
         });
 

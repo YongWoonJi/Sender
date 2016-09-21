@@ -22,15 +22,16 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -40,16 +41,24 @@ import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.SenderRequest;
+import com.sender.team.sender.widget.ArrayWheelAdapter;
+import com.sender.team.sender.widget.NumericWheelAdapter;
+import com.sender.team.sender.widget.OnWheelChangedListener;
+import com.sender.team.sender.widget.OnWheelScrollListener;
+import com.sender.team.sender.widget.WheelView;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.sender.team.sender.R.id.hour;
 
 
 /**
@@ -97,10 +106,10 @@ public class InfoInputFragment extends Fragment {
     EditText receiverPhone;
 
     @BindView(R.id.edit_infoinput_hour)
-    EditText requestHour;
+    TextView requestHour;
 
     @BindView(R.id.edit_infoinput_min)
-    EditText requestMin;
+    TextView requestMin;
 
     @BindView(R.id.object_image)
     ImageView objectImage;
@@ -118,6 +127,10 @@ public class InfoInputFragment extends Fragment {
 
     File savedFile = null;
     File uploadFile = null;
+
+    // Time changed flag
+    private boolean timeChanged = false;
+    private boolean timeScrolled = false;
 
     String rejectSend;
 
@@ -165,9 +178,7 @@ public class InfoInputFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (requestHour.isFocusable()) {
                     requestHour.setGravity(Gravity.RIGHT);
-                }
             }
 
             @Override
@@ -182,54 +193,195 @@ public class InfoInputFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String time = Utils.getCurrentDate() + " " + requestHour.getText().toString() + ":" + requestMin.getText().toString() + ":00";
-                String obName = objectName.getText().toString();
-                String obPrice = objectPrice.getText().toString();
-                String phone = receiverPhone.getText().toString();
-                String memo = requestMemo.getText().toString();
+                if (!TextUtils.isEmpty(objectName.getText().toString()) && !TextUtils.isEmpty(objectPrice.getText().toString()) && !TextUtils.isEmpty(receiverPhone.getText().toString()) && !TextUtils.isEmpty(requestMemo.getText().toString()) &&!TextUtils.isEmpty(requestHour.getText()) && !TextUtils.isEmpty(requestHour.getText())) {
+                    String hour;
+                    int inputHour;
+                    StringBuffer sb = new StringBuffer(requestHour.getText().toString());
+                    if (sb.substring(0, 2).toString().equals("오후")) {
+                        hour = sb.delete(0, 4).toString();
+                        inputHour = Integer.parseInt(hour.toString()) + 12;
+                    } else {
+                        hour = sb.delete(0, 4).toString();
+                        inputHour = Integer.parseInt(hour.toString());
+                    }
 
-                if (rejectSend != null) {
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, new DelivererListFragment())
-                            .addToBackStack(null)
-                            .commit();
-                    ((SendActivity) getActivity()).headerlayout.setVisibility(View.GONE);
-                    ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
+                    String hh = String.format("%02d", inputHour);
+                    String mm = String.format("%02d", Integer.parseInt(requestMin.getText().toString()));
+                    String time = Utils.getCurrentDate() + " " + hh + ":" + mm + ":00";
+                    String obName = objectName.getText().toString();
+                    String obPrice = objectPrice.getText().toString();
+                    String phone = receiverPhone.getText().toString();
+                    String memo = requestMemo.getText().toString();
 
-                } else {
-                    if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
-
-                        if (!((SendActivity) getActivity()).isRequestCheck) {
-                            ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
-                            ((SendActivity) getActivity()).isRequestCheck = true;
-                        }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
-
+                    if (rejectSend != null) {
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, new DelivererListFragment())
                                 .addToBackStack(null)
                                 .commit();
-
                         ((SendActivity) getActivity()).headerlayout.setVisibility(View.GONE);
                         ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
 
-                        ViewGroup.LayoutParams layoutParams = ((SendActivity) getActivity()).mapFragment.getView().getLayoutParams();
-                        float dp = 268;
-                        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
-                        layoutParams.height = pixel;
-                        ((SendActivity) getActivity()).mapFragment.getView().setLayoutParams(layoutParams);
                     } else {
-                        Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                        if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
+                            if (!((SendActivity) getActivity()).isRequestCheck) {
+                                ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
+                                ((SendActivity) getActivity()).isRequestCheck = true;
+                            }// 백스택 했을 때 리퀘스트가 다시 안되도록 SendActivity에 boolean 변수를 두고 사용
 
-                if (callback != null) {
-                    callback.onClickButton();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.container, new DelivererListFragment())
+                                    .addToBackStack(null)
+                                    .commit();
+
+                            ((SendActivity) getActivity()).headerlayout.setVisibility(View.GONE);
+                            ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
+
+                            ViewGroup.LayoutParams layoutParams = ((SendActivity) getActivity()).mapFragment.getView().getLayoutParams();
+                            float dp = 268;
+                            int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                            layoutParams.height = pixel;
+                            ((SendActivity) getActivity()).mapFragment.getView().setLayoutParams(layoutParams);
+                        } else {
+                            Toast.makeText(getActivity(), "이름, 번호, 가격을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    if (callback != null) {
+                        callback.onClickButton();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "배송정보를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         ((SendActivity) getActivity()).backMarker();
         return view;
+    }
+
+    @OnClick(R.id.linearLayout5)
+    public void onClick(){
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_timepicker, null);
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog_Transparent);
+        builder.setView(view);
+        final android.support.v7.app.AlertDialog dialog = builder.create();
+
+        //TimePicker
+        String[] list = new String[] {"오전","오후"};
+        final WheelView ampm = (WheelView) view.findViewById(R.id.ampm);
+        ampm.setAdapter(new ArrayWheelAdapter<>(list));
+
+        final WheelView hours = (WheelView) view.findViewById(hour);
+        hours.setAdapter(new NumericWheelAdapter(1, 12));
+        hours.setCyclic(true);
+//		hours.setLabel(" 시");
+
+        final WheelView mins = (WheelView) view.findViewById(R.id.mins);
+        mins.setAdapter(new NumericWheelAdapter(0, 59, "%02d"));
+//		mins.setLabel(" 분");
+        mins.setCyclic(true);
+
+        // set current time
+        Calendar c = Calendar.getInstance();
+        int curHours = c.get(Calendar.HOUR);
+        int curMinutes = c.get(Calendar.MINUTE);
+        int curAmPm = c.get(Calendar.AM_PM);
+
+        hours.setCurrentItem(curHours-1);
+        mins.setCurrentItem(curMinutes);
+        ampm.setCurrentItem(curAmPm);
+
+        // add listeners
+        addChangingListener(ampm, "");
+        addChangingListener(mins, "");
+        addChangingListener(hours, "");
+
+        OnWheelChangedListener wheelListener = new OnWheelChangedListener() {
+            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+                if (!timeScrolled) {
+                    timeChanged = true;
+//                    picker.setCurrentHour(hours.getCurrentItem());
+//                    picker.setCurrentMinute(mins.getCurrentItem());
+                    timeChanged = false;
+                }
+            }
+        };
+
+        ampm.addChangingListener(wheelListener);
+        hours.addChangingListener(wheelListener);
+        mins.addChangingListener(wheelListener);
+
+        OnWheelScrollListener scrollListener = new OnWheelScrollListener() {
+            public void onScrollingStarted(WheelView wheel) {
+                timeScrolled = true;
+            }
+            public void onScrollingFinished(WheelView wheel) {
+                timeScrolled = false;
+                timeChanged = true;
+//                picker.setCurrentHour(hours.getCurrentItem()+1);
+//                picker.setCurrentMinute(mins.getCurrentItem());
+                timeChanged = false;
+            }
+        };
+
+        ampm.addScrollingListener(scrollListener);
+        hours.addScrollingListener(scrollListener);
+        mins.addScrollingListener(scrollListener);
+
+//        picker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//            public void onTimeChanged(TimePicker  view, int hourOfDay, int minute) {
+//                if (!timeChanged) {
+//                    hours.setCurrentItem(hourOfDay, true);
+//                    mins.setCurrentItem(minute, true);
+//                }
+//            }
+//        });
+        ///////////////////////////////////////////////TimePicker
+
+
+        dialog.show();
+
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = 825;
+        dialog.getWindow().setAttributes(params);
+
+        Button btn = (Button) view.findViewById(R.id.btn_timepicker_cancel);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        btn = (Button) view.findViewById(R.id.btn_timepicker_ok);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int hour = hours.getCurrentItem() + 1;
+                if(ampm.getCurrentItem() == 0) {
+                    requestHour.setText("오전  " + hour);
+                    requestMin.setText("" + mins.getCurrentItem());
+
+                } else{
+                    requestHour.setText("오후  " + hour);
+                    requestMin.setText("" + mins.getCurrentItem());
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+    /**
+     * Adds changing listener for wheel that updates the wheel label
+     * @param wheel the wheel
+     * @param label the wheel label
+     */
+    private void addChangingListener(final WheelView wheel, final String label) {
+        wheel.addChangingListener(new OnWheelChangedListener() {
+            public void onChanged(WheelView wheel, int oldValue, int newValue) {
+                wheel.setLabel(newValue != 1 ? label : label);
+            }
+        });
     }
 
     @OnClick(R.id.object_image)
@@ -419,7 +571,6 @@ public class InfoInputFragment extends Fragment {
         final String aLat = String.valueOf(addrLat);
         final String aLng = String.valueOf(addrLng);
         //SendAcitivty의 현위치와 선택한 위치의 위도 경도값을 받아온다.
-        Log.i("InfoInputFragment", hLat + " , " + hLng + " , " + aLat + " , " + aLng);
 
         SenderRequest request = new SenderRequest(context, hLat, hLng, aLat, aLng, time, phone, obPrice, obName, uploadFile, memo);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {

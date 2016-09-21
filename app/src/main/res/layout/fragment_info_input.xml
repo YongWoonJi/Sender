@@ -23,7 +23,7 @@
             android:layout_height="20dp"
             android:src="@drawable/ic_time" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_infoinput_hour"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
@@ -32,9 +32,6 @@
             android:layout_weight="1"
             android:background="@null"
             android:hint="도착 요청시간"
-            android:inputType="number"
-            android:maxLength="2"
-            android:nextFocusDown="@+id/edit_infoinput_min"
             android:paddingBottom="2dp"
             android:textSize="12sp" />
 
@@ -45,15 +42,13 @@
             android:text="시"
             android:textSize="12sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_infoinput_min"
             android:layout_width="30dp"
             android:layout_height="20dp"
             android:layout_marginRight="2dp"
             android:background="@null"
             android:gravity="right"
-            android:inputType="number"
-            android:maxLength="2"
             android:textSize="12sp" />
 
 

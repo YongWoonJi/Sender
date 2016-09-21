@@ -20,6 +20,9 @@
     <color name="colorstatusblue">#00bff3</color>
     <color name="colorstatusgreen">#00ff00</color>
     <color name="chatting_background">#f6f6f6</color>
+
+    <color name="timepickerbg">#ffffff</color>
+
     <color name="marker">#00d4d2</color>
     <color name="lightgray">#8d8d8d</color>
 
