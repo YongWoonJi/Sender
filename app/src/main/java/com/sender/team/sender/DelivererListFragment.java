@@ -168,8 +168,8 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         deliverId = position;
         String delId = String.valueOf(mAdapter.getDeliverId(position));
         PropertyManager.getInstance().setOtherDeliveringId(delId);
-
-        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "100", delId);
+        String delUserId = String.valueOf(mAdapter.getId(position));
+        ReviewListRequest request = new ReviewListRequest(getContext(), "1", "100", delUserId);
         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ReviewListData>>() {
             @Override
             public void onSuccess(NetworkRequest<NetworkResult<ReviewListData>> request, NetworkResult<ReviewListData> result) {
