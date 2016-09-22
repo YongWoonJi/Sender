@@ -285,16 +285,15 @@ public class InfoInputFragment extends Fragment {
         }
     }
 
-    private static final int RC_PERMISSION = 100;
     private boolean checkPermission() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_CONTACTS)) {
                 // dialog...
-                requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, RC_PERMISSION);
+                requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, RC_CONTACTS);
                 return false;
             }
-            requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, RC_PERMISSION);
+            requestPermissions(new String[] {Manifest.permission.READ_CONTACTS}, RC_CONTACTS);
             return false;
         }
         return true;

@@ -105,9 +105,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     popupDeliveryRequest(data);
                     break;
                 case TYPE_CHATTING:
-                    if (PropertyManager.getInstance().getAlarmSetting()) {
                         chattingReceive(data);
-                    }
                     break;
                 case TYPE_CONFIRM:
                     confirmNotification(data.getString(EXTRA_TYPE));
@@ -137,8 +135,10 @@ public class MyGcmListenerService extends GcmListenerService {
                         mLBM.sendBroadcastSync(i);
                         boolean processed = i.getBooleanExtra(EXTRA_RESULT, false);
                         if (!processed) {
-                            sendChatNotification(cData);
-                            sendToast(cData, c);
+                            if (PropertyManager.getInstance().getAlarmSetting()) {
+                                sendChatNotification(cData);
+                                sendToast(cData, c);
+                            }
                         }
                     }
                 } else {

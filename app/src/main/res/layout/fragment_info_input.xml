@@ -254,6 +254,7 @@
     <Button
         android:layout_width="50dp"
         android:layout_height="20dp"
+        style="?android:attr/borderlessButtonStyle"
         android:text="주소록"
         android:id="@+id/btn_contacts"
         android:textSize="11sp"
@@ -265,7 +266,7 @@
         android:layout_alignEnd="@+id/linearLayout4"
         android:elevation="0dp"
         android:translationZ="0dp"
-        android:layout_marginBottom="4dp"/>
+        android:layout_marginBottom="3dp"/>
 
 
 </RelativeLayout>
