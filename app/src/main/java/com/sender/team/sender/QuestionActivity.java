@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -327,41 +328,49 @@ public class QuestionActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_question)
     public void onClickQuestion() {
-        View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_basic, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog_Transparent);
-        builder.setView(view);
-        final AlertDialog dialog = builder.create();
+        if( !TextUtils.isEmpty(editTitle.getText().toString().trim())
+                && !TextUtils.isEmpty(editContents.getText().toString().trim()) ) {
+            View view = LayoutInflater.from(this).inflate(R.layout.view_dialog_basic, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog_Transparent);
+            builder.setView(view);
+            final AlertDialog dialog = builder.create();
 
-        TextView textView = (TextView) view.findViewById(R.id.text_dialog);
-        textView.setText("위 내용을 등록하시겠습니까?");
+            TextView textView = (TextView) view.findViewById(R.id.text_dialog);
+            textView.setText("위 내용을 등록하시겠습니까?");
 
-        TextView textContents = (TextView) view.findViewById(R.id.text_dialog_two);
-        textContents.setVisibility(View.GONE);
+            TextView textContents = (TextView) view.findViewById(R.id.text_dialog_two);
+            textContents.setVisibility(View.GONE);
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.image_dialog);
-        imageView.setImageResource(R.drawable.pop_logo04);
-        dialog.show();
+            ImageView imageView = (ImageView) view.findViewById(R.id.image_dialog);
+            imageView.setImageResource(R.drawable.pop_logo04);
+            dialog.show();
 
-        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = 825;
-        dialog.getWindow().setAttributes(params);
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            float dp = 300;
+            int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+            params.width = pixel;
+            dialog.getWindow().setAttributes(params);
 
 
-        Button btn = (Button) view.findViewById(R.id.btn_ok);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendUploadRequest();
-            }
-        });
+            Button btn = (Button) view.findViewById(R.id.btn_ok);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sendUploadRequest();
+                }
+            });
 
-        btn = (Button) view.findViewById(R.id.btn_cancel);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+            btn = (Button) view.findViewById(R.id.btn_cancel);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        else {
+            Toast.makeText(this, "정보를 모두 입력해 주세요.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

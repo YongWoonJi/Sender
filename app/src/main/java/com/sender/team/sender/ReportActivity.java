@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -199,7 +200,11 @@ public class ReportActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_report)
     public void onClickButton() {
-        clickSend();
+        if( !TextUtils.isEmpty(editContents.getText().toString().trim())) {
+            clickSend();
+        } else {
+            Toast.makeText(this, "정보를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.image_photo)
@@ -374,7 +379,9 @@ public class ReportActivity extends AppCompatActivity {
         dialog.show();
 
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = 825;
+        float dp = 300;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        params.width = pixel;
         dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_ok);

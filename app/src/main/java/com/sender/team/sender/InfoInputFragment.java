@@ -234,7 +234,7 @@ public class InfoInputFragment extends Fragment {
                         ((SendActivity) getActivity()).headerView.setVisibility(View.VISIBLE);
 
                     } else {
-                        if (!TextUtils.isEmpty(obName) && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(obPrice) && !TextUtils.isEmpty(time)) {
+                        if (!TextUtils.isEmpty(obName.trim()) && !TextUtils.isEmpty(phone.trim()) && !TextUtils.isEmpty(obPrice.trim()) && !TextUtils.isEmpty(time.trim())) {
                             if (!((SendActivity) getActivity()).isRequestCheck) {
                                 ((SendActivity) getActivity()).receiveData(obName, phone, obPrice, time, uploadFile, memo);
                                 ((SendActivity) getActivity()).isRequestCheck = true;
@@ -388,7 +388,9 @@ public class InfoInputFragment extends Fragment {
 
 
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = 825;
+        float dp = 300;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        params.width = pixel;
         dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_timepicker_cancel);

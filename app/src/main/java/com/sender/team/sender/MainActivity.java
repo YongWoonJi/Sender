@@ -568,14 +568,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem item = menu.findItem(R.id.menu_info);
-        View view = MenuItemCompat.getActionView(item);
-        iconView = (ImageView) view.findViewById(R.id.toolbar_menu_icon);
-        iconView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                public boolean onCreateOptionsMenu(Menu menu) {
+                    getMenuInflater().inflate(R.menu.main, menu);
+                    MenuItem item = menu.findItem(R.id.menu_info);
+                    View view = MenuItemCompat.getActionView(item);
+                    iconView = (ImageView) view.findViewById(R.id.toolbar_menu_icon);
+                    iconView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
                 LayoutInflater inflater= getLayoutInflater();
                 view = inflater.inflate(R.layout.view_main_version, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -659,7 +659,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
 
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = 825;
+        float dp = 300;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        params.width = pixel;
         dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_ok);

@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,7 +116,9 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
         dialog.show();
 
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = 825;
+        float dp = 300;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        params.width = pixel;
         dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_cancel);
@@ -202,7 +205,9 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                 dialog.show();
 
                 WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-                params.width = 825;
+                float dp = 300;
+                int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                params.width = pixel;
                 dialog.getWindow().setAttributes(params);
             }
 

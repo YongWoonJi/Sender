@@ -68,25 +68,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
-    <RatingBar
-        style="@style/starRatingBar"
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:numStars="5"
-        android:max="5"
-        android:stepSize="0.5"
-        android:rating="0.0"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:soundEffectsEnabled="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/view"
-        android:layout_marginTop="16dp"
-        />
-
-    <TextView
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="한줄평"
@@ -98,28 +80,8 @@
         android:layout_marginLeft="16dp"
         android:textSize="13sp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_below="@+id/textView36"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/scrollview_rectangle"
-        android:id="@+id/scrollView5"
-        android:layout_marginRight="16dp"
-        android:layout_alignLeft="@+id/btn_review_submit"
-        android:layout_alignStart="@+id/btn_review_submit"
-        android:layout_marginLeft="16dp">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/edit_comment"
-        android:background="@null"
-        android:textSize="11sp"
-        />
 
-    </ScrollView>
-
-    <TextView
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="별점 및 리뷰작성"
@@ -130,20 +92,7 @@
         android:layout_marginTop="16dp"
         android:textSize="14sp" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:text="제출하기"
-        android:id="@+id/btn_review_submit"
-        android:textColor="@color/whitefont"
-        android:background="@color/fontcolor"
-        android:layout_below="@+id/scrollView5"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp"
-        android:textSize="13sp" />
-
-    <ImageView
+        <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/image_dialog_evalution_close"
@@ -153,6 +102,52 @@
         android:src="@drawable/ic_close_black_48dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:text="제출하기"
+            android:id="@+id/btn_review_submit"
+            android:textColor="@color/whitefont"
+            android:background="@color/fontcolor"
+            android:textSize="13sp"
+            android:layout_below="@+id/edit_comment"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp" />
+
+        <RatingBar
+            style="@style/starRatingBar"
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:numStars="5"
+            android:max="5"
+            android:stepSize="0.5"
+            android:rating="0.0"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:soundEffectsEnabled="true"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/view"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:id="@+id/edit_comment"
+            android:textSize="12sp"
+            android:background="@drawable/scrollview_rectangle"
+            android:layout_below="@+id/textView36"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="top" />
 
     </RelativeLayout>
 

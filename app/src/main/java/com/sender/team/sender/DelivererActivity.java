@@ -381,7 +381,9 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
 
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = 825;
+        float dp = 300;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        params.width = pixel;
         dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_timepicker_cancel);
@@ -494,7 +496,9 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
 
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = 825;
+        float dp = 300;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        params.width = pixel;
         dialog.getWindow().setAttributes(params);
 
         Button btn = (Button) view.findViewById(R.id.btn_timepicker_cancel);
@@ -614,7 +618,12 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
     @OnClick(R.id.btn_input)
     public void onClickButton() {
-        if (poiStart != null && poiEnd != null && !TextUtils.isEmpty(editStartHour.getText()) && !TextUtils.isEmpty(editStartMin.getText()) && !TextUtils.isEmpty(editEndHour.getText()) && !TextUtils.isEmpty(editEndMin.getText())) {
+        if (poiStart != null && poiEnd != null
+                && !TextUtils.isEmpty(editStartHour.getText().toString().trim())
+                && !TextUtils.isEmpty(editStartMin.getText().toString().trim())
+                && !TextUtils.isEmpty(editEndHour.getText().toString().trim())
+                && !TextUtils.isEmpty(editEndMin.getText().toString().trim())) {
+
             clickSend();
         } else {
             Toast.makeText(DelivererActivity.this, "정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();

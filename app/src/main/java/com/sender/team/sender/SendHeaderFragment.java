@@ -155,7 +155,7 @@ public class SendHeaderFragment extends Fragment {
             public void onClick(View view) {
                 float star = ratingBar.getRating();
                 String comment = editComment.getText().toString();
-                if (star <= 0 && TextUtils.isEmpty(comment)) {
+                if (star <= 0 && TextUtils.isEmpty(comment.trim())) {
                     Toast.makeText(getActivity(), "리뷰를 입력해 주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     popupDialog(star, comment);
@@ -169,7 +169,9 @@ public class SendHeaderFragment extends Fragment {
         dialog.show();
 
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = 825;
+        float dp = 300;
+        int pixel = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        params.width = pixel;
         dialog.getWindow().setAttributes(params);
 
     }
