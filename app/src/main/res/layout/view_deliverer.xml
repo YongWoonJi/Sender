@@ -73,7 +73,7 @@
         android:layout_marginRight="16dp"/>
 
     <Button
-        style="?android:attr/buttonStyleSmall"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="49dp"
         android:layout_height="20dp"
         android:text="요청"

@@ -105,7 +105,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     popupDeliveryRequest(data);
                     break;
                 case TYPE_CHATTING:
-                        chattingReceive(data);
+                    chattingReceive(data);
                     break;
                 case TYPE_CONFIRM:
                     confirmNotification(data.getString(EXTRA_TYPE));
@@ -117,7 +117,7 @@ public class MyGcmListenerService extends GcmListenerService {
         }
     }
 
-    private void chattingReceive(Bundle data){
+    private void chattingReceive(Bundle data) {
         ChattingReceiveRequest request = new ChattingReceiveRequest(this, data.getString(EXTRA_SENDER_ID), data.getString(EXTRA_CONTRACT_ID));
         try {
             NetworkResult<ChattingReceiveData> result = NetworkManager.getInstance().getNetworkDataSync(NetworkManager.CLIENT_STANDARD, request);
@@ -184,6 +184,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 }
         notificationBuilder
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("SENDER")
                 .setContentTitle(m.getSender().getName())
                 .setContentText(m.getData().get(m.getData().size() - 1).getMessage())
                 .setNumber(m.getData().size())
@@ -232,6 +233,7 @@ public class MyGcmListenerService extends GcmListenerService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("SENDER")
                 .setContentTitle("SENDER")
                 .setContentText("배송요청이 수락 되었습니다")
                 .setAutoCancel(true)
@@ -279,6 +281,7 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("SENDER")
                 .setContentTitle("SENDER")
                 .setContentText("배송요청이 왔습니다")
                 .setAutoCancel(true)
@@ -316,6 +319,7 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("SENDER")
                 .setContentTitle("SENDER")
                 .setContentText("배송요청이 거절 되었습니다")
                 .setAutoCancel(true)
