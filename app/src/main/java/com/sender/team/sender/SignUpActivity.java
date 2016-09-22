@@ -1,5 +1,7 @@
 package com.sender.team.sender;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,12 +33,17 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        setResult(Activity.RESULT_CANCELED);
+        Intent intent = new Intent(this, SplashActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_back_in, R.anim.slide_back_out);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home :
+                setResult(Activity.RESULT_CANCELED);
                 finish();
                 break;
         }

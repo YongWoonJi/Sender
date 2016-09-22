@@ -3,14 +3,14 @@ package com.sender.team.sender;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,20 +42,20 @@ import com.sender.team.sender.request.BoardRequest;
 import com.sender.team.sender.request.DeliveringHistoryRequest;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.sender.team.sender.MyApplication.getContext;
+
 public class ReportActivity extends AppCompatActivity {
 
     private static final String esType = "0";
 
+    private static final int RC_PERMISSION_GET_IMAGE = 301;
+    private static final int RC_PERMISSION_GET_CAPTURE_IMAGE = 302;
     private static final String FIELD_SAVE_FILE = "savefile";
     private static final String FIELD_UPLOAD_FILE = "uploadfile";
     private static final int INDEX_CAMERA = 0;
@@ -228,43 +228,63 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void getCaptureImage() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
-        startActivityForResult(intent, RC_CAPTURE_IMAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                        ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                }
+                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_GET_CAPTURE_IMAGE);
+            } else {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+                startActivityForResult(intent, RC_CAPTURE_IMAGE);
+            }
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+            startActivityForResult(intent, RC_CAPTURE_IMAGE);
+        }
     }
 
     private void getGalleryImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(intent, RC_GET_IMAGE);
-    }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                        ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-    public int exifOrientationToDegrees(int exifOrientation) {
-        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        } return 0;
-    }
-
-    public Bitmap rotate(Bitmap bitmap, int degrees) {
-        if(degrees != 0 && bitmap != null) {
-            Matrix m = new Matrix();
-            m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
-            try {
-                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
-                        bitmap.getWidth(), bitmap.getHeight(), m, true);
-                if(bitmap != converted) {
-                    bitmap.recycle();
-                    bitmap = converted;
                 }
-            } catch(OutOfMemoryError ex) {
-                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_GET_IMAGE);
+            } else {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent, RC_GET_IMAGE);
+            }
+        } else {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+            startActivityForResult(intent, RC_GET_IMAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_PERMISSION_GET_IMAGE) {
+            if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent, RC_GET_IMAGE);
+            }
+        } else if (requestCode == RC_PERMISSION_GET_CAPTURE_IMAGE) {
+            if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+                startActivityForResult(intent, RC_CAPTURE_IMAGE);
             }
         }
-        return bitmap;
     }
 
     @Override
@@ -276,30 +296,7 @@ public class ReportActivity extends AppCompatActivity {
                 Cursor c = getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
                 if (c.moveToNext()) {
                     String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-                    int viewHeight = 1600;
-                    Bitmap bitmap = BitmapFactory.decodeFile(path);
-                    float width = bitmap.getWidth();
-                    float height = bitmap.getHeight();
-
-                    if (height > viewHeight) {
-                        float percente = height / 100;
-                        float scale = viewHeight / percente;
-                        width *= (scale / 100);
-                        height *= (scale / 100);
-                    }
-                    Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
-                    File out = new File(getExternalCacheDir(), System.currentTimeMillis() + " temp.jpg");
-                    try {
-                        FileOutputStream fos = new FileOutputStream(out);
-                        resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                        fos.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    uploadFile = out;
+                    uploadFile = new File(path);
                     Glide.with(this)
                             .load(uploadFile)
                             .into(imagePhoto);
@@ -307,44 +304,7 @@ public class ReportActivity extends AppCompatActivity {
             }
         } else if (requestCode == RC_CAPTURE_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
-                int viewHeight = 1600;
-                FileInputStream fis = null;
-                try {
-                    fis = new FileInputStream(saveFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                Bitmap bitmap = BitmapFactory.decodeStream(fis);
-                ExifInterface exif = null;
-                try {
-                    exif = new ExifInterface(saveFile.getAbsolutePath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                int exifDegree = exifOrientationToDegrees(exifOrientation);
-                bitmap = rotate(bitmap, exifDegree);
-                float width = bitmap.getWidth();
-                float height = bitmap.getHeight();
-
-                if (height > viewHeight) {
-                    float percente = height / 100;
-                    float scale = viewHeight / percente;
-                    width *= (scale / 100);
-                    height *= (scale / 100);
-                }
-                Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
-                File out = new File(getExternalCacheDir(), System.currentTimeMillis() + "_temp.jpg");
-                try {
-                    FileOutputStream fos = new FileOutputStream(out);
-                    resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                uploadFile = out;
+                uploadFile = saveFile;
                 Glide.with(this)
                         .load(uploadFile)
                         .into(imagePhoto);

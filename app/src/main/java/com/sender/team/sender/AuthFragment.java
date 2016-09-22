@@ -162,6 +162,7 @@ public class AuthFragment extends Fragment {
                                         PropertyManager.getInstance().setUserData(result.getResult());
                                         Intent intent = new Intent(getContext(), MainActivity.class);
                                         startActivity(intent);
+                                        Toast.makeText(getContext(), "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
                                         getActivity().finish();
                                         getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                     }
@@ -201,7 +202,12 @@ public class AuthFragment extends Fragment {
             Context context = getContext();
             TelephonyManager manager = (TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE);
             String phoneNum = manager.getLine1Number();
-            editPhone.setText(phoneNum);
+            StringBuffer sb = new StringBuffer(phoneNum);
+            if (sb.charAt(0) == '+') {
+                sb.delete(0, 3);
+                sb.insert(0, "0");
+            }
+            editPhone.setText(sb);
         }
     }
 

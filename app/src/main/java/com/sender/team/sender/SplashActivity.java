@@ -190,6 +190,8 @@ public class SplashActivity extends AppCompatActivity {
         if (requestCode == PLAY_SERVICES_RESOLUTION_REQUEST && resultCode == Activity.RESULT_OK) {
             loginAndMoveMain();
             return;
+        } else if (requestCode == RC_SIGN_UP_CANCELED && resultCode == Activity.RESULT_CANCELED) {
+            mOAuthLoginInstance.logoutAndDeleteToken(this);
         }
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
@@ -345,10 +347,12 @@ public class SplashActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
+    public static final int RC_SIGN_UP_CANCELED = 9;
     private void moveSignUpActivity() {
         Intent intent = new Intent(this, SignUpActivity.class);
         // 만약 현재 정보를 intent에 추가해야하면 putExtra 코드 추가해야함
-        startActivity(intent);
+        startActivityForResult(intent, RC_SIGN_UP_CANCELED);
+        finish();
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 

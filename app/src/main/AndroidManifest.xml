@@ -71,8 +71,7 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".MyPageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
-            />
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor" />
         <activity android:name=".NoticeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
