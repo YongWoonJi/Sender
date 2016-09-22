@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -233,51 +234,44 @@ public class ReportActivity extends AppCompatActivity {
         startActivityForResult(intent, RC_GET_IMAGE);
     }
 
+    public int exifOrientationToDegrees(int exifOrientation) {
+        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } return 0;
+    }
+
+    public Bitmap rotate(Bitmap bitmap, int degrees) {
+        if(degrees != 0 && bitmap != null) {
+            Matrix m = new Matrix();
+            m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
+            try {
+                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), m, true);
+                if(bitmap != converted) {
+                    bitmap.recycle();
+                    bitmap = converted;
+                }
+            } catch(OutOfMemoryError ex) {
+                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+            }
+        }
+        return bitmap;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_CAPTURE_IMAGE) {
-            if (resultCode == Activity.RESULT_OK) {
-                float dp = 400;
-                int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
-                FileInputStream fis = null;
-                try {
-                    fis = new FileInputStream(saveFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                Bitmap bitmap = BitmapFactory.decodeStream(fis);
-                float width = bitmap.getWidth();
-                float height = bitmap.getHeight();
-
-                if (height > viewHeight) {
-                    float percente = height / 100;
-                    float scale = viewHeight / percente;
-                    width *= (scale / 100);
-                    height *= (scale / 100);
-                }
-                Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
-                File out = new File(getExternalCacheDir(), System.currentTimeMillis() + "_temp.jpg");
-                try {
-                    FileOutputStream fos = new FileOutputStream(out);
-                    resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                uploadFile = out;
-                Glide.with(this).load(uploadFile).into(imagePhoto);
-            }
-        } else if (requestCode == RC_GET_IMAGE) {
+        if (requestCode == RC_GET_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getData();
-                Cursor c = getContentResolver().query(uri, new String[] {MediaStore.Images.Media.DATA}, null, null, null);
+                Cursor c = getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
                 if (c.moveToNext()) {
                     String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-                    float dp = 400;
-                    int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                    int viewHeight = 1600;
                     Bitmap bitmap = BitmapFactory.decodeFile(path);
                     float width = bitmap.getWidth();
                     float height = bitmap.getHeight();
@@ -299,9 +293,56 @@ public class ReportActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
                     uploadFile = out;
-                    Glide.with(this).load(uploadFile).into(imagePhoto);
+                    Glide.with(this)
+                            .load(uploadFile)
+                            .into(imagePhoto);
                 }
+            }
+        } else if (requestCode == RC_CAPTURE_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                int viewHeight = 1600;
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(saveFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Bitmap bitmap = BitmapFactory.decodeStream(fis);
+                ExifInterface exif = null;
+                try {
+                    exif = new ExifInterface(saveFile.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int exifDegree = exifOrientationToDegrees(exifOrientation);
+                bitmap = rotate(bitmap, exifDegree);
+                float width = bitmap.getWidth();
+                float height = bitmap.getHeight();
+
+                if (height > viewHeight) {
+                    float percente = height / 100;
+                    float scale = viewHeight / percente;
+                    width *= (scale / 100);
+                    height *= (scale / 100);
+                }
+                Bitmap resizing = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+                File out = new File(getExternalCacheDir(), System.currentTimeMillis() + "_temp.jpg");
+                try {
+                    FileOutputStream fos = new FileOutputStream(out);
+                    resizing.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                uploadFile = out;
+                Glide.with(this)
+                        .load(uploadFile)
+                        .into(imagePhoto);
             }
         }
     }

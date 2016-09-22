@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -534,6 +536,34 @@ public class InfoInputFragment extends Fragment {
         }
     }
 
+    public int exifOrientationToDegrees(int exifOrientation) {
+        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } return 0;
+    }
+
+    public Bitmap rotate(Bitmap bitmap, int degrees) {
+        if(degrees != 0 && bitmap != null) {
+            Matrix m = new Matrix();
+            m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
+            try {
+                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), m, true);
+                if(bitmap != converted) {
+                    bitmap.recycle();
+                    bitmap = converted;
+                }
+            } catch(OutOfMemoryError ex) {
+                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+            }
+        }
+        return bitmap;
+    }
+
     String number;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -541,11 +571,10 @@ public class InfoInputFragment extends Fragment {
         if (requestCode == RC_GET_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getData();
-                Cursor c = getActivity().getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+                Cursor c = getContext().getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
                 if (c.moveToNext()) {
                     String path = c.getString(c.getColumnIndex(MediaStore.Images.Media.DATA));
-                    float dp = 400;
-                    int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                    int viewHeight = 1600;
                     Bitmap bitmap = BitmapFactory.decodeFile(path);
                     float width = bitmap.getWidth();
                     float height = bitmap.getHeight();
@@ -567,6 +596,7 @@ public class InfoInputFragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
                     uploadFile = out;
                     Glide.with(this)
                             .load(uploadFile)
@@ -575,8 +605,7 @@ public class InfoInputFragment extends Fragment {
             }
         } else if (requestCode == RC_CATPURE_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
-                float dp = 400;
-                int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+                int viewHeight = 1600;
                 FileInputStream fis = null;
                 try {
                     fis = new FileInputStream(savedFile);
@@ -584,6 +613,15 @@ public class InfoInputFragment extends Fragment {
                     e.printStackTrace();
                 }
                 Bitmap bitmap = BitmapFactory.decodeStream(fis);
+                ExifInterface exif = null;
+                try {
+                    exif = new ExifInterface(savedFile.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int exifDegree = exifOrientationToDegrees(exifOrientation);
+                bitmap = rotate(bitmap, exifDegree);
                 float width = bitmap.getWidth();
                 float height = bitmap.getHeight();
 
