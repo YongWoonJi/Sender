@@ -46,22 +46,22 @@ public class ViewPagerFragment extends Fragment {
         ImageView iv = (ImageView) view.findViewById(R.id.view_picture);
         switch (position) {
             case 0:
-                iv.setImageResource(R.drawable.sender_main);
+                iv.setImageResource(R.drawable.sender_main4);
                 break;
             case 1:
                 iv.setImageResource(R.drawable.sender_main1);
                 break;
             case 2:
-                iv.setImageResource(R.drawable.sender_main2);
+                iv.setImageResource(R.drawable.sender_main);
                 break;
             case 3:
                 iv.setImageResource(R.drawable.sender_main3);
                 break;
             case 4:
-                iv.setImageResource(R.drawable.sender_main4);
+                iv.setImageResource(R.drawable.sender_main2);
                 break;
             default:
-                iv.setImageResource(R.drawable.sender_main);
+                iv.setImageResource(R.drawable.sender_main4);
         }
         return view;
     }

@@ -46,7 +46,7 @@
             android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView3"
+            android:layout_below="@+id/face_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="@string/report_title"
@@ -236,25 +236,33 @@
             android:layout_alignStart="@+id/textView22"
             android:layout_alignTop="@+id/spinner" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_toRightOf="@+id/imageView"
-            android:src="@drawable/ic_01" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:id="@+id/face_icon">
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/imageView"
+                android:layout_toRightOf="@+id/imageView"
+                android:src="@drawable/ic_01" />
 
-        <ImageView
-            android:id="@+id/imageView17"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_below="@+id/line6"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/imageView3"
-            android:layout_toRightOf="@+id/imageView3"
-            android:src="@drawable/ic_02" />
+            <ImageView
+                android:id="@+id/imageView17"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_below="@+id/line6"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/imageView3"
+                android:layout_toRightOf="@+id/imageView3"
+                android:src="@drawable/ic_02" />
+        </LinearLayout>
+
 
         <RelativeLayout
             android:id="@+id/relativeLayout"

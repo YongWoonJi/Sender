@@ -40,7 +40,7 @@ public class DelivererAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public int getDeliverId(int position) {
-        return data.get(position).getDeilver_id();
+        return data.get(position).getId();
     }
 
     public int getId(int position) {

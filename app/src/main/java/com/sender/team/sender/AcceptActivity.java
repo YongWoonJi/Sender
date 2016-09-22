@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,12 +146,18 @@ public class AcceptActivity extends Activity {
                                         NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<ContractIdData>>() {
                                             @Override
                                             public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
-                                                Toast.makeText(AcceptActivity.this, "계약이 거절되었습니다", Toast.LENGTH_SHORT).show();
+                                                if (result.getResult() != null) {
+                                                    Toast.makeText(AcceptActivity.this, "계약이 거절되었습니다", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(AcceptActivity.this, "계약 거절 실패", Toast.LENGTH_SHORT).show();
+                                                    Log.i("gggg","error : " +result.getError());
+                                                }
                                             }
 
                                             @Override
                                             public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result, String errorMessage, Throwable e) {
                                                 Toast.makeText(AcceptActivity.this, "계약 거절 실패", Toast.LENGTH_SHORT).show();
+                                                Log.i("gggg","error : " + errorMessage);
                                             }
                                         });
                                         finish();
