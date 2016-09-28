@@ -62,7 +62,9 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
     public static final String EXTRA_CHATTINGLIST_DATA = "main_user";
 
     public static final String STATE_PRODUCT_DELIVER = "__state_product_deliver__sender";
+    public static final String STATE_START_DELIVER = "__state_start_deliver__sender";
     public static final String STATE_DELIVERY_COMPLETE = "__state_delivery_commplete__sender";
+    public static final String STATE_COMPLETE = "__state_complete__sender";
 
 
     @BindView(R.id.toolbar)
@@ -107,7 +109,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
         user = (UserData) getIntent().getSerializableExtra(EXTRA_USER);
         if (user == null) {
             cUser = (ChattingListData) getIntent().getSerializableExtra(EXTRA_CHATTINGLIST_DATA);
-            PropertyManager.getInstance().setLastChatuserPhone(cUser.getPhone());
             PropertyManager.getInstance().setContractedReceiverId("" + cUser.getId());
             PropertyManager.getInstance().setLastContractId("" + cUser.getContractId());
             mAdapter = new ChattingAdapter(cUser);
@@ -116,7 +117,6 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
             contractId = "" + cUser.getContractId();
             isUserDataEmpty = true;
         } else {
-            PropertyManager.getInstance().setLastChatuserPhone(user.getPhone());
             PropertyManager.getInstance().setContractedReceiverId("" + user.getUser_id());
             PropertyManager.getInstance().setLastContractId(user.getContractId());
             mAdapter = new ChattingAdapter(user);
@@ -454,9 +454,9 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                         public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                             if (!TextUtils.isEmpty(result.getResult())){
                                 if (isUserDataEmpty) {
-                                    DBManager.getInstance().addMessage(cUser, -1, path, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                                    DBManager.getInstance().addMessage(cUser, -1, path, ChatContract.ChatMessage.TYPE_PIC_SEND, null, new Date());
                                 } else {
-                                    DBManager.getInstance().addMessage(user, -1, path, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                                    DBManager.getInstance().addMessage(user, -1, path, ChatContract.ChatMessage.TYPE_PIC_SEND, null, new Date());
                                 }
                                 updateMessage();
                             }
@@ -489,9 +489,9 @@ public class ChattingActivity extends AppCompatActivity implements ChattingAdapt
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         if (!TextUtils.isEmpty(result.getResult())){
                             if (isUserDataEmpty) {
-                                DBManager.getInstance().addMessage(cUser, -1, path, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                                DBManager.getInstance().addMessage(cUser, -1, path, ChatContract.ChatMessage.TYPE_PIC_SEND, null, new Date());
                             } else {
-                                DBManager.getInstance().addMessage(user, -1, path, ChatContract.ChatMessage.TYPE_SEND, null, new Date());
+                                DBManager.getInstance().addMessage(user, -1, path, ChatContract.ChatMessage.TYPE_PIC_SEND, null, new Date());
                             }
                             updateMessage();
                         }

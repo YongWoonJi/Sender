@@ -69,8 +69,10 @@ public class ChattingListViewHolder extends RecyclerView.ViewHolder {
             }
             if (!TextUtils.isEmpty(data.getMessage())) {
                 textMessage.setText(data.getMessage());
+            } else if (TextUtils.isEmpty(data.getMessage()) && data.getMessageType() > 1) {
+                textMessage.setText("사진");
             } else {
-                textMessage.setText("채팅 내용이 없습니다.");
+                textMessage.setText("채팅 내용이 없습니다");
             }
             if (!TextUtils.isEmpty(data.getTime())) {
                 textTime.setText(Utils.getCurrentTime(Long.parseLong(data.getTime())));

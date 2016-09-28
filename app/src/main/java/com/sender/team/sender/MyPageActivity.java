@@ -145,7 +145,7 @@ public class MyPageActivity extends AppCompatActivity {
             phone.setText(user.getPhone());
         }
         if (!TextUtils.isEmpty("" + user.getStar())) {
-            rating.setText("" + user.getStar());
+            rating.setText(String.format("%.1f", user.getStar()));
         }
         if (!TextUtils.isEmpty("" + user.getDeliver_req())) {
             requestCount.setText("" + user.getDeliver_req());

@@ -18,6 +18,7 @@ public class ChattingListData implements Serializable {
     private String time;
     private String imageUrl;
     private int type;
+    private int messageType;
 
     public long getId() {
         return id;
@@ -81,5 +82,13 @@ public class ChattingListData implements Serializable {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(int messageType) {
+        this.messageType = messageType;
     }
 }

@@ -53,12 +53,14 @@ import android.widget.Toast;
 import com.sender.team.sender.data.ChatContract;
 import com.sender.team.sender.data.ChattingListData;
 import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.UserData;
 import com.sender.team.sender.gcm.MyGcmListenerService;
 import com.sender.team.sender.manager.DBManager;
 import com.sender.team.sender.manager.NetworkManager;
 import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
 import com.sender.team.sender.request.LogoutRequest;
+import com.sender.team.sender.request.MyPageRequest;
 import com.sender.team.sender.request.UserLeaveRequest;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -74,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int RC_PERMISSION_EXTERNAL_STORAGE = 100;
     private static final int MESSAGE_BACK_KEY_TIMEOUT = 1;
     public static final int VIEWPAGER_COUNT = 5;
-    private static final String TAB1 = "tab1";
-    private static final String TAB2 = "tab2";
-    private static final String TAB3 = "tab3";
 
     private Boolean isFabOpen = false;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
@@ -185,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void run() {
                     initData();
+                    Toast.makeText(MainActivity.this, "계약이 성립되었습니다", Toast.LENGTH_SHORT).show();
                 }
             });
             intent.putExtra(MyGcmListenerService.EXTRA_RESULT_CONFIRM, true);
@@ -225,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
+        closeNavi(false);
         initData();
         mLBM.registerReceiver(mReceiver, new IntentFilter(MyGcmListenerService.ACTION_CONFIRM));
     }
@@ -240,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStop() {
         super.onStop();
         mLBM.unregisterReceiver(mReceiver);
+        handler.removeCallbacks(runnable);
     }
 
 
@@ -379,8 +381,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MyPageActivity.class);
-                startActivity(intent);
+                MyPageRequest request = new MyPageRequest(MainActivity.this);
+                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+                    @Override
+                    public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                        PropertyManager.getInstance().setUserData(result.getResult());
+                        Intent intent = new Intent(MainActivity.this, MyPageActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
+
+                    }
+                });
             }
         });
     }
@@ -468,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Cursor cursor = DBManager.getInstance().getChatUser();
         if (cursor != null){
             list = new ArrayList<>();
-            while (cursor.moveToNext()){
+            while (cursor.moveToNext()) {
                 data = new ChattingListData();
                 data.setId(cursor.getLong(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_SERVER_ID)));
                 data.setContractId(cursor.getLong(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CONTRACT_ID)));
@@ -478,6 +492,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 data.setPhone(cursor.getString(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_PHONE)));
                 data.setTime(cursor.getString(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_CREATED)));
                 data.setType(cursor.getInt(cursor.getColumnIndex(ChatContract.ChatUser.COLUMN_HEADER_TYPE)));
+                data.setMessageType(cursor.getInt(cursor.getColumnIndex(ChatContract.ChatMessage.COLUMN_TYPE)));
                 list.add(data);
             }
 
@@ -568,15 +583,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-                public boolean onCreateOptionsMenu(Menu menu) {
-                    getMenuInflater().inflate(R.menu.main, menu);
-                    MenuItem item = menu.findItem(R.id.menu_info);
-                    View view = MenuItemCompat.getActionView(item);
-                    iconView = (ImageView) view.findViewById(R.id.toolbar_menu_icon);
-                    iconView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                LayoutInflater inflater= getLayoutInflater();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.menu_info);
+        View view = MenuItemCompat.getActionView(item);
+        iconView = (ImageView) view.findViewById(R.id.toolbar_menu_icon);
+        iconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = getLayoutInflater();
                 view = inflater.inflate(R.layout.view_main_version, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setView(view);
@@ -709,9 +724,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void closeNavi() {
+    public void closeNavi(boolean animate) {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            drawer.closeDrawer(GravityCompat.START, animate);
         }
+    }
+
+    @Override
+    public void resetChild() {
+        listener.childReset();
+    }
+
+    NaviChildClickListener listener;
+    public interface NaviChildClickListener {
+        void childReset();
+    }
+
+    public void setNaviChildClickListener(NaviChildClickListener listener) {
+        this.listener = listener;
     }
 }

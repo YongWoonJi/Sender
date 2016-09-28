@@ -3,9 +3,9 @@ package com.sender.team.sender;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +30,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -62,7 +67,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DelivererActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class DelivererActivity extends AppCompatActivity implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.edit_start)
     EditText editStart;
@@ -94,10 +101,8 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
     private static final int TYPE_START = 0;
     private static final int TYPE_END = 1;
 
-    LocationManager mLM;
-    String mProvider = LocationManager.NETWORK_PROVIDER;
-
     GoogleMap map;
+    GoogleApiClient mApiClient;
     ArrayAdapter<POI> mStartAdapter;
     ArrayAdapter<POI> mEndAdapter;
 
@@ -161,7 +166,12 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .build();
+        mApiClient.connect();
 
         mStartAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         mEndAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
@@ -538,27 +548,18 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        Location location = mLM.getLastKnownLocation(mProvider);
-        if (location != null) {
-            mListener.onLocationChanged(location);
-        }
 
-        mLM.requestSingleUpdate(mProvider, mListener, null);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mApiClient, mListener);
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mLM.removeUpdates(mListener);
         mEndAdapter.clear();
         mStartAdapter.clear();
     }
@@ -828,8 +829,34 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
 
         map.getUiSettings().setCompassEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
-        Location location = mLM.getLastKnownLocation(mProvider);
-        moveMap(location.getLatitude(), location.getLongitude());
+    }
+
+
+    boolean isConnected = false;
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        isConnected = true;
+        getLocation();
+    }
+
+    private void getLocation() {
+        if (!isConnected) return;
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
+        if (location != null) {
+            moveMap(location.getLatitude(), location.getLongitude());
+        }
+
+        LocationRequest request = new LocationRequest();
+        request.setFastestInterval(10000);
+        request.setInterval(20000);
+        request.setNumUpdates(1);
+        request.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mApiClient, request, mListener);
     }
 
     LocationListener mListener = new LocationListener() {
@@ -837,20 +864,15 @@ public class DelivererActivity extends AppCompatActivity implements OnMapReadyCa
         public void onLocationChanged(Location location) {
             moveMap(location.getLatitude(), location.getLongitude());
         }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
     };
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        isConnected = false;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

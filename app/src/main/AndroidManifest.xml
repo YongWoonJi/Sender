@@ -16,11 +16,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
 
     <application
         android:name=".MyApplication"
@@ -29,15 +25,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
+            android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.sender.team.sender.MyGlideModule"
             android:value="GlideModule" />
@@ -59,67 +52,76 @@
         <activity
             android:name=".SignUpActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
-        <activity android:name=".SendActivity"
-            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor" />
+        <activity
+            android:name=".SendActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
-        <activity android:name=".DelivererActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".MyPageActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".DelivererActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".MyPageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor" />
-        <activity android:name=".NoticeActivity"
+        <activity
+            android:name=".NoticeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
-        <activity android:name=".TermsActivity"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor" />
+        <activity
+            android:name=".TermsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
-        <activity android:name=".ChattingActivity"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor" />
+        <activity
+            android:name=".ChattingActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ChattingProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor" />
-        <activity android:name=".FAQActivity"
+        <activity
+            android:name=".FAQActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"/>
-        <activity android:name=".QuestionActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".ReportActivity"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor" />
+        <activity
+            android:name=".QuestionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleBar.StatusBarColor"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".AcceptActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@style/com_facebook_activity_theme"
             android:label="@string/app_name" />
 
         <!-- 네이버 아이디로 로그인에서 사용하는 액티비티를 등록 -->
-        <activity android:name="com.nhn.android.naverlogin.ui.OAuthLoginActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name="com.nhn.android.naverlogin.ui.OAuthLoginInAppBrowserActivity"
-            android:label="OAuth2.0 In-app"/>
-
+        <activity
+            android:name="com.nhn.android.naverlogin.ui.OAuthLoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.nhn.android.naverlogin.ui.OAuthLoginInAppBrowserActivity"
+            android:label="OAuth2.0 In-app" />
 
         <service
             android:name=".NotificationService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -148,7 +150,7 @@
         </service>
         <service
             android:name=".gcm.RegistrationIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
 
     </application>
 

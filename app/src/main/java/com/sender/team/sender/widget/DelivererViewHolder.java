@@ -103,8 +103,7 @@ public class DelivererViewHolder extends RecyclerView.ViewHolder implements Chec
         int num = position + 1;
         delivererNumber.setText("" + num);
         name.setText(data.getName());
-        rating.setText("" + data.getStar());
+        rating.setText(String.format("%.1f", data.getStar()));
         location.setText(data.getHere_unit() + " > " + data.getNext_unit());
-
     }
 }

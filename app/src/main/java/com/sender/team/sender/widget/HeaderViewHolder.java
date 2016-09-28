@@ -52,7 +52,7 @@ public class HeaderViewHolder extends RecyclerView.ViewHolder {
         } else {
             textEmail.setText(data.getEmail());
         }
-        textRating.setText("" + data.getStar());
+        textRating.setText(String.format("%.1f", data.getStar()));
     }
 
 }

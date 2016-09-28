@@ -70,8 +70,6 @@ public class SendHeaderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_send_header, container, false);
-
-
         final ImageView imageStatusTwo = (ImageView) view.findViewById(R.id.image_status_two);
         final Button btnEnd = (Button) view.findViewById(R.id.btn_end);
             btnEnd.setOnClickListener(new View.OnClickListener() {
@@ -81,17 +79,15 @@ public class SendHeaderFragment extends Fragment {
                     if (!TextUtils.isEmpty(state)) {
                         if (state.equals(ChattingActivity.STATE_DELIVERY_COMPLETE)) {
                             clickSend();
+                        } else {
+                            Toast.makeText(getContext(), "아직 배송원이 배송을 완료하지 않았습니다", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(getContext(), "아직 배송원이 배송을 완료하지 않았습니다", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-        btnEnd.setEnabled(false);
 
         final ImageView imageStatusOne = (ImageView) view.findViewById(R.id.image_status_one);
         final Button btnStart = (Button) view.findViewById(R.id.btn_start);
-
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,6 +101,7 @@ public class SendHeaderFragment extends Fragment {
                         btnEnd.setBackgroundResource(R.color.fontcolor);
                         btnEnd.setEnabled(true);
                         btnStart.setEnabled(false);
+                        DBManager.getInstance().updateState(userId, contractId, ChattingActivity.STATE_PRODUCT_DELIVER, null);
                     }
 
                     @Override
@@ -114,12 +111,27 @@ public class SendHeaderFragment extends Fragment {
                 });
             }
         });
+        String state = DBManager.getInstance().getState(Long.parseLong(userId), contractId);
+        if (state == null) {
+            btnEnd.setEnabled(false);
+        } else if (state.equals(ChattingActivity.STATE_PRODUCT_DELIVER) || state.equals(ChattingActivity.STATE_DELIVERY_COMPLETE)) {
+            imageStatusOne.setImageResource(R.color.colorstatusblue);
+            btnStart.setBackgroundResource(R.color.chatting_background);
+            btnEnd.setBackgroundResource(R.color.fontcolor);
+            btnEnd.setEnabled(true);
+            btnStart.setEnabled(false);
+        } else if (state.equals(ChattingActivity.STATE_COMPLETE)) {
+            imageStatusOne.setImageResource(R.color.colorstatusblue);
+            imageStatusTwo.setImageResource(R.color.colorstatusblue);
+            btnStart.setBackgroundResource(R.color.chatting_background);
+            btnStart.setEnabled(false);
+            btnEnd.setEnabled(false);
+        }
 
         return view;
     }
 
     AlertDialog dialog;
-
     private void clickSend() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_dialog_evalution, null);
         final TextView textName = (TextView) view.findViewById(R.id.text_name);
@@ -185,13 +197,13 @@ public class SendHeaderFragment extends Fragment {
         textTitle.setText("배송완료 하시겠습니까?");
 
         TextView textContents = (TextView)view. findViewById(R.id.text_dialog_two);
-        textContents.setText("배송 완료하시면 채팅창이 비활성화 되고\n채팅창은 일주일뒤에 자동 삭제됩니다");
+        textContents.setText("받으시는 분께 배송이 완료되었는지 확인 후\n확인버튼을 눌러주세요");
 
         Button btn = (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ReviewRequest request = new ReviewRequest(getContext(), PropertyManager.getInstance().getLastContractId(), comment, "" + (int) star);
+                ReviewRequest request = new ReviewRequest(getContext(), PropertyManager.getInstance().getLastContractId(), comment, "" + star);
                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
@@ -202,6 +214,7 @@ public class SendHeaderFragment extends Fragment {
                             public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                                 Toast.makeText(getContext(), "배송이 완료되었습니다", Toast.LENGTH_SHORT).show();
                                 getActivity().finish();
+                                DBManager.getInstance().updateState(userId, contractId, ChattingActivity.STATE_COMPLETE, null);
                                 // 채팅창 비활성화 & DB 일주일뒤 삭제
 
                             }

@@ -8,9 +8,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +36,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -67,14 +72,15 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         , OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnInfoWindowClickListener{
+        GoogleMap.OnInfoWindowClickListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     public static final String ACTION_SEND = "send";
 
     boolean isInfoOpen = false;
     GoogleMap mMap;
-    LocationManager mLM;
-    String mProvider = LocationManager.NETWORK_PROVIDER;
+    GoogleApiClient mApiClient;
 
     @BindView(R.id.edit_search_poi)
     EditText searchView;
@@ -106,7 +112,6 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     @BindView(R.id.btn_search)
     Button searchBtn;
 
-    //    @BindView(R.id.map_marker)
     TextView mapMarker;
 
     Marker marker;
@@ -114,7 +119,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
     SupportMapFragment mapFragment;
 
-    View markerView, markerSelectView;
+    View markerView;
     InputMethodManager mInputMethodManager;
 
     @Override
@@ -122,6 +127,13 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
         ButterKnife.bind(this);
+
+        mApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .build();
+        mApiClient.connect();
 
         mAdapter = new ArrayAdapter<POI>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(mAdapter);
@@ -147,7 +159,6 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                     .commit();
         }
 
-        mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -338,8 +349,6 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
 
-        Location location = mLM.getLastKnownLocation(mProvider);
-        moveMap(location.getLatitude(), location.getLongitude());
         markerView = LayoutInflater.from(this).inflate(R.layout.view_custom_marker, null);
         mapMarker = (TextView) markerView.findViewById(R.id.text_map_marker);
     }
@@ -391,12 +400,14 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         addrLat = poi.getLatitude();
         addrLng = poi.getLongitude();
     }
-    protected void mapSet(DelivererData data){
+
+    protected void mapSet(DelivererData data) {
         deliverMarkerResolver.put(data, marker);
         deliverDelivererDataResolver.put(marker, data);
         deliverSelect.put(data.getPosition(), data);
         deliverNumber.put(data, data.getPosition());
     }
+
     protected Marker addMarker(DelivererData data, boolean isSelectedMarker) {
         int position = data.getPosition();
         mapMarker.setText("" + position);
@@ -453,51 +464,24 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
     @Override
     protected void onStart() {
         super.onStart();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        Location location = mLM.getLastKnownLocation(mProvider);
-        if (location != null) {
-            mListener.onLocationChanged(location);
-        }
-        mLM.requestSingleUpdate(mProvider, mListener, null);
         isRequestCheck = false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mApiClient, mListener);
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mLM.removeUpdates(mListener);
         isRequestCheck = false;
         mAdapter.clear();
     }
 
-    LocationListener mListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            hereLat = location.getLatitude();
-            hereLng = location.getLongitude();
-            moveMap(location.getLatitude(), location.getLongitude());
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
 
     @Override
     public void onCameraMove() {
@@ -543,6 +527,7 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
 
 
     Marker selectedMarker = null;
+
     public void showMarkerInfo(DelivererData data, int position) {
 //        changeSelectedMarker(deliverMarkerResolver.get(data), data);
         if (selectedMarker == null) {
@@ -560,6 +545,53 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
         double lat = Double.parseDouble(data.getHere_lat());
         double lng = Double.parseDouble(data.getHere_lon());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
+    }
+
+    boolean isConnected = false;
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        isConnected = true;
+        getLocation();
+    }
+
+    private void getLocation() {
+        if (!isConnected) return;
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
+        if (location != null) {
+            moveMap(location.getLatitude(), location.getLongitude());
+        }
+
+        LocationRequest request = new LocationRequest();
+        request.setFastestInterval(10000);
+        request.setInterval(20000);
+        request.setNumUpdates(1);
+        request.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mApiClient, request, mListener);
+    }
+
+    LocationListener mListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            hereLat = location.getLatitude();
+            hereLng = location.getLongitude();
+            moveMap(location.getLatitude(), location.getLongitude());
+        }
+    };
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        isConnected = false;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
 

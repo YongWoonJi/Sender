@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,12 +110,14 @@ public class AcceptActivity extends Activity {
                                                         UserData user = result.getResult();
                                                         user.setAddress(start + " -> " + end);
                                                         user.setContractId(data.getContract_id());
+                                                        PropertyManager.getInstance().setLastChatuserPhone(data.getRec_phone());
                                                         DBManager.getInstance().addMessage(user, ChattingListData.TYPE_DELIVERER, null, ChatContract.ChatMessage.TYPE_RECEIVE, null, new Date());
+//                                                        PropertyManager.getInstance().setlast
                                                         Intent intent = new Intent(AcceptActivity.this, SplashActivity.class);
                                                         intent.putExtra(ChattingActivity.EXTRA_USER, user);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         startActivity(intent);
-                                                        Toast.makeText(AcceptActivity.this, "계약성공: " + result, Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(AcceptActivity.this, "계약에 성공하였습니다", Toast.LENGTH_SHORT).show();
                                                         finish();
                                                     }
 
@@ -149,14 +150,12 @@ public class AcceptActivity extends Activity {
                                                     Toast.makeText(AcceptActivity.this, "계약이 거절되었습니다", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     Toast.makeText(AcceptActivity.this, "계약 거절 실패", Toast.LENGTH_SHORT).show();
-                                                    Log.i("gggg","error : " +result.getError());
                                                 }
                                             }
 
                                             @Override
                                             public void onFail(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result, String errorMessage, Throwable e) {
                                                 Toast.makeText(AcceptActivity.this, "계약 거절 실패", Toast.LENGTH_SHORT).show();
-                                                Log.i("gggg","error : " + errorMessage);
                                             }
                                         });
                                         finish();

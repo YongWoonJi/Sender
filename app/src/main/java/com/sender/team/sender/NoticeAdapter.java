@@ -91,19 +91,25 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if(convertView == null){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_notice_group, parent,false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_notice_group, parent, false);
         }
-        TextView textGroup=(TextView) convertView.findViewById(R.id.text_notice_group);
+        TextView textGroup = (TextView) convertView.findViewById(R.id.text_notice_group);
         TextView textDateGroup = (TextView) convertView.findViewById(R.id.text_notice_date);
         textGroup.setText(items.get(groupPosition).title);
         textDateGroup.setText(items.get(groupPosition).date);
+        ImageView iv = (ImageView) convertView.findViewById(R.id.imageToggle);
+        if (isExpanded) {
+            iv.setImageResource(R.drawable.ic_roll);
+        } else {
+            iv.setImageResource(R.drawable.ic_draw);
+        }
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if(convertView == null){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_child, parent,false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_child, parent, false);
         }
         TextView textChild = (TextView) convertView.findViewById(R.id.faq_child_name);
         ImageView imageChild = (ImageView) convertView.findViewById(R.id.image_notice);

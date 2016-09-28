@@ -71,6 +71,22 @@ public class NaviFragment extends Fragment {
 
         mAdapter.setData(data);
         mAdapter.setOnFinishListener((MainActivity)getActivity());
+
+        ((MainActivity)getActivity()).setNaviChildClickListener(new MainActivity.NaviChildClickListener() {
+            @Override
+            public void childReset() {
+                MenuGroup data = (MenuGroup) mAdapter.getItemAtPosition(4);
+                data.children = new ArrayList<>();
+                data.children.add(new MenuChild(MenuAdapter.SERVICE_TERMS, "서비스 이용약관"));
+                data.children.add(new MenuChild(MenuAdapter.INFO_TERMS, "개인정보 취급방침"));
+                data.children.add(new MenuChild(MenuAdapter.GPS_TERMS, "위치정보 이용약관"));
+                List<NaviItem> list = mAdapter.getData();
+                for (int i = 0; i < 3; i++) {
+                    list.remove(5);
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        });
         return view;
     }
 }

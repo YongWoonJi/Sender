@@ -142,7 +142,7 @@ public class MyGcmListenerService extends GcmListenerService {
                         }
                     }
                 } else {
-                    DBManager.getInstance().addMessage(cData.getSender(), -1, c.getUrl(), ChatContract.ChatMessage.TYPE_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
+                    DBManager.getInstance().addMessage(cData.getSender(), -1, c.getUrl(), ChatContract.ChatMessage.TYPE_PIC_RECEIVE, c.getMessage(), Utils.convertStringToTime(c.getDate()));
                     Intent i = new Intent(ACTION_CHAT);
                     i.putExtra(EXTRA_CHAT_USER, cData.getSender());
                     mLBM.sendBroadcastSync(i);
@@ -186,11 +186,15 @@ public class MyGcmListenerService extends GcmListenerService {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker("SENDER")
                 .setContentTitle(m.getSender().getName())
-                .setContentText(m.getData().get(m.getData().size() - 1).getMessage())
                 .setNumber(m.getData().size())
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setContentIntent(pendingIntent);
+        if (!TextUtils.isEmpty(m.getData().get(m.getData().size() - 1).getMessage())) {
+            notificationBuilder.setContentText(m.getData().get(m.getData().size() - 1).getMessage());
+        } else {
+            notificationBuilder.setContentText("사진");
+        }
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

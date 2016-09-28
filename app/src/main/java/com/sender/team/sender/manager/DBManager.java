@@ -225,6 +225,7 @@ public class DBManager extends SQLiteOpenHelper {
                 ChatContract.ChatUser.COLUMN_ADDRESS,
                 ChatContract.ChatMessage.COLUMN_CONTRACT_ID,
                 ChatContract.ChatMessage.COLUMN_MESSAGE,
+                ChatContract.ChatMessage.COLUMN_TYPE,
                 ChatContract.ChatMessage.COLUMN_CREATED};
 
         String sort = ChatContract.ChatMessage.COLUMN_CREATED + " DESC";
@@ -285,6 +286,25 @@ public class DBManager extends SQLiteOpenHelper {
 
             String selection = ChatContract.ChatUser._ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
             String[] args = {"" + id, user.getContractId()};
+            db.update(ChatContract.ChatUser.TABLE, values, selection, args);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public void updateState(String userId, String contractId, String state, Date date) {
+        long id = getUserId(Long.parseLong(userId), contractId);
+
+        SQLiteDatabase db = getWritableDatabase();
+        try {
+            db.beginTransaction();
+
+            values.clear();
+            values.put(ChatContract.ChatUser.COLUMN_STATE, state);
+
+            String selection = ChatContract.ChatUser._ID + " = ? AND " + ChatContract.ChatUser.COLUMN_CHAT_CONTRACT_ID + " = ?";
+            String[] args = {"" + id, contractId};
             db.update(ChatContract.ChatUser.TABLE, values, selection, args);
             db.setTransactionSuccessful();
         } finally {

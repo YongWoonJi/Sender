@@ -22,7 +22,8 @@ public class ChatContract {
     public interface ChatMessage extends BaseColumns {
         public static final int TYPE_SEND = 0;
         public static final int TYPE_RECEIVE = 1;
-        public static final int TYPE_DATE = 2;
+        public static final int TYPE_PIC_SEND = 2;
+        public static final int TYPE_PIC_RECEIVE = 3;
 
         public static final String TABLE = "chatmessage";
         public static final String COLUMN_USER_ID = "uid";

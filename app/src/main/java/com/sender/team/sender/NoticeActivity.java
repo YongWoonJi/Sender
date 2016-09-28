@@ -63,13 +63,8 @@ public class NoticeActivity extends AppCompatActivity {
                 }
             }
         });
+
         initData();
-
-        for (int i = 0; i < mAdapter.getGroupCount(); i++) {
-            listView.expandGroup(i);
-        }
-
-
     }
 
     private void initData() {
@@ -79,7 +74,7 @@ public class NoticeActivity extends AppCompatActivity {
             public void onSuccess(NetworkRequest<NetworkResult<NoticeListData>> request, NetworkResult<NoticeListData> result) {
                 ArrayList<NoticeData> data = result.getResult().getData();
                 for (NoticeData d : data) {
-                    mAdapter.put(d.getTitle(), d.getContent(),d.getWrite_date(), d.getFileUrl());
+                    mAdapter.put(d.getTitle(), d.getContent(), d.getWrite_date(), d.getFileUrl());
                 }
             }
 

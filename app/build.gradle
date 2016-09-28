@@ -45,7 +45,7 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.2.1'
     compile 'com.google.android.gms:play-services-location:9.4.0'
     compile 'com.google.android.gms:play-services-maps:9.4.0'
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.google.android.gms:play-services-gcm:9.4.0'
     compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     compile 'com.android.support:multidex:1.0.0'

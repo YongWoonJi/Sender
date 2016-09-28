@@ -66,9 +66,9 @@ public class DelivererHeaderFragment extends Fragment {
         final View headerView =inflater.inflate(R.layout.fragment_deliverer_header, container, false);
 
         final ImageView imageStatusOne = (ImageView) headerView.findViewById(R.id.image_status_one);
+        final ImageView imageStatusTwo = (ImageView) headerView.findViewById(R.id.image_status_two);
         final Button btnStart = (Button) headerView.findViewById(R.id.btn_delivery_start);
         final Button btnEnd = (Button) headerView.findViewById(R.id.btn_delivery_end);
-        btnEnd.setEnabled(false);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,12 +85,13 @@ public class DelivererHeaderFragment extends Fragment {
                                 btnEnd.setBackgroundResource(R.color.fontcolor);
                                 btnEnd.setEnabled(true);
                                 btnStart.setEnabled(false);
+                                DBManager.getInstance().updateState(userId, contractId, ChattingActivity.STATE_START_DELIVER, null);
                                 Toast.makeText(getContext(), "배송 시작", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-                                Toast.makeText(getContext(), "배송 시작 실패:"+errorMessage, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "배송 시작 실패:" + errorMessage, Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -103,23 +104,6 @@ public class DelivererHeaderFragment extends Fragment {
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //15. 배송 상태 변경하기
-//                final ImageView imageStatusTwo = (ImageView) headerView.findViewById(R.id.image_status_two);
-//                ContractsUpdateRequest request = new ContractsUpdateRequest(getContext(), PropertyManager.getInstance().getLastContractId(), "" + END_DELIVERY);
-//                NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<String>>() {
-//                    @Override
-//                    public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
-//                        imageStatusTwo.setImageResource(R.color.colorstatusblue);
-//                        btnEnd.setBackgroundResource(R.color.chatting_background);
-//                        Toast.makeText(getContext(),"배송완료 처리 되었습니다.",Toast.LENGTH_SHORT).show();
-//                        getActivity().finish();
-//                    }
-//
-//                    @Override
-//                    public void onFail(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result, String errorMessage, Throwable e) {
-//                        Toast.makeText(getContext(), "배송 완료 실패", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
                 popupDialog();
             }
         });
@@ -132,6 +116,24 @@ public class DelivererHeaderFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        String state = DBManager.getInstance().getState(Long.parseLong(userId), contractId);
+        if (state == null || state.equals(ChattingActivity.STATE_PRODUCT_DELIVER)) {
+            btnEnd.setEnabled(false);
+        } else if (state.equals(ChattingActivity.STATE_START_DELIVER)) {
+            imageStatusOne.setImageResource(R.color.colorstatusblue);
+            btnStart.setBackgroundResource(R.color.chatting_background);
+            btnEnd.setBackgroundResource(R.color.fontcolor);
+            btnEnd.setEnabled(true);
+            btnStart.setEnabled(false);
+        } else if (state.equals(ChattingActivity.STATE_COMPLETE)) {
+            imageStatusOne.setImageResource(R.color.colorstatusblue);
+            imageStatusTwo.setImageResource(R.color.colorstatusblue);
+            btnStart.setBackgroundResource(R.color.chatting_background);
+            btnStart.setEnabled(false);
+            btnEnd.setEnabled(false);
+        }
+
         return headerView;
     }
 
@@ -146,7 +148,7 @@ public class DelivererHeaderFragment extends Fragment {
         textTitle.setText("배송완료 하시겠습니까?");
 
         TextView textContents = (TextView)view. findViewById(R.id.text_dialog_two);
-        textContents.setText("배송 완료하시면 채팅창이 비활성화 되고\n채팅창은 일주일뒤에 자동 삭제됩니다");
+        textContents.setText("받으시는 분께 정확히 배송하신 후\n확인버튼을 눌러주세요");
 
         Button btn = (Button) view.findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +160,7 @@ public class DelivererHeaderFragment extends Fragment {
                     public void onSuccess(NetworkRequest<NetworkResult<String>> request, NetworkResult<String> result) {
                         Toast.makeText(getContext(),"배송완료 처리 되었습니다.",Toast.LENGTH_SHORT).show();
                         getActivity().finish();
+                        DBManager.getInstance().updateState(userId, contractId, ChattingActivity.STATE_COMPLETE, null);
                     }
 
                     @Override

@@ -51,6 +51,10 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return VIEW_TYPE_SEND;
             case ChatContract.ChatMessage.TYPE_RECEIVE :
                 return VIEW_TYPE_RECEIVE;
+            case ChatContract.ChatMessage.TYPE_PIC_SEND :
+                return VIEW_TYPE_SEND;
+            case ChatContract.ChatMessage.TYPE_PIC_RECEIVE :
+                return VIEW_TYPE_RECEIVE;
         }
         throw new IllegalArgumentException("invalid type");
     }

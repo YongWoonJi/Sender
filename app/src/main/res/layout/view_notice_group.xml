@@ -51,6 +51,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_draw"
         android:layout_gravity="center_vertical"
-        android:layout_marginRight="16dp" />
+        android:layout_marginRight="16dp"
+        android:id="@+id/imageToggle" />
 
 </LinearLayout>

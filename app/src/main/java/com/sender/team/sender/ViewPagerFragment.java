@@ -1,6 +1,7 @@
 package com.sender.team.sender;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,21 +48,54 @@ public class ViewPagerFragment extends Fragment {
         switch (position) {
             case 0:
                 iv.setImageResource(R.drawable.sender_main4);
+                iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), NoticeActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case 1:
                 iv.setImageResource(R.drawable.sender_main1);
+                iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), NoticeActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case 2:
                 iv.setImageResource(R.drawable.sender_main);
+                iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), NoticeActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case 3:
                 iv.setImageResource(R.drawable.sender_main3);
+                iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), NoticeActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case 4:
                 iv.setImageResource(R.drawable.sender_main2);
+                iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getContext(), NoticeActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
-            default:
-                iv.setImageResource(R.drawable.sender_main4);
         }
         return view;
     }

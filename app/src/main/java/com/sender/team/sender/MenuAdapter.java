@@ -6,11 +6,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.sender.team.sender.data.MenuChild;
 import com.sender.team.sender.data.MenuGroup;
 import com.sender.team.sender.data.NaviItem;
+import com.sender.team.sender.data.NetworkResult;
+import com.sender.team.sender.data.UserData;
+import com.sender.team.sender.manager.NetworkManager;
+import com.sender.team.sender.manager.NetworkRequest;
 import com.sender.team.sender.manager.PropertyManager;
+import com.sender.team.sender.request.MyPageRequest;
 import com.sender.team.sender.widget.ChildViewHolder;
 import com.sender.team.sender.widget.FooterViewHolder;
 import com.sender.team.sender.widget.GroupViewHolder;
@@ -40,7 +46,8 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnNaviMenuSelectedListener {
         void Logout();
         void unregister();
-        void closeNavi();
+        void closeNavi(boolean animate);
+        void resetChild();
     }
 
     public void setOnFinishListener(OnNaviMenuSelectedListener listener) {
@@ -52,6 +59,14 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.data = data;
         }
         notifyDataSetChanged();
+    }
+
+    public List<NaviItem> getData() {
+        return this.data;
+    }
+
+    public NaviItem getItemAtPosition(int position) {
+        return data.get(position);
     }
 
     @Override
@@ -99,7 +114,7 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 hvh.homeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        listener.closeNavi();
+                        listener.closeNavi(true);
                     }
                 });
                 break;
@@ -145,8 +160,20 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         } else {
                             switch (position) {
                                 case 1 : {
-                                    Intent intent = new Intent(context, MyPageActivity.class);
-                                    context.startActivity(intent);
+                                    MyPageRequest request = new MyPageRequest(context);
+                                    NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, request, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
+                                        @Override
+                                        public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+                                            PropertyManager.getInstance().setUserData(result.getResult());
+                                            Intent intent = new Intent(context, MyPageActivity.class);
+                                            context.startActivity(intent);
+                                        }
+
+                                        @Override
+                                        public void onFail(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result, String errorMessage, Throwable e) {
+
+                                        }
+                                    });
                                     break;
                                 }
                                 case 2 : {
@@ -158,9 +185,11 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                     if (PropertyManager.getInstance().getAlarmSetting()) {
                                         PropertyManager.getInstance().setAlarmSetting(false);
                                         groupViewHolder.imageSwitch.setImageResource(R.drawable.btn_alarm_off);
+                                        Toast.makeText(MyApplication.getContext(), "푸시알림 끔", Toast.LENGTH_SHORT).show();
                                     } else {
                                         PropertyManager.getInstance().setAlarmSetting(true);
                                         groupViewHolder.imageSwitch.setImageResource(R.drawable.btn_alarm_on);
+                                        Toast.makeText(MyApplication.getContext(), "푸시알림 켬", Toast.LENGTH_SHORT).show();
                                     }
                                     break;
                                 }
@@ -188,18 +217,21 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                     Intent intent = new Intent(context, TermsActivity.class);
                                     intent.putExtra("type", SERVICE_TERMS);
                                     context.startActivity(intent);
+                                    listener.resetChild();
                                     break;
                                 }
                                 case INFO_TERMS: {
                                     Intent intent = new Intent(context, TermsActivity.class);
                                     intent.putExtra("type", INFO_TERMS);
                                     context.startActivity(intent);
+                                    listener.resetChild();
                                     break;
                                 }
                                 case GPS_TERMS: {
                                     Intent intent = new Intent(context, TermsActivity.class);
                                     intent.putExtra("type", GPS_TERMS);
                                     context.startActivity(intent);
+                                    listener.resetChild();
                                     break;
                                 }
                             }

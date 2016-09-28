@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 /**
  * Created by Tacademy on 2016-08-24.
  */
-public class NotificationService extends Service{
+public class NotificationService extends Service {
 
     Handler handler = new Handler();
 

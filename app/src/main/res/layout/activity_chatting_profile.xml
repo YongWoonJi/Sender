@@ -47,7 +47,7 @@
         android:id="@+id/text_phone"
         android:layout_below="@+id/text_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:background="@drawable/scrollview_rectangle"
         android:gravity="center"
@@ -60,7 +60,7 @@
         android:background="@drawable/btn_call"
         android:layout_below="@+id/text_phone"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="26dp" />
 
     <TextView
         android:layout_width="wrap_content"

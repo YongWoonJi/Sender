@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sender.team.sender.data.FAQChildData;
@@ -80,15 +81,18 @@ public class FAQAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        View textGroup;
-        if(convertView == null){
-            textGroup = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_group, parent,false);
-        } else {
-            textGroup = convertView;
+        if(convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_faq_group, parent,false);
         }
-        TextView groupContent = (TextView) textGroup.findViewById(R.id.faq_group_name);
+        TextView groupContent = (TextView) convertView.findViewById(R.id.faq_group_name);
         groupContent.setText(items.get(groupPosition).groupName);
-        return textGroup;
+        ImageView iv = (ImageView) convertView.findViewById(R.id.imageToggle);
+        if (isExpanded) {
+            iv.setImageResource(R.drawable.ic_roll);
+        } else {
+            iv.setImageResource(R.drawable.ic_draw);
+        }
+        return convertView;
     }
 
     @Override

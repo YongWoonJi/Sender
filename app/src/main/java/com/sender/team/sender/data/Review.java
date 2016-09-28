@@ -2,7 +2,7 @@ package com.sender.team.sender.data;
 
 public class Review {
     private String review_date;
-    private int star;
+    private float star;
     private String name;
     private String fileUrl;
     private String content;
@@ -15,11 +15,11 @@ public class Review {
         this.review_date = date;
     }
 
-    public int getStar() {
+    public float getStar() {
         return this.star;
     }
 
-    public void setStar(int star) {
+    public void setStar(float star) {
         this.star = star;
     }
 

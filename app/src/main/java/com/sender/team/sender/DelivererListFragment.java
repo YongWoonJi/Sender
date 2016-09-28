@@ -139,7 +139,7 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
                     @Override
                     public void onSuccess(NetworkRequest<NetworkResult<ContractIdData>> request, NetworkResult<ContractIdData> result) {
                         if (result.getResult() != null && result.getError() == null){
-                            Toast.makeText(getActivity(), "success : " + result.getResult().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "배송 요청이 완료되었습니다", Toast.LENGTH_SHORT).show();
                             getActivity().finish();
                         } else if (result.getResult() == null && result.getError() != null){
                             Toast.makeText(getActivity(), "fail : " + result.getError(), Toast.LENGTH_SHORT).show();
