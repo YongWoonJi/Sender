@@ -729,18 +729,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             drawer.closeDrawer(GravityCompat.START, animate);
         }
     }
-
-    @Override
-    public void resetChild() {
-        listener.childReset();
-    }
-
-    NaviChildClickListener listener;
-    public interface NaviChildClickListener {
-        void childReset();
-    }
-
-    public void setNaviChildClickListener(NaviChildClickListener listener) {
-        this.listener = listener;
-    }
 }

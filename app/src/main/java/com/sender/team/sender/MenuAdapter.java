@@ -47,7 +47,6 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void Logout();
         void unregister();
         void closeNavi(boolean animate);
-        void resetChild();
     }
 
     public void setOnFinishListener(OnNaviMenuSelectedListener listener) {
@@ -59,14 +58,6 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             this.data = data;
         }
         notifyDataSetChanged();
-    }
-
-    public List<NaviItem> getData() {
-        return this.data;
-    }
-
-    public NaviItem getItemAtPosition(int position) {
-        return data.get(position);
     }
 
     @Override
@@ -217,21 +208,21 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                     Intent intent = new Intent(context, TermsActivity.class);
                                     intent.putExtra("type", SERVICE_TERMS);
                                     context.startActivity(intent);
-                                    listener.resetChild();
+                                    resetChild();
                                     break;
                                 }
                                 case INFO_TERMS: {
                                     Intent intent = new Intent(context, TermsActivity.class);
                                     intent.putExtra("type", INFO_TERMS);
                                     context.startActivity(intent);
-                                    listener.resetChild();
+                                    resetChild();
                                     break;
                                 }
                                 case GPS_TERMS: {
                                     Intent intent = new Intent(context, TermsActivity.class);
                                     intent.putExtra("type", GPS_TERMS);
                                     context.startActivity(intent);
-                                    listener.resetChild();
+                                    resetChild();
                                     break;
                                 }
                             }
@@ -245,5 +236,14 @@ public class MenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    private void resetChild() {
+        MenuGroup menu = (MenuGroup) data.get(4);
+        menu.children = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            menu.children.add((MenuChild)data.remove(5));
+        }
+        notifyDataSetChanged();
     }
 }
