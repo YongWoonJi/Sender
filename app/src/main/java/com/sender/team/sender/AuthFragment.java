@@ -159,6 +159,7 @@ public class AuthFragment extends Fragment {
                                 NetworkManager.getInstance().getNetworkData(NetworkManager.CLIENT_STANDARD, req, new NetworkManager.OnResultListener<NetworkResult<UserData>>() {
                                     @Override
                                     public void onSuccess(NetworkRequest<NetworkResult<UserData>> request, NetworkResult<UserData> result) {
+
                                         PropertyManager.getInstance().setUserData(result.getResult());
                                         Intent intent = new Intent(getContext(), MainActivity.class);
                                         startActivity(intent);
@@ -202,12 +203,14 @@ public class AuthFragment extends Fragment {
             Context context = getContext();
             TelephonyManager manager = (TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE);
             String phoneNum = manager.getLine1Number();
-            StringBuffer sb = new StringBuffer(phoneNum);
-            if (sb.charAt(0) == '+') {
-                sb.delete(0, 3);
-                sb.insert(0, "0");
+            if (!TextUtils.isEmpty(phoneNum)) {
+                StringBuffer sb = new StringBuffer(phoneNum);
+                if (sb.charAt(0) == '+') {
+                    sb.delete(0, 3);
+                    sb.insert(0, "0");
+                }
+                editPhone.setText(sb);
             }
-            editPhone.setText(sb);
         }
     }
 

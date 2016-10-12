@@ -541,6 +541,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void onSuccess(NetworkRequest<NetworkResult<Integer>> request, NetworkResult<Integer> result) {
                         if (result.getResult() != null) {
                             if (result.getResult() == 0) {
+                                PropertyManager.getInstance().setFacebookId(token.getUserId());
                                 moveSignUpActivity();
                             } else if (result.getResult() == 1) {
                                 PropertyManager.getInstance().setFacebookId(token.getUserId());
