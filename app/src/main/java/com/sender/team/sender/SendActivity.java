@@ -19,7 +19,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -288,7 +287,6 @@ public class SendActivity extends AppCompatActivity implements InfoInputFragment
                 @Override
                 public void onFail(NetworkRequest<POIResult> request, POIResult result, String errorMessage, Throwable e) {
                     Toast.makeText(SendActivity.this, "검색을 실패했습니다. : " + errorMessage, Toast.LENGTH_SHORT).show();
-                    Log.i("Send", errorMessage);
                 }
             });
         }

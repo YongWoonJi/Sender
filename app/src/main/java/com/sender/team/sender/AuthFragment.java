@@ -224,7 +224,12 @@ public class AuthFragment extends Fragment {
                 Context context = getContext();
                 TelephonyManager manager = (TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE);
                 String phoneNum = manager.getLine1Number();
-                editPhone.setText(phoneNum);
+                StringBuffer sb = new StringBuffer(phoneNum);
+                if (sb.charAt(0) == '+') {
+                    sb.delete(0, 3);
+                    sb.insert(0, "0");
+                }
+                editPhone.setText(sb);
             }
         }
     }

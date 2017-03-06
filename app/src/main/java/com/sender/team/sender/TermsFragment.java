@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,15 @@ public class TermsFragment extends Fragment {
     @BindView(R.id.checkBox3)
     CheckBox checkBoxThree;
 
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
+
+    @BindView(R.id.scrollView2)
+    ScrollView scrollView2;
+
+    @BindView(R.id.scrollView3)
+    ScrollView scrollView3;
+
     public TermsFragment() {
         // Required empty public constructor
     }
@@ -67,6 +78,30 @@ public class TermsFragment extends Fragment {
                 } else{
                     Toast.makeText(getContext(), "이용약관에 동의 해주세요.", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                view.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        scrollView2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                view.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        scrollView3.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                view.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
             }
         });
         return view;

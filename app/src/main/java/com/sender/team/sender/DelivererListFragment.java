@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +83,6 @@ public class DelivererListFragment extends Fragment implements DelivererAdapter.
             @Override
             public void onFail(NetworkRequest<NetworkResult<DelivererListData>> request, NetworkResult<DelivererListData> result, String errorMessage, Throwable e) {
                 Toast.makeText(getActivity(), "delivererlist fail" + errorMessage, Toast.LENGTH_SHORT).show();
-                Log.i("DelivererListFragment", errorMessage);
             }
         });
 

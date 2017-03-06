@@ -1,7 +1,5 @@
 package com.sender.team.sender.manager;
 
-import android.util.Log;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -22,7 +20,6 @@ public class RedirectInterceptor implements Interceptor {
                     .url(url)
                     .build();
             response = chain.proceed(nRequest);
-            Log.i("RedirectInterceptor", "location");
         }
         return response;
     }

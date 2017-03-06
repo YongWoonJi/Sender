@@ -2,174 +2,189 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sender.team.sender.TermsFragment"
-    android:background="@color/whitebg">
+    android:background="@color/whitebg"
+    tools:context="com.sender.team.sender.TermsFragment">
 
-    <ImageView
-        android:layout_width="54dp"
-        android:layout_height="61dp"
-        android:id="@+id/imageView7"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/main_logo_shadow"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/service_terms"
-        android:gravity="center"
-        android:background="@color/whitebg"
-        android:id="@+id/textView3"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/imageView7"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="16dp"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
-
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="89dp"
-        android:id="@+id/scrollView"
-        android:background="@drawable/scrollview_rectangle"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_terms"
-            android:textSize="9sp" />
-    </ScrollView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/service_terms_personal"
-        android:gravity="center"
-        android:background="@color/whitebg"
-        android:id="@+id/textView32"
-        android:textColor="@color/black"
-        android:layout_below="@+id/checkBox"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="16dp"
-        android:textSize="12sp"
-        android:layout_marginTop="5dp" />
+        android:layout_alignParentStart="true">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="89dp"
-        android:id="@+id/scrollView2"
-        android:background="@drawable/scrollview_rectangle"
-        android:layout_below="@+id/textView32"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="8dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_terms2"
-            android:textSize="9sp" />
-    </ScrollView>
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="54dp"
+                android:layout_height="61dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/main_logo_shadow" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/service_terms_gps"
-        android:gravity="center"
-        android:background="@color/whitebg"
-        android:id="@+id/textView34"
-        android:textColor="@color/black"
-        android:layout_below="@+id/checkBox2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="5dp"
-        android:textSize="12sp" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imageView7"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/whitebg"
+                android:gravity="center"
+                android:text="@string/service_terms"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="89dp"
-        android:id="@+id/scrollView3"
-        android:background="@drawable/scrollview_rectangle"
-        android:layout_below="@+id/textView34"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="8dp">
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="89dp"
+                android:layout_below="@+id/textView3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/scrollview_rectangle">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_terms3"
-            android:textSize="9sp" />
-    </ScrollView>
+                <TextView
+                    android:id="@+id/text_terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="9sp" />
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/checkBox"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/whitebg"
+                android:gravity="center"
+                android:text="@string/service_terms_personal"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="match_parent"
+                android:layout_height="89dp"
+                android:layout_below="@+id/textView32"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/scrollview_rectangle">
+
+                <TextView
+                    android:id="@+id/text_terms2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="9sp" />
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/textView34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/checkBox2"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/whitebg"
+                android:gravity="center"
+                android:text="@string/service_terms_gps"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <ScrollView
+                android:id="@+id/scrollView3"
+                android:layout_width="match_parent"
+                android:layout_height="89dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="false"
+                android:layout_below="@+id/textView34"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/scrollview_rectangle">
+
+                <TextView
+                    android:id="@+id/text_terms3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="9sp" />
+            </ScrollView>
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/scrollView"
+                android:layout_marginRight="16dp"
+                android:button="@drawable/checkbox_selector"
+                android:checked="false"
+                android:gravity="end|right"
+                android:text="@string/checkbox"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/scrollView2"
+                android:layout_marginRight="16dp"
+                android:button="@drawable/checkbox_selector"
+                android:checked="false"
+                android:gravity="end|right"
+                android:text="@string/checkbox2"
+                android:textSize="12sp" />
+
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/scrollView3"
+                android:layout_marginRight="16dp"
+                android:button="@drawable/checkbox_selector"
+                android:checked="false"
+                android:gravity="end|right"
+                android:text="@string/checkbox3"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <Button
+        android:id="@+id/btn_next"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="@string/btn_next"
-        android:textColor="@color/whitefont"
-        android:textSize="12sp"
-        android:id="@+id/btn_next"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/pink"/>
+        android:background="@color/pink"
+        android:text="@string/btn_next"
+        android:textColor="@color/whitefont"
+        android:textSize="12sp" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/checkbox"
-        android:textSize="12sp"
-        android:id="@+id/checkBox"
-        android:checked="false"
-        android:button="@drawable/checkbox_selector"
-        android:layout_below="@+id/scrollView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:gravity="end|right" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/checkbox2"
-        android:id="@+id/checkBox2"
-        android:checked="false"
-        android:textSize="12sp"
-        android:button="@drawable/checkbox_selector"
-        android:layout_below="@+id/scrollView2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:gravity="end|right" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/checkbox3"
-        android:id="@+id/checkBox3"
-        android:textSize="12sp"
-        android:button="@drawable/checkbox_selector"
-        android:checked="false"
-        android:layout_below="@+id/scrollView3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:gravity="end|right" />
 </RelativeLayout>
 
 
