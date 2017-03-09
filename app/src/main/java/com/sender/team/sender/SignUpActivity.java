@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +21,13 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        int uiOption = getWindow().getDecorView().getSystemUiVisibility();
+        int newUiOption = uiOption;
+        newUiOption ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        newUiOption ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        newUiOption ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        getWindow().getDecorView().setSystemUiVisibility(newUiOption);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
