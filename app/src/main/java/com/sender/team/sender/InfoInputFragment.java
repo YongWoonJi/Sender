@@ -19,6 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -473,13 +474,15 @@ public class InfoInputFragment extends Fragment {
                 }
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, RC_PERMISSION_GET_CAPTURE_IMAGE);
             } else {
+                Uri cameraUri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName() + ".provider", getSaveFile());
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
                 startActivityForResult(intent, RC_CATPURE_IMAGE);
             }
         } else {
+            Uri cameraUri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName() + ".provider", getSaveFile());
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, getSaveFile());
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraUri);
             startActivityForResult(intent, RC_CATPURE_IMAGE);
         }
     }
@@ -508,13 +511,13 @@ public class InfoInputFragment extends Fragment {
         }
     }
 
-    private Uri getSaveFile() {
+    private File getSaveFile() {
         File dir = getActivity().getExternalFilesDir("capture");
         if (!dir.exists()) {
             dir.mkdirs();
         }
         savedFile = new File(dir, "my_image_" + System.currentTimeMillis() + ".jpeg");
-        return Uri.fromFile(savedFile);
+        return savedFile;
     }
 
 

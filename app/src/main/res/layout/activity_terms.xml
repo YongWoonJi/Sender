@@ -75,5 +75,14 @@
             android:layout_alignLeft="@+id/scrollView4"
             android:layout_alignStart="@+id/scrollView4"
             android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/text_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_alignTop="@+id/text_title"
+            android:layout_toEndOf="@+id/text_title"
+            android:layout_toRightOf="@+id/text_title" />
     </RelativeLayout>
 </RelativeLayout>

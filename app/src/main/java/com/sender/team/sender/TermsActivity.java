@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -18,6 +19,8 @@ public class TermsActivity extends AppCompatActivity {
     TextView termsTitle;
     @BindView(R.id.text_terms)
     TextView termsView;
+    @BindView(R.id.text_link)
+    TextView textLink;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -56,6 +59,9 @@ public class TermsActivity extends AppCompatActivity {
             termsTitle.setText(title);
             termsView.setText(Html.fromHtml(content));
         }
+
+        textLink.setText(Html.fromHtml("<a href=\"https://sites.google.com/site/senderprivacy/home\">링크</a>"));
+        textLink.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
